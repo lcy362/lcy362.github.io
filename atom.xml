@@ -310,9 +310,9 @@
     
       <category term="监控" scheme="http://lichuanyang.top/tags/%E7%9B%91%E6%8E%A7/"/>
     
-      <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
-    
       <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
+    
+      <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
     
   </entry>
   
@@ -1009,9 +1009,9 @@
     
       <category term="activemq" scheme="http://lichuanyang.top/tags/activemq/"/>
     
-      <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
-    
       <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
+    
+      <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
     
       <category term="kafka" scheme="http://lichuanyang.top/tags/kafka/"/>
     
@@ -1039,9 +1039,9 @@
     </summary>
     
     
-      <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
-    
       <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
+    
+      <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
     
   </entry>
   
