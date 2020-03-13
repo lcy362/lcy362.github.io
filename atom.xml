@@ -6,10 +6,32 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lichuanyang.top/"/>
-  <updated>2019-09-27T07:30:07.184Z</updated>
+  <updated>2020-03-13T10:20:02.609Z</updated>
   <id>http://lichuanyang.top/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>聊聊java里mysql的batch操作</title>
+    <link href="http://lichuanyang.top/posts/63688/"/>
+    <id>http://lichuanyang.top/posts/63688/</id>
+    <published>2020-03-13T09:54:38.000Z</published>
+    <updated>2020-03-13T10:20:02.609Z</updated>
+    
+    <content type="html"><![CDATA[<p>众所周知，对于mysql，使用批量操作，可以大幅度提升大数据量下操作的性能。不过，在java中使用mysql时，有些细节务必注意，否则就享受不到批量操作的性能了。</p><a id="more"></a><p>前阵子，发现一条sql的性能明细不正常，几千条数据批量insert，耗时居然到了秒级。排除了服务器性能、网络的问题后，开始怀疑是代码的问题，导致没有真正进行批量操作，感觉只有一条一条去跟数据库交互的话才会出现这种性能。</p><p>调了一下代码，翻到了mysql-connector里，关键的代码是这么一块：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="keyword">this</span>.batchHasPlainStatements &amp;&amp; <span class="keyword">this</span>.connection.getRewriteBatchedStatements()) &#123;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (canRewriteAsMultiValueInsertAtSqlLevel()) &#123;</span><br><span class="line">                        <span class="keyword">return</span> executeBatchedInserts(batchTimeout);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">this</span>.connection.versionMeetsMinimum(<span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>) &amp;&amp; !<span class="keyword">this</span>.batchHasPlainStatements &amp;&amp; <span class="keyword">this</span>.batchedArgs != <span class="keyword">null</span></span><br><span class="line">                            &amp;&amp; <span class="keyword">this</span>.batchedArgs.size() &gt; <span class="number">3</span> <span class="comment">/* cost of option setting rt-wise */</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> executePreparedBatchAsMultiStatement(batchTimeout);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> executeBatchSerially(batchTimeout);</span><br></pre></td></tr></table></figure><p>可以看到有executeBatchedInserts和executeBatchSerially两个分支，如果执行到executeBatchSerially的话，其实就是执行了个“假的”batch, 在这个方法里会每条数据单独去跟mysql交互。</p><p>为了能顺利的执行进executeBatchedInserts， 可以看到有一些先决条件：batchHasPlainStatements， connection.getRewriteBatchedStatements()， canRewriteAsMultiValueInsertAtSqlLevel。</p><p>事实上，为了能顺利的执行批量sql, mysql的驱动会对sql做一次“改写（rewrite）”，这个改写是什么意思呢？其实很简单，比如本来有一堆sql:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> () <span class="keyword">values</span>()</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> () <span class="keyword">values</span>()</span><br><span class="line">...</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> () <span class="keyword">values</span>()</span><br></pre></td></tr></table></figure><p>改写完之后，变成了这样:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> () <span class="keyword">values</span> () () ()</span><br></pre></td></tr></table></figure><p>变成了一条sql, 当然就是与mysql交互一次了。</p><p>成功rewrite后，才能批量执行sql。上边的几个条件也基本都是为了能让sql进行改写。这里边关键的其实就是两个点，一是数据库连接层面，需要配置rewriteBatchedStatements=true， 允许对sql进行改写。第二是sql层面，得要求这个sql能被改写。我们知道，mysql有这样一种语法:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> () <span class="keyword">set</span> x=x,y=y</span><br></pre></td></tr></table></figure><p>这种语法本身不属于sql标准，是mysql的“方言”，也是没有批量操作的形式的。因此，如果把sql写成这种形式，就不然没法执行真正的批量操作了。</p><p>原文地址: <a href="http://lichuanyang.top/posts/63688/">http://lichuanyang.top/posts/63688/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;众所周知，对于mysql，使用批量操作，可以大幅度提升大数据量下操作的性能。不过，在java中使用mysql时，有些细节务必注意，否则就享受不到批量操作的性能了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    
+      <category term="mysql" scheme="http://lichuanyang.top/tags/mysql/"/>
+    
+  </entry>
   
   <entry>
     <title>单元测试实践经验</title>
@@ -1273,9 +1295,9 @@
     </summary>
     
     
-      <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
-    
       <category term="hadoop" scheme="http://lichuanyang.top/tags/hadoop/"/>
+    
+      <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
     
   </entry>
   
@@ -1301,9 +1323,9 @@
     </summary>
     
     
-      <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
-    
       <category term="hadoop" scheme="http://lichuanyang.top/tags/hadoop/"/>
+    
+      <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
     
   </entry>
   
