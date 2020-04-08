@@ -6,10 +6,30 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lichuanyang.top/"/>
-  <updated>2020-03-18T11:02:54.646Z</updated>
+  <updated>2020-04-08T10:37:33.790Z</updated>
   <id>http://lichuanyang.top/</id>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>设计模式备忘录</title>
+    <link href="http://lichuanyang.top/posts/21897/"/>
+    <id>http://lichuanyang.top/posts/21897/</id>
+    <published>2020-04-08T10:06:51.000Z</published>
+    <updated>2020-04-08T10:37:33.790Z</updated>
+    
+    <content type="html"><![CDATA[<p>众所周知，对于程序员来说，设计模式是一门极其重要的学科。不过，由于设计模式的涉及面太广，也有很多非常抽象的概念，还是很难掌握的。要学习设计模式，最好还是能结合实际。每次做需求，尤其是一些复杂的需求，或者嗅到了烂代码味道的时候，就可以翻一遍设计模式，看看有什么可以应用的模式。所以，我总结了这篇文章，以尽量短的语言描述主要的设计模式，可能是定义中的关键部分，也可能是典型的应用场景，或者只是个英文单词，目的在于帮助回忆起每个设计模式的作用和应用场景。</p><a id="more"></a><h1 id="基本设计原则"><a href="#基本设计原则" class="headerlink" title="基本设计原则"></a>基本设计原则</h1><p>要说设计模式，一定要先提一遍六大基本设计原则。说白了，设计模式就是在这些原则的基础上被提炼出来得一系列最佳实践。</p><h2 id="单一职责原则"><a href="#单一职责原则" class="headerlink" title="单一职责原则"></a>单一职责原则</h2><h2 id="开放封闭原则"><a href="#开放封闭原则" class="headerlink" title="开放封闭原则"></a>开放封闭原则</h2><p>通过扩展解决问题，而不是修改已有的实现。（写代码时可以假定变化不会发生，当出现变化时，需要抽象以隔离将来的同类变化）  修改没有破坏原有的单元测试，即可认为不违反开闭原则</p><h2 id="里氏替换原则"><a href="#里氏替换原则" class="headerlink" title="里氏替换原则"></a>里氏替换原则</h2><p>子类应当能代替父类</p><h2 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h2><p>高层模块不能依赖低层模块；应当依赖抽象而非实现</p><h2 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h2><p>接口尽量小</p><h2 id="迪米特法则"><a href="#迪米特法则" class="headerlink" title="迪米特法则"></a>迪米特法则</h2><p>类间解耦</p><p>#设计模式</p><h2 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h2><p>定义一个用于创建对象的接口</p><h2 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h2><p>创建一组相关或者相互依赖的对象</p><h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><p>一个类只有一个实例</p><h2 id="建造者模式"><a href="#建造者模式" class="headerlink" title="建造者模式"></a>建造者模式</h2><p>分别build实例的各个模块</p><h2 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h2><p>复制对象</p><h2 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h2><p>处理接口不兼容</p><h2 id="装饰器模式"><a href="#装饰器模式" class="headerlink" title="装饰器模式"></a>装饰器模式</h2><p>动态给一个对象添加一些额外的职责，比生成子类的方式灵活</p><h2 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h2><p>对一些对象提供代理，以限制那些对象去访问其它对象</p><h2 id="门面模式-外观模式-facade"><a href="#门面模式-外观模式-facade" class="headerlink" title="门面模式(外观模式) (facade)"></a>门面模式(外观模式) (facade)</h2><p>门面中包含若干个子系统的部分或全部方法，将子系统组合后对外提供。</p><h2 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h2><p>将抽象部分和实现部分抽离。一个抽象类依赖一个接口，两部分分别可以做扩展</p><h2 id="组合模式"><a href="#组合模式" class="headerlink" title="组合模式"></a>组合模式</h2><p>把一组相似的对象当作一个单一的对象</p><h2 id="享元模式"><a href="#享元模式" class="headerlink" title="享元模式"></a>享元模式</h2><p>共享对象，数据库连接池，线程池等即是用享元模式的应用</p><h2 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h2><p>多种不同“策略”动态切换，起到改变对象行为的效果</p><h2 id="模板方法模式"><a href="#模板方法模式" class="headerlink" title="模板方法模式"></a>模板方法模式</h2><p>父类定义算法的骨架，部分细节由子类实现</p><h2 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h2><p>对于一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知</p><h2 id="迭代子模式"><a href="#迭代子模式" class="headerlink" title="迭代子模式"></a>迭代子模式</h2><p>给对象提供一个迭代器（Iterator）</p><h2 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h2><p>多个对象都有机会处理请求，连成一条链，并沿着这条链传递该请求，直到有一个对象处理他为止。</p><h2 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h2><p>将来自客户端的请求传入一个对象，实现于“行为请求者”与“行为实现者”的解耦</p><h2 id="备忘录模式"><a href="#备忘录模式" class="headerlink" title="备忘录模式"></a>备忘录模式</h2><p>备忘录对象就是一个用来存储另外一个对象内部状态的快照的对象</p><h2 id="状态模式"><a href="#状态模式" class="headerlink" title="状态模式"></a>状态模式</h2><p>状态机</p><h2 id="访问者模式"><a href="#访问者模式" class="headerlink" title="访问者模式"></a>访问者模式</h2><p>将数据结构与数据操作分离</p><h2 id="中介者模式"><a href="#中介者模式" class="headerlink" title="中介者模式"></a>中介者模式</h2><p>用一个中介者对象封装一系列的对象交互，中介者使各对象不需要显示地相互作用</p><h2 id="解释器模式"><a href="#解释器模式" class="headerlink" title="解释器模式"></a>解释器模式</h2><p>给定一种语言，定义他的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中句子。典型场景SQL解析等</p><p>原文地址: <a href="http://lichuanyang.top/posts//21897/">http://lichuanyang.top/posts//21897/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;众所周知，对于程序员来说，设计模式是一门极其重要的学科。不过，由于设计模式的涉及面太广，也有很多非常抽象的概念，还是很难掌握的。要学习设计模式，最好还是能结合实际。每次做需求，尤其是一些复杂的需求，或者嗅到了烂代码味道的时候，就可以翻一遍设计模式，看看有什么可以应用的模式。所以，我总结了这篇文章，以尽量短的语言描述主要的设计模式，可能是定义中的关键部分，也可能是典型的应用场景，或者只是个英文单词，目的在于帮助回忆起每个设计模式的作用和应用场景。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="设计模式" scheme="http://lichuanyang.top/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>我对程序员这个职业的理解</title>
@@ -396,9 +416,9 @@
     
       <category term="监控" scheme="http://lichuanyang.top/tags/%E7%9B%91%E6%8E%A7/"/>
     
-      <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
-    
       <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
+    
+      <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
     
   </entry>
   
@@ -1095,9 +1115,9 @@
     
       <category term="activemq" scheme="http://lichuanyang.top/tags/activemq/"/>
     
-      <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
-    
       <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
+    
+      <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
     
       <category term="kafka" scheme="http://lichuanyang.top/tags/kafka/"/>
     
@@ -1125,9 +1145,9 @@
     </summary>
     
     
-      <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
-    
       <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
+    
+      <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
     
   </entry>
   
