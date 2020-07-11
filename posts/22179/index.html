@@ -116,7 +116,7 @@
 <meta property="og:description" content="Redis作为当前使用非常广泛的内存数据库，在代码层面做了很多极致的优化，已获取更好的性能。其中重要的一部分，就是对于底层数据结构的使用。Redis会根据数据量、数据大小等来优化对于不同结构的使用，从而获得更佳的运行效率和内存占用。Redis的核心数据结构包括简单动态字符串、列表、字典、跳跃表、整数集合、压缩列表。 接下来，我们就依次讲讲这些数据结构。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://lichuanyang.top/posts/img/redis/skiplist.jpg">
-<meta property="og:updated_time" content="2020-07-11T09:50:18.203Z">
+<meta property="og:updated_time" content="2020-07-11T09:52:03.996Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis里的数据结构">
 <meta name="twitter:description" content="Redis作为当前使用非常广泛的内存数据库，在代码层面做了很多极致的优化，已获取更好的性能。其中重要的一部分，就是对于底层数据结构的使用。Redis会根据数据量、数据大小等来优化对于不同结构的使用，从而获得更佳的运行效率和内存占用。Redis的核心数据结构包括简单动态字符串、列表、字典、跳跃表、整数集合、压缩列表。 接下来，我们就依次讲讲这些数据结构。">
@@ -467,6 +467,7 @@
 <p>因为整数集合和压缩列表都是针对小数据集的，所以可以使用连续的内存空间去保存，实现也就简单了很多，这里就不细说了。</p>
 <p>在实际应用中，zipList可以作为链表或者字典的替代品，应用在redis的列表、哈希、有序集合中。整数集合则作为字典的替代品，用在集合对象中。</p>
 <p>以上就是redis中主要的数据结构，在这些结构的基础上，redis实现了大量功能完善的对象，供我们使用。理解了redis这些底层结构的原理，也可以帮助我们更好的发挥redis的价值。</p>
+<p>原文地址：<a href="https://lichuanyang.top/posts/22179/">https://lichuanyang.top/posts/22179/</a></p>
 
       
     </div>
