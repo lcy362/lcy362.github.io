@@ -115,12 +115,12 @@
 <meta property="og:site_name" content="Mobility">
 <meta property="og:description" content="本文翻译自https://martinfowler.com/articles/patterns-of-distributed-systems/ ，原作者对目前各类企业级架构中使用的多种分布式系统进行了总结，从中提取出了一些通用的“模式”(pattern)。本文作为系列文章的第一篇，介绍了分布式系统的特点和一些常见问题。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://lichuanyang.top/Users/licy/blog/blog.source/source/img/paterns.png">
-<meta property="og:updated_time" content="2020-08-11T09:23:43.126Z">
+<meta property="og:image" content="http://lichuanyang.top/posts/img/paterns.png">
+<meta property="og:updated_time" content="2020-08-11T09:51:03.780Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[翻译]分布式系统的模式-综述">
 <meta name="twitter:description" content="本文翻译自https://martinfowler.com/articles/patterns-of-distributed-systems/ ，原作者对目前各类企业级架构中使用的多种分布式系统进行了总结，从中提取出了一些通用的“模式”(pattern)。本文作为系列文章的第一篇，介绍了分布式系统的特点和一些常见问题。">
-<meta name="twitter:image" content="http://lichuanyang.top/Users/licy/blog/blog.source/source/img/paterns.png">
+<meta name="twitter:image" content="http://lichuanyang.top/posts/img/paterns.png">
 
 
 
@@ -513,7 +513,7 @@
 <h2 id="实现一致性的模式列表"><a href="#实现一致性的模式列表" class="headerlink" title="实现一致性的模式列表"></a>实现一致性的模式列表</h2><p>一致性的实现中，使用 state machine replication来实现容错。在state machine replication中，存储服务，比如键值存储，在所有服务器上复制，而且用户的输入也会在每个服务器上以相同顺序执行。用于实现此目的的关键实现技术是在所有服务器上复制Write-Ahead log以具有“ Replicated Wal”。</p>
 <p>我们可以将这些模式放在一起以实现Replicated Wal，如下所示。</p>
 <p>为了提供持久性保证，使用Write-Ahead log。使用Segmented Log将预写日志分为多个段。这有助于Low-Water Mark进行日志清理。通过在多个服务器上复制预写日志来提供容错能力。服务器之间的复制通过使用主从模式进行管理。更新High-Water Mark时，使用Quorum，以确定哪些值对客户可见。通过使用Single Update Quest，使所有请求均按严格顺序处理。使用Single Socket Channel, 将master的请求发送给slave时，事件将得到维护。为了优化Single Socket Channel上的吞吐量和延迟，使用了Request Pipeline。Slavet通过HeartBeat确定Master的可用性。如果Master由于网络分区而暂时从集群断开连接，则可以使用“Generation Clock”来检测它。</p>
-<p><img src="/Users/licy/blog/blog.source/source/img/paterns.png" alt="paterns"></p>
+<p><img src="../img/paterns.png" alt="paterns"></p>
 <p>通过这种方式，理解这些问题，和它们的通用解决方式，帮助我们理解构建复杂系统的方式。</p>
 <h1 id="下一步"><a href="#下一步" class="headerlink" title="下一步"></a>下一步</h1><p>分布式系统是一个巨大的话题。 这里涵盖的模式集只是一小部分，涵盖了不同的类别，以展示模式方法如何帮助理解和设计分布式系统。 我将继续向这个合集添加下边这些问题。</p>
 <ul>
