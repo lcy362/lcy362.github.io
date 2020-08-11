@@ -115,12 +115,12 @@
 <meta property="og:site_name" content="Mobility">
 <meta property="og:description" content="Redis作为当前使用非常广泛的内存数据库，在代码层面做了很多极致的优化，已获取更好的性能。其中重要的一部分，就是对于底层数据结构的使用。Redis会根据数据量、数据大小等来优化对于不同结构的使用，从而获得更佳的运行效率和内存占用。Redis的核心数据结构包括简单动态字符串、列表、字典、跳跃表、整数集合、压缩列表。 接下来，我们就依次讲讲这些数据结构。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://lichuanyang.top/posts/img/redis/skiplist.jpg">
-<meta property="og:updated_time" content="2020-07-11T09:52:03.996Z">
+<meta property="og:image" content="http://lichuanyang.top/img/redis/skiplist.jpg">
+<meta property="og:updated_time" content="2020-08-11T09:59:29.044Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis里的数据结构">
 <meta name="twitter:description" content="Redis作为当前使用非常广泛的内存数据库，在代码层面做了很多极致的优化，已获取更好的性能。其中重要的一部分，就是对于底层数据结构的使用。Redis会根据数据量、数据大小等来优化对于不同结构的使用，从而获得更佳的运行效率和内存占用。Redis的核心数据结构包括简单动态字符串、列表、字典、跳跃表、整数集合、压缩列表。 接下来，我们就依次讲讲这些数据结构。">
-<meta name="twitter:image" content="http://lichuanyang.top/posts/img/redis/skiplist.jpg">
+<meta name="twitter:image" content="http://lichuanyang.top/img/redis/skiplist.jpg">
 
 
 
@@ -455,7 +455,7 @@
 <p>Redis中的字典是hash表，使用链地址法解决hash地址冲突。</p>
 <p>类似于java等语言中的hashMap, redis的字典也会有rehash的机制，保证其负载因子维持在合理的范围内。</p>
 <h1 id="跳跃表-skiplist"><a href="#跳跃表-skiplist" class="headerlink" title="跳跃表 (skiplist)"></a>跳跃表 (skiplist)</h1><p>Skiplist是一种应用非常广的数据结构，通常是作为AVL树的一种替代选择，和AVL树一样，skiplist的查找复杂度也是O(logn), 但是实现会简单的多，下边我们用短短的几行字就能把SkipList的所有内容讲的非常清楚。此外，在并发环境下，SkipList也会有很大优势，因为AVL数在平衡过程中，可能会涉及到很多节点，也就需要锁住很多节点，SkipList则完全不存在这种问题。</p>
-<p><img src="../img/redis/skiplist.jpg" alt="skiplist"></p>
+<p><img src="/img/redis/skiplist.jpg" alt="skiplist"></p>
 <p>从网上找了一张示意图，可以很清楚的展示出SkipList的结构。跳跃表说白了就是一个多层的列表，每一个元素会随机的出现在某一层上，然后某一层的链表中会包含所有高于或等于本层的元素。</p>
 <p>跳跃表的查找就是从高层查起，逐步降层，定位到具体元素。比如要查询7， 其顺序就是9-&gt;6-&gt;7.</p>
 <p>跳跃表的插入也是先做一次查找，然后直接给元素设置一个随机的层数，再调整指针。</p>
