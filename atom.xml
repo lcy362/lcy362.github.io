@@ -2,12 +2,17 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Mobility</title>
   
-  <subtitle>初级程序员小站</subtitle>
+  <subtitle>聚沙成塔</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lichuanyang.top/"/>
   <updated>2020-08-11T09:59:41.341Z</updated>
   <id>http://lichuanyang.top/</id>
+  
+  <author>
+    <name>流沙</name>
+    
+  </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
