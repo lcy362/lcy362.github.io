@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[通过合理的设计降低软件开发复杂度]]></title>
+    <url>%2Fposts%2F33852%2F</url>
+    <content type="text"><![CDATA[对于一个程序员来说，日常最常说的词恐怕就是「复杂」了，这段代码太复杂了，这个逻辑太复杂了，所以，在这篇文章里，我们就好好掰扯掰扯「复杂」到底是怎么产生的，又要怎么去避免。 复杂度的产生我们先列一下当我们在说「复杂」的时候，到底在说什么。 没有模块划分，整个一大坨代码摊在那儿 大量的重复代码 代码整体逻辑看不懂 本来一个很简单的需求，改的时候发现这也要改，那也要改 代码没办法迁移，没办法复用 整天有莫名的bug出现 … 上边列的这些问题，其实很多之间是互为因果的，比如模块划分的不好，导致了代码逻辑看不懂，也导致了代码没法复用，代码没法复用，又导致了大量重复代码，重复代码又进一步导致代码逻辑看不懂。 所以，下面我们尝试着规整一下这些问题，看看问题到底在哪。 我觉得，首先可以把代码复杂度的问题简单分个类，一类是代码本身的问题，一类是代码对现实世界的表现力的问题。前者主要关乎代码整体的整洁程度，以及容不容易进行持续的维护；后者则主要影响代码容不容易理解，别人看代码时是否需要大量的背景知识。 对代码本身问题来说，以我的观察，导致代码过度复杂的首要原因就是模块拆分不清晰，甚至没有模块拆分。像上边列的重复代码、无法复用、统一逻辑多处修改等问题，本质原因都在模块拆分。另外有一些命名上的问题，会导致代码进一步不可维护。 关于代码对现实世界的表现力，我觉得一个很大的问题就是代码和现实割裂太严重，导致单纯依靠业务上的背景知识，并不能理解代码的实现方式；同时，当你以一个不符合现实的设计去实现现实需求的时候，可想而知，每一步都会很难。比如说，一个展示用户机票的业务，上游各航司的数据key都是「用户证件号」，那你这儿的key应该是什么呢，也是证件号吗。如果这么做了，然后再如果做了分库分表，可以想一下，「查询用户最近一张机票」这么一个基础功能，实现起来要有多复杂。 其实理到这儿，会发现已经能基本涵盖一开始列的那些问题了。像bug多这类问题，其实是逻辑复杂的一种表现。因为逻辑复杂，看不懂，所以Bug才多。 另外，有一个问题是上边说的每个点，随着程序规模的增加，会出现一个指数级的放大效应。相信很多人可以感受的到，如果有一个5天工作量的需求，和5个1天工作量各自独立的需求，最后做下来，前者实际花费的时间和最后产生的bug都要多很多。 所以，接下来我们就对上边这些提供一些解决方案 解决方案拆分首先，重中之重，就是做好拆分，要做好每个层次的拆分，比如微服务的边界怎么划分，哪些内容放到一个类里，哪些内容放到一个方法里。不夸张的说，模块拆分的好，可以解决开发上80%以上的问题。 比如，「把大象装进冰箱需要三步，一打开冰箱门，二把大象放进去，三关上冰箱门」，这就是一个非常合理的模块拆分。当然，对于三步中的每一步来说，都可以进一步细化。比如打开冰箱门包括：握住把手，用力拉两步；把大象放进去，包括，找一个大力士，举起大象，放到冰箱里，松手，四步。 拆分的核心要素是要拆的合理。对于业务逻辑来说，就是要符合对现实世界的认知。比如上面的例子里，你不能强行包一个「用力拉，找大力士，举起大象」这样的方法。但是，这个现象，在实际的业务开发中，实际上非常常见。很多人看到一个方法太长，知道要做下拆分，结果只是随机的从代码里拉住一块，抽了出来。这样，实际上只能让代码看着好一点，无法达到降低复杂度的效果。 另外，拆分没有止境，每个子模块，都可以进一步拆分成更细的子模块，直到这个模块已经足够容易理解。 高内聚在这儿说内聚，主要就是说要把复杂度控制在最小的范围内。以上边的例子来说，「找大力士」这一步就是最复杂的，因为根本没有这样的大力士。但是，这儿的复杂度只是这个小模块的内部实现，只有这一个小模块复杂，在上层或者其他模块是不应该感受到这个复杂度的。 但是，实际开发中，我们经常看到一些底层很复杂的结构，不断的暴露在系统各个层次、各个模块中，导致复杂度无法收敛。这样，随着项目规模的扩大，整体的复杂度就会呈指数级上升。 命名这个就比较细节了。命名的核心要求一是要准确，无论是变量名、方法名，看到这个名字，不需要去看代码细节，就能大体了解相关的逻辑。 再一个，命名要具备语境下的一致性。比如程序员，你不能一会叫coder, 一会叫programmer, 否则别人理解起来就很混乱。 其实，到这儿已经就说完了，是不是感到比预想的要简单。事实也是如此，只要做好模块的拆分，合理的将每段代码写在它该在的位置，开发就没有那么复杂。 原文地址: http://lichuanyang.top/posts/33852/]]></content>
+      <tags>
+        <tag>感悟</tag>
+        <tag>软件工程</tag>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[信息传播过程中的衰减]]></title>
     <url>%2Fposts%2F54296%2F</url>
     <content type="text"><![CDATA[看到这个标题，是不是有种要讲信息学的感觉。其实并不是，只是最近观察到一些事情，有些感触所以说一下。最近在网上碰巧看到过两个言论，恰好事实我是比较了解的，所以感慨，二手的信息实在不可信。 第一个，是北京西城德胜片区有一个小学叫三帆附小，因为可以直升三帆中学，这个在西城数一数二的初中，所以一直十分火爆。这个学校今年因为教室不够，招生由七个班缩减到了四个班，所以卡了落户四年，即落户不足四年的都要调剂。其实，调剂也不差，因为调剂校里有西城排名前五，而且学位极度充足的西师附小，也有雷锋消息这样的优质直升校。甚至有人买三帆附小学区房就是为了去调剂，因为西师附小的学区房要更贵。 然后，在一个公众号的高赞评论里，看到了「德胜」今年卡落户「两三年」这样的言论，言论作者还顺便以此为依据表达了对买学区房这种行为从智商上的鄙视。 结合事实和最后言论，其实大概猜的出整个传播链条中信息的变化。德胜的三帆附小逐渐变成了德胜，卡落户四年变成了落户两三年的被调剂，又变成了卡两三年。同时，调剂去的是西师附小这种关键信息被丢失。 第二个事，上周望京地区除了新冠的病例，然后各个社区在周末组织全员的核酸检测。其中有个检测点，不知道咋回事，排队的人特别多。不过实际上大部分检测点都挺好排队的，有的点甚至你到了还要等一会，凑够一组5个或者10个人才能测。 然后，这周我恰好听到一个财经类的大V说这个事情，信息变成了「望京地区」几万人寒风中排队做核酸。其实，他说的确实也没错，也没啥恶意，只是提一嘴疫情又有些严重了。不过大家也能感受到，稍微少了那么一些细节，整个感觉就不一样了。你看这个简版的表述，会感觉望京的小伙伴们还挺可怜的，但是实际上，大部分人都轻轻松松、开开心心的就检测完了，至于排大队的那个点，也随时可以去其他点检测。 所以，看这两件事，虽然都是很小的事，我也彻底对二手信息失去信任。有些信息，传播的过程中，遗失或者微调一些关键信息，会导致整个意思大不相同。再者，有些人说话的时候其实只是顺嘴一提，人家没把这个当成一个重要的事，所以也不会去深究信息到底准不准。但是听的人对这个事情重要程度的判断是不一样的，你如果拿这种信息去做决策，可以预见，会有多惨。 那么，什么算是一手的信息呢，我这里简单列一些： 事实。就是实际发生的事，比如今天某地气温X这样的确定性事件，而非某地今天很冷这样的主观判断。 专业性的书籍。书毕竟会有校对的过程，也会经过无数读者的考验，所以可信度会高很多 公开政策。这个不细说了，因为这个就是标准。 可靠来源的数据 总而言之，就是希望大家多去接触一手信息，杜绝二手信息，做重要决策的时候要尤其重视信息的可信度。 原文地址: http://lichuanyang.top/posts/54296/]]></content>
@@ -25,9 +35,9 @@
         <category>读书笔记</category>
       </categories>
       <tags>
+        <tag>投资</tag>
         <tag>个人成长</tag>
         <tag>读书感悟</tag>
-        <tag>投资</tag>
       </tags>
   </entry>
   <entry>
@@ -38,9 +48,9 @@
         <category>读书笔记</category>
       </categories>
       <tags>
-        <tag>教育</tag>
         <tag>个人成长</tag>
         <tag>读书感悟</tag>
+        <tag>教育</tag>
       </tags>
   </entry>
   <entry>
@@ -540,8 +550,8 @@
     <url>%2Fposts%2F25187%2F</url>
     <content type="text"><![CDATA[参考http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html &nbsp; package org.apache.hadoop.examples; import java.io.IOException; import java.util.StringTokenizer; import org.apache.hadoop.conf.Configuration; import org.apache.hadoop.fs.Path; import org.apache.hadoop.io.IntWritable; import org.apache.hadoop.io.Text; import org.apache.hadoop.mapreduce.Job; import org.apache.hadoop.mapreduce.Mapper; import org.apache.hadoop.mapreduce.Reducer; import org.apache.hadoop.mapreduce.lib.input.FileInputFormat; import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat; import org.apache.hadoop.util.GenericOptionsParser; public class WordCount { public static class&nbsp;TokenizerMapper extends Mapper&lt;Object, Text, Text, IntWritable&gt;{ &nbsp;//继承org.apache.hadoop.mapreduce包中Mapper类，并重写其map方法 private final static IntWritable one = new IntWritable(1); &nbsp; //Mapper&lt;KEYIN,VALUEIN,KEYOUT,VALUEOUT&gt; private Text word = new Text(); &nbsp; public void map(Object key, Text value, Context context) &nbsp;//Called once for each key/value pair in the input split throws IOException, InterruptedException { &nbsp;//value值存储的是文本文件中的一行（以回车符为行结束标记），而key值为该行的首字母相对于文本文件的首地址的偏移量 StringTokenizer itr = new StringTokenizer(value.toString()); &nbsp; &nbsp;//拆分成单词 while (itr.hasMoreTokens()) { word.set(itr.nextToken()); context.write(word, one); &nbsp;//输出&lt;word，1&gt; } } } //系统自动对map结果进行排序等处理，reduce输入例 （asd,1-1-1) public static class&nbsp;IntSumReducer extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt; { &nbsp;//Reducer&lt;KEYIN,VALUEIN,KEYOUT,VALUEOUT&gt; private IntWritable result = new IntWritable(); public void reduce(Text key, Iterable&lt;IntWritable&gt; values,Context context) throws IOException, InterruptedException { &nbsp; //reducer输入为Map过程输出，&lt;key,values&gt;中key为单个单词，而values是对应单词的计数值 int sum = 0; for (IntWritable val : values) { sum += val.get(); } result.set(sum); context.write(key, result); } } &nbsp; public static void&nbsp;main(String[] args) throws Exception { Configuration conf = new Configuration(); String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs(); if (otherArgs.length != 2) { System.err.println(“Usage: wordcount &lt;in&gt; &lt;out&gt;”); System.exit(2); } Job job = new Job(conf, “word count”); job.setJarByClass(WordCount.class); job.setMapperClass(TokenizerMapper.class); //setMapperClass：设置Mapper，默认为IdentityMapper job.setCombinerClass(IntSumReducer.class); job.setReducerClass(IntSumReducer.class);//setReducerClass：设置Reducer，默认为IdentityReducer job.setOutputKeyClass(Text.class); job.setOutputValueClass(IntWritable.class); FileInputFormat.addInputPath(job, new Path(otherArgs[0]));//FileInputFormat.addInputPath：设置输入文件的路径，可以是一个文件，一个路径，一个通配符。可以被调用多次添加多个路径 FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));//FileOutputFormat.setOutputPath：设置输出文件的路径，在job运行前此路径不应该存在 System.exit(job.waitForCompletion(true) ? 0 : 1); } } //setInputFormat：设置map的输入格式，默认为TextInputFormat，key为LongWritable, value为Text setNumMapTasks：设置map任务的个数，此设置通常不起作用，map任务的个数取决于输入的数据所能分成的input split的个数 &nbsp; setMapRunnerClass：设置MapRunner, map task是由MapRunner运行的，默认为MapRunnable，其功能为读取input split的一个个record，依次调用Mapper的map函数 setMapOutputKeyClass和setMapOutputValueClass：设置Mapper的输出的key-value对的格式 setOutputKeyClass和setOutputValueClass：设置Reducer的输出的key-value对的格式 setPartitionerClass和setNumReduceTasks：设置Partitioner，默认为HashPartitioner，其根据key的hash值来决定进入哪个partition，每个partition被一个reduce task处理，所以partition的个数等于reduce task的个数 &nbsp; setOutputFormat：设置任务的输出格式，默认为TextOutputFormat &nbsp;]]></content>
       <tags>
-        <tag>大数据</tag>
         <tag>hadoop</tag>
+        <tag>大数据</tag>
       </tags>
   </entry>
   <entry>
@@ -549,8 +559,8 @@
     <url>%2Fposts%2F35575%2F</url>
     <content type="text"><![CDATA[http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html&nbsp;wordcount运行过程详解 http://www.cnblogs.com/gpcuster/archive/2010/06/04/1751538.html&nbsp;hdfs命令介绍 http://hi.baidu.com/gkf8605/item/d6b8af09c3463512eafe38b1&nbsp;hdfs命令 http://www.cnblogs.com/forfuture1978/archive/2010/11/14/1877086.html&nbsp;mapreduce入门 &nbsp; http://hadoop.apache.org/docs/r0.20.2/api/index.html&nbsp;hadoop0.20.2 api]]></content>
       <tags>
-        <tag>大数据</tag>
         <tag>hadoop</tag>
+        <tag>大数据</tag>
       </tags>
   </entry>
 </search>

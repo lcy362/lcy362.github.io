@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lichuanyang.top/"/>
-  <updated>2020-12-29T11:30:54.237Z</updated>
+  <updated>2021-01-04T11:38:14.068Z</updated>
   <id>http://lichuanyang.top/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>通过合理的设计降低软件开发复杂度</title>
+    <link href="http://lichuanyang.top/posts/33852/"/>
+    <id>http://lichuanyang.top/posts/33852/</id>
+    <published>2021-01-04T10:12:34.000Z</published>
+    <updated>2021-01-04T11:38:14.068Z</updated>
+    
+    <content type="html"><![CDATA[<p>对于一个程序员来说，日常最常说的词恐怕就是「复杂」了，这段代码太复杂了，这个逻辑太复杂了，所以，在这篇文章里，我们就好好掰扯掰扯「复杂」到底是怎么产生的，又要怎么去避免。</p><a id="more"></a><h1 id="复杂度的产生"><a href="#复杂度的产生" class="headerlink" title="复杂度的产生"></a>复杂度的产生</h1><p>我们先列一下当我们在说「复杂」的时候，到底在说什么。</p><ul><li>没有模块划分，整个一大坨代码摊在那儿</li><li>大量的重复代码</li><li>代码整体逻辑看不懂</li><li>本来一个很简单的需求，改的时候发现这也要改，那也要改</li><li>代码没办法迁移，没办法复用</li><li>整天有莫名的bug出现</li><li>…</li></ul><p>上边列的这些问题，其实很多之间是互为因果的，比如模块划分的不好，导致了代码逻辑看不懂，也导致了代码没法复用，代码没法复用，又导致了大量重复代码，重复代码又进一步导致代码逻辑看不懂。</p><p>所以，下面我们尝试着规整一下这些问题，看看问题到底在哪。</p><p>我觉得，首先可以把代码复杂度的问题简单分个类，一类是代码本身的问题，一类是代码对现实世界的表现力的问题。前者主要关乎代码整体的整洁程度，以及容不容易进行持续的维护；后者则主要影响代码容不容易理解，别人看代码时是否需要大量的背景知识。</p><p>对代码本身问题来说，以我的观察，导致代码过度复杂的首要原因就是模块拆分不清晰，甚至没有模块拆分。像上边列的重复代码、无法复用、统一逻辑多处修改等问题，本质原因都在模块拆分。另外有一些命名上的问题，会导致代码进一步不可维护。</p><p>关于代码对现实世界的表现力，我觉得一个很大的问题就是代码和现实割裂太严重，导致单纯依靠业务上的背景知识，并不能理解代码的实现方式；同时，当你以一个不符合现实的设计去实现现实需求的时候，可想而知，每一步都会很难。比如说，一个展示用户机票的业务，上游各航司的数据key都是「用户证件号」，那你这儿的key应该是什么呢，也是证件号吗。如果这么做了，然后再如果做了分库分表，可以想一下，「查询用户最近一张机票」这么一个基础功能，实现起来要有多复杂。</p><p>其实理到这儿，会发现已经能基本涵盖一开始列的那些问题了。像bug多这类问题，其实是逻辑复杂的一种表现。因为逻辑复杂，看不懂，所以Bug才多。</p><p>另外，有一个问题是上边说的每个点，随着程序规模的增加，会出现一个指数级的放大效应。相信很多人可以感受的到，如果有一个5天工作量的需求，和5个1天工作量各自独立的需求，最后做下来，前者实际花费的时间和最后产生的bug都要多很多。</p><p>所以，接下来我们就对上边这些提供一些解决方案</p><h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="拆分"><a href="#拆分" class="headerlink" title="拆分"></a>拆分</h2><p>首先，重中之重，就是做好拆分，要做好每个层次的拆分，比如微服务的边界怎么划分，哪些内容放到一个类里，哪些内容放到一个方法里。不夸张的说，模块拆分的好，可以解决开发上80%以上的问题。</p><p>比如，「把大象装进冰箱需要三步，一打开冰箱门，二把大象放进去，三关上冰箱门」，这就是一个非常合理的模块拆分。当然，对于三步中的每一步来说，都可以进一步细化。比如打开冰箱门包括：握住把手，用力拉两步；把大象放进去，包括，找一个大力士，举起大象，放到冰箱里，松手，四步。</p><p>拆分的核心要素是要拆的合理。对于业务逻辑来说，就是要符合对现实世界的认知。比如上面的例子里，你不能强行包一个「用力拉，找大力士，举起大象」这样的方法。但是，这个现象，在实际的业务开发中，实际上非常常见。很多人看到一个方法太长，知道要做下拆分，结果只是随机的从代码里拉住一块，抽了出来。这样，实际上只能让代码看着好一点，无法达到降低复杂度的效果。</p><p>另外，拆分没有止境，每个子模块，都可以进一步拆分成更细的子模块，直到这个模块已经足够容易理解。</p><h2 id="高内聚"><a href="#高内聚" class="headerlink" title="高内聚"></a>高内聚</h2><p>在这儿说内聚，主要就是说要把复杂度控制在最小的范围内。以上边的例子来说，「找大力士」这一步就是最复杂的，因为根本没有这样的大力士。但是，这儿的复杂度只是这个小模块的内部实现，只有这一个小模块复杂，在上层或者其他模块是不应该感受到这个复杂度的。</p><p>但是，实际开发中，我们经常看到一些底层很复杂的结构，不断的暴露在系统各个层次、各个模块中，导致复杂度无法收敛。这样，随着项目规模的扩大，整体的复杂度就会呈指数级上升。</p><h2 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h2><p>这个就比较细节了。命名的核心要求一是要准确，无论是变量名、方法名，看到这个名字，不需要去看代码细节，就能大体了解相关的逻辑。</p><p>再一个，命名要具备语境下的一致性。比如程序员，你不能一会叫coder, 一会叫programmer, 否则别人理解起来就很混乱。</p><p>其实，到这儿已经就说完了，是不是感到比预想的要简单。事实也是如此，只要做好模块的拆分，合理的将每段代码写在它该在的位置，开发就没有那么复杂。</p><p>原文地址: <a href="http://lichuanyang.top/posts/33852/">http://lichuanyang.top/posts/33852/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;对于一个程序员来说，日常最常说的词恐怕就是「复杂」了，这段代码太复杂了，这个逻辑太复杂了，所以，在这篇文章里，我们就好好掰扯掰扯「复杂」到底是怎么产生的，又要怎么去避免。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="感悟" scheme="http://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
+    
+      <category term="软件工程" scheme="http://lichuanyang.top/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/"/>
+    
+      <category term="设计模式" scheme="http://lichuanyang.top/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>信息传播过程中的衰减</title>
@@ -76,11 +100,11 @@
       <category term="读书笔记" scheme="http://lichuanyang.top/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
+      <category term="投资" scheme="http://lichuanyang.top/tags/%E6%8A%95%E8%B5%84/"/>
+    
       <category term="个人成长" scheme="http://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
     
       <category term="读书感悟" scheme="http://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E6%84%9F%E6%82%9F/"/>
-    
-      <category term="投资" scheme="http://lichuanyang.top/tags/%E6%8A%95%E8%B5%84/"/>
     
   </entry>
   
@@ -102,11 +126,11 @@
       <category term="读书笔记" scheme="http://lichuanyang.top/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="教育" scheme="http://lichuanyang.top/tags/%E6%95%99%E8%82%B2/"/>
-    
       <category term="个人成长" scheme="http://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
     
       <category term="读书感悟" scheme="http://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E6%84%9F%E6%82%9F/"/>
+    
+      <category term="教育" scheme="http://lichuanyang.top/tags/%E6%95%99%E8%82%B2/"/>
     
   </entry>
   
@@ -1509,9 +1533,9 @@
     </summary>
     
     
-      <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
-    
       <category term="hadoop" scheme="http://lichuanyang.top/tags/hadoop/"/>
+    
+      <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
     
   </entry>
   
@@ -1537,9 +1561,9 @@
     </summary>
     
     
-      <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
-    
       <category term="hadoop" scheme="http://lichuanyang.top/tags/hadoop/"/>
+    
+      <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
     
   </entry>
   
