@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+<script data-ad-client="ca-pub-7310841175510611" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE">
+  <meta name="msvalidate.01" content="FEC1AF1D401268A4208AF51DC0275AAA">
+  <meta name="baidu-site-verification" content="code-T8LautTf5f">
+<meta name="360-site-verification" content="1c5bbf05b6055ca3bf0fbac183341c50" />
+<meta name="sogou_site_verification" content="B8l48CQIyW" />
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lichuanyang.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mobility">
+<meta property="og:url" content="http://lichuanyang.top/page/7/index.html">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="流沙">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://lichuanyang.top/page/7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Mobility</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-45390505-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-45390505-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ffb948eb504670b10474a889e9409047";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Mobility</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">聚沙成塔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xjeTM2Mg==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/28720/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/28720/" class="post-title-link" itemprop="url">不实现equals方法的情况下比较java list</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-04-10 19:57:00" itemprop="dateCreated datePublished" datetime="2017-04-10T19:57:00+08:00">2017-04-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/28720/" class="post-meta-item leancloud_visitors" data-flag-title="不实现equals方法的情况下比较java list" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/28720/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/28720/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>java里比较两个list的值是否一致，不考虑顺序，有多种方法，比如排序后直接用equals比较，相互之间执行两次containsAll等，这些办法都需要我们给list的元素类实现equals和hashcode方法。但是有一种特殊情况，如果我们并不方便去实习类的equals方法，例如是一个古老的第三方jar包，改代码会带来很多未知问题，这时候该怎么办呢。</p>
+<p>其实很简单，万能的apache-commons早就想到了这一点，所以在commons-collections4中增加了外部输入equals和hashcode的方法，甚至equals和hashcode方法本身也不需要我们自己写代码，可以用comons-lang包实现，具体代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-collections4&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.5&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">public static &lt;T&gt; boolean isEqualCollection(Collection&lt;T&gt; l1, Collection&lt;T&gt; l2, final String... exludedFields) &#123;</span><br><span class="line">    Equator&lt;T&gt; equator = generateEquator(exludedFields);</span><br><span class="line">    return CollectionUtils.isEqualCollection(l1, l2, equator);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static  &lt;T&gt; Equator&lt;T&gt; generateEquator(final String... exludedFields) &#123;</span><br><span class="line">    Equator&lt;T&gt; equator = new Equator&lt;T&gt;() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public boolean equate(T o1, T o2) &#123;</span><br><span class="line">            if (o1 == null &amp;&amp; o2 == null) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            if (o1 == null || o2 == null) &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            if (o1.getClass() != o2.getClass()) &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            return EqualsBuilder.reflectionEquals(o1, o2, exludedFields);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public int hash(T o) &#123;</span><br><span class="line">            return HashCodeBuilder.reflectionHashCode(o, exludedFields);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    return equator;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/63756/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/63756/" class="post-title-link" itemprop="url">使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-04-06 17:54:00" itemprop="dateCreated datePublished" datetime="2017-04-06T17:54:00+08:00">2017-04-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/63756/" class="post-meta-item leancloud_visitors" data-flag-title="使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/63756/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/63756/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>redis中set系列命令(包括set,hset等等)，基本上都包括两个版本，纯粹的set和setnx, setnx即set not exist, 也就是只有Key不存在时才会执行set, 而不会覆盖原有的值。</p>
+<p>但是hmset这个命令，包括redis本身，jedis都没有提供nx版本的支持。当然，hset这个命令是有对应的hsetnx版本的，hmset意思就是multi hset,一次可以操作多个key, 从而减小网络开销。</p>
+<p>所以，为了在使用hmset时也能降低网络的消耗，用lua写了一个脚本，实现hmsetnx的效果，即：向Hash表中set键值对时，只有键不存在时才会写入，不会覆盖原有值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">local key</span><br><span class="line">for i,j in ipairs(ARGV)</span><br><span class="line">do	if i%2 == 0</span><br><span class="line">	then</span><br><span class="line">		redis.call(&#x27;hsetnx&#x27;, KEYS[1], key,j)</span><br><span class="line">	else</span><br><span class="line">		key = j</span><br><span class="line">	end</span><br><span class="line">end</span><br><span class="line">return 1</span><br></pre></td></tr></table></figure>
+
+<p>脚本的原理还是比较简单，脚本中使用的参数和hmset完全一致。依次读入参数列表，迭代器i是奇数时给key赋值，偶数时执行一次hsetnx,循环结束后也就完成了。</p>
+<p>之后再调用jedis封装好的eval接口，</p>
+<p>Object eval(final String script, final List<String> keys, final List<String> args)</p>
+<p>或者</p>
+<p>Object eval(final byte[] script, final List&lt;byte[]&gt; keys, final List&lt;byte[]&gt; args）</p>
+<p>都可以，这两个接口的区别就是是否对参数进行序列化</p>
+<p>keys中只放一个元素，就是hash表本身的key, 然后把键值对按照一个key,一个value的顺序依次放到args里。</p>
+<p>当然，也可以用evalsha命令避免每次操作都要传输脚本本身，这里就不细说了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/62625/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/62625/" class="post-title-link" itemprop="url">vitualbox虚拟机安装centos 7 及ssh访问、自启动等配置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-04-02 12:45:00" itemprop="dateCreated datePublished" datetime="2017-04-02T12:45:00+08:00">2017-04-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/62625/" class="post-meta-item leancloud_visitors" data-flag-title="vitualbox虚拟机安装centos 7 及ssh访问、自启动等配置" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/62625/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/62625/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>为了方便，最近用vitualbox搭了一个centos7的虚拟机，整个过程比较简单，在这里记录一下。</p>
+<h2 id="下载vitualbox"><a href="#下载vitualbox" class="headerlink" title="下载vitualbox"></a>下载vitualbox</h2><p>直接去官网（<span class="exturl" data-url="aHR0cHM6Ly93d3cudmlydHVhbGJveC5vcmcvd2lraS9Eb3dubG9hZHMlRUYlQkMlODklRTQlQjglOEIlRTglQkQlQkQlRTUlOEQlQjMlRTUlOEYlQUY=">https://www.virtualbox.org/wiki/Downloads）下载即可<i class="fa fa-external-link-alt"></i></span></p>
+<h2 id="下载centos安装包"><a href="#下载centos安装包" class="headerlink" title="下载centos安装包"></a>下载centos安装包</h2><p>同样官网下载（<span class="exturl" data-url="aHR0cHM6Ly93d3cuY2VudG9zLm9yZy9kb3dubG9hZC8lRUYlQkMlODklRUYlQkMlOEMlRTYlODglOTElRTQlQjglOEIlRTglQkQlQkQlRTclOUElODQlRTYlOTglQUZtaW5pbWFs">https://www.centos.org/download/），我下载的是minimal<i class="fa fa-external-link-alt"></i></span> iso</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>安装过程很简单，一路默认点下去就可以，中间内存、分区什么的可以根据需要调一下</p>
+<h2 id="配置本机ssh访问"><a href="#配置本机ssh访问" class="headerlink" title="配置本机ssh访问"></a>配置本机ssh访问</h2><p>vitualbox默认的分辨率非常低，可以通过安装增强工具进行优化。不过由于我们不需要图形化界面，其实可以通过其他方式解决这一问题，就是用xshell或者putty通过ssh远程登陆到虚拟机上。</p>
+<h3 id="打开ssh服务"><a href="#打开ssh服务" class="headerlink" title="打开ssh服务"></a>打开ssh服务</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service sshd start</span><br><span class="line">chkconfig sshd on</span><br></pre></td></tr></table></figure>
+<p>分别启动ssh服务，并将ssh设定为自启动</p>
+<h3 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h3><p>由于只是弄着玩的，直接把防火墙关掉，方便。</p>
+<p>centos7的防火墙操作和之前版本区别很大：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop firewalld.service</span><br><span class="line">sudo systemctl disable firewalld.service</span><br></pre></td></tr></table></figure>
+<p>关闭防火墙和自动启动</p>
+<h3 id="配置端口转发"><a href="#配置端口转发" class="headerlink" title="配置端口转发"></a>配置端口转发</h3><p>在VitualBox下配置端口转发：设置-网络-高级-端口转发，将22端口转发到主机的端口上，可以同样是22，也可以配置成其他端口.</p>
+<p>如果需要在主机上访问虚拟机的其他端口，例如tomcat的8080，activemq的61616，8161,也可以在这儿一并配了。</p>
+<h3 id="查看虚拟机ip"><a href="#查看虚拟机ip" class="headerlink" title="查看虚拟机ip"></a>查看虚拟机ip</h3><p>在主机上执行ipconfig,找sudo systemctl disable firewalld.service对应的ip, 然后就可以在xshell中配置对应的ip和端口，访问虚拟机了。</p>
+<h2 id="配置自启动服务"><a href="#配置自启动服务" class="headerlink" title="配置自启动服务"></a>配置自启动服务</h2><p>centos下配置自启动的方式很多，我们在这里提供一种最简单的方式。</p>
+<h3 id="写一个脚本"><a href="#写一个脚本" class="headerlink" title="写一个脚本"></a>写一个脚本</h3><p>例如vim /opt/app/service.sh</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">export JAVA_HOME=/opt/app/jdk1.8.0_121</span><br><span class="line">sh /opt/app/apache-activemq-5.14.4/bin/activemq start &gt;/opt/app/start.log</span><br></pre></td></tr></table></figure>
+<p>把需要自启动的脚本全都放这儿，以后想增加自启动服务的时候，也只需要操作这个脚本。</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>chmod +x /opt/app/service.sh</p>
+<p>centos7下/etc/rc.d/rc.local也需要自己去加执行权限：</p>
+<p>chmod +x /etc/rc.d/rc.local</p>
+<p>然后打开/etc/rc.d/rc.local，在最后把自己写的脚本加上：</p>
+<p>/opt/app/service.sh</p>
+<p>保存，就完成自启动服务的配置了。</p>
+<p>之后，我们可以通过vitualbox的无界面方式启动，然后在xshell中自由操作。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/11299/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/11299/" class="post-title-link" itemprop="url">在java独立进程(standalone app)中嵌入hawtio监控</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-04-01 19:42:00" itemprop="dateCreated datePublished" datetime="2017-04-01T19:42:00+08:00">2017-04-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/11299/" class="post-meta-item leancloud_visitors" data-flag-title="在java独立进程(standalone app)中嵌入hawtio监控" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/11299/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/11299/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>hawtio(hawt.io)是一个开源的监控系统，它提供了多种启动方式，可以运行单独的jar包、war包，然后远程连接其他应用进行监控，也可以将它直接嵌到我们自己的应用中。</p>
+<p>本文会介绍在一个单独的java进程(java standalone application)中嵌入hawtio，对应官方文档（<span class="exturl" data-url="aHR0cDovL2hhd3QuaW8vZ2V0c3RhcnRlZC9pbmRleC5odG1sJUVGJUJDJTg5JUU3JTlBJTg0">http://hawt.io/getstarted/index.html）的<i class="fa fa-external-link-alt"></i></span> “Using hawtio inside a stand alone Java application”,不过这一节文档问题是比较多的，如果你只看这段，会遇到各种问题。</p>
+<p>下面介绍具体步骤</p>
+<h2 id="引入jar包"><a href="#引入jar包" class="headerlink" title="引入jar包"></a>引入jar包</h2><p>除了官方文档里说的hawtio-embedded外，hawtio-insight-log，hawtio-core，hawtio-web这几个包都是必需的，我们都引入当前的最新版本.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;io.hawt&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;hawtio-embedded&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.0.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;io.hawt&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;hawtio-insight-log&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.5.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;io.hawt&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;hawtio-core&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.0.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;io.hawt&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;hawtio-web&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.0.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="下载war包"><a href="#下载war包" class="headerlink" title="下载war包"></a>下载war包</h2><p>同样在官方start文档（<span class="exturl" data-url="aHR0cDovL2hhd3QuaW8vZ2V0c3RhcnRlZC9pbmRleC5odG1sJUVGJUJDJTg5JUU0JUI4JUFEJUU0JUI4JThCJUU4JUJEJUJEaGF3dGlvLWRlZmF1bHQud2FyJUU1JThDJTg1JUVGJUJDJThDJUU2JTk0JUJFJUU1JTg4JUIwJUU0JUJCJUJCJUU2JTg0JThGJUU0JUJEJThEJUU3JUJEJUFFJUVGJUJDJThDd2FyJUU1JThDJTg1JUU3JTlBJTg0JUU1JTkwJThEJUU1JUFEJTk3JUU0JUI5JTlGJUU1JThGJUFGJUU0JUJCJUE1JUU5JTlBJThGJUU0JUJFJUJGJUU2JTk0JUI5">http://hawt.io/getstarted/index.html）中下载hawtio-default.war包，放到任意位置，war包的名字也可以随便改<i class="fa fa-external-link-alt"></i></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>基本的代码，如果不需要其他配置，非常简单</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Main main = new Main();</span><br><span class="line">main.setWar(&quot;hawtio.war&quot;);</span><br><span class="line">main.run();</span><br></pre></td></tr></table></figure>
+<p>使用main.setWar配置的是war包具体路径，可以在工程内，也可以在工程外，但是并非官方文档所说的“包含war包的目录路径(somePathOrDirectoryContainingHawtioWar)”<br>之后运行main.run就可以启动hawtio了.</p>
+<h2 id="权限"><a href="#权限" class="headerlink" title="权限"></a>权限</h2><p>新版本的hawtio默认是要密码的，如果想简单，可以配置一条jvm参数： -Dhawtio.authenticationEnabled=false， 关掉权限验证。</p>
+<p>示例代码可以在github (<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xjeTM2Mi9DYW1lbERlbW8vYmxvYi9tYXN0ZXIvc3JjL21haW4vamF2YS9jb20vbWFsbG93L2RlbW8vY2FtZWwvTWFpbldpdGhIYXd0aW8uamF2YQ==">https://github.com/lcy362/CamelDemo/blob/master/src/main/java/com/mallow/demo/camel/MainWithHawtio.java<i class="fa fa-external-link-alt"></i></span>) 上看，可以直接下载运行，不过需要在本地启动一个activemq. 这里的例子是一个使用hawtio监控apache-camel的简单例子，启动后，在hawtio页面上栏可以直接看到camel的标签，使用非常方便。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/4433/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/4433/" class="post-title-link" itemprop="url">java日志系统简介: 从tomcat大量打印debug日志说起</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-03-31 19:47:00" itemprop="dateCreated datePublished" datetime="2017-03-31T19:47:00+08:00">2017-03-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/4433/" class="post-meta-item leancloud_visitors" data-flag-title="java日志系统简介: 从tomcat大量打印debug日志说起" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/4433/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/4433/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>目前，java下应用最广泛的日志系统主要就是两个系列: log4j和slf4j+logback 。</p>
+<p>其中,slf4j只包含日志的接口，logback只包括日志的具体实现，两者加起来才是一个完整的日志系统。Log4j则同时包含了日志接口和实现。</p>
+<p>这两套日志系统之间有可以相互兼容的组件，分别是slf4j-log4j12和 log4j-over-slf4j，引入之后就可以用log4j打出slf4j接口的日志，或者用logback打出log4j接口的日志。</p>
+<p>背景知识介绍到这里，再简单说一下标题里提到的问题。问题的现象就是我们在war包里配置了log4j的日志级别为info, 但在catalina里却一直在打大量的debug日志。初看现象肯定很诡异，前期各种研究tomcat配置也没什么头绪。直到磁盘压力太大，去看jstack发现大量进程是等待在Logback代码中，才发现之前关注错了重点。再去具体了解了java下的日志系统后，问题也就很明了了。</p>
+<p>先把几个事实摆出来：<br>    1. 打出的debug日志都是用slf4j写的，根据堆栈得知logback具体执行了日志打印<br>    2. logback在无配置文件时默认debug级别<br>    3. 我们的war包中同时包含logback,log4j和slf4j-log4j12<br>    4. Slf4j无法主动选择具体的日志实现<br>想必看到这里，大家也明白了问题所在。根据我们引入的包，log4j和logback都可以实现打印slf4j日志，而具体谁来打，不是一个用正常办法可以控制的事情，在这个具体案例下，logback就成了具体的日志打印者。而因为我们其实是想用lo4j打日志，所以没有配logback配置，所以logback就按默认的debug级别打了大量日志。</p>
+<p>解决办法也很简单，就是把logback的包全去掉。看似有些暴力，但确实是最合理的一个解决办法。</p>
+<p>最后提供一个排查日志问题的通用套路，免得找不到方向乱看。<br>    1. 找几行不符合自己日志配置的具体日志，翻阅对应代码，看看是哪个日志接口打的<br>    2. 查jar包，看看这套日志框架有哪些具体实现<br>        3. 把多的jar包去掉</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/57802/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/57802/" class="post-title-link" itemprop="url">Java kryo/protobuf/protostuff序列化 or Json 性能对比</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-03-02 18:10:00" itemprop="dateCreated datePublished" datetime="2017-03-02T18:10:00+08:00">2017-03-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/57802/" class="post-meta-item leancloud_visitors" data-flag-title="Java kryo/protobuf/protostuff序列化 or Json 性能对比" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/57802/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/57802/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <div class="markdown_views">
+对于一个java object的序列化，想测一下使用json和使用一般序列化工具，在时间性能、空间性能上的区别。
+
+<p>json选择用fastjson.</p>
+<p>序列化工具使用了protostuff和kyro. 为什么不用protobuf呢？因为感觉对于一个已有的上百个属性的java class来说，再去新建一个匹配的proto文件有点反人类。protostuff是protobuf的改良版本，可以直接将一个java object进行序列化，使用方法与kyro有点类似，没有protobuf那么多中间过程。其他的，hession, java自带序列化之类的，据说性能比kryo和protobuf差很多，就不测了。</p>
+<p>简单测了一下，发现差距还挺明显的，所以感觉也不需要做具体的评测了。把日志截一段发出来，大家感受下。</p>
+<pre><code>fastjson serilise cost &lt;span class=&quot;hljs-number&quot;&gt;555805&lt;/span&gt;  &lt;span class=&quot;hljs-built_in&quot;&gt;length&lt;/span&gt;: &lt;span class=&quot;hljs-number&quot;&gt;1740&lt;/span&gt;
+kyro serilise cost &lt;span class=&quot;hljs-number&quot;&gt;227375&lt;/span&gt;   length502
+protostuff serilise cost &lt;span class=&quot;hljs-number&quot;&gt;78950&lt;/span&gt;   length633
+fastjson deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;130662&lt;/span&gt;
+kyro deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;201716&lt;/span&gt;
+protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;230533&lt;/span&gt;
+fastjson serilise cost &lt;span class=&quot;hljs-number&quot;&gt;727915&lt;/span&gt;  &lt;span class=&quot;hljs-built_in&quot;&gt;length&lt;/span&gt;: &lt;span class=&quot;hljs-number&quot;&gt;1740&lt;/span&gt;
+kyro serilise cost &lt;span class=&quot;hljs-number&quot;&gt;378958&lt;/span&gt;   length502
+protostuff serilise cost &lt;span class=&quot;hljs-number&quot;&gt;94739&lt;/span&gt;   length633
+fastjson deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;154346&lt;/span&gt;
+kyro deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;373432&lt;/span&gt;
+protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;219085&lt;/span&gt;
+fastjson serilise cost &lt;span class=&quot;hljs-number&quot;&gt;804892&lt;/span&gt;  &lt;span class=&quot;hljs-built_in&quot;&gt;length&lt;/span&gt;: &lt;span class=&quot;hljs-number&quot;&gt;1740&lt;/span&gt;
+kyro serilise cost &lt;span class=&quot;hljs-number&quot;&gt;392380&lt;/span&gt;   length502
+protostuff serilise cost &lt;span class=&quot;hljs-number&quot;&gt;220664&lt;/span&gt;   length633
+fastjson deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;243560&lt;/span&gt;
+kyro deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;360010&lt;/span&gt;
+protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;132241&lt;/span&gt;
+fastjson serilise cost &lt;span class=&quot;hljs-number&quot;&gt;601991&lt;/span&gt;  &lt;span class=&quot;hljs-built_in&quot;&gt;length&lt;/span&gt;: &lt;span class=&quot;hljs-number&quot;&gt;1740&lt;/span&gt;
+kyro serilise cost &lt;span class=&quot;hljs-number&quot;&gt;244349&lt;/span&gt;   length502
+protostuff serilise cost &lt;span class=&quot;hljs-number&quot;&gt;80924&lt;/span&gt;   length633
+fastjson deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;241191&lt;/span&gt;
+kyro deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;230928&lt;/span&gt;
+protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;127109&lt;/span&gt;
+</code></pre>
+<p>cost的时间用的是System.nanoTime(); 三种用的都是不加任何配置的默认配置。 </p>
+<p>序列化之后的占用空间，kryo略低于protostuff, 两者都远高于json. 这是很好理解的，毕竟json串是可读的，不要强求太多。 </p>
+<p>而序列化和反序列化的耗时，都是protostuff优于kyro优于fastjson, 而且差别挺明显。</p>
+<p>所以结论呢，如果对空间没有极其苛刻的要求，protostuff也许是最佳选择。protostuff相比于kyro还有一个额外的好处，就是如果序列化之后，反序列化之前这段时间内，java class增加了字段（这在实际业务中是无法避免的事情），kyro就废了。但是protostuff只要保证新字段添加在类的最后，而且用的是sun系列的JDK, 是可以正常使用的。因此，如果序列化是用在缓存等场景下，序列化对象需要存储很久，也就只能选择protostuff了。</p>
+<p>当然，如果有可读性之类的需求，就只能用json了。</p>
+</div>
+
+<p>&nbsp;</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/48104/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/48104/" class="post-title-link" itemprop="url">java分布式锁入门实战</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-02-20 19:21:00" itemprop="dateCreated datePublished" datetime="2017-02-20T19:21:00+08:00">2017-02-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/48104/" class="post-meta-item leancloud_visitors" data-flag-title="java分布式锁入门实战" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/48104/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/48104/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这篇文章只讲使用，不讲原理，简单粗暴。</p>
+<p>分布式锁，顾名思义，就是分布式的锁，应用于一些分布式系统中。例如，有一个服务部在数太机器上，然后有可能操作数据库中的同一条记录。这时，就需要分布式锁。</p>
+<p>分布式锁实现的方式很多，一般来说需要一个实体来代表一个锁，占用锁时就新建这个实体，锁释放时也对应将相应实体删除。同时，一般还需要一个锁超时过期的策略，避免一些异常情况造成锁无法被释放。</p>
+<p>zookeeper和redis都是常用的实现分布式锁的方式。接下来就简单介绍一下这两种方式的使用。</p>
+<h2 id="基于zookeeper的分布式锁"><a href="#基于zookeeper的分布式锁" class="headerlink" title="基于zookeeper的分布式锁"></a>基于zookeeper的分布式锁</h2><p>使用zookeeper的话，建议直接使用curator客户端.</p>
+<pre><code>        &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-title&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-title&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;org.apache.curator&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-title&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-title&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;curator-recipes&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-title&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-title&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;2.9.1&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-title&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-title&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;`&lt;/pre&gt;
+
+curator中实现了一个InterProcessSemaphoreMutex类，用作分布式锁。
+
+实现原理其实也很直白：建立锁的时候约定一个路径新建一个节点，作为锁的实体；锁释放时就将这个节点删除。
+
+代码例子片段:
+
+&lt;pre class=&quot;prettyprint&quot;&gt;`InterProcessSemaphoreMutex lock;
+lock.acquire(&amp;hellip;);  &lt;span class=&quot;hljs-comment&quot;&gt;//acquire获取锁&lt;/span&gt;
+&amp;hellip;.
+lock.release();释放锁
+</code></pre>
+<p>详细的使用例子代码可以参考 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xjeTM2Mi9TY2VuZXMvYmxvYi9tYXN0ZXIvc3JjL21haW4vamF2YS9jb20vbWFsbG93L2NvbmN1cnJlbnQvemtsb2NrL0ludGVyUHJvY2Vzc011dGV4RXhhbXBsZS5qYXZh">https://github.com/lcy362/Scenes/blob/master/src/main/java/com/mallow/concurrent/zklock/InterProcessMutexExample.java<i class="fa fa-external-link-alt"></i></span></p>
+<h2 id="基于redis的分布式锁"><a href="#基于redis的分布式锁" class="headerlink" title="基于redis的分布式锁"></a>基于redis的分布式锁</h2><p>同样推荐一个第三方的redis客户端redisson, <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3JlZGlzc29uL3JlZGlzc29u">https://github.com/redisson/redisson<i class="fa fa-external-link-alt"></i></span>. redisson的知名度不如curator高，但也是一个非常优秀的开源工具，支持各种集群、数据结构。</p>
+<p>redis锁的原理就是占用锁时新建一个key, 锁释放时key删除。</p>
+<p>代码示例可以参考<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xjeTM2Mi9TY2VuZXMvYmxvYi9tYXN0ZXIvc3JjL21haW4vamF2YS9jb20vbWFsbG93L2NvbmN1cnJlbnQvcmVkaXNsb2NrL1ZhbHVlbG9ja0V4YW1wbGUuamF2YQ==">https://github.com/lcy362/Scenes/blob/master/src/main/java/com/mallow/concurrent/redislock/ValuelockExample.java<i class="fa fa-external-link-alt"></i></span></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/43423/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/43423/" class="post-title-link" itemprop="url">leetcode第三题: 输出不包含重复字母的最长子串</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-02-15 20:34:00" itemprop="dateCreated datePublished" datetime="2017-02-15T20:34:00+08:00">2017-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/43423/" class="post-meta-item leancloud_visitors" data-flag-title="leetcode第三题: 输出不包含重复字母的最长子串" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/43423/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/43423/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>Given a string, find the length of the longest substring without repeating characters.</p>
+<p>Examples:</p>
+<p>Given &ldquo;abcabcbb&rdquo;, the answer is &ldquo;abc&rdquo;, which the length is 3.</p>
+<p>Given &ldquo;bbbbb&rdquo;, the answer is &ldquo;b&rdquo;, with the length of 1.</p>
+<p>Given &ldquo;pwwkew&rdquo;, the answer is &ldquo;wke&rdquo;, with the length of 3. Note that the answer must be a substring, &ldquo;pwke&rdquo; is a subsequence and not a substring.</p>
+<p>也就是说给定一个字符串，输出不包含重复字母的最长子串长度。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>遍历一次字符串，O(n)复杂度下可以解决。主要思路就是在遍历的过程中 </p>
+<p>1. 记录每个字母上一次出现的位置 </p>
+<p>2.  维持一个从当前位置往前数不包含重复字母的子串，记录这个字串的起止位置start, end</p>
+<p>遍历的过程中就是根据相应位置字母是否出现过，以及上次出现的位置，不断更新start, end的过程。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>可以到github上查看: <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xjeTM2Mi9BbGdvcml0aG1zL3RyZWUvbWFzdGVyL3NyYy9tYWluL2phdmEvY29tL21hbGxvdy9hbGdvcml0aG0=">https://github.com/lcy362/Algorithms/tree/master/src/main/java/com/mallow/algorithm<i class="fa fa-external-link-alt"></i></span></p>
+<pre><code>&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; java.util.HashMap;
+
+&lt;span class=&quot;hljs-javadoc&quot;&gt;/**
+ * leetcode 3
+ * https://leetcode.com/problems/longest-substring-without-repeating-characters/
+ * Created by lcy on 2017/2/15.
+ */&lt;/span&gt;
+&lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-class&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;LongestSubstringNotRepeat&lt;/span&gt; &#123;&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;lengthOfLongestSubstring&lt;/span&gt;(String s) &#123;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (s.length() &amp;lt;= &lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;) &#123;
+            &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; s.length();
+        &#125;
+        HashMap&amp;lt;Character, Integer&amp;gt; charPos = &lt;span class=&quot;hljs-keyword&quot;&gt;new&lt;/span&gt; HashMap&amp;lt;&amp;gt;();
+        &lt;span class=&quot;hljs-keyword&quot;&gt;char&lt;/span&gt;[] chars = s.toCharArray();
+        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; len = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; max = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; start = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; end = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;; i &amp;lt; chars.length; i++) &#123;
+            &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (charPos.containsKey(chars[i])) &#123;
+                &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; tempstart = charPos.get(chars[i]) + &lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;;
+                &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (tempstart &amp;gt; start) &#123;
+                    start = tempstart;
+                &#125;
+                end++;
+                len = end - start;
+            &#125; &lt;span class=&quot;hljs-keyword&quot;&gt;else&lt;/span&gt; &#123;
+                len++;
+                end++;
+            &#125;
+            charPos.put(chars[i], i);
+            &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (len &amp;gt; max) &#123;
+                max = len;
+            &#125;
+        &#125;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; max;
+    &#125;
+
+    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;main&lt;/span&gt;(String args[]) &#123;
+        LongestSubstringNotRepeat l = &lt;span class=&quot;hljs-keyword&quot;&gt;new&lt;/span&gt; LongestSubstringNotRepeat();
+        System.out.println(l.lengthOfLongestSubstring(&lt;span class=&quot;hljs-string&quot;&gt;&quot;abcabcbb&quot;&lt;/span&gt;));
+        System.out.println(l.lengthOfLongestSubstring(&lt;span class=&quot;hljs-string&quot;&gt;&quot;bbbbb&quot;&lt;/span&gt;));
+        System.out.println(l.lengthOfLongestSubstring(&lt;span class=&quot;hljs-string&quot;&gt;&quot;pwwkew&quot;&lt;/span&gt;));
+        System.out.println(l.lengthOfLongestSubstring(&lt;span class=&quot;hljs-string&quot;&gt;&quot;abba&quot;&lt;/span&gt;));
+    &#125;
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/60353/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/60353/" class="post-title-link" itemprop="url">java多线程实现三个字母顺序输出</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-01-25 16:59:00" itemprop="dateCreated datePublished" datetime="2017-01-25T16:59:00+08:00">2017-01-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/60353/" class="post-meta-item leancloud_visitors" data-flag-title="java多线程实现三个字母顺序输出" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/60353/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/60353/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>主要还是通过一个例子加深一下对java多线程里wait,notify的理解，因此写了一个例子，三个线程分别输出A,B,C三个字母，控制这三个线程的执行顺序，从而实现ABCABCABC..这样的输出。</p>
+<p>这个问题主要还是需要设计一下锁的策略，这里只是提供了一种方式：</p>
+<p>每个线程占用两把锁，分别代表自己(self)和前一个线程（prev）, 三个线程的持有锁情况如下表所示：</p>
+<table>
+<thead>
+<tr><th>线程号</th><th>prev锁</th><th>self锁</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>c</td>
+<td>a</td>
+</tr>
+<tr>
+<td>B</td>
+<td>a</td>
+<td>b</td>
+</tr>
+<tr>
+<td>C</td>
+<td>b</td>
+<td>c</td>
+</tr>
+</tbody>
+</table>
+
+<p>A 首先启动，持有ac, 运行后先释放a, b可以执行。</p>
+<p>线程run方法代码如下：</p>
+<pre><code>    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;run&lt;/span&gt;() &#123;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;while&lt;/span&gt; (&lt;span class=&quot;hljs-keyword&quot;&gt;true&lt;/span&gt;) &#123;
+            &lt;span class=&quot;hljs-keyword&quot;&gt;synchronized&lt;/span&gt; (prev) &#123;
+                &lt;span class=&quot;hljs-keyword&quot;&gt;synchronized&lt;/span&gt; (self) &#123;
+                    System.out.print(name);
+                    self.notify();
+                &#125;
+                &lt;span class=&quot;hljs-keyword&quot;&gt;try&lt;/span&gt; &#123;
+                    &lt;span class=&quot;hljs-comment&quot;&gt;//如果想控制输出速度， 可以将sleep加在此处&lt;/span&gt;
+                    &lt;span class=&quot;hljs-comment&quot;&gt;//如果加在sout之后，会导致c线程启动并占有b锁之后,a线程才会释放a锁，输出顺序会变成acbacb&lt;/span&gt;
+                    &lt;span class=&quot;hljs-comment&quot;&gt;//也可以加大三个线程启动的间隔时间解决这一问题&lt;/span&gt;
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;try&lt;/span&gt; &#123;
+                        Thread.sleep(&lt;span class=&quot;hljs-number&quot;&gt;1000&lt;/span&gt;);
+                    &#125; &lt;span class=&quot;hljs-keyword&quot;&gt;catch&lt;/span&gt; (InterruptedException e) &#123;
+                        e.printStackTrace();
+                    &#125;
+                    prev.wait();
+                &#125; &lt;span class=&quot;hljs-keyword&quot;&gt;catch&lt;/span&gt; (InterruptedException e) &#123;
+                    e.printStackTrace();
+                &#125;
+            &#125;
+
+        &#125;
+</code></pre>
+<p>需要注意的是，如果想控制输出速度，需要考虑一下sleep的位置和时间，避免在A线程执行完并释放a锁之前，C线程已经启动并持有了B锁，导致B线程无法正常启动。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/40931/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/40931/" class="post-title-link" itemprop="url">一次kafka空间激增排查：kafka的数据压缩、批量发送等</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-12-29 17:21:00" itemprop="dateCreated datePublished" datetime="2016-12-29T17:21:00+08:00">2016-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/40931/" class="post-meta-item leancloud_visitors" data-flag-title="一次kafka空间激增排查：kafka的数据压缩、批量发送等" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/40931/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/40931/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="问题过程"><a href="#问题过程" class="headerlink" title="问题过程"></a>问题过程</h2><p>我司需要接收很多外部数据，数据源的形式很多，ibmmq, activemq, redis pubsub, 等等都有。为了将这些数据接到内部amq/kafka，之前运行了一大批进程，管理起来十分复杂，因此最近用apache-camel对这些进程作了整合。</p>
+<p>上线几个小时之后，kafka磁盘空间开始报警。初步断定是这次上线导致的。</p>
+<h2 id="排查流程"><a href="#排查流程" class="headerlink" title="排查流程"></a>排查流程</h2><p>主要还是对kafka不熟悉，只是能用而已，因此排查过程走了不少弯路。</p>
+<p>由于camel本身文档很不完善，一开始配置参数时也主要靠看源码+猜，所以首先怀疑配置的压缩参数compressionCodec=gzip是否无效。</p>
+<p>因此进行了一次简单的测试（别问我为什么一开始不测）。建了一个单分区的测试topic, 然后分别使用gzip和none模式发送相同的数据，观察kafka的log file文件大小变化趋势。发现压缩确实是有效的。</p>
+<p>因此又跟直接使用kafka api作了对比，发现差别非常大，即使是压缩之后，使用camel-kafka占用的空间也比使用api大数倍。然后去查了两边源码，发现最底层的代码是完全一致的，所以还是怀疑某些参数配的不对。</p>
+<p>之后又注意到一个细节，使用camel时，log的大小跟消息数呈线性关系，比如一条占1字节，10条就占10字节。但使用api的话，1条也占1字节，连续发10条可能才占两字节。</p>
+<p>这时候就怀疑kafka是不是有批量发送之类的机制，然后咨询了负责kafka的同事，果然是这个原因，而造成占用空间差别大的原因就是是否同步发的区别，同步发的话就不存在批量发送了。批量发送的话，这一批消息会被压缩在一起，而单条发时，就是每一条分别压缩。我们知道，在文件非常小的时候，使用gzip压缩的效果是很差的，甚至可能压完比源文件还大。然后又做了些测试，确定了是这个问题。这个参数被同事封装在了kafka的client接口里，因此导致我照着之前代码改参数时漏掉了这一个。</p>
+<h2 id="一些感悟"><a href="#一些感悟" class="headerlink" title="一些感悟"></a>一些感悟</h2><p>其实回想起来，这个问题挺low的，如果对kafka多些了解，是不会有这种问题的。</p>
+<p>首先，对kafka没做过全面的了解，只是学会了怎么用，大概了解了一下它是什么。而很多基本的机制都没有概念。使用一个开源工具时，对它做一次全面的了解还是很重要的，虽然每个工具都深入研究底层代码不现实，但是系统性的了解一遍这些工具有什么机制，确实花不了多少时间。</p>
+<p>再一个，公司内一般会封装一些访问各种组件的工具包，以提升效率，这些工具包最好也了解一下怎么实现的，否则可能不经意间就掉坑里了。</p>
+<p>任重而道远啊..</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">流沙</p>
+  <div class="site-description" itemprop="description">关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xjeTM2Mg==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lcy362"><i class="github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy8zNDQ4NjMz" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;3448633"><i class="stack-overflow fa-fw"></i>StackOverflow</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9ob2Jlcm1hbGxvdw==" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hobermallow"><i class="知乎 fa-fw"></i>知乎</span>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cHM6Ly93d3cucGFyYWsudG9w" title="https:&#x2F;&#x2F;www.parak.top">Khighness</span>
+        </li>
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cHM6Ly9tb25leTEudXMvNDg5" title="https:&#x2F;&#x2F;money1.us&#x2F;489">money</span>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+      
+      
+        <div>
+          <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/upload/qrcode.bmp" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>订阅公众号</div>
+</div>
+        </div>
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2012 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">流沙</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+        
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1273624188&web_id=1273624188"></script>
+  </div>
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI","app_key":"lW7mfN411Vpjo3x9S5zdOTlE","server_url":"https://ay7gn9nn.api.lncldglobal.com","security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id    : 33277,
+      el    : 'wpac-rating',
+      color : 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = 'https://cdn.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey     : 'lW7mfN411Vpjo3x9S5zdOTlE',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : 'https://ay7gn9nn.api.lncldglobal.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

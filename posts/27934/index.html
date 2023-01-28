@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+<script data-ad-client="ca-pub-7310841175510611" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE">
+  <meta name="msvalidate.01" content="FEC1AF1D401268A4208AF51DC0275AAA">
+  <meta name="baidu-site-verification" content="code-T8LautTf5f">
+<meta name="360-site-verification" content="1c5bbf05b6055ca3bf0fbac183341c50" />
+<meta name="sogou_site_verification" content="B8l48CQIyW" />
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lichuanyang.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文中，我会介绍一下互联网广告的发展状态，并梳理一下互联网广告的底层逻辑，帮助大家更好的理解这个行业。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSP,DSP,RTB,ADX都是什么? 讲讲互联网广告的概念与发展">
+<meta property="og:url" content="http://lichuanyang.top/posts/27934/index.html">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="本文中，我会介绍一下互联网广告的发展状态，并梳理一下互联网广告的底层逻辑，帮助大家更好的理解这个行业。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-07T08:28:58.000Z">
+<meta property="article:modified_time" content="2023-01-28T10:53:05.896Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="计算广告">
+<meta property="article:tag" content="互联网广告">
+<meta property="article:tag" content="RTB">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://lichuanyang.top/posts/27934/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SSP,DSP,RTB,ADX都是什么? 讲讲互联网广告的概念与发展 | Mobility</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-45390505-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-45390505-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ffb948eb504670b10474a889e9409047";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Mobility</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">聚沙成塔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xjeTM2Mg==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/27934/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SSP,DSP,RTB,ADX都是什么? 讲讲互联网广告的概念与发展
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-07 16:28:58" itemprop="dateCreated datePublished" datetime="2022-03-07T16:28:58+08:00">2022-03-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/27934/" class="post-meta-item leancloud_visitors" data-flag-title="SSP,DSP,RTB,ADX都是什么? 讲讲互联网广告的概念与发展" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/27934/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/27934/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本文中，我会介绍一下互联网广告的发展状态，并梳理一下互联网广告的底层逻辑，帮助大家更好的理解这个行业。</p>
+<span id="more"></span>
+
+<h1 id="什么是广告"><a href="#什么是广告" class="headerlink" title="什么是广告"></a>什么是广告</h1><p>讲互联网广告，首先要从广告本身是什么开始讲起。只有理解了广告的底层逻辑，才能更好的帮助我们理解在互联网广告中会有什么问题, 为什么会出现广告的程序化交易，adx, ssp, dsp,dmp等等各种各样不同的系统为什么会出现，以及诸如此类的等等问题。</p>
+<p>广告这个行业其实自古就有，从远古时代小商小贩的吆喝，各种建筑物上的告示，到纸质报纸、杂志、电视等传统媒体上的广告，再到互联网广告，这个行业总是再随着社会的发展产生它自己的变化。</p>
+<p>对于广告，先上一个非常官方、非常标准的定义：广告是由已确定的出资人通过各种媒介进行的有关产品（商品、服务和观点）的，并且通常是有偿的、综合的、劝服性的非人员的信息传播活动。</p>
+<p>而更通俗的讲，在广告交易中，核心的参与方有三个：媒体(即供给方，Supply), 广告主（即需求方， Demand），受众（即媒体的用户）。其中，媒体和广告主是主动的参与方，受众则是被动的参与方。而广告实际上就是这三方相互博弈的一个过程。对于广告主来说，希望有更多的受众能看到广告，并且从广告中获取更高的转化；对于媒体来说，希望在获得最大的广告利润的同时，又能减少对用户的打扰；而对受众，也就是普通用户，则是希望不被自己不想看到的广告打扰。</p>
+<p>接下来我们分析一下这个流程里的博弈点。众所周知，如果一件事对于各参与方是零和博弈的话，这件事情就难免陷入到恶性竞争中，必定是难以发展的。而广告行业既然能持续健康的发展，主要是靠对广告生态之外产生的影响，所以我们就分析一下有哪些对广告生态外的影响因素。</p>
+<p>我们先拆解下各方都有哪些考虑指标，对于媒体，主要就是广告收益和自己产品的留存，对于广告主，则是广告费用和通过广告获得的收益，受众作为被动参与者，在整个过程中能做的不多，只能用脚投票，离开广告太烂的产品。这里边，在整个广告生态之外的，就是广告主通过广告获得的收益，和减少广告对受众造成的打扰，两个方面。事实上，对这两点的提升也就是整个广告行业不断发展的源动力。</p>
+<p>理解了这一点，能帮助我们更好的理解互联网广告的发展历程。</p>
+<h1 id="互联网广告的发展历程"><a href="#互联网广告的发展历程" class="headerlink" title="互联网广告的发展历程"></a>互联网广告的发展历程</h1><h2 id="互联网广告的早期发展"><a href="#互联网广告的早期发展" class="headerlink" title="互联网广告的早期发展"></a>互联网广告的早期发展</h2><p>最早的互联网广告，实质上就是把传统媒体的广告形式直接搬到线上来。比如说一份报纸里，会有一个区域专门用来放广告。像我们早些年在搜狐、新浪这些网站上看到的广告，也都是这种形式。广告主直接购买网页上的某个区域，固定的显示某些广告内容。</p>
+<p>接下来，有些人会逐渐注意到互联网广告和传统媒体的一个关键区别：互联网广告的内容是可以因人而异的。已经印刷出去的报纸，所有人看到的都一样，而对于网站来说，完全可以做到对不同人群，比如男性和女性展示不同的广告。而媒体只需向广告主保证投放量，以及投放量不能完成时的一些赔偿方式。这就是合约广告。</p>
+<p>合约广告的一个很自然的发展趋势就是定向越来越精细，诸如性别、年龄、地域、兴趣爱好等，都可以成为合约条件的一部分。同时，参与进来的广告主越来越多。这两方面的因素都会导致履约的难度急剧上升。同时，这么复杂的逻辑下，媒体也会觉得自己很多流量没有卖出最高价。</p>
+<p>在这种情况下，新的广告形式应运而生，也就是竞价广告。供给方不再以合约的方式给出量的保证，只保证单位流量的成本；每一次广告展示都按照收益最高的原则来决策。这样，广告就逐渐发展成了类似「流量交易」这种模式,  形成了程序化广告交易这种模式。</p>
+<h2 id="程序化交易广告"><a href="#程序化交易广告" class="headerlink" title="程序化交易广告"></a>程序化交易广告</h2><p>在竞价广告的场景下，没有了合约的约束，大量媒体、广告主进入了一个多方博弈的环境，交易过程也就越来越复杂，产生了诸如RTB(real time bidding，实时竞价)这样的交易方式。程序化广告交易正是在这种情况下产生的。</p>
+<p>同时，随着技术的发展，更多的数据、深入的计算与预测成为可能，广告主、媒体以及相关的广告代理等各个参与方也都需要更加丰富的功能。我们标题上提到的ssp,adx, dsp, rtb这些名词，也都是在这种情况下，逐步发展成为广告业态中非常重要的系统。</p>
+<p>总体来说，程序化广告交易和股票交易等实时交易的场景都非常类似，都是存在一个交易场（ADX）, 买方（广告主）和卖方（媒体），各自在其中实时的做买卖决策。唯一一个重要的区别是，对于媒体来说，没有择时的机会，流量来了只能立刻卖出去，没有办法攒起来等一个好时机。可以说，这一点正是广告相关各项技术发展的出发点。</p>
+<h1 id="互联网广告的关键问题和组成部分"><a href="#互联网广告的关键问题和组成部分" class="headerlink" title="互联网广告的关键问题和组成部分"></a>互联网广告的关键问题和组成部分</h1><p>前面说了，互联网广告发展的源动力有两点，一是提升广告主通过广告获得的收益，二是减少广告对受众造成的打扰。这两点关系到的是广告的有效性，所以我们分析一下广告有效性有哪些影响因素。</p>
+<p>一个广告的生命周期大概可以拆解成这么几步：</p>
+<p>曝光-关注-理解-接受-保持-决策</p>
+<p>简单的说，就是广告先要展示出来，然后能被受众看到，并且理解广告想传达的信息，进一步，能接受这个信息，并且保持一段时间，最终完成对广告所宣传的产品决策（下载、购买、付费等）。</p>
+<p>接下来，我们梳理一下每一步的具体影响，以及互联网技术能对其起到什么作用。</p>
+<p>曝光：这一阶段主要取决于广告位的物理熟悉，比如一个app开屏位置的广告，和某个隐藏的很深的页面上的一条广告，其有效性必然差别很大。这一点，在现实世界的广告中也是一样的，也没有太多技术上可优化的空间。</p>
+<p>关注：即让用户的注意力能够到这条广告上。值得注意的事，「看到」并不等于「关注到」，如果产品设计不合理，很容易导致用户对眼前的东西视而不见。比如说，用户到某个页面上是非常明确的要执行完一个流程的，比如要下载个东西，那么，你在他下载过程中强行插入一条广告，很可能会导致用户完全忽视掉它。所以，这一点和产品设计关系非常大。另外，这也是一个技术能发挥重要作用的阶段。通过搭建DMP平台，结合各种机器学习算法，将广告投放给更有可能感兴趣的用户，从而提升广告的有效性。</p>
+<p>理解：这一步影响最大的是广告素材，素材内容设计的好，就能让用户更好的理解。</p>
+<p>接受：这一点说白了就是能不能让用户认可你的广告给出来的信息或观点，这个一方面与素材是否专业有关，另一方面和媒体的自身属性也有很大关系，比如丁香医生和某莆田医院官网上放同样的信息，其有效性也必然是大为不同的。</p>
+<p>保持和关注：这两步其实逐渐就脱离了广告业态的范围，不过通过一些优质的素材设计、合适的场景、精准的人群投放，还是可以为最终转化做好铺垫的。</p>
+<p>此外，在其中这些技术无法直接干预的阶段，提供更完善的数据、更方便的测试方法，也是能给广告效果带来很大帮助的。</p>
+<p>接下来，我们再分别从媒体和广告主出发，看看他们各自有什么需求, 以及简单看看ssp, dsp这些平台是怎么做的。由于篇幅限制，这一部分先不详细展开，如果感兴趣的话，我们后边再逐一展开介绍。</p>
+<p>服务媒体的平台即常说的SSP, 其主要功能就是帮助媒体提升营收。里边一些基本的功能，比如让媒体配置一个广告位，以及广告位的长宽等信息。 对于提升营收，主要也就是通过合适的人群与广告匹配，优化定价策略等方式，同时设法控制网络等IT成本来进行。</p>
+<p>与SSP相对的DSP, 就是服务广告主这一侧的平台。DSP的基本功能就是让广告主设置投放计划，比如在多长时间内，向什么样特征的用户，投放总预算多少的广告。而平台发挥的价值主要是帮助广告主花更少的钱获取更好的广告效果。</p>
+<p>直到今天，广告生态中涉及到的每一个模块其实都还在持续不断的迭代中，但万变不离其宗，关键的动力其实就是让广告投放的效果更好，用户也能获得更好的浏览广告的体验。只有这样，整个行业才能朝着健康的方向去发展。</p>
+<p>原文地址：<a href="https://lichuanyang.top/posts/27934/">https://lichuanyang.top/posts/27934/</a></p>
+
+    </div>
+
+    
+    
+    
+      
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU5MjQ5NjE1OQ==&scene=124#wechat_redirect">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A/" rel="tag"># 计算广告</a>
+              <a href="/tags/%E4%BA%92%E8%81%94%E7%BD%91%E5%B9%BF%E5%91%8A/" rel="tag"># 互联网广告</a>
+              <a href="/tags/RTB/" rel="tag"># RTB</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/7774/" rel="prev" title="从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID">
+      <i class="fa fa-chevron-left"></i> 从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/11970/" rel="next" title="高并发解决方案很难吗？轻松聊清楚高并发设计">
+      高并发解决方案很难吗？轻松聊清楚高并发设计 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%B9%BF%E5%91%8A"><span class="nav-number">1.</span> <span class="nav-text">什么是广告</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E5%B9%BF%E5%91%8A%E7%9A%84%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">互联网广告的发展历程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E5%B9%BF%E5%91%8A%E7%9A%84%E6%97%A9%E6%9C%9F%E5%8F%91%E5%B1%95"><span class="nav-number">2.1.</span> <span class="nav-text">互联网广告的早期发展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%BF%E5%91%8A"><span class="nav-number">2.2.</span> <span class="nav-text">程序化交易广告</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E5%B9%BF%E5%91%8A%E7%9A%84%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%92%8C%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86"><span class="nav-number">3.</span> <span class="nav-text">互联网广告的关键问题和组成部分</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">流沙</p>
+  <div class="site-description" itemprop="description">关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xjeTM2Mg==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lcy362"><i class="github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy8zNDQ4NjMz" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;3448633"><i class="stack-overflow fa-fw"></i>StackOverflow</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9ob2Jlcm1hbGxvdw==" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hobermallow"><i class="知乎 fa-fw"></i>知乎</span>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cHM6Ly93d3cucGFyYWsudG9w" title="https:&#x2F;&#x2F;www.parak.top">Khighness</span>
+        </li>
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cHM6Ly9tb25leTEudXMvNDg5" title="https:&#x2F;&#x2F;money1.us&#x2F;489">money</span>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+      
+      
+        <div>
+          <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/upload/qrcode.bmp" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>订阅公众号</div>
+</div>
+        </div>
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2012 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">流沙</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+        
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1273624188&web_id=1273624188"></script>
+  </div>
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI","app_key":"lW7mfN411Vpjo3x9S5zdOTlE","server_url":"https://ay7gn9nn.api.lncldglobal.com","security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id    : 33277,
+      el    : 'wpac-rating',
+      color : 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = 'https://cdn.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey     : 'lW7mfN411Vpjo3x9S5zdOTlE',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : 'https://ay7gn9nn.api.lncldglobal.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
