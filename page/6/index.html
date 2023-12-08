@@ -220,6 +220,94 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/42764/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/42764/" class="post-title-link" itemprop="url">log4j动态添加appender</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-06-30 19:30:00" itemprop="dateCreated datePublished" datetime="2017-06-30T19:30:00+08:00">2017-06-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/42764/" class="post-meta-item leancloud_visitors" data-flag-title="log4j动态添加appender" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/42764/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/42764/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>除了通过properties，xml等格式的配置文件对log4j进行配置外，log4j还提供了各种接口，可以用代码动态修改log4j的配置，例如给一个logger增加一个appender。方法很简单，就是新建一个appder，然后添加到logger上，示例代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">KafkaLog4jAppender kafkaAppender = new KafkaLog4jAppender();</span><br><span class="line">kafkaAppender.setBrokerList(broker);</span><br><span class="line">kafkaAppender.setTopic(topic);</span><br><span class="line">kafkaAppender.setCompressionType(&quot;gzip&quot;);</span><br><span class="line">kafkaAppender.setSyncSend(false);</span><br><span class="line">kafkaAppender.setLayout(new PatternLayout(layout));</span><br><span class="line">kafkaAppender.activateOptions();</span><br><span class="line">logger.addAppender(kafkaAppender);</span><br><span class="line">logger.setLevel(Level.INFO);</span><br></pre></td></tr></table></figure>
+<p>这里以一个kafkaappender做例子，其他的，例如DailyRollingFileAppender等，都是类似的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/4987/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1095,99 +1183,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/41673/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="流沙">
-      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mobility">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/41673/" class="post-title-link" itemprop="url">log4j2.xml配置示例及与log4j的区别</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-04-10 20:23:00" itemprop="dateCreated datePublished" datetime="2017-04-10T20:23:00+08:00">2017-04-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
-              </span>
-
-          
-            <span id="/posts/41673/" class="post-meta-item leancloud_visitors" data-flag-title="log4j2.xml配置示例及与log4j的区别" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/posts/41673/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/41673/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">status</span>=<span class="string">&quot;warn&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">Appenders</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Console</span> <span class="attr">name</span>=<span class="string">&quot;Console&quot;</span> <span class="attr">target</span>=<span class="string">&quot;SYSTEM_OUT&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">PatternLayout</span> <span class="attr">pattern</span>=<span class="string">&quot;[%p] %d %c %l - %m%n&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Console</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">RollingFile</span> <span class="attr">name</span>=<span class="string">&quot;activity&quot;</span> <span class="attr">fileName</span>=<span class="string">&quot;/opt/fox.log&quot;</span></span></span><br><span class="line"><span class="tag">                     <span class="attr">filePattern</span>=<span class="string">&quot;/opt/fox.log.%d&#123;yyyy-MM-dd&#125;.gz&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">Policies</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">TimeBasedTriggeringPolicy</span> <span class="attr">interval</span>=<span class="string">&quot;1&quot;</span> <span class="attr">modulate</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">Policies</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">PatternLayout</span> <span class="attr">pattern</span>=<span class="string">&quot;[%p] %d - %m%n&quot;</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">RollingFile</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">RollingFile</span> <span class="attr">name</span>=<span class="string">&quot;fox_err&quot;</span> <span class="attr">fileName</span>=<span class="string">&quot;/opt/fox_err.log&quot;</span></span></span><br><span class="line"><span class="tag">                     <span class="attr">filePattern</span>=<span class="string">&quot;/opt/fox_err..log.%d&#123;yyyy-MM-dd&#125;.gz&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">Policies</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">TimeBasedTriggeringPolicy</span> <span class="attr">interval</span>=<span class="string">&quot;1&quot;</span> <span class="attr">modulate</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">Policies</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">PatternLayout</span> <span class="attr">pattern</span>=<span class="string">&quot;[%p] %d %l - %m%n&quot;</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">RollingFile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Appenders</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Loggers</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">&quot;com.fox&quot;</span> <span class="attr">additivity</span>=<span class="string">&quot;false&quot;</span> <span class="attr">level</span>=<span class="string">&quot;info&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;activity&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;activity_err&quot;</span> <span class="attr">level</span>=<span class="string">&quot;error&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Root</span> <span class="attr">level</span>=<span class="string">&quot;error&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">AppenderRef</span> <span class="attr">ref</span>=<span class="string">&quot;Console&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Root</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Loggers</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>和log4j相比，主要有这么一些变化，</p>
-<p>首先整体结构上变化很大，appender、logger都被集中到了各自的一个根节点下。</p>
-<p>xml各节点的名称也采用了新设计，名称直接就是有用信息，不再是之前appender xxx=”xxx”, param xxx=”xxx”的形式。</p>
-<p>然后一些属性，包括fileName等，只能作为节点属性配置，不能像log4j那样配置成子节点。</p>
-<p>此外，log4j2归档时支持压缩，在RollingFile节点的filePattern属性里将文件名后缀写成gz,zip等压缩格式，log4j2会自动选择相应压缩算法进行压缩。</p>
-<p>现在发现的就这些，引入这个xml配置，再引用log4j-core， log4j-api包，就可以使用log4j2了。此外，如果有需要，可以用log4j-slf4j-impl，log4j-jcl，log4j-1.2-api分别实现对slf4j, jcl,log4j的兼容。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1257,7 +1252,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">82</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

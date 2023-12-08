@@ -6,7 +6,7 @@
   <link href="http://lichuanyang.top/atom.xml" rel="self"/>
   
   <link href="http://lichuanyang.top/"/>
-  <updated>2023-01-28T11:15:05.290Z</updated>
+  <updated>2023-12-08T09:27:38.160Z</updated>
   <id>http://lichuanyang.top/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>怎么理解数据库的四个隔离级别</title>
+    <link href="http://lichuanyang.top/posts/9775/"/>
+    <id>http://lichuanyang.top/posts/9775/</id>
+    <published>2023-12-08T09:12:44.000Z</published>
+    <updated>2023-12-08T09:27:38.160Z</updated>
+    
+    <content type="html"><![CDATA[<p>数据库的事务隔离级别实际上是个很好理解的东西。</p><p>但是在一些劣质博客和公众号的努力下，这块知识已经成功的成为了一片烂八股。</p><span id="more"></span><p>接下来，只需要顺着我的思路，回答几个简答的问题，就可以将事务隔离级别理解透彻。</p><p>问：怎么实现不同事务直接的隔离？</p><p>对这个问题，当你处于讨论数据库事务隔离级别语境下时，是不是觉得很难回答？然后先把数据库三个字从脑子里剃掉，不同事务，也就是不同线程，操作数据怎么做隔离？答案是不是很简单？就是加锁。</p><p>问：锁有哪些类型</p><p>答：有很多种分类方式。在这里，我们把锁分成读锁和写锁。</p><p>问：加不同级别锁时，代码的表现会有什么区别？</p><p>到这里，原问题的答案是不是就呼之欲出了。</p><p>事实上，数据库事务为什么会有这些个不同的隔离级别，就是因为不同场景下使用了不同的锁。比前边说的稍微复杂的点，就是数据库中存在范围锁，在其他领域不太常用，就是把某一段数据整体锁住。</p><p>如果我们把所有操作能加的锁都加上，实际上就是串行化的操作了。这种方式隔离性当然很好，但性能就没法说了，所以一般也不会有人使用。</p><p>可重复读则是对涉及到的数据加读锁和写锁，并持有到事务结束，但不会加范围锁。这样就会出现幻读的问题，即一个事务内执行两次范围查询，如果这两次查询之间有新的数据被插入，就会导致两次范围查询的结果不一致。</p><p>读已提交和可重复读的区别是他的读锁会在查询操作结束之后立刻释放掉，这样，在事务执行过程中，已经查询过的数据是可以被其他事务任意修改的，所以也就会有不可重复读的问题。</p><p>读未提交级别下，则完全不会加读锁。这样造成的问题是，由于读操作时不会去申请读锁，所以反而会导致能够读到其他事务上加了写锁的数据，也就会出现脏读的问题。</p><p>当然，为了更好的平衡性能与隔离性，还有一些诸如MVCC之类的方案，用额外的存储来实现事务隔离的效果，这些是取巧解决80%问题的方式。</p><p>原文地址: <a href="http://lichuanyang.top/posts/9775/">http://lichuanyang.top/posts/9775/</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;数据库的事务隔离级别实际上是个很好理解的东西。&lt;/p&gt;
+&lt;p&gt;但是在一些劣质博客和公众号的努力下，这块知识已经成功的成为了一片烂八股。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="数据库事务" scheme="http://lichuanyang.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1/"/>
+    
+    <category term="数据库" scheme="http://lichuanyang.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    <category term="ACID" scheme="http://lichuanyang.top/tags/ACID/"/>
+    
+    <category term="事务隔离级别" scheme="http://lichuanyang.top/tags/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/"/>
+    
+  </entry>
   
   <entry>
     <title>kubernetes是什么-实用向教程</title>
@@ -167,9 +193,9 @@
     
     
     
-    <category term="持续集成" scheme="http://lichuanyang.top/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"/>
-    
     <category term="kubernetes" scheme="http://lichuanyang.top/tags/kubernetes/"/>
+    
+    <category term="持续集成" scheme="http://lichuanyang.top/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"/>
     
   </entry>
   
@@ -268,7 +294,7 @@
     <published>2021-10-08T08:45:42.000Z</published>
     <updated>2023-01-28T10:53:05.901Z</updated>
     
-    <content type="html"><![CDATA[<p>如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。</p><span id="more"></span><p>iterm2 （<span class="exturl" data-url="aHR0cHM6Ly9pdGVybTIuY29tLw==">https://iterm2.com/<i class="fa fa-external-link-alt"></i></span>)  是mac下使用非常广泛的一款终端替代产品，提供了很多强大的功能。要实现ssh书签，实现免密码登录、自动登录的效果，关键点是其中的三个特性：profile, trigger 和 password manager.</p><p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <span class="exturl" data-url="bWFpbHRvOiYjMTE0OyYjMTExOyYjMTExOyYjeDc0OyYjeDQwOyYjeDMxOyYjNDY7JiM0OTsmIzQ2OyYjeDMxOyYjeDJlOyYjNDk7">&#114;&#111;&#111;&#x74;&#x40;&#x31;&#46;&#49;&#46;&#x31;&#x2e;&#49;<i class="fa fa-external-link-alt"></i></span>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p><p>trigger也是profile的一个特性，入口在profile配置页的advanced标签下，它的作用就是利用关键词触发一个动作，我们现在要做的就是用password这个关键词触发打开 password manager。 操作很简单，就是增加一个trigger, regular expression 填入 password,  action选择 open password manager, 注意勾选instant和enabled两个选项。</p><p>最后一个要配置的是password manager, password manager 就是一个密码管理器，是item2中会默认安装的一款插件，入口在工具栏 window 标签下。打开password manager, 将需要保存的密码都录入进去就可以了。</p><p>这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。</p><p>原文地址: <a href="http://lichuanyang.top/posts/20763/">http://lichuanyang.top/posts/20763/</a></p>]]></content>
+    <content type="html"><![CDATA[<p>如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。</p><span id="more"></span><p>iterm2 （<span class="exturl" data-url="aHR0cHM6Ly9pdGVybTIuY29tLw==">https://iterm2.com/<i class="fa fa-external-link-alt"></i></span>)  是mac下使用非常广泛的一款终端替代产品，提供了很多强大的功能。要实现ssh书签，实现免密码登录、自动登录的效果，关键点是其中的三个特性：profile, trigger 和 password manager.</p><p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <span class="exturl" data-url="bWFpbHRvOiYjMTE0OyYjeDZmOyYjMTExOyYjeDc0OyYjeDQwOyYjNDk7JiM0NjsmI3gzMTsmIzQ2OyYjeDMxOyYjeDJlOyYjNDk7">&#114;&#x6f;&#111;&#x74;&#x40;&#49;&#46;&#x31;&#46;&#x31;&#x2e;&#49;<i class="fa fa-external-link-alt"></i></span>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p><p>trigger也是profile的一个特性，入口在profile配置页的advanced标签下，它的作用就是利用关键词触发一个动作，我们现在要做的就是用password这个关键词触发打开 password manager。 操作很简单，就是增加一个trigger, regular expression 填入 password,  action选择 open password manager, 注意勾选instant和enabled两个选项。</p><p>最后一个要配置的是password manager, password manager 就是一个密码管理器，是item2中会默认安装的一款插件，入口在工具栏 window 标签下。打开password manager, 将需要保存的密码都录入进去就可以了。</p><p>这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。</p><p>原文地址: <a href="http://lichuanyang.top/posts/20763/">http://lichuanyang.top/posts/20763/</a></p>]]></content>
     
     
     <summary type="html">&lt;p&gt;如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。&lt;/p&gt;</summary>
@@ -553,9 +579,9 @@
     
     <category term="个人成长" scheme="http://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
     
-    <category term="读书感悟" scheme="http://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E6%84%9F%E6%82%9F/"/>
-    
     <category term="投资" scheme="http://lichuanyang.top/tags/%E6%8A%95%E8%B5%84/"/>
+    
+    <category term="读书感悟" scheme="http://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E6%84%9F%E6%82%9F/"/>
     
   </entry>
   
@@ -578,9 +604,9 @@
     
     <category term="个人成长" scheme="http://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
     
-    <category term="教育" scheme="http://lichuanyang.top/tags/%E6%95%99%E8%82%B2/"/>
-    
     <category term="读书感悟" scheme="http://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E6%84%9F%E6%82%9F/"/>
+    
+    <category term="教育" scheme="http://lichuanyang.top/tags/%E6%95%99%E8%82%B2/"/>
     
   </entry>
   

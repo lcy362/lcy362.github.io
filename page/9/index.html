@@ -220,6 +220,165 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/25187/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/25187/" class="post-title-link" itemprop="url">wordcount代码</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2012-10-28 18:42:00" itemprop="dateCreated datePublished" datetime="2012-10-28T18:42:00+08:00">2012-10-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/25187/" class="post-meta-item leancloud_visitors" data-flag-title="wordcount代码" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/25187/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/25187/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>参考<span class="exturl" data-url="aHR0cDovL3d3dy5jbmJsb2dzLmNvbS94aWE1MjBwaS9hcmNoaXZlLzIwMTIvMDUvMTYvMjUwNDIwNS5odG1s">http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html<i class="fa fa-external-link-alt"></i></span></p>
+<p>&nbsp;</p>
+<p>package org.apache.hadoop.examples;</p>
+<p>import java.io.IOException;</p>
+<p>import java.util.StringTokenizer;</p>
+<p>import org.apache.hadoop.conf.Configuration;</p>
+<p>import org.apache.hadoop.fs.Path;</p>
+<p>import org.apache.hadoop.io.IntWritable;</p>
+<p>import org.apache.hadoop.io.Text;</p>
+<p>import org.apache.hadoop.mapreduce.Job;</p>
+<p>import org.apache.hadoop.mapreduce.Mapper;</p>
+<p>import org.apache.hadoop.mapreduce.Reducer;</p>
+<p>import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</p>
+<p>import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</p>
+<p>import org.apache.hadoop.util.GenericOptionsParser;</p>
+<p>public class WordCount {</p>
+<p>　　public static class&nbsp;<strong>TokenizerMapper</strong></p>
+<p>　　　　　　extends Mapper&lt;Object, Text, Text, IntWritable&gt;{ &nbsp;/<span style="color: #3366ff;">/继承org.apache.hadoop.mapreduce包中<strong>Mapper</strong>类，并<strong>重写</strong>其map方法</span></p>
+<p>　　　　　　private final static IntWritable one = new IntWritable(1); &nbsp; //<span style="color: #3366ff;"><strong>Mapper&lt;KEYIN,VALUEIN,KEYOUT,VALUEOUT&gt;</strong></span></p>
+<p>　　　　　　private Text <span style="color: #ff0000;">word</span> = new Text();</p>
+<p>&nbsp;</p>
+<p>　　　　　　public void map(Object key, Text value, Context context) &nbsp;//<span>Called once for each key/value pair in the input split</span></p>
+<p>　　　　　　　　throws IOException, InterruptedException { &nbsp;//<span style="color: #3366ff;">value值存储的是文本文件中的一行（以回车符为行结束标记），而key值为该行的首字母相对于文本文件的首地址的偏移量</span></p>
+<p>　　　　　　　　StringTokenizer itr = new StringTokenizer(value.toString()); &nbsp; &nbsp;//<span style="color: #3366ff;">拆分成单词</span></p>
+<p>　　　　　　　　while (itr.hasMoreTokens()) {</p>
+<p>　　　　　　　　<span style="color: #ff0000;">word</span>.set(itr.nextToken());</p>
+<p>　　　　　　　　context.write(word, one); &nbsp;/<span style="color: #3366ff;">/输出&lt;word，1&gt;</span></p>
+<p>　　　　　　}</p>
+<p>　　　　}</p>
+<p>　　}</p>
+<p>//系统自动对map结果进行排序等处理，reduce输入例 （asd,1-1-1)</p>
+<p>　　public static class&nbsp;<strong>IntSumReducer</strong></p>
+<p>　　　　　　extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt; { &nbsp;//<span style="color: #3366ff;">Reducer&lt;KEYIN,VALUEIN,KEYOUT,VALUEOUT&gt;</span></p>
+<p>　　　　　　private IntWritable result = new IntWritable();</p>
+<p>　　　　　　public void reduce(Text key, Iterable&lt;IntWritable&gt; values,Context context)</p>
+<p>　　　　　　　　　　 throws IOException, InterruptedException { &nbsp; /<span style="color: #3366ff;">/reducer输入为Map过程输出，&lt;key,values&gt;中key为单个单词，而values是对应单词的计数值</span></p>
+<p>　　　　　　　　int sum = 0;</p>
+<p>　　　　　　　　for (IntWritable val : values) {</p>
+<p>　　　　　　　　　　　sum += val.get();</p>
+<p>　　　　　　　　}</p>
+<p>　　　　　　result.set(sum);</p>
+<p>　　　　　　context.write(key, result);</p>
+<p>　　　　}</p>
+<p>　　}</p>
+<p>&nbsp;</p>
+<p>　　public static void&nbsp;<strong>main</strong>(String[] args) throws Exception {</p>
+<p>　　　　Configuration conf = new Configuration();</p>
+<p>　　　　String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();</p>
+<p>　　　　if (otherArgs.length != 2) {</p>
+<p>　　　　　　System.err.println(“Usage: wordcount &lt;in&gt; &lt;out&gt;”);</p>
+<p>　　　　　　System.exit(2);</p>
+<p>　　　　}</p>
+<p>　　　　Job job = new Job(conf, “word count”);</p>
+<p>　　　　job.setJarByClass(WordCount.class);</p>
+<p>　　　　job.setMapperClass(TokenizerMapper.class); //<span style="color: #3366ff;">setMapperClass：设置Mapper，默认为IdentityMapper</span></p>
+<p>　　　　job.setCombinerClass(IntSumReducer.class);</p>
+<p>　　　　job.setReducerClass(IntSumReducer.class);//<span style="color: #3366ff;">setReducerClass：设置Reducer，默认为IdentityReducer</span></p>
+<p>　　　　job.setOutputKeyClass(Text.class);</p>
+<p>　　　　job.setOutputValueClass(IntWritable.class);</p>
+<p>　　　　FileInputFormat.addInputPath(job, new Path(otherArgs[0]));/<span style="color: #3366ff;">/FileInputFormat.addInputPath：设置输入文件的路径，可以是一个文件，一个路径，一个通配符。可以被调用多次添加多个路径</span></p>
+<p>　　　　FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));/<span style="color: #3366ff;">/FileOutputFormat.setOutputPath：设置输出文件的路径，在job运行前此路径不应该存在</span></p>
+<p>　　　　System.exit(job.waitForCompletion(true) ? 0 : 1);</p>
+<p>}</p>
+<p>}</p>
+<p>//setInputFormat：设置map的输入格式，默认为TextInputFormat，key为LongWritable, value为Text</p>
+<p>setNumMapTasks：设置map任务的个数，此设置通常不起作用，map任务的个数取决于输入的数据所能分成的input split的个数</p>
+<p>&nbsp;</p>
+<p>setMapRunnerClass：设置MapRunner, map task是由MapRunner运行的，默认为MapRunnable，其功能为读取input split的一个个record，依次调用Mapper的map函数</p>
+<p>setMapOutputKeyClass和setMapOutputValueClass：设置Mapper的输出的key-value对的格式</p>
+<p>setOutputKeyClass和setOutputValueClass：设置Reducer的输出的key-value对的格式</p>
+<p>setPartitionerClass和setNumReduceTasks：设置Partitioner，默认为HashPartitioner，其根据key的hash值来决定进入哪个partition，每个partition被一个reduce task处理，所以partition的个数等于reduce task的个数</p>
+<p>&nbsp;</p>
+<p>setOutputFormat：设置任务的输出格式，默认为TextOutputFormat</p>
+<p>&nbsp;</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/35575/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -376,7 +535,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">82</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
