@@ -220,6 +220,144 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/60353/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/60353/" class="post-title-link" itemprop="url">java多线程实现三个字母顺序输出</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-01-25 16:59:00" itemprop="dateCreated datePublished" datetime="2017-01-25T16:59:00+08:00">2017-01-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/60353/" class="post-meta-item leancloud_visitors" data-flag-title="java多线程实现三个字母顺序输出" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/60353/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/60353/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>主要还是通过一个例子加深一下对java多线程里wait,notify的理解，因此写了一个例子，三个线程分别输出A,B,C三个字母，控制这三个线程的执行顺序，从而实现ABCABCABC..这样的输出。</p>
+<p>这个问题主要还是需要设计一下锁的策略，这里只是提供了一种方式：</p>
+<p>每个线程占用两把锁，分别代表自己(self)和前一个线程（prev）, 三个线程的持有锁情况如下表所示：</p>
+<table>
+<thead>
+<tr><th>线程号</th><th>prev锁</th><th>self锁</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>c</td>
+<td>a</td>
+</tr>
+<tr>
+<td>B</td>
+<td>a</td>
+<td>b</td>
+</tr>
+<tr>
+<td>C</td>
+<td>b</td>
+<td>c</td>
+</tr>
+</tbody>
+</table>
+
+<p>A 首先启动，持有ac, 运行后先释放a, b可以执行。</p>
+<p>线程run方法代码如下：</p>
+<pre><code>    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;run&lt;/span&gt;() &#123;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;while&lt;/span&gt; (&lt;span class=&quot;hljs-keyword&quot;&gt;true&lt;/span&gt;) &#123;
+            &lt;span class=&quot;hljs-keyword&quot;&gt;synchronized&lt;/span&gt; (prev) &#123;
+                &lt;span class=&quot;hljs-keyword&quot;&gt;synchronized&lt;/span&gt; (self) &#123;
+                    System.out.print(name);
+                    self.notify();
+                &#125;
+                &lt;span class=&quot;hljs-keyword&quot;&gt;try&lt;/span&gt; &#123;
+                    &lt;span class=&quot;hljs-comment&quot;&gt;//如果想控制输出速度， 可以将sleep加在此处&lt;/span&gt;
+                    &lt;span class=&quot;hljs-comment&quot;&gt;//如果加在sout之后，会导致c线程启动并占有b锁之后,a线程才会释放a锁，输出顺序会变成acbacb&lt;/span&gt;
+                    &lt;span class=&quot;hljs-comment&quot;&gt;//也可以加大三个线程启动的间隔时间解决这一问题&lt;/span&gt;
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;try&lt;/span&gt; &#123;
+                        Thread.sleep(&lt;span class=&quot;hljs-number&quot;&gt;1000&lt;/span&gt;);
+                    &#125; &lt;span class=&quot;hljs-keyword&quot;&gt;catch&lt;/span&gt; (InterruptedException e) &#123;
+                        e.printStackTrace();
+                    &#125;
+                    prev.wait();
+                &#125; &lt;span class=&quot;hljs-keyword&quot;&gt;catch&lt;/span&gt; (InterruptedException e) &#123;
+                    e.printStackTrace();
+                &#125;
+            &#125;
+
+        &#125;
+</code></pre>
+<p>需要注意的是，如果想控制输出速度，需要考虑一下sleep的位置和时间，避免在A线程执行完并释放a锁之前，C线程已经启动并持有了B锁，导致B线程无法正常启动。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/40931/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1264,142 +1402,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/63299/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="流沙">
-      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mobility">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/63299/" class="post-title-link" itemprop="url">一篇不错的lda模型入门文档</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2012-12-02 15:20:00" itemprop="dateCreated datePublished" datetime="2012-12-02T15:20:00+08:00">2012-12-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
-              </span>
-
-          
-            <span id="/posts/63299/" class="post-meta-item leancloud_visitors" data-flag-title="一篇不错的lda模型入门文档" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/posts/63299/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/63299/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>转自<span class="exturl" data-url="aHR0cDovL2xleWV3LmJsb2cuNTFjdG8uY29tLzUwNDM4NzcvODYwMjU1IzU1OTE4My10c2luYS0xLTQ2ODYyLWVkMDk3M2EwYzg3MDE1NmVkMTVmMDZhNjU3M2M4YmYw">http://leyew.blog.51cto.com/5043877/860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0<i class="fa fa-external-link-alt"></i></span></p>
-<p>前几天开始学习lda,走了不少弯路，对lda仍然是一头雾水。看了这篇文档以后总算明白lda是干啥的了</p>
-<p>&nbsp;</p>
-<h3 id="LDA（Latent-Dirichlet-Allocation）学习笔记"><a href="#LDA（Latent-Dirichlet-Allocation）学习笔记" class="headerlink" title="LDA（Latent Dirichlet Allocation）学习笔记"></a>LDA（Latent Dirichlet Allocation）学习笔记</h3><p>最近在看LDA算法，经过了几天挣扎，总算大致了解了这个算法的整体框架和流程。</p>
-<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>LDA要干的事情简单来说就是为一堆文档进行聚类（所以是非监督学习），一种topic就是一类，要聚成的topic数目是事先指定的。聚类的结果是一个概率，而不是布尔型的100%属于某个类。国外有个博客[1]上有一个清晰的例子，直接引用：</p>
-<blockquote>
-<p>Suppose you have the following set of sentences:</p>
-<ul>
-<li>  I like to eat broccoli and bananas.</li>
-<li>  I ate a banana and spinach smoothie for breakfast.</li>
-<li>  Chinchillas and kittens are cute.</li>
-<li>  My sister adopted a kitten yesterday.</li>
-<li>  Look at this cute hamster munching on a piece of broccoli.</li>
-</ul>
-<p>What is latent Dirichlet allocation? It&rsquo;s a way of automatically discovering topics that these sentences contain. For example, given these sentences and asked for 2 topics, LDA might produce something like</p>
-<ul>
-<li>  <strong>Sentences 1 and 2</strong>: 100% Topic A</li>
-<li>  <strong>Sentences 3 and 4</strong>: 100% Topic B</li>
-<li>  <strong>Sentence 5</strong>: 60% Topic A, 40% Topic B</li>
-<li>  <strong>Topic A</strong>: 30% broccoli, 15% bananas, 10% breakfast, 10% munching, &hellip; (at which point, you could interpret topic A to be about food)</li>
-<li>  <strong>Topic B</strong>: 20% chinchillas, 20% kittens, 20% cute, 15% hamster, &hellip; (at which point, you could interpret topic B to be about cute animals)</li>
-</ul>
-</blockquote>
-<p>上面关于sentence 5的结果，可以看出来是一个明显的概率类型的聚类结果（sentence 1和2正好都是100%的确定性结果）。</p>
-<p>再看例子里的结果，除了为每句话得出了一个概率的聚类结果，而且对每个Topic，都有代表性的词以及一个比例。以Topic A为例，就是说所有对应到Topic A的词里面，有30%的词是broccoli。在LDA算法中，会把每一个文档中的每一个词对应到一个Topic，所以能算出上面这个比例。这些词为描述这个Topic起了一个很好的指导意义，我想这就是LDA区别于传统文本聚类的优势吧。</p>
-<h4 id="LDA整体流程"><a href="#LDA整体流程" class="headerlink" title="LDA整体流程"></a>LDA整体流程</h4><p>先定义一些字母的含义：</p>
-<ul>
-<li>  文档集合<strong>D</strong>，topic集合<strong>T</strong></li>
-<li>  D中每个文档d看作一个单词序列**&lt; w1,w2,…,wn &gt;**，wi表示第i个单词，设d有n个单词。（LDA里面称之为_word bag_，实际上每个单词的出现位置对LDA算法无影响）</li>
-<li>  D中涉及的所有不同单词组成一个大集合<strong>VOCABULARY</strong>（简称<strong>VOC</strong>）</li>
-</ul>
-<p>LDA以文档集合D作为输入（会有切词，去停用词，取词干等常见的预处理，略去不表），希望训练出的两个结果向量（<strong>设聚成k个Topic，VOC中共包含m个词</strong>）：</p>
-<ul>
-<li>  **对每个D中的文档d，对应到不同topic的概率&theta;<sub>d</sub>&nbsp;&lt; p<sub>t1</sub>,…, p<sub>tk</sub>&nbsp;&gt;**，其中，p<sub>ti</sub>表示d对应T中第i个topic的概率。计算方法是直观的，p<sub>ti</sub>=n<sub>ti</sub>/n，其中n<sub>ti</sub>表示d中对应第i个topic的词的数目，n是d中所有词的总数。</li>
-<li>  **对每个T中的topic t，生成不同单词的概率&phi;<sub>t</sub>&nbsp;&lt; p<sub>w1</sub>,…, p<sub>wm</sub>&nbsp;&gt;**，其中，p<sub>wi</sub>表示t生成VOC中第i个单词的概率。计算方法同样很直观，p<sub>wi</sub>=N<sub>wi</sub>/N，其中N<sub>wi</sub>表示对应到topic t的VOC中第i个单词的数目，N表示所有对应到topic t的单词总数。</li>
-</ul>
-<p>LDA的核心公式如下：</p>
-<p>*<em>p(w|d) = p(w|t)<em>p(t|d)</em></em></p>
-<p>直观的看这个公式，就是以Topic作为中间层，可以通过当前的&theta;<sub>d</sub>和&phi;<sub>t</sub>给出了文档d中出现单词w的概率。其中p(t|d)利用&theta;<sub>d</sub>计算得到，p(w|t)利用&phi;<sub>t</sub>计算得到。</p>
-<p>实际上，利用当前的&theta;<sub>d</sub>和&phi;<sub>t</sub>，我们可以为一个文档中的一个单词计算它对应任意一个Topic时的p(w|d)，然后根据这些结果来更新这个词应该对应的topic。然后，如果这个更新改变了这个单词所对应的Topic，就会反过来影响&theta;<sub>d</sub>和&phi;<sub>t</sub>。</p>
-<p>LDA算法开始时，先随机地给&theta;<sub>d</sub>和&phi;<sub>t</sub>赋值（对所有的d和t）。然后上述过程不断重复，最终收敛到的结果就是LDA的输出。</p>
-<p>再详细说一下这个迭代的学习过程：</p>
-<p>针对一个特定的文档d<sub>s</sub>中的第i单词w<sub>i</sub>，如果令该单词对应的topic为t<sub>j</sub>，可以把上述公式改写为：</p>
-<p><em>p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>) = p(w<sub>i</sub>|t<sub>j</sub>)*p(t<sub>j</sub>|d<sub>s</sub>)</em></p>
-<p>先不管这个值怎么计算（可以先理解成直接从&theta;<sub>ds</sub>和&phi;<sub>tj</sub>中取对应的项。实际没这么简单，但对理解整个LDA流程没什么影响，后文再说。）。现在我们可以枚举T中的topic，得到所有的p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)，其中j取值1~k。然后可以根据这些概率值结果为d<sub>s</sub>中的第i个单词w<sub>i</sub>选择一个topic。最简单的想法是取令p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)最大的t<sub>j</sub>（注意，这个式子里只有j是变量），即</p>
-<p><em>argmax[j]p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)</em></p>
-<p>当然这只是一种方法（好像还不怎么常用），实际上这里怎么选择t在学术界有很多方法，我还没有好好去研究。</p>
-<p>然后，如果d<sub>s</sub>中的第i个单词w<sub>i</sub>在这里选择了一个与原先不同的topic，就会对&theta;<sub>d</sub>和&phi;<sub>t</sub>有影响了（根据前面提到过的这两个向量的计算公式可以很容易知道）。它们的影响又会反过来影响对上面提到的p(w|d)的计算。对D中所有的d中的所有w进行一次p(w|d)的计算并重新选择topic看作一次迭代。这样进行n次循环迭代之后，就会收敛到LDA所需要的结果了。&nbsp;<em>【在这里突然想到了一个问题，就是对&theta;<sub>d</sub>和&phi;<sub>t</sub>这两个向量的更新究竟是在一次迭代对所有的d中的所有w更新之后统一更新（也就是在一次迭代中，&theta;<sub>d</sub>和&phi;<sub>t</sub>不变，统一在迭代结束时更新），还是每对一个d中的一个w更新topic之后，就马上对&theta;<sub>d</sub>和&phi;<sub>t</sub>进行更新呢？这个看来要去看一下那篇LDA最原始的论文了】</em></p>
-<h4 id="怎样计算p-w-t-和p-t-d"><a href="#怎样计算p-w-t-和p-t-d" class="headerlink" title="怎样计算p(w|t)和p(t|d)"></a>怎样计算p(w|t)和p(t|d)</h4><p>待续&hellip;&hellip;</p>
-<p>&nbsp;</p>
-<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p>【1】<span class="exturl" data-url="aHR0cDovL2Jsb2cuZWNoZW4ubWUvMjAxMS8wOC8yMi9pbnRyb2R1Y3Rpb24tdG8tbGF0ZW50LWRpcmljaGxldC1hbGxvY2F0aW9uLw==">Introduction to Latent Dirichlet Allocation<i class="fa fa-external-link-alt"></i></span>：国外博客，很不错的入门文章</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1469,7 +1471,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1482,7 +1484,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-count">88</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

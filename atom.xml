@@ -6,7 +6,7 @@
   <link href="http://lichuanyang.top/atom.xml" rel="self"/>
   
   <link href="http://lichuanyang.top/"/>
-  <updated>2023-12-08T09:27:38.160Z</updated>
+  <updated>2023-12-22T10:13:08.615Z</updated>
   <id>http://lichuanyang.top/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>知乎增强工具-评论时间精确到秒</title>
+    <link href="http://lichuanyang.top/posts/44912/"/>
+    <id>http://lichuanyang.top/posts/44912/</id>
+    <published>2023-12-22T09:24:18.000Z</published>
+    <updated>2023-12-22T10:13:08.615Z</updated>
+    
+    <content type="html"><![CDATA[<p>一个优化知乎显示的油猴工具</p><span id="more"></span><p>之前在 <span class="exturl" data-url="aHR0cHM6Ly9tZXRhLmFwcGlubi5uZXQvdC90b3BpYy80NzcxMS8xOA==">小众软件<i class="fa fa-external-link-alt"></i></span> 上看到一个知乎评论区时间展示混乱的吐槽，有大佬立刻就给了一个油猴脚本。</p><p>用了一段时间很舒服，然后前几天知乎做了个更新，导致展示开始混乱。研究了一下，做了更新，想着就发布到GreasyFork上吧，后边知乎再有调整，可以直接从线上更新。</p><p>脚本地址： <span class="exturl" data-url="aHR0cHM6Ly9ncmVhc3lmb3JrLm9yZy96aC1DTi9zY3JpcHRzLzQ4Mjg3MS0lRTclOUYlQTUlRTQlQjklOEUlRTUlQTIlOUUlRTUlQkMlQkEtJUU4JUFGJTg0JUU4JUFFJUJBJUU2JTk3JUI2JUU5JTk3JUI0JUU3JUIyJUJFJUU3JUExJUFFJUU1JTg4JUIwJUU3JUE3JTky">安装地址<i class="fa fa-external-link-alt"></i></span></p><p>大家感兴趣的话，欢迎留言，后边考虑做个油猴脚本的开发教程。</p><p>原文地址: <a href="http://lichuanyang.top/posts/44912/">http://lichuanyang.top/posts/44912/</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;一个优化知乎显示的油猴工具&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="知乎" scheme="http://lichuanyang.top/tags/%E7%9F%A5%E4%B9%8E/"/>
+    
+    <category term="油猴" scheme="http://lichuanyang.top/tags/%E6%B2%B9%E7%8C%B4/"/>
+    
+    <category term="Tampermonkey" scheme="http://lichuanyang.top/tags/Tampermonkey/"/>
+    
+  </entry>
   
   <entry>
     <title>怎么理解数据库的四个隔离级别</title>

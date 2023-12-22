@@ -2984,4 +2984,22 @@ lock.release();释放锁
         <tag>逻辑思维</tag>
       </tags>
   </entry>
+  <entry>
+    <title>知乎增强工具-评论时间精确到秒</title>
+    <url>/posts/44912/</url>
+    <content><![CDATA[<p>一个优化知乎显示的油猴工具</p>
+<span id="more"></span>
+
+<p>之前在 <span class="exturl" data-url="aHR0cHM6Ly9tZXRhLmFwcGlubi5uZXQvdC90b3BpYy80NzcxMS8xOA==">小众软件<i class="fa fa-external-link-alt"></i></span> 上看到一个知乎评论区时间展示混乱的吐槽，有大佬立刻就给了一个油猴脚本。</p>
+<p>用了一段时间很舒服，然后前几天知乎做了个更新，导致展示开始混乱。研究了一下，做了更新，想着就发布到GreasyFork上吧，后边知乎再有调整，可以直接从线上更新。</p>
+<p>脚本地址： <span class="exturl" data-url="aHR0cHM6Ly9ncmVhc3lmb3JrLm9yZy96aC1DTi9zY3JpcHRzLzQ4Mjg3MS0lRTclOUYlQTUlRTQlQjklOEUlRTUlQTIlOUUlRTUlQkMlQkEtJUU4JUFGJTg0JUU4JUFFJUJBJUU2JTk3JUI2JUU5JTk3JUI0JUU3JUIyJUJFJUU3JUExJUFFJUU1JTg4JUIwJUU3JUE3JTky">安装地址<i class="fa fa-external-link-alt"></i></span></p>
+<p>大家感兴趣的话，欢迎留言，后边考虑做个油猴脚本的开发教程。</p>
+<p>原文地址: <a href="http://lichuanyang.top/posts/44912/">http://lichuanyang.top/posts/44912/</a></p>
+]]></content>
+      <tags>
+        <tag>知乎</tag>
+        <tag>油猴</tag>
+        <tag>Tampermonkey</tag>
+      </tags>
+  </entry>
 </search>
