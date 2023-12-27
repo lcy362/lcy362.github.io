@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -301,7 +301,7 @@
 <p>规则4：注意初始化的影响，第一次计时不要打印结果，除非是在测试类加载的过程，规则2是你对抗这种效果的第一道防线。</p>
 <p>规则5：注意编译器优化和重新编译的效果。计时时不要使用任何代码路径，因为编译器可能会基于一些乐观假设进行优化，导致根本不会使用该路径，从而可以对代码进行垃圾和重新编译。规则2是你对抗这种效果的第一道防线。</p>
 <p>规则6：使用适当的工具读取编译器的工作过程，并对它产生一些令人惊讶的代码做好。在形成关于什么使事情更快或更慢的理论之前自己检查代码。</p>
-<p>规则7：减少测量中的噪音。在一台安静的机器上运行基准测试，并运行几次，抛弃异常值。使用-Xbatch将编译器与应用程序串行化，并考虑设置 -XX：CICompilerCount = 1以防止编译器与其自身并行运行。</p>
+<p>规则7：减少测量中的噪音。在一台安静的机器上运行基准测试，并运行几次，抛弃异常值。使用-Xbatch将编译器与应用程序串行化，并考虑设置 -XX：CICompilerCount &#x3D; 1以防止编译器与其自身并行运行。</p>
 <p>规则8：使用一些库用来做基准测试，因为它可能更有效率。比如JMH，Caliper，UCSD Benchmarks for Java等。</p>
 
     </div>
@@ -316,16 +316,16 @@
       <div class="popular-posts-title"><a href="/posts/57802/" rel="bookmark">Java kryo/protobuf/protostuff序列化 or Json 性能对比</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/48104/" rel="bookmark">java分布式锁入门实战</a></div>
+      <div class="popular-posts-title"><a href="/posts/4433/" rel="bookmark">java日志系统简介: 从tomcat大量打印debug日志说起</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/posts/60353/" rel="bookmark">java多线程实现三个字母顺序输出</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/4433/" rel="bookmark">java日志系统简介: 从tomcat大量打印debug日志说起</a></div>
+      <div class="popular-posts-title"><a href="/posts/5707/" rel="bookmark">java线程池：获取运行线程数并控制线程启动速度</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/5707/" rel="bookmark">java线程池：获取运行线程数并控制线程启动速度</a></div>
+      <div class="popular-posts-title"><a href="/posts/53072/" rel="bookmark">java细节:三目运算符和自动拆箱</a></div>
     </li>
   </ul>
 

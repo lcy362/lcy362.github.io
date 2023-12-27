@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -308,7 +308,7 @@
 <p>以3.2.8为例，下载完以后执行以下命令</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tar xzf redis-3.2.8.tar.gz</span><br><span class="line">$ cd redis-3.2.8</span><br><span class="line">$ make</span><br></pre></td></tr></table></figure>
 <p>然后解压缩，make就可以了.</p>
-<h3 id="redis配置与启动"><a href="#redis配置与启动" class="headerlink" title="redis配置与启动"></a>redis配置与启动</h3><p>make之后会在redis的src目录下多出几个命令，包括redis-server, redis-cli等，可以把他们拷到/usr/local/bin下，这样就可以在任意路径下执行。也可以自己指到src目录下进行操作。</p>
+<h3 id="redis配置与启动"><a href="#redis配置与启动" class="headerlink" title="redis配置与启动"></a>redis配置与启动</h3><p>make之后会在redis的src目录下多出几个命令，包括redis-server, redis-cli等，可以把他们拷到&#x2F;usr&#x2F;local&#x2F;bin下，这样就可以在任意路径下执行。也可以自己指到src目录下进行操作。</p>
 <p>启动之前需要先修改一下配置，redis的根目录下有一个redis.conf文件，可以直接改它，也可以拷到别的路径下进行修改。</p>
 <p>主要就是把cluster模式打开，然后配一下cluster配置文件。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cluster-enabled yes</span><br><span class="line">cluster-config-file nodes.conf</span><br></pre></td></tr></table></figure>
@@ -344,13 +344,13 @@
       <div class="popular-posts-title"><a href="/posts/37583/" rel="bookmark">redis cluster的数据迁移</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/48104/" rel="bookmark">java分布式锁入门实战</a></div>
+      <div class="popular-posts-title"><a href="/posts/25564/" rel="bookmark">redis的对象</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/posts/22179/" rel="bookmark">redis里的数据结构</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/25564/" rel="bookmark">redis的对象</a></div>
+      <div class="popular-posts-title"><a href="/posts/48104/" rel="bookmark">java分布式锁入门实战</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/posts/63756/" rel="bookmark">使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据</a></div>

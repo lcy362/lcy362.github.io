@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -294,42 +294,42 @@
 <blockquote>
 <p>Suppose you have the following set of sentences:</p>
 <ul>
-<li>  I like to eat broccoli and bananas.</li>
-<li>  I ate a banana and spinach smoothie for breakfast.</li>
-<li>  Chinchillas and kittens are cute.</li>
-<li>  My sister adopted a kitten yesterday.</li>
-<li>  Look at this cute hamster munching on a piece of broccoli.</li>
+<li>I like to eat broccoli and bananas.</li>
+<li>I ate a banana and spinach smoothie for breakfast.</li>
+<li>Chinchillas and kittens are cute.</li>
+<li>My sister adopted a kitten yesterday.</li>
+<li>Look at this cute hamster munching on a piece of broccoli.</li>
 </ul>
 <p>What is latent Dirichlet allocation? It&rsquo;s a way of automatically discovering topics that these sentences contain. For example, given these sentences and asked for 2 topics, LDA might produce something like</p>
 <ul>
-<li>  <strong>Sentences 1 and 2</strong>: 100% Topic A</li>
-<li>  <strong>Sentences 3 and 4</strong>: 100% Topic B</li>
-<li>  <strong>Sentence 5</strong>: 60% Topic A, 40% Topic B</li>
-<li>  <strong>Topic A</strong>: 30% broccoli, 15% bananas, 10% breakfast, 10% munching, &hellip; (at which point, you could interpret topic A to be about food)</li>
-<li>  <strong>Topic B</strong>: 20% chinchillas, 20% kittens, 20% cute, 15% hamster, &hellip; (at which point, you could interpret topic B to be about cute animals)</li>
+<li><strong>Sentences 1 and 2</strong>: 100% Topic A</li>
+<li><strong>Sentences 3 and 4</strong>: 100% Topic B</li>
+<li><strong>Sentence 5</strong>: 60% Topic A, 40% Topic B</li>
+<li><strong>Topic A</strong>: 30% broccoli, 15% bananas, 10% breakfast, 10% munching, &hellip; (at which point, you could interpret topic A to be about food)</li>
+<li><strong>Topic B</strong>: 20% chinchillas, 20% kittens, 20% cute, 15% hamster, &hellip; (at which point, you could interpret topic B to be about cute animals)</li>
 </ul>
 </blockquote>
 <p>上面关于sentence 5的结果，可以看出来是一个明显的概率类型的聚类结果（sentence 1和2正好都是100%的确定性结果）。</p>
 <p>再看例子里的结果，除了为每句话得出了一个概率的聚类结果，而且对每个Topic，都有代表性的词以及一个比例。以Topic A为例，就是说所有对应到Topic A的词里面，有30%的词是broccoli。在LDA算法中，会把每一个文档中的每一个词对应到一个Topic，所以能算出上面这个比例。这些词为描述这个Topic起了一个很好的指导意义，我想这就是LDA区别于传统文本聚类的优势吧。</p>
 <h4 id="LDA整体流程"><a href="#LDA整体流程" class="headerlink" title="LDA整体流程"></a>LDA整体流程</h4><p>先定义一些字母的含义：</p>
 <ul>
-<li>  文档集合<strong>D</strong>，topic集合<strong>T</strong></li>
-<li>  D中每个文档d看作一个单词序列**&lt; w1,w2,…,wn &gt;**，wi表示第i个单词，设d有n个单词。（LDA里面称之为_word bag_，实际上每个单词的出现位置对LDA算法无影响）</li>
-<li>  D中涉及的所有不同单词组成一个大集合<strong>VOCABULARY</strong>（简称<strong>VOC</strong>）</li>
+<li>文档集合<strong>D</strong>，topic集合<strong>T</strong></li>
+<li>D中每个文档d看作一个单词序列**&lt; w1,w2,…,wn &gt;**，wi表示第i个单词，设d有n个单词。（LDA里面称之为_word bag_，实际上每个单词的出现位置对LDA算法无影响）</li>
+<li>D中涉及的所有不同单词组成一个大集合<strong>VOCABULARY</strong>（简称<strong>VOC</strong>）</li>
 </ul>
 <p>LDA以文档集合D作为输入（会有切词，去停用词，取词干等常见的预处理，略去不表），希望训练出的两个结果向量（<strong>设聚成k个Topic，VOC中共包含m个词</strong>）：</p>
 <ul>
-<li>  **对每个D中的文档d，对应到不同topic的概率&theta;<sub>d</sub>&nbsp;&lt; p<sub>t1</sub>,…, p<sub>tk</sub>&nbsp;&gt;**，其中，p<sub>ti</sub>表示d对应T中第i个topic的概率。计算方法是直观的，p<sub>ti</sub>=n<sub>ti</sub>/n，其中n<sub>ti</sub>表示d中对应第i个topic的词的数目，n是d中所有词的总数。</li>
-<li>  **对每个T中的topic t，生成不同单词的概率&phi;<sub>t</sub>&nbsp;&lt; p<sub>w1</sub>,…, p<sub>wm</sub>&nbsp;&gt;**，其中，p<sub>wi</sub>表示t生成VOC中第i个单词的概率。计算方法同样很直观，p<sub>wi</sub>=N<sub>wi</sub>/N，其中N<sub>wi</sub>表示对应到topic t的VOC中第i个单词的数目，N表示所有对应到topic t的单词总数。</li>
+<li>**对每个D中的文档d，对应到不同topic的概率&theta;<sub>d</sub>&nbsp;&lt; p<sub>t1</sub>,…, p<sub>tk</sub>&nbsp;&gt;**，其中，p<sub>ti</sub>表示d对应T中第i个topic的概率。计算方法是直观的，p<sub>ti</sub>&#x3D;n<sub>ti</sub>&#x2F;n，其中n<sub>ti</sub>表示d中对应第i个topic的词的数目，n是d中所有词的总数。</li>
+<li>**对每个T中的topic t，生成不同单词的概率&phi;<sub>t</sub>&nbsp;&lt; p<sub>w1</sub>,…, p<sub>wm</sub>&nbsp;&gt;**，其中，p<sub>wi</sub>表示t生成VOC中第i个单词的概率。计算方法同样很直观，p<sub>wi</sub>&#x3D;N<sub>wi</sub>&#x2F;N，其中N<sub>wi</sub>表示对应到topic t的VOC中第i个单词的数目，N表示所有对应到topic t的单词总数。</li>
 </ul>
 <p>LDA的核心公式如下：</p>
-<p>*<em>p(w|d) = p(w|t)<em>p(t|d)</em></em></p>
+<p>*<em>p(w|d) &#x3D; p(w|t)<em>p(t|d)</em></em></p>
 <p>直观的看这个公式，就是以Topic作为中间层，可以通过当前的&theta;<sub>d</sub>和&phi;<sub>t</sub>给出了文档d中出现单词w的概率。其中p(t|d)利用&theta;<sub>d</sub>计算得到，p(w|t)利用&phi;<sub>t</sub>计算得到。</p>
 <p>实际上，利用当前的&theta;<sub>d</sub>和&phi;<sub>t</sub>，我们可以为一个文档中的一个单词计算它对应任意一个Topic时的p(w|d)，然后根据这些结果来更新这个词应该对应的topic。然后，如果这个更新改变了这个单词所对应的Topic，就会反过来影响&theta;<sub>d</sub>和&phi;<sub>t</sub>。</p>
 <p>LDA算法开始时，先随机地给&theta;<sub>d</sub>和&phi;<sub>t</sub>赋值（对所有的d和t）。然后上述过程不断重复，最终收敛到的结果就是LDA的输出。</p>
 <p>再详细说一下这个迭代的学习过程：</p>
 <p>针对一个特定的文档d<sub>s</sub>中的第i单词w<sub>i</sub>，如果令该单词对应的topic为t<sub>j</sub>，可以把上述公式改写为：</p>
-<p><em>p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>) = p(w<sub>i</sub>|t<sub>j</sub>)*p(t<sub>j</sub>|d<sub>s</sub>)</em></p>
+<p><em>p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>) &#x3D; p(w<sub>i</sub>|t<sub>j</sub>)*p(t<sub>j</sub>|d<sub>s</sub>)</em></p>
 <p>先不管这个值怎么计算（可以先理解成直接从&theta;<sub>ds</sub>和&phi;<sub>tj</sub>中取对应的项。实际没这么简单，但对理解整个LDA流程没什么影响，后文再说。）。现在我们可以枚举T中的topic，得到所有的p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)，其中j取值1~k。然后可以根据这些概率值结果为d<sub>s</sub>中的第i个单词w<sub>i</sub>选择一个topic。最简单的想法是取令p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)最大的t<sub>j</sub>（注意，这个式子里只有j是变量），即</p>
 <p><em>argmax[j]p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)</em></p>
 <p>当然这只是一种方法（好像还不怎么常用），实际上这里怎么选择t在学术界有很多方法，我还没有好好去研究。</p>
@@ -439,28 +439,28 @@
 <p>import org.apache.hadoop.util.GenericOptionsParser;</p>
 <p>public class WordCount {</p>
 <p>　　public static class&nbsp;<strong>TokenizerMapper</strong></p>
-<p>　　　　　　extends Mapper&lt;Object, Text, Text, IntWritable&gt;{ &nbsp;/<span style="color: #3366ff;">/继承org.apache.hadoop.mapreduce包中<strong>Mapper</strong>类，并<strong>重写</strong>其map方法</span></p>
-<p>　　　　　　private final static IntWritable one = new IntWritable(1); &nbsp; //<span style="color: #3366ff;"><strong>Mapper&lt;KEYIN,VALUEIN,KEYOUT,VALUEOUT&gt;</strong></span></p>
-<p>　　　　　　private Text <span style="color: #ff0000;">word</span> = new Text();</p>
+<p>　　　　　　extends Mapper&lt;Object, Text, Text, IntWritable&gt;{ &nbsp;&#x2F;<span style="color: #3366ff;">&#x2F;继承org.apache.hadoop.mapreduce包中<strong>Mapper</strong>类，并<strong>重写</strong>其map方法</span></p>
+<p>　　　　　　private final static IntWritable one &#x3D; new IntWritable(1); &nbsp; &#x2F;&#x2F;<span style="color: #3366ff;"><strong>Mapper&lt;KEYIN,VALUEIN,KEYOUT,VALUEOUT&gt;</strong></span></p>
+<p>　　　　　　private Text <span style="color: #ff0000;">word</span> &#x3D; new Text();</p>
 <p>&nbsp;</p>
-<p>　　　　　　public void map(Object key, Text value, Context context) &nbsp;//<span>Called once for each key/value pair in the input split</span></p>
-<p>　　　　　　　　throws IOException, InterruptedException { &nbsp;//<span style="color: #3366ff;">value值存储的是文本文件中的一行（以回车符为行结束标记），而key值为该行的首字母相对于文本文件的首地址的偏移量</span></p>
-<p>　　　　　　　　StringTokenizer itr = new StringTokenizer(value.toString()); &nbsp; &nbsp;//<span style="color: #3366ff;">拆分成单词</span></p>
+<p>　　　　　　public void map(Object key, Text value, Context context) &nbsp;&#x2F;&#x2F;<span>Called once for each key&#x2F;value pair in the input split</span></p>
+<p>　　　　　　　　throws IOException, InterruptedException { &nbsp;&#x2F;&#x2F;<span style="color: #3366ff;">value值存储的是文本文件中的一行（以回车符为行结束标记），而key值为该行的首字母相对于文本文件的首地址的偏移量</span></p>
+<p>　　　　　　　　StringTokenizer itr &#x3D; new StringTokenizer(value.toString()); &nbsp; &nbsp;&#x2F;&#x2F;<span style="color: #3366ff;">拆分成单词</span></p>
 <p>　　　　　　　　while (itr.hasMoreTokens()) {</p>
 <p>　　　　　　　　<span style="color: #ff0000;">word</span>.set(itr.nextToken());</p>
-<p>　　　　　　　　context.write(word, one); &nbsp;/<span style="color: #3366ff;">/输出&lt;word，1&gt;</span></p>
+<p>　　　　　　　　context.write(word, one); &nbsp;&#x2F;<span style="color: #3366ff;">&#x2F;输出&lt;word，1&gt;</span></p>
 <p>　　　　　　}</p>
 <p>　　　　}</p>
 <p>　　}</p>
-<p>//系统自动对map结果进行排序等处理，reduce输入例 （asd,1-1-1)</p>
+<p>&#x2F;&#x2F;系统自动对map结果进行排序等处理，reduce输入例 （asd,1-1-1)</p>
 <p>　　public static class&nbsp;<strong>IntSumReducer</strong></p>
-<p>　　　　　　extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt; { &nbsp;//<span style="color: #3366ff;">Reducer&lt;KEYIN,VALUEIN,KEYOUT,VALUEOUT&gt;</span></p>
-<p>　　　　　　private IntWritable result = new IntWritable();</p>
+<p>　　　　　　extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt; { &nbsp;&#x2F;&#x2F;<span style="color: #3366ff;">Reducer&lt;KEYIN,VALUEIN,KEYOUT,VALUEOUT&gt;</span></p>
+<p>　　　　　　private IntWritable result &#x3D; new IntWritable();</p>
 <p>　　　　　　public void reduce(Text key, Iterable&lt;IntWritable&gt; values,Context context)</p>
-<p>　　　　　　　　　　 throws IOException, InterruptedException { &nbsp; /<span style="color: #3366ff;">/reducer输入为Map过程输出，&lt;key,values&gt;中key为单个单词，而values是对应单词的计数值</span></p>
-<p>　　　　　　　　int sum = 0;</p>
+<p>　　　　　　　　　　 throws IOException, InterruptedException { &nbsp; &#x2F;<span style="color: #3366ff;">&#x2F;reducer输入为Map过程输出，&lt;key,values&gt;中key为单个单词，而values是对应单词的计数值</span></p>
+<p>　　　　　　　　int sum &#x3D; 0;</p>
 <p>　　　　　　　　for (IntWritable val : values) {</p>
-<p>　　　　　　　　　　　sum += val.get();</p>
+<p>　　　　　　　　　　　sum +&#x3D; val.get();</p>
 <p>　　　　　　　　}</p>
 <p>　　　　　　result.set(sum);</p>
 <p>　　　　　　context.write(key, result);</p>
@@ -468,25 +468,25 @@
 <p>　　}</p>
 <p>&nbsp;</p>
 <p>　　public static void&nbsp;<strong>main</strong>(String[] args) throws Exception {</p>
-<p>　　　　Configuration conf = new Configuration();</p>
-<p>　　　　String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();</p>
-<p>　　　　if (otherArgs.length != 2) {</p>
+<p>　　　　Configuration conf &#x3D; new Configuration();</p>
+<p>　　　　String[] otherArgs &#x3D; new GenericOptionsParser(conf, args).getRemainingArgs();</p>
+<p>　　　　if (otherArgs.length !&#x3D; 2) {</p>
 <p>　　　　　　System.err.println(“Usage: wordcount &lt;in&gt; &lt;out&gt;”);</p>
 <p>　　　　　　System.exit(2);</p>
 <p>　　　　}</p>
-<p>　　　　Job job = new Job(conf, “word count”);</p>
+<p>　　　　Job job &#x3D; new Job(conf, “word count”);</p>
 <p>　　　　job.setJarByClass(WordCount.class);</p>
-<p>　　　　job.setMapperClass(TokenizerMapper.class); //<span style="color: #3366ff;">setMapperClass：设置Mapper，默认为IdentityMapper</span></p>
+<p>　　　　job.setMapperClass(TokenizerMapper.class); &#x2F;&#x2F;<span style="color: #3366ff;">setMapperClass：设置Mapper，默认为IdentityMapper</span></p>
 <p>　　　　job.setCombinerClass(IntSumReducer.class);</p>
-<p>　　　　job.setReducerClass(IntSumReducer.class);//<span style="color: #3366ff;">setReducerClass：设置Reducer，默认为IdentityReducer</span></p>
+<p>　　　　job.setReducerClass(IntSumReducer.class);&#x2F;&#x2F;<span style="color: #3366ff;">setReducerClass：设置Reducer，默认为IdentityReducer</span></p>
 <p>　　　　job.setOutputKeyClass(Text.class);</p>
 <p>　　　　job.setOutputValueClass(IntWritable.class);</p>
-<p>　　　　FileInputFormat.addInputPath(job, new Path(otherArgs[0]));/<span style="color: #3366ff;">/FileInputFormat.addInputPath：设置输入文件的路径，可以是一个文件，一个路径，一个通配符。可以被调用多次添加多个路径</span></p>
-<p>　　　　FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));/<span style="color: #3366ff;">/FileOutputFormat.setOutputPath：设置输出文件的路径，在job运行前此路径不应该存在</span></p>
+<p>　　　　FileInputFormat.addInputPath(job, new Path(otherArgs[0]));&#x2F;<span style="color: #3366ff;">&#x2F;FileInputFormat.addInputPath：设置输入文件的路径，可以是一个文件，一个路径，一个通配符。可以被调用多次添加多个路径</span></p>
+<p>　　　　FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));&#x2F;<span style="color: #3366ff;">&#x2F;FileOutputFormat.setOutputPath：设置输出文件的路径，在job运行前此路径不应该存在</span></p>
 <p>　　　　System.exit(job.waitForCompletion(true) ? 0 : 1);</p>
 <p>}</p>
 <p>}</p>
-<p>//setInputFormat：设置map的输入格式，默认为TextInputFormat，key为LongWritable, value为Text</p>
+<p>&#x2F;&#x2F;setInputFormat：设置map的输入格式，默认为TextInputFormat，key为LongWritable, value为Text</p>
 <p>setNumMapTasks：设置map任务的个数，此设置通常不起作用，map任务的个数取决于输入的数据所能分成的input split的个数</p>
 <p>&nbsp;</p>
 <p>setMapRunnerClass：设置MapRunner, map task是由MapRunner运行的，默认为MapRunnable，其功能为读取input split的一个个record，依次调用Mapper的map函数</p>

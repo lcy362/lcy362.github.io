@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -293,15 +293,15 @@
         <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>最近在找房子，因为想找一个去几个地方都相对方便的位置，自己去地图上看还挺麻烦的，所以想做个小工具，用来对北京地铁的路线做规划，本文就简单介绍一下实现过程。目前的功能还比较简单，主体方法就是根据一个输入的始发站，列出其他所有站点到这个地方的站数最少路线。</p>
 <span id="more"></span>
 
-<h2 id="数据获取"><a href="#数据获取" class="headerlink" title="数据获取"></a>数据获取</h2><p>从网上找了高德地图的接口数据: <span class="exturl" data-url="aHR0cDovL21hcC5hbWFwLmNvbS9zZXJ2aWNlL3N1YndheT9fMTQ2OTA4MzQ1Mzk3OCZhbXA7c3JoZGF0YT0xMTAwX2Ryd19iZWlqaW5nLmpzb24=">http://map.amap.com/service/subway?_1469083453978&amp;srhdata=1100_drw_beijing.json<i class="fa fa-external-link-alt"></i></span> . 对拿到的json串进行解析，其中包含每条地铁线路的信息，并依次列出线路上的每个站点。</p>
+<h2 id="数据获取"><a href="#数据获取" class="headerlink" title="数据获取"></a>数据获取</h2><p>从网上找了高德地图的接口数据: <span class="exturl" data-url="aHR0cDovL21hcC5hbWFwLmNvbS9zZXJ2aWNlL3N1YndheT9fMTQ2OTA4MzQ1Mzk3OCZzcmhkYXRhPTExMDBfZHJ3X2JlaWppbmcuanNvbg==">http://map.amap.com/service/subway?_1469083453978&amp;srhdata=1100_drw_beijing.json<i class="fa fa-external-link-alt"></i></span> . 对拿到的json串进行解析，其中包含每条地铁线路的信息，并依次列出线路上的每个站点。</p>
 <p>通过解析数据，要得到的主要就是各个站点的信息，站点定义的数据结构如下:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String id;</span><br><span class="line"><span class="keyword">private</span> String name;</span><br><span class="line"><span class="keyword">private</span> Set&lt;String&gt; lines = <span class="keyword">new</span> HashSet&lt;String&gt;(); <span class="comment">//所在线路</span></span><br><span class="line"><span class="keyword">private</span> String position;</span><br><span class="line"><span class="keyword">private</span> String pinyin;</span><br><span class="line"><span class="keyword">private</span> Set&lt;String&gt; nextStations = <span class="keyword">new</span> HashSet&lt;String&gt;(); <span class="comment">//相邻站点</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String id;</span><br><span class="line"><span class="keyword">private</span> String name;</span><br><span class="line"><span class="keyword">private</span> Set&lt;String&gt; lines = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;String&gt;(); <span class="comment">//所在线路</span></span><br><span class="line"><span class="keyword">private</span> String position;</span><br><span class="line"><span class="keyword">private</span> String pinyin;</span><br><span class="line"><span class="keyword">private</span> Set&lt;String&gt; nextStations = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;String&gt;(); <span class="comment">//相邻站点</span></span><br></pre></td></tr></table></figure>
 
 <p>所有站点汇总后可以看做一张图，nextStations字段就是用来表示边的信息。</p>
 <h2 id="路线规划"><a href="#路线规划" class="headerlink" title="路线规划"></a>路线规划</h2><p>路线规划算法可以参考Dijkstra算法，由于现有的表现形式下，只是一个无向无权重的图，实现起来还要简单一些。</p>
 <p>实现过程描述如下：</p>
 <ol>
-<li>新建两个map, knownPath和waitingPath，分别用来表示已经确定了最短路径的站点列表，和待处理的站点列表。初始化时，knownPath中只包含指定的起点，waitingPath中包含其他所有站点，并将距离设置成无穷大(用MAX = 20000表示)</li>
+<li>新建两个map, knownPath和waitingPath，分别用来表示已经确定了最短路径的站点列表，和待处理的站点列表。初始化时，knownPath中只包含指定的起点，waitingPath中包含其他所有站点，并将距离设置成无穷大(用MAX &#x3D; 20000表示)</li>
 <li>指定起点为当前节点</li>
 <li>依次处理当前的相邻节点，更新每个节点的最短距离</li>
 <li>从waitingPath中找到距离最短的节点，作为当前节点，重复第3步，并从waitingPath转移到knownPath</li>
@@ -309,7 +309,7 @@
 <p>整个过程结束之后，会得到每个节点到起点的最短距离以及路线详情，然后可以根据这些数据计算路线详情的换乘情况。</p>
 <p>对于换乘，主体判断逻辑是，如果一个站点的上一站和下一站所在路线不重合，就可以确定在这一站进行了换乘，比如灯市口-东四-朝阳门，灯市口在5号线上，朝阳门在2，6号线上，可以断定在东四肯定作了换乘。不过还有一些特殊情况要处理，比如说西直门到平安里，中间那站如果是车公庄（虽然现实中没人会这么干），实际就是作了换乘的，但是按刚才的逻辑就会判断成未换乘。</p>
 <p>最终得到的路线信息中包含以下信息：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String stationId;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> length;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> transferNum; <span class="comment">//换乘数</span></span><br><span class="line"><span class="keyword">private</span> List&lt;String&gt; detail = <span class="keyword">new</span> ArrayList&lt;&gt;(); <span class="comment">//详细路径</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String stationId;</span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> length;</span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> transferNum; <span class="comment">//换乘数</span></span><br><span class="line"><span class="keyword">private</span> List&lt;String&gt; detail = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(); <span class="comment">//详细路径</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>主体功能在上面已经完成，后边就可以根据需要再去自定义处理了。比如，加入我现在需要找到”距奥林匹克公园站15站以内且距天安门东站7站以内的位置”，就可以分别输入奥林匹克公园和天安门东，然后在结果中作相应的过滤，再取交集。</p>
 <h2 id="后续计划"><a href="#后续计划" class="headerlink" title="后续计划"></a>后续计划</h2><p>目前做的还比较简单，只是简单考虑站数，但是实际上，不同站点的距离、耗时相差会比较大，再一个不同地方的换乘开销差别也很大。所以后续会试试能不能找到换乘站的详情数据，还有两站之间耗时的数据，并应用到算法中。</p>

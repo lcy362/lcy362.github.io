@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -296,7 +296,7 @@
 
 <p>前阵子，发现一条sql的性能明细不正常，几千条数据批量insert，耗时居然到了秒级。排除了服务器性能、网络的问题后，开始怀疑是代码的问题，导致batch操作没有真正生效，感觉只有一条一条去跟数据库交互的话才会出现这种性能。</p>
 <p>调了一下代码，翻到了mysql-connector里，关键的代码是这么一块：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="keyword">this</span>.batchHasPlainStatements &amp;&amp; <span class="keyword">this</span>.connection.getRewriteBatchedStatements()) &#123;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (canRewriteAsMultiValueInsertAtSqlLevel()) &#123;</span><br><span class="line">                        <span class="keyword">return</span> executeBatchedInserts(batchTimeout);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">this</span>.connection.versionMeetsMinimum(<span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>) &amp;&amp; !<span class="keyword">this</span>.batchHasPlainStatements &amp;&amp; <span class="keyword">this</span>.batchedArgs != <span class="keyword">null</span></span><br><span class="line">                            &amp;&amp; <span class="keyword">this</span>.batchedArgs.size() &gt; <span class="number">3</span> <span class="comment">/* cost of option setting rt-wise */</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> executePreparedBatchAsMultiStatement(batchTimeout);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> executeBatchSerially(batchTimeout);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="built_in">this</span>.batchHasPlainStatements &amp;&amp; <span class="built_in">this</span>.connection.getRewriteBatchedStatements()) &#123;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (canRewriteAsMultiValueInsertAtSqlLevel()) &#123;</span><br><span class="line">                        <span class="keyword">return</span> executeBatchedInserts(batchTimeout);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (<span class="built_in">this</span>.connection.versionMeetsMinimum(<span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>) &amp;&amp; !<span class="built_in">this</span>.batchHasPlainStatements &amp;&amp; <span class="built_in">this</span>.batchedArgs != <span class="literal">null</span></span><br><span class="line">                            &amp;&amp; <span class="built_in">this</span>.batchedArgs.size() &gt; <span class="number">3</span> <span class="comment">/* cost of option setting rt-wise */</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> executePreparedBatchAsMultiStatement(batchTimeout);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> executeBatchSerially(batchTimeout);</span><br></pre></td></tr></table></figure>
 
 <p>可以看到有executeBatchedInserts和executeBatchSerially两个分支，如果执行到executeBatchSerially的话，其实就是执行了个“假的”batch, 在这个方法里会每条数据单独去跟mysql交互。</p>
 <p>为了能顺利的执行进executeBatchedInserts， 可以看到有一些先决条件：batchHasPlainStatements， connection.getRewriteBatchedStatements()， canRewriteAsMultiValueInsertAtSqlLevel。</p>
@@ -307,7 +307,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> () <span class="keyword">values</span> () () ()</span><br></pre></td></tr></table></figure>
 
 <p>变成了一条sql, 当然就是与mysql交互一次了。</p>
-<p>成功rewrite后，才能批量执行sql。上边的几个条件也基本都是为了能让sql进行改写。这里边关键的其实就是两个点，一是数据库连接层面，需要配置rewriteBatchedStatements=true， 允许对sql进行改写。第二是sql层面，得要求这个sql能被改写。我们知道，mysql有这样一种语法:</p>
+<p>成功rewrite后，才能批量执行sql。上边的几个条件也基本都是为了能让sql进行改写。这里边关键的其实就是两个点，一是数据库连接层面，需要配置rewriteBatchedStatements&#x3D;true， 允许对sql进行改写。第二是sql层面，得要求这个sql能被改写。我们知道，mysql有这样一种语法:</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> () <span class="keyword">set</span> x<span class="operator">=</span>x,y<span class="operator">=</span>y</span><br></pre></td></tr></table></figure>
 
 <p>这种语法本身不属于sql标准，是mysql的“方言”，也是没有批量操作的形式的。因此，如果把sql写成这种形式，就不然没法执行真正的批量操作了。</p>
@@ -325,16 +325,16 @@
       <div class="popular-posts-title"><a href="/posts/57802/" rel="bookmark">Java kryo/protobuf/protostuff序列化 or Json 性能对比</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/48104/" rel="bookmark">java分布式锁入门实战</a></div>
+      <div class="popular-posts-title"><a href="/posts/4433/" rel="bookmark">java日志系统简介: 从tomcat大量打印debug日志说起</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/posts/60353/" rel="bookmark">java多线程实现三个字母顺序输出</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/4433/" rel="bookmark">java日志系统简介: 从tomcat大量打印debug日志说起</a></div>
+      <div class="popular-posts-title"><a href="/posts/5707/" rel="bookmark">java线程池：获取运行线程数并控制线程启动速度</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/5707/" rel="bookmark">java线程池：获取运行线程数并控制线程启动速度</a></div>
+      <div class="popular-posts-title"><a href="/posts/53072/" rel="bookmark">java细节:三目运算符和自动拆箱</a></div>
     </li>
   </ul>
 

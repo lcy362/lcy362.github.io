@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -26,18 +26,18 @@
     var CONFIG = {"hostname":"lichuanyang.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="参考http:&#x2F;&#x2F;www.cnblogs.com&#x2F;xia520pi&#x2F;archive&#x2F;2012&#x2F;05&#x2F;16&#x2F;2504205.html &amp;nbsp; package org.apache.hadoop.examples; import java.io.IOException; import java.util.StringTokenizer; import org.apache.hadoop.conf">
+  <meta name="description" content="参考http:&#x2F;&#x2F;www.cnblogs.com&#x2F;xia520pi&#x2F;archive&#x2F;2012&#x2F;05&#x2F;16&#x2F;2504205.html &nbsp; package org.apache.hadoop.examples; import java.io.IOException; import java.util.StringTokenizer; import org.apache.hadoop.conf">
 <meta property="og:type" content="article">
 <meta property="og:title" content="wordcount代码">
 <meta property="og:url" content="http://lichuanyang.top/posts/25187/index.html">
 <meta property="og:site_name" content="Mobility">
-<meta property="og:description" content="参考http:&#x2F;&#x2F;www.cnblogs.com&#x2F;xia520pi&#x2F;archive&#x2F;2012&#x2F;05&#x2F;16&#x2F;2504205.html &amp;nbsp; package org.apache.hadoop.examples; import java.io.IOException; import java.util.StringTokenizer; import org.apache.hadoop.conf">
+<meta property="og:description" content="参考http:&#x2F;&#x2F;www.cnblogs.com&#x2F;xia520pi&#x2F;archive&#x2F;2012&#x2F;05&#x2F;16&#x2F;2504205.html &nbsp; package org.apache.hadoop.examples; import java.io.IOException; import java.util.StringTokenizer; import org.apache.hadoop.conf">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2012-10-28T10:42:00.000Z">
 <meta property="article:modified_time" content="2023-01-28T10:53:05.900Z">
 <meta property="article:author" content="流沙">
-<meta property="article:tag" content="大数据">
 <meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="大数据">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://lichuanyang.top/posts/25187/">
@@ -307,28 +307,28 @@
 <p>import org.apache.hadoop.util.GenericOptionsParser;</p>
 <p>public class WordCount {</p>
 <p>　　public static class&nbsp;<strong>TokenizerMapper</strong></p>
-<p>　　　　　　extends Mapper&lt;Object, Text, Text, IntWritable&gt;{ &nbsp;/<span style="color: #3366ff;">/继承org.apache.hadoop.mapreduce包中<strong>Mapper</strong>类，并<strong>重写</strong>其map方法</span></p>
-<p>　　　　　　private final static IntWritable one = new IntWritable(1); &nbsp; //<span style="color: #3366ff;"><strong>Mapper&lt;KEYIN,VALUEIN,KEYOUT,VALUEOUT&gt;</strong></span></p>
-<p>　　　　　　private Text <span style="color: #ff0000;">word</span> = new Text();</p>
+<p>　　　　　　extends Mapper&lt;Object, Text, Text, IntWritable&gt;{ &nbsp;&#x2F;<span style="color: #3366ff;">&#x2F;继承org.apache.hadoop.mapreduce包中<strong>Mapper</strong>类，并<strong>重写</strong>其map方法</span></p>
+<p>　　　　　　private final static IntWritable one &#x3D; new IntWritable(1); &nbsp; &#x2F;&#x2F;<span style="color: #3366ff;"><strong>Mapper&lt;KEYIN,VALUEIN,KEYOUT,VALUEOUT&gt;</strong></span></p>
+<p>　　　　　　private Text <span style="color: #ff0000;">word</span> &#x3D; new Text();</p>
 <p>&nbsp;</p>
-<p>　　　　　　public void map(Object key, Text value, Context context) &nbsp;//<span>Called once for each key/value pair in the input split</span></p>
-<p>　　　　　　　　throws IOException, InterruptedException { &nbsp;//<span style="color: #3366ff;">value值存储的是文本文件中的一行（以回车符为行结束标记），而key值为该行的首字母相对于文本文件的首地址的偏移量</span></p>
-<p>　　　　　　　　StringTokenizer itr = new StringTokenizer(value.toString()); &nbsp; &nbsp;//<span style="color: #3366ff;">拆分成单词</span></p>
+<p>　　　　　　public void map(Object key, Text value, Context context) &nbsp;&#x2F;&#x2F;<span>Called once for each key&#x2F;value pair in the input split</span></p>
+<p>　　　　　　　　throws IOException, InterruptedException { &nbsp;&#x2F;&#x2F;<span style="color: #3366ff;">value值存储的是文本文件中的一行（以回车符为行结束标记），而key值为该行的首字母相对于文本文件的首地址的偏移量</span></p>
+<p>　　　　　　　　StringTokenizer itr &#x3D; new StringTokenizer(value.toString()); &nbsp; &nbsp;&#x2F;&#x2F;<span style="color: #3366ff;">拆分成单词</span></p>
 <p>　　　　　　　　while (itr.hasMoreTokens()) {</p>
 <p>　　　　　　　　<span style="color: #ff0000;">word</span>.set(itr.nextToken());</p>
-<p>　　　　　　　　context.write(word, one); &nbsp;/<span style="color: #3366ff;">/输出&lt;word，1&gt;</span></p>
+<p>　　　　　　　　context.write(word, one); &nbsp;&#x2F;<span style="color: #3366ff;">&#x2F;输出&lt;word，1&gt;</span></p>
 <p>　　　　　　}</p>
 <p>　　　　}</p>
 <p>　　}</p>
-<p>//系统自动对map结果进行排序等处理，reduce输入例 （asd,1-1-1)</p>
+<p>&#x2F;&#x2F;系统自动对map结果进行排序等处理，reduce输入例 （asd,1-1-1)</p>
 <p>　　public static class&nbsp;<strong>IntSumReducer</strong></p>
-<p>　　　　　　extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt; { &nbsp;//<span style="color: #3366ff;">Reducer&lt;KEYIN,VALUEIN,KEYOUT,VALUEOUT&gt;</span></p>
-<p>　　　　　　private IntWritable result = new IntWritable();</p>
+<p>　　　　　　extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt; { &nbsp;&#x2F;&#x2F;<span style="color: #3366ff;">Reducer&lt;KEYIN,VALUEIN,KEYOUT,VALUEOUT&gt;</span></p>
+<p>　　　　　　private IntWritable result &#x3D; new IntWritable();</p>
 <p>　　　　　　public void reduce(Text key, Iterable&lt;IntWritable&gt; values,Context context)</p>
-<p>　　　　　　　　　　 throws IOException, InterruptedException { &nbsp; /<span style="color: #3366ff;">/reducer输入为Map过程输出，&lt;key,values&gt;中key为单个单词，而values是对应单词的计数值</span></p>
-<p>　　　　　　　　int sum = 0;</p>
+<p>　　　　　　　　　　 throws IOException, InterruptedException { &nbsp; &#x2F;<span style="color: #3366ff;">&#x2F;reducer输入为Map过程输出，&lt;key,values&gt;中key为单个单词，而values是对应单词的计数值</span></p>
+<p>　　　　　　　　int sum &#x3D; 0;</p>
 <p>　　　　　　　　for (IntWritable val : values) {</p>
-<p>　　　　　　　　　　　sum += val.get();</p>
+<p>　　　　　　　　　　　sum +&#x3D; val.get();</p>
 <p>　　　　　　　　}</p>
 <p>　　　　　　result.set(sum);</p>
 <p>　　　　　　context.write(key, result);</p>
@@ -336,25 +336,25 @@
 <p>　　}</p>
 <p>&nbsp;</p>
 <p>　　public static void&nbsp;<strong>main</strong>(String[] args) throws Exception {</p>
-<p>　　　　Configuration conf = new Configuration();</p>
-<p>　　　　String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();</p>
-<p>　　　　if (otherArgs.length != 2) {</p>
+<p>　　　　Configuration conf &#x3D; new Configuration();</p>
+<p>　　　　String[] otherArgs &#x3D; new GenericOptionsParser(conf, args).getRemainingArgs();</p>
+<p>　　　　if (otherArgs.length !&#x3D; 2) {</p>
 <p>　　　　　　System.err.println(“Usage: wordcount &lt;in&gt; &lt;out&gt;”);</p>
 <p>　　　　　　System.exit(2);</p>
 <p>　　　　}</p>
-<p>　　　　Job job = new Job(conf, “word count”);</p>
+<p>　　　　Job job &#x3D; new Job(conf, “word count”);</p>
 <p>　　　　job.setJarByClass(WordCount.class);</p>
-<p>　　　　job.setMapperClass(TokenizerMapper.class); //<span style="color: #3366ff;">setMapperClass：设置Mapper，默认为IdentityMapper</span></p>
+<p>　　　　job.setMapperClass(TokenizerMapper.class); &#x2F;&#x2F;<span style="color: #3366ff;">setMapperClass：设置Mapper，默认为IdentityMapper</span></p>
 <p>　　　　job.setCombinerClass(IntSumReducer.class);</p>
-<p>　　　　job.setReducerClass(IntSumReducer.class);//<span style="color: #3366ff;">setReducerClass：设置Reducer，默认为IdentityReducer</span></p>
+<p>　　　　job.setReducerClass(IntSumReducer.class);&#x2F;&#x2F;<span style="color: #3366ff;">setReducerClass：设置Reducer，默认为IdentityReducer</span></p>
 <p>　　　　job.setOutputKeyClass(Text.class);</p>
 <p>　　　　job.setOutputValueClass(IntWritable.class);</p>
-<p>　　　　FileInputFormat.addInputPath(job, new Path(otherArgs[0]));/<span style="color: #3366ff;">/FileInputFormat.addInputPath：设置输入文件的路径，可以是一个文件，一个路径，一个通配符。可以被调用多次添加多个路径</span></p>
-<p>　　　　FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));/<span style="color: #3366ff;">/FileOutputFormat.setOutputPath：设置输出文件的路径，在job运行前此路径不应该存在</span></p>
+<p>　　　　FileInputFormat.addInputPath(job, new Path(otherArgs[0]));&#x2F;<span style="color: #3366ff;">&#x2F;FileInputFormat.addInputPath：设置输入文件的路径，可以是一个文件，一个路径，一个通配符。可以被调用多次添加多个路径</span></p>
+<p>　　　　FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));&#x2F;<span style="color: #3366ff;">&#x2F;FileOutputFormat.setOutputPath：设置输出文件的路径，在job运行前此路径不应该存在</span></p>
 <p>　　　　System.exit(job.waitForCompletion(true) ? 0 : 1);</p>
 <p>}</p>
 <p>}</p>
-<p>//setInputFormat：设置map的输入格式，默认为TextInputFormat，key为LongWritable, value为Text</p>
+<p>&#x2F;&#x2F;setInputFormat：设置map的输入格式，默认为TextInputFormat，key为LongWritable, value为Text</p>
 <p>setNumMapTasks：设置map任务的个数，此设置通常不起作用，map任务的个数取决于输入的数据所能分成的input split的个数</p>
 <p>&nbsp;</p>
 <p>setMapRunnerClass：设置MapRunner, map task是由MapRunner运行的，默认为MapRunnable，其功能为读取input split的一个个record，依次调用Mapper的map函数</p>
@@ -416,8 +416,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
               <a href="/tags/hadoop/" rel="tag"># hadoop</a>
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
           </div>
 
         

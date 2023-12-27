@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -305,15 +305,15 @@
 <li>必要的时候，可以在线上节点上有强力的工具帮助排查问题。</li>
 </ul>
 <p>接下来，我们就看一下这些问题分别怎么解决。</p>
-<h2 id="部署环境"><a href="#部署环境" class="headerlink" title="部署环境"></a>部署环境</h2><p>首先，在本文的标题中，其实已经假定了部署环境就是kubernetes, 所以，我先说一下为什么只有kubernetes这一个选项。随便翻开一个kubernetes的介绍资料，我们都可以看到很多它的优势说明，这里我们不多赘述。而其中最关键的，也是每个人都能切身体会到的好处，其实就是它提供了完善的自动扩缩容机制。可以非常简单的设置一个cpu消耗的期望值，k8s集群就可以根据目前cpu的负载去调整pod数量。我对比了我们启用自动扩缩容前后的数据，每天的机器成本可以相差接近600美金，占总成本的1/3还要多。</p>
+<h2 id="部署环境"><a href="#部署环境" class="headerlink" title="部署环境"></a>部署环境</h2><p>首先，在本文的标题中，其实已经假定了部署环境就是kubernetes, 所以，我先说一下为什么只有kubernetes这一个选项。随便翻开一个kubernetes的介绍资料，我们都可以看到很多它的优势说明，这里我们不多赘述。而其中最关键的，也是每个人都能切身体会到的好处，其实就是它提供了完善的自动扩缩容机制。可以非常简单的设置一个cpu消耗的期望值，k8s集群就可以根据目前cpu的负载去调整pod数量。我对比了我们启用自动扩缩容前后的数据，每天的机器成本可以相差接近600美金，占总成本的1&#x2F;3还要多。</p>
 <p>由于k8s本身的运维成本是很高的，推荐直接购买云服务商的服务，无论aws还是阿里云，都提供了很完善的k8s集群功能。</p>
 <p>另外，推荐使用 kuboard (<span class="exturl" data-url="aHR0cHM6Ly9rdWJvYXJkLmNuLw==">https://kuboard.cn/<i class="fa fa-external-link-alt"></i></span>) 这个工具对k8s进行管理。kuboard是一个图像化的k8s管理工具，包括部署、配置、扩容、登入pod等常见操作，都可以在图形化界面下操作，使用很方便。</p>
 <h2 id="项目开发"><a href="#项目开发" class="headerlink" title="项目开发"></a>项目开发</h2><p>一般基于spring initializr创建一个项目就可以。对于常用的日志、监控等各类配置，建议整理一份最佳实践并做一个模板项目。新项目可以基于这个模板项目来创建，可以利用mvn archetype或者类似的工具让这个过程更加顺畅。</p>
 <p>至于一些常用的数据库、缓存等基本代码，感觉spring全家桶已经足够好用了。</p>
 <p>对于code review, 我们可以使用gitlab的webhook, 当代码提交时，自动给项目组的人发通知。</p>
-<h2 id="打包-amp-部署"><a href="#打包-amp-部署" class="headerlink" title="打包&amp;部署"></a>打包&amp;部署</h2><p>对于springboot项目，可以用buildpacks 打成docker镜像，而不用再考虑docker file的细节。具体的buildpacks产品，我们用的是paketo buildpacks, 其他的诸如cloudfoundry,heroku也都差不多，目前没有还研究这些包有什么具体需求。</p>
+<h2 id="打包-部署"><a href="#打包-部署" class="headerlink" title="打包&amp;部署"></a>打包&amp;部署</h2><p>对于springboot项目，可以用buildpacks 打成docker镜像，而不用再考虑docker file的细节。具体的buildpacks产品，我们用的是paketo buildpacks, 其他的诸如cloudfoundry,heroku也都差不多，目前没有还研究这些包有什么具体需求。</p>
 <p>接下来，我们仍然可以利用gitlab的webhook, 触发一次jenkins的构建任务。在jenkins的构建任务重，我们可以完成打包和部署到kubernetes测试集群这些操作。</p>
-<h2 id="监控-amp-报警"><a href="#监控-amp-报警" class="headerlink" title="监控&amp;报警"></a>监控&amp;报警</h2><p>推荐使用 prometheus + grafana 套餐即可，关于prometheus的使用，以及在springboot项目下的配置，可以参考我之前的文章  h<a href="https://lichuanyang.top/posts/28288/">ttps://lichuanyang.top/posts/28288/</a>  。</p>
+<h2 id="监控-报警"><a href="#监控-报警" class="headerlink" title="监控&amp;报警"></a>监控&amp;报警</h2><p>推荐使用 prometheus + grafana 套餐即可，关于prometheus的使用，以及在springboot项目下的配置，可以参考我之前的文章  h<a href="https://lichuanyang.top/posts/28288/">ttps:&#x2F;&#x2F;lichuanyang.top&#x2F;posts&#x2F;28288&#x2F;</a>  。</p>
 <p>在k8s上，可以装一个weave cloud agent， 然后就可以配置对prometheus接口进行自动抓取了。</p>
 <p>在grafana里，可以直接写promeql配置监控报表。 另外，grafana官网上，有大量的别人共享出来的图表，可以直接使用。</p>
 <p>在grafana里，也可以配置各种各样自定义规则的报警。如果使用飞书的话，在飞书里配置grafana助手，可以很容易的将飞书作为grafana的报警通道。</p>
@@ -452,7 +452,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">部署环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91"><span class="nav-number">2.</span> <span class="nav-text">项目开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%8C%85-amp-%E9%83%A8%E7%BD%B2"><span class="nav-number">3.</span> <span class="nav-text">打包&amp;部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%91%E6%8E%A7-amp-%E6%8A%A5%E8%AD%A6"><span class="nav-number">4.</span> <span class="nav-text">监控&amp;报警</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%BF%97"><span class="nav-number">5.</span> <span class="nav-text">日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E6%9F%A5%E9%97%AE%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text">排查问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%91%E4%B8%9D%E9%9B%80%E9%83%A8%E7%BD%B2"><span class="nav-number">7.</span> <span class="nav-text">金丝雀部署</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">部署环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91"><span class="nav-number">2.</span> <span class="nav-text">项目开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%8C%85-%E9%83%A8%E7%BD%B2"><span class="nav-number">3.</span> <span class="nav-text">打包&amp;部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%91%E6%8E%A7-%E6%8A%A5%E8%AD%A6"><span class="nav-number">4.</span> <span class="nav-text">监控&amp;报警</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%BF%97"><span class="nav-number">5.</span> <span class="nav-text">日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E6%9F%A5%E9%97%AE%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text">排查问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%91%E4%B8%9D%E9%9B%80%E9%83%A8%E7%BD%B2"><span class="nav-number">7.</span> <span class="nav-text">金丝雀部署</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

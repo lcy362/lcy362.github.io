@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -295,7 +295,7 @@
 <p>这种机制在一些特定情况下会有些问题。今天我就遇到一种情况：创建线程比线程执行的速度要快的多，而且单个线程占用的内存又多，所以很快内存就爆了。</p>
 <p>想了一个办法，就是在提交任务之前，先检查目前正在执行的线程数目，只有没把线程池占满的时候在去提交任务。</p>
 <p>代码很简单：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">          <span class="keyword">int</span> threadCount = ((ThreadPoolExecutor)executor).getActiveCount();</span><br><span class="line"><span class="comment">//        System.out.println(&quot;running : &quot; + threadCount);</span></span><br><span class="line">          <span class="keyword">while</span> (threadCount == POOL_SIZE) &#123;</span><br><span class="line">             TimeUnit.MILLISECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">             threadCount = ((ThreadPoolExecutor)executor).getActiveCount();</span><br><span class="line"><span class="comment">//           System.out.println(&quot;running : &quot; + threadCount);</span></span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">         executor.execute</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">          <span class="type">int</span> <span class="variable">threadCount</span> <span class="operator">=</span> ((ThreadPoolExecutor)executor).getActiveCount();</span><br><span class="line"><span class="comment">//        System.out.println(&quot;running : &quot; + threadCount);</span></span><br><span class="line">          <span class="keyword">while</span> (threadCount == POOL_SIZE) &#123;</span><br><span class="line">             TimeUnit.MILLISECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">             threadCount = ((ThreadPoolExecutor)executor).getActiveCount();</span><br><span class="line"><span class="comment">//           System.out.println(&quot;running : &quot; + threadCount);</span></span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">         executor.execute</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -311,13 +311,13 @@
       <div class="popular-posts-title"><a href="/posts/57802/" rel="bookmark">Java kryo/protobuf/protostuff序列化 or Json 性能对比</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/48104/" rel="bookmark">java分布式锁入门实战</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/posts/4433/" rel="bookmark">java日志系统简介: 从tomcat大量打印debug日志说起</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/posts/53072/" rel="bookmark">java细节:三目运算符和自动拆箱</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/48104/" rel="bookmark">java分布式锁入门实战</a></div>
     </li>
   </ul>
 

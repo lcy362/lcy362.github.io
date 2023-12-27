@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -295,11 +295,11 @@
 <p>Actviemq plugin的开发非常方便，只需要实现两个类。</p>
 <p>一个是plugin类， 需要implements BrokerPlugin这个接口，然后将接口的installPlugin方法实现了即可。</p>
 <p>这个方法的唯一作用就是指定一个broker类，代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Broker <span class="title">installPlugin</span><span class="params">(Broker broker)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> LimitQueueSIzeBroker(broker);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Broker <span class="title function_">installPlugin</span><span class="params">(Broker broker)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">LimitQueueSIzeBroker</span>(broker);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>接下来就是在实现一个broker类，一般情况下可以extends BrokerFilter 这个类，然后选择需要的方法重写，构造方法和重写的每个方法执行完毕后，执行以下super类的对应方法，这样就不会对activemq的实际运行造成影响。</p>
 <p>例如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">FoxBroker</span><span class="params">(Broker next)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(next);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">(ProducerBrokerExchange producerExchange, Message messageSend)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        String ip = producerExchange.getConnectionContext().getConnection().getRemoteAddress();</span><br><span class="line">        String destinationName = messageSend.getDestination().getPhysicalName();</span><br><span class="line">        logger.info(<span class="string">&quot;send_&quot;</span> + destinationName + <span class="string">&quot; &quot;</span>  + ip);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        logger.error(<span class="string">&quot;activemq send log error: &quot;</span> + e, e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">super</span>.send(producerExchange, messageSend);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">FoxBroker</span><span class="params">(Broker next)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(next);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">send</span><span class="params">(ProducerBrokerExchange producerExchange, Message messageSend)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">ip</span> <span class="operator">=</span> producerExchange.getConnectionContext().getConnection().getRemoteAddress();</span><br><span class="line">        <span class="type">String</span> <span class="variable">destinationName</span> <span class="operator">=</span> messageSend.getDestination().getPhysicalName();</span><br><span class="line">        logger.info(<span class="string">&quot;send_&quot;</span> + destinationName + <span class="string">&quot; &quot;</span>  + ip);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        logger.error(<span class="string">&quot;activemq send log error: &quot;</span> + e, e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">super</span>.send(producerExchange, messageSend);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这里我们重写了activemq的send方法, 并且增加了一些日志。</p>
 <p>然后打包，将jar包放到activemq的lib目录下。再在activemq.xml下增加plugins这个模块，并把需要的插件依次列在里边。</p>
@@ -318,7 +318,7 @@
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/32479/" rel="bookmark">activemq web console的权限配置</a></div>
+      <div class="popular-posts-title"><a href="/posts/20459/" rel="bookmark">activemq多线程消费的不同处理方式</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/posts/13925/" rel="bookmark">activemq 5.6 连接池的内存泄露问题</a></div>
@@ -327,7 +327,7 @@
       <div class="popular-posts-title"><a href="/posts/31044/" rel="bookmark">activemq特性之持久化</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/20459/" rel="bookmark">activemq多线程消费的不同处理方式</a></div>
+      <div class="popular-posts-title"><a href="/posts/12035/" rel="bookmark">activemq系列-概述</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/posts/48216/" rel="bookmark">activemq的安装及基本使用</a></div>

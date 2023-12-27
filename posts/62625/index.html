@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -304,14 +304,14 @@
 <p>如果需要在主机上访问虚拟机的其他端口，例如tomcat的8080，activemq的61616，8161,也可以在这儿一并配了。</p>
 <h3 id="查看虚拟机ip"><a href="#查看虚拟机ip" class="headerlink" title="查看虚拟机ip"></a>查看虚拟机ip</h3><p>在主机上执行ipconfig,找sudo systemctl disable firewalld.service对应的ip, 然后就可以在xshell中配置对应的ip和端口，访问虚拟机了。</p>
 <h2 id="配置自启动服务"><a href="#配置自启动服务" class="headerlink" title="配置自启动服务"></a>配置自启动服务</h2><p>centos下配置自启动的方式很多，我们在这里提供一种最简单的方式。</p>
-<h3 id="写一个脚本"><a href="#写一个脚本" class="headerlink" title="写一个脚本"></a>写一个脚本</h3><p>例如vim /opt/app/service.sh</p>
+<h3 id="写一个脚本"><a href="#写一个脚本" class="headerlink" title="写一个脚本"></a>写一个脚本</h3><p>例如vim &#x2F;opt&#x2F;app&#x2F;service.sh</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">export JAVA_HOME=/opt/app/jdk1.8.0_121</span><br><span class="line">sh /opt/app/apache-activemq-5.14.4/bin/activemq start &gt;/opt/app/start.log</span><br></pre></td></tr></table></figure>
 <p>把需要自启动的脚本全都放这儿，以后想增加自启动服务的时候，也只需要操作这个脚本。</p>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>chmod +x /opt/app/service.sh</p>
-<p>centos7下/etc/rc.d/rc.local也需要自己去加执行权限：</p>
-<p>chmod +x /etc/rc.d/rc.local</p>
-<p>然后打开/etc/rc.d/rc.local，在最后把自己写的脚本加上：</p>
-<p>/opt/app/service.sh</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>chmod +x &#x2F;opt&#x2F;app&#x2F;service.sh</p>
+<p>centos7下&#x2F;etc&#x2F;rc.d&#x2F;rc.local也需要自己去加执行权限：</p>
+<p>chmod +x &#x2F;etc&#x2F;rc.d&#x2F;rc.local</p>
+<p>然后打开&#x2F;etc&#x2F;rc.d&#x2F;rc.local，在最后把自己写的脚本加上：</p>
+<p>&#x2F;opt&#x2F;app&#x2F;service.sh</p>
 <p>保存，就完成自启动服务的配置了。</p>
 <p>之后，我们可以通过vitualbox的无界面方式启动，然后在xshell中自由操作。</p>
 

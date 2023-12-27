@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -36,8 +36,8 @@
 <meta property="article:published_time" content="2016-11-16T11:58:00.000Z">
 <meta property="article:modified_time" content="2023-01-28T10:53:05.898Z">
 <meta property="article:author" content="流沙">
-<meta property="article:tag" content="storm">
 <meta property="article:tag" content="jstorm">
+<meta property="article:tag" content="storm">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://lichuanyang.top/posts/31996/">
@@ -298,13 +298,13 @@
 <p>其中，节点大小和箭头粗细代表数据量，节点颜色用于区分spout和bolt。箭头颜色对应TupleLifeCycle属性，由绿到红越来越慢。箭头变红色时，可以适当增加下游节点的并行度。</p>
 <h3 id="Component-Metrics"><a href="#Component-Metrics" class="headerlink" title="Component Metrics"></a>Component Metrics</h3><p>包含每个spout, bolt的统计信息。</p>
 <p>各参数说明:</p>
-<p>tasks : 并行度。对应代码中为每个spout/bolt设置的并行度。</p>
-<p>emitted, acked, failed : 发射/收到ack/未收到ack的消息数。</p>
-<p>sendTps, recvTps: 发送/接收数据tps.</p>
+<p>tasks : 并行度。对应代码中为每个spout&#x2F;bolt设置的并行度。</p>
+<p>emitted, acked, failed : 发射&#x2F;收到ack&#x2F;未收到ack的消息数。</p>
+<p>sendTps, recvTps: 发送&#x2F;接收数据tps.</p>
 <p>需要注意，以上数据交互类的指标包含了与storm本身组件，topology_master,acker之间的交互，只能用来查看运行状况，<strong>不适合统计用</strong>。</p>
 <p>process: 对于bolt来说，是excute()函数的执行时间，对于spout来说，是整条消息（包含下游各步）被完整处理的时间，体现系统运行效率的主要参数。</p>
 <p>TupleLifeCycle: 从上游消息被emit,到消息处理完所需时间。和process相比相差太大时，说明在bolt队列中等待了较长时间，可以适当增加并发。</p>
-<p>deser, ser: 序列化/反序列化耗时，一般无需关注. storm中每一个emit出来的数据都需要做序列化和反序列化。</p>
+<p>deser, ser: 序列化&#x2F;反序列化耗时，一般无需关注. storm中每一个emit出来的数据都需要做序列化和反序列化。</p>
 <p>error: 鼠标悬浮在E上，可以查看具体的报错信息。<strong>主要寻找带异常堆栈的数据<strong>， 一些诸如is dead, no response之类的信息无需关注。</strong></strong></p>
 
     </div>
@@ -322,13 +322,13 @@
       <div class="popular-posts-title"><a href="/posts/22103/" rel="bookmark">storm/jstorm生态与周边工具,storm连接activemq,kafka,hdfs等</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/62259/" rel="bookmark">storm ui 中一些关键属性的含义</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/27021/" rel="bookmark">五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/posts/15594/" rel="bookmark">jstorm源码解析之bolt异常处理</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/31761/" rel="bookmark">jstorm源码解析之循环任务AsyncLoopThread</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/62259/" rel="bookmark">storm ui 中一些关键属性的含义</a></div>
     </li>
   </ul>
 
@@ -364,8 +364,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/storm/" rel="tag"># storm</a>
               <a href="/tags/jstorm/" rel="tag"># jstorm</a>
+              <a href="/tags/storm/" rel="tag"># storm</a>
           </div>
 
         

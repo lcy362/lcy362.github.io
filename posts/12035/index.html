@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -303,7 +303,7 @@
 <p>消息中间件主要有两个作用，一是解耦，二是平峰，都是大型系统中经常会遇到的问题。</p>
 <p>所谓解耦，就是要保持系统内各个应用的相对独立性。例如，用户登录的时候，可能有多个应用要触发各种各样的操作，推荐啊，发消息啊之类的，这些操作跟登录这个操作本身是无关的，如果全都放在登录模块去做，显然不合适，而且用户体验会非常差。这个时候就可以在登陆的时候发一条消息出来，其他系统监听这个消息，再进行各自业务的处理。</p>
 <p>平峰，就是为了应对突然的流量增长，毕竟系统分配资源时不可能按最大需求去分配。如果短时间流量太大，可以让消息先留在消息中间件里，业务慢慢处理。</p>
-<p>消息中间件一般有两种传递模式：点对点模式(P2P)和发布-订阅模式(Pub/Sub)。</p>
+<p>消息中间件一般有两种传递模式：点对点模式(P2P)和发布-订阅模式(Pub&#x2F;Sub)。</p>
 <p>点对点模式在JMS里叫做Queue, 主要特点有三个:</p>
 <ol>
 <li>每个消息只有一个消费者（Consumer)</li>
@@ -329,19 +329,19 @@
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/32479/" rel="bookmark">activemq web console的权限配置</a></div>
+      <div class="popular-posts-title"><a href="/posts/61645/" rel="bookmark">activemq plugin开发指南及示例</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/20459/" rel="bookmark">activemq多线程消费的不同处理方式</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/posts/13925/" rel="bookmark">activemq 5.6 连接池的内存泄露问题</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/61645/" rel="bookmark">activemq plugin开发指南及示例</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/posts/31044/" rel="bookmark">activemq特性之持久化</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/20459/" rel="bookmark">activemq多线程消费的不同处理方式</a></div>
+      <div class="popular-posts-title"><a href="/posts/48216/" rel="bookmark">activemq的安装及基本使用</a></div>
     </li>
   </ul>
 

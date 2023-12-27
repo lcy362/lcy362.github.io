@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -293,21 +293,21 @@
 <span id="more"></span>
 
 <p>就是类似这么一行代码:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">boolean</span> b = <span class="keyword">true</span>; </span><br><span class="line">Long a = b ? <span class="number">0l</span> : Long.valueOf(<span class="number">2</span>); </span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="variable">b</span> <span class="operator">=</span> <span class="literal">true</span>; </span><br><span class="line"><span class="type">Long</span> <span class="variable">a</span> <span class="operator">=</span> b ? <span class="number">0l</span> : Long.valueOf(<span class="number">2</span>); </span><br></pre></td></tr></table></figure>
 
 <p>Findbugs给出了”Boxed value is unboxed and then immediately reboxed”的提示，意思就是有装箱的对象做了拆箱，然后又马上做了装箱。这个问题其实很常见，一开始也没注意，只是习惯性的把Long.valueOf 改成了Long.parseLong, 确实把这个警告消掉了，不过之后才意识到不对：明明valueOf返回的是Long类型，parseLong返回的是long类型，而需要的正是Long类型，为什么反而用valueOf的时候有问题呢。 </p>
 <p>其实思考一下大概也能想明白，主要就在三元运算符的另一个分支，因为另一个分支返回的是一个未装箱的0,所以这个三元运算符的返回值就成了long,所以原本的Long类型就要经过一次拆箱才会被返回。要优化这个部分的话，保持两个分支的返回类型一致就可以了。 </p>
 <p>然后把相关的细节查了一下，了解清楚。 </p>
-<h2 id="自动装箱-拆箱"><a href="#自动装箱-拆箱" class="headerlink" title="自动装箱/拆箱"></a>自动装箱/拆箱</h2><p>从JDK1.5开始，java引入了自动装箱和拆箱，不需要做显式转换，提高了我们的开发效率。比如: </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Double dWrap1 = <span class="number">10d</span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> d1 = dWrap1; </span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> d2 = d1 + dWrap1; </span><br><span class="line"></span><br><span class="line">DoubledWarp2 = d2 + dWrap1; </span><br></pre></td></tr></table></figure>
+<h2 id="自动装箱-拆箱"><a href="#自动装箱-拆箱" class="headerlink" title="自动装箱&#x2F;拆箱"></a>自动装箱&#x2F;拆箱</h2><p>从JDK1.5开始，java引入了自动装箱和拆箱，不需要做显式转换，提高了我们的开发效率。比如: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Double</span> <span class="variable">dWrap1</span> <span class="operator">=</span> <span class="number">10d</span>; </span><br><span class="line"></span><br><span class="line"><span class="type">double</span> <span class="variable">d1</span> <span class="operator">=</span> dWrap1; </span><br><span class="line"></span><br><span class="line"><span class="type">double</span> <span class="variable">d2</span> <span class="operator">=</span> d1 + dWrap1; </span><br><span class="line"></span><br><span class="line">DoubledWarp2 = d2 + dWrap1; </span><br></pre></td></tr></table></figure>
 
 <p>这么一段代码就是可以正常运行的。 </p>
 <p>另外一个要注意的地方就是，在一个运算，比如前边提到的三元运算符，涉及到类型转换时，编译器会优先选择基本类型，也就是说会优先把已装箱的对象拆箱。 </p>
 <p>我们一开始的问题只是很细微的性能损耗 </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Long B = <span class="keyword">null</span>; </span><br><span class="line">Long A = (<span class="number">2</span>&gt;<span class="number">1</span>)?B:<span class="number">0l</span>; </span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Long</span> <span class="variable">B</span> <span class="operator">=</span> <span class="literal">null</span>; </span><br><span class="line"><span class="type">Long</span> <span class="variable">A</span> <span class="operator">=</span> (<span class="number">2</span>&gt;<span class="number">1</span>)?B:<span class="number">0l</span>; </span><br></pre></td></tr></table></figure>
 
 <p>但是像这样的代码的话就是有bug了， 看似只是把一个null赋给Long类型的A, 但是这过程中会做一次向long的拆箱，所以肯定会报空指针。</p>
-<p>所以说，我们在平常的开发中，还是应该尽量避免无意义的装/拆箱和类型转换，不光是出于性能考虑，也是为了避免一些诡异的问题。</p>
+<p>所以说，我们在平常的开发中，还是应该尽量避免无意义的装&#x2F;拆箱和类型转换，不光是出于性能考虑，也是为了避免一些诡异的问题。</p>
 <p>原文地址: <span class="exturl" data-url="aHR0cHM6Ly9sY3kzNjIuZ2l0aHViLmlvL3Bvc3RzLzUzMDcyLw==">https://lcy362.github.io/posts/53072/<i class="fa fa-external-link-alt"></i></span></p>
 
     </div>
@@ -322,16 +322,16 @@
       <div class="popular-posts-title"><a href="/posts/57802/" rel="bookmark">Java kryo/protobuf/protostuff序列化 or Json 性能对比</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/48104/" rel="bookmark">java分布式锁入门实战</a></div>
+      <div class="popular-posts-title"><a href="/posts/4433/" rel="bookmark">java日志系统简介: 从tomcat大量打印debug日志说起</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/posts/60353/" rel="bookmark">java多线程实现三个字母顺序输出</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/4433/" rel="bookmark">java日志系统简介: 从tomcat大量打印debug日志说起</a></div>
+      <div class="popular-posts-title"><a href="/posts/5707/" rel="bookmark">java线程池：获取运行线程数并控制线程启动速度</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/posts/5707/" rel="bookmark">java线程池：获取运行线程数并控制线程启动速度</a></div>
+      <div class="popular-posts-title"><a href="/posts/48104/" rel="bookmark">java分布式锁入门实战</a></div>
     </li>
   </ul>
 

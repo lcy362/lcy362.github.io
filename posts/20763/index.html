@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -295,7 +295,7 @@
 <span id="more"></span>
 
 <p>iterm2 （<span class="exturl" data-url="aHR0cHM6Ly9pdGVybTIuY29tLw==">https://iterm2.com/<i class="fa fa-external-link-alt"></i></span>)  是mac下使用非常广泛的一款终端替代产品，提供了很多强大的功能。要实现ssh书签，实现免密码登录、自动登录的效果，关键点是其中的三个特性：profile, trigger 和 password manager.</p>
-<p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <span class="exturl" data-url="bWFpbHRvOiYjMTE0OyYjeDZmOyYjMTExOyYjeDc0OyYjeDQwOyYjNDk7JiM0NjsmI3gzMTsmIzQ2OyYjeDMxOyYjeDJlOyYjNDk7">&#114;&#x6f;&#111;&#x74;&#x40;&#49;&#46;&#x31;&#46;&#x31;&#x2e;&#49;<i class="fa fa-external-link-alt"></i></span>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p>
+<p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <span class="exturl" data-url="bWFpbHRvOiYjMTE0OyYjMTExOyYjeDZmOyYjeDc0OyYjNjQ7JiN4MzE7JiM0NjsmI3gzMTsmI3gyZTsmI3gzMTsmIzQ2OyYjeDMxOw==">&#114;&#111;&#x6f;&#x74;&#64;&#x31;&#46;&#x31;&#x2e;&#x31;&#46;&#x31;<i class="fa fa-external-link-alt"></i></span>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p>
 <p>trigger也是profile的一个特性，入口在profile配置页的advanced标签下，它的作用就是利用关键词触发一个动作，我们现在要做的就是用password这个关键词触发打开 password manager。 操作很简单，就是增加一个trigger, regular expression 填入 password,  action选择 open password manager, 注意勾选instant和enabled两个选项。</p>
 <p>最后一个要配置的是password manager, password manager 就是一个密码管理器，是item2中会默认安装的一款插件，入口在工具栏 window 标签下。打开password manager, 将需要保存的密码都录入进去就可以了。</p>
 <p>这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。</p>

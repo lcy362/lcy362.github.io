@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -313,7 +313,7 @@
 <table>
 <thead>
 <tr>
-<th align="left">Type of platform/framework</th>
+<th align="left">Type of platform&#x2F;framework</th>
 <th align="left">Example</th>
 </tr>
 </thead>
@@ -330,7 +330,7 @@
 <td align="left">Kubernetes, Mesos, Zookeeper, etcd, Consul</td>
 </tr>
 <tr>
-<td align="left">In Memory Data/Compute Grids</td>
+<td align="left">In Memory Data&#x2F;Compute Grids</td>
 <td align="left">Hazlecast, Pivotal Gemfire</td>
 </tr>
 <tr>
@@ -361,7 +361,7 @@
 <p>这提供了持久性的保证。 即使服务器突然崩溃，然后重新启动，数据也不会丢失。 但是，在服务器恢复之前，客户端将无法获取或存储任何数据。 因此，如果服务器发生故障，我们会缺乏可用性。</p>
 <p>一种显而易见的解决方案是将数据存储在多个服务器上。 因此，我们可以在多个服务器上复制预写日志。</p>
 <p>当涉及多个服务器时，还有更多的故障情况需要考虑。</p>
-<h2 id="网络延迟"><a href="#网络延迟" class="headerlink" title="网络延迟"></a>网络延迟</h2><p>在TCP / IP协议栈中，通过网络传输消息时所引起的延迟没有上限。 它会根据网络上的负载而变化。 例如，一个1 Gbps的网络连接可能会被定时触发的大数据作业淹没，从而填满网络缓冲区，并且可能导致某些消息在不确定的延迟后才到达服务器。</p>
+<h2 id="网络延迟"><a href="#网络延迟" class="headerlink" title="网络延迟"></a>网络延迟</h2><p>在TCP &#x2F; IP协议栈中，通过网络传输消息时所引起的延迟没有上限。 它会根据网络上的负载而变化。 例如，一个1 Gbps的网络连接可能会被定时触发的大数据作业淹没，从而填满网络缓冲区，并且可能导致某些消息在不确定的延迟后才到达服务器。</p>
 <p>在典型的数据中心中，服务器打包在机架中，并且通过机架式交换机连接多个机架。 可能会有一棵交换机树将数据中心的一部分连接到另一部分。 在某些情况下，一组服务器可以相互通信，但与另一组服务器的连接是断开的。 这种情况称为网络分区。 服务器通过网络进行通信的基本问题之一是，何时能知道特定服务器发生了故障。</p>
 <p>这里有两个问题要解决。</p>
 <ul>
