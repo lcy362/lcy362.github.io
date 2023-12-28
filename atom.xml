@@ -6,7 +6,7 @@
   <link href="http://lichuanyang.top/atom.xml" rel="self"/>
   
   <link href="http://lichuanyang.top/"/>
-  <updated>2023-12-22T10:13:08.615Z</updated>
+  <updated>2023-12-28T10:53:12.429Z</updated>
   <id>http://lichuanyang.top/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>怎么更科学的用知乎摸鱼</title>
+    <link href="http://lichuanyang.top/posts/23393/"/>
+    <id>http://lichuanyang.top/posts/23393/</id>
+    <published>2023-12-28T10:29:01.000Z</published>
+    <updated>2023-12-28T10:53:12.429Z</updated>
+    
+    <content type="html"><![CDATA[<p>知乎是个什么样的网站，大家都比较了解，今天我们分享个小工具让我们更开心的使用知乎摸鱼。</p><span id="more"></span><p>之前我在看我自己账号知乎数据的时候，发现一个挺有意思的事情，就是PC端的流量居然有40%以上，这在移动互联网时代，简直是不可想象的。后来也从一些其他渠道了解到，知乎周末、节假日的流量是不如工作日的。</p><p>这说明什么呢？上班刷知乎的你，不是一个人。对相当一部分人来说，知乎主要是在上班摸鱼的时候使用的。</p><p>知乎这个网站，的确挺适合摸鱼，毕竟以文字内容为主，而且还有相当多的专业性内容，所以工作时上知乎还真的有可能是在查资料。</p><p>但是，知乎有些小体验，对摸鱼就不太友好了。比如说图片尺寸太大，还有浏览问题的时候标题浮窗总是会出现，还会很显眼的展示出来。所以，我就写了个简单的油猴脚本，优化了这两个问题，顺便把知乎的logo也给去掉了。</p><p>脚本地址： <span class="exturl" data-url="aHR0cHM6Ly9ncmVhc3lmb3JrLm9yZy96aC1DTi9zY3JpcHRzLzQ4MzA0Ny0lRTYlOTElQjglRTklQjElQkMlRTUlOEElQTklRTYlODklOEItJUU3JTlGJUE1JUU0JUI5JThF">安装地址<i class="fa fa-external-link-alt"></i></span></p><p>大家感兴趣的话欢迎使用。对知乎的使用有什么痛点也欢迎提出来。</p><p>原文地址: <a href="http://lichuanyang.top/posts/23393/">http://lichuanyang.top/posts/23393/</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;知乎是个什么样的网站，大家都比较了解，今天我们分享个小工具让我们更开心的使用知乎摸鱼。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="知乎" scheme="http://lichuanyang.top/tags/%E7%9F%A5%E4%B9%8E/"/>
+    
+    <category term="油猴" scheme="http://lichuanyang.top/tags/%E6%B2%B9%E7%8C%B4/"/>
+    
+    <category term="Tampermonkey" scheme="http://lichuanyang.top/tags/Tampermonkey/"/>
+    
+  </entry>
   
   <entry>
     <title>知乎增强工具-评论时间精确到秒</title>

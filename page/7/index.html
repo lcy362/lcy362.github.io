@@ -220,6 +220,132 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/9329/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/9329/" class="post-title-link" itemprop="url">通过实际操作理解redis cluster原理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-04-14 20:02:00" itemprop="dateCreated datePublished" datetime="2017-04-14T20:02:00+08:00">2017-04-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">redis系列</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/posts/9329/" class="post-meta-item leancloud_visitors" data-flag-title="通过实际操作理解redis cluster原理" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/9329/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/9329/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Redis 集群是redis官方提供的一种集群方案，从3.0开始提供稳定版，应用也已经比较广泛，也经受住了时间考验，个人感觉完全可以取代codis,tweemproxy等集群方案。</p>
+<h2 id="cluster原理介绍"><a href="#cluster原理介绍" class="headerlink" title="cluster原理介绍"></a>cluster原理介绍</h2><p>cluster是使用数据分片的形式实现的，一个 Redis cluster集群包含 16384 个哈希槽, 任意一个key都可以通过 CRC16(key) % 16384 这个公式计算出应当属于哪个槽。每个槽应当落在哪个节点上，也是事先定好。这样，进行任一操作时，首先会根据key计算出对应的节点，然后操作相应的节点就可以了。</p>
+<p>所以说，其实cluster跟单点相比，只是多了一个给key计算sharding值的过程，并没有增加多少复杂度，完全可以放心使用。</p>
+<p>在这样的设计下，一些对节点的操作也很方便，操作过程中对client端也不会有影响。<br>1. 增加节点：将原有节点的某些slot转移到新节点上<br>2. 删除节点: 将节点上的槽转移到其他节点上以后，移除空节点<br>3. 节点故障：落到故障节点上的操作会失败，而集群其他部分可以正常访问，这样就不会出现一致性哈希方案的“雪崩”问题。单点的故障也可以通过配置slave解决，节点故障时可以由对应的slave顶替<br>4. 节点重启: 正常重启即可，节点会自动读之前的配置然后加入集群中。</p>
+<h2 id="安装操作流程"><a href="#安装操作流程" class="headerlink" title="安装操作流程"></a>安装操作流程</h2><p>然后，我们可以实际安装一次，由于只是测试，装个两三个节点就可以，而如果是生产使用的话，至少需要3个master节点，也推荐同时至少有3个slave节点才能使用。</p>
+<h3 id="安装redis"><a href="#安装redis" class="headerlink" title="安装redis"></a>安装redis</h3><p>到redis官网(<span class="exturl" data-url="aHR0cHM6Ly9yZWRpcy5pby9kb3dubG9hZCklRTQlQjglOEElRTQlQjglOEIlRTglQkQlQkQlRTYlOUMlODAlRTYlOTYlQjAlRTclOUElODRzdGFibGUlRTclODklODglRTYlOUMlQUMlRTMlODAlODI=">https://redis.io/download)上下载最新的stable版本。<i class="fa fa-external-link-alt"></i></span></p>
+<p>以3.2.8为例，下载完以后执行以下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tar xzf redis-3.2.8.tar.gz</span><br><span class="line">$ cd redis-3.2.8</span><br><span class="line">$ make</span><br></pre></td></tr></table></figure>
+<p>然后解压缩，make就可以了.</p>
+<h3 id="redis配置与启动"><a href="#redis配置与启动" class="headerlink" title="redis配置与启动"></a>redis配置与启动</h3><p>make之后会在redis的src目录下多出几个命令，包括redis-server, redis-cli等，可以把他们拷到&#x2F;usr&#x2F;local&#x2F;bin下，这样就可以在任意路径下执行。也可以自己指到src目录下进行操作。</p>
+<p>启动之前需要先修改一下配置，redis的根目录下有一个redis.conf文件，可以直接改它，也可以拷到别的路径下进行修改。</p>
+<p>主要就是把cluster模式打开，然后配一下cluster配置文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cluster-enabled yes</span><br><span class="line">cluster-config-file nodes.conf</span><br></pre></td></tr></table></figure>
+
+<p>其他的配置，port,bind,protect-mode之类的，可以根据需求改一下，不改也没关系。如果是想在一台机器上启动多个实例的话,需要给每个实例一个配置文件， port, cluster-config-file这些配置也需要区分一下。</p>
+<p>然后执行以下命令，分别指定不同的配置文件启动。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redis-server redis-6379.conf &amp;</span><br><span class="line">redis-server redis-6380.conf &amp;</span><br></pre></td></tr></table></figure>
+
+<h3 id="开启cluster"><a href="#开启cluster" class="headerlink" title="开启cluster"></a>开启cluster</h3><p>需要的节点都启动以后，就可以开始配置cluster了。推荐的办法是使用官方提供的redis-trib.rb工具包，这个具体操作可以参考官方文档。我们在这里试一下手动操作，这样其实可以加深对cluster原理的理解。</p>
+<p>首先通过redis-cli命令进入任意一个redis实例中，然后一次对其他几个节点执行meet命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cluster meet xxx:6380</span><br></pre></td></tr></table></figure>
+<p>然后执行cluster nodes命令就可以看到节点被加入到集群中了。</p>
+<p>这之后还有一步是分配slot, 可以使用cluster setslot命令，不过由于slot比较多，分配起来很麻烦。还有另外一种方式是修改nodes.conf这个配置文件。</p>
+<p>Nodes.conf这个配置包含了cluster相关的几乎所有信息，一般情况下无需自己去操作，redis会自动生成，可以打开看一下，里边每个节点都对应一行，一行是类似这种格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">8301106a1a0b7472650f22503abea23024df17fb 127.0.0.1:6379 myself,master - 0 0 1 connected</span><br></pre></td></tr></table></figure>
+<p>然后slot的分配情况是加在最后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">8301106a1a0b7472650f22503abea23024df17fb 127.0.0.1:6379 myself,master - 0 0 1 connected 0-8000</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，全部16384(0-16383)个slot都要分配出去，不能留空；集群中每个节点都对应一个Nodes.conf文件，每个文件里的slot配置要一致。</p>
+<p>改完以后重启所有节点，在redis-cli中执行cluster info 命令，可以看到一些关键信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cluster_state:ok</span><br><span class="line">cluster_slots_assigned:16384</span><br><span class="line">cluster_slots_ok:16384</span><br><span class="line">cluster_slots_pfail:0</span><br><span class="line">cluster_slots_fail:0</span><br><span class="line">cluster_known_nodes:2</span><br><span class="line">cluster_size:1</span><br></pre></td></tr></table></figure>
+<p>所有slot已经分配出去，Cluster stat也变成了ok. 这样一个cluster就算搭建完毕了。</p>
+<p>原文地址：<a href="http://lichuanyang.top/posts/9329/">http://lichuanyang.top/posts/9329/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/46290/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1118,148 +1244,6 @@ lock.release();释放锁
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/43423/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="流沙">
-      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mobility">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/43423/" class="post-title-link" itemprop="url">leetcode第三题: 输出不包含重复字母的最长子串</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-02-15 20:34:00" itemprop="dateCreated datePublished" datetime="2017-02-15T20:34:00+08:00">2017-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
-              </span>
-
-          
-            <span id="/posts/43423/" class="post-meta-item leancloud_visitors" data-flag-title="leetcode第三题: 输出不包含重复字母的最长子串" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/posts/43423/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/43423/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>Given a string, find the length of the longest substring without repeating characters.</p>
-<p>Examples:</p>
-<p>Given &ldquo;abcabcbb&rdquo;, the answer is &ldquo;abc&rdquo;, which the length is 3.</p>
-<p>Given &ldquo;bbbbb&rdquo;, the answer is &ldquo;b&rdquo;, with the length of 1.</p>
-<p>Given &ldquo;pwwkew&rdquo;, the answer is &ldquo;wke&rdquo;, with the length of 3. Note that the answer must be a substring, &ldquo;pwke&rdquo; is a subsequence and not a substring.</p>
-<p>也就是说给定一个字符串，输出不包含重复字母的最长子串长度。</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>遍历一次字符串，O(n)复杂度下可以解决。主要思路就是在遍历的过程中 </p>
-<p>1. 记录每个字母上一次出现的位置 </p>
-<p>2.  维持一个从当前位置往前数不包含重复字母的子串，记录这个字串的起止位置start, end</p>
-<p>遍历的过程中就是根据相应位置字母是否出现过，以及上次出现的位置，不断更新start, end的过程。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>可以到github上查看: <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xjeTM2Mi9BbGdvcml0aG1zL3RyZWUvbWFzdGVyL3NyYy9tYWluL2phdmEvY29tL21hbGxvdy9hbGdvcml0aG0=">https://github.com/lcy362/Algorithms/tree/master/src/main/java/com/mallow/algorithm<i class="fa fa-external-link-alt"></i></span></p>
-<pre><code>&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; java.util.HashMap;
-
-&lt;span class=&quot;hljs-javadoc&quot;&gt;/**
- * leetcode 3
- * https://leetcode.com/problems/longest-substring-without-repeating-characters/
- * Created by lcy on 2017/2/15.
- */&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-class&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;LongestSubstringNotRepeat&lt;/span&gt; &#123;&lt;/span&gt;
-    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;lengthOfLongestSubstring&lt;/span&gt;(String s) &#123;
-        &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (s.length() &amp;lt;= &lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;) &#123;
-            &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; s.length();
-        &#125;
-        HashMap&amp;lt;Character, Integer&amp;gt; charPos = &lt;span class=&quot;hljs-keyword&quot;&gt;new&lt;/span&gt; HashMap&amp;lt;&amp;gt;();
-        &lt;span class=&quot;hljs-keyword&quot;&gt;char&lt;/span&gt;[] chars = s.toCharArray();
-        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; len = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;;
-        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; max = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;;
-        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; start = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;;
-        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; end = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;;
-        &lt;span class=&quot;hljs-keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;; i &amp;lt; chars.length; i++) &#123;
-            &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (charPos.containsKey(chars[i])) &#123;
-                &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; tempstart = charPos.get(chars[i]) + &lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;;
-                &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (tempstart &amp;gt; start) &#123;
-                    start = tempstart;
-                &#125;
-                end++;
-                len = end - start;
-            &#125; &lt;span class=&quot;hljs-keyword&quot;&gt;else&lt;/span&gt; &#123;
-                len++;
-                end++;
-            &#125;
-            charPos.put(chars[i], i);
-            &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (len &amp;gt; max) &#123;
-                max = len;
-            &#125;
-        &#125;
-        &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; max;
-    &#125;
-
-    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;main&lt;/span&gt;(String args[]) &#123;
-        LongestSubstringNotRepeat l = &lt;span class=&quot;hljs-keyword&quot;&gt;new&lt;/span&gt; LongestSubstringNotRepeat();
-        System.out.println(l.lengthOfLongestSubstring(&lt;span class=&quot;hljs-string&quot;&gt;&quot;abcabcbb&quot;&lt;/span&gt;));
-        System.out.println(l.lengthOfLongestSubstring(&lt;span class=&quot;hljs-string&quot;&gt;&quot;bbbbb&quot;&lt;/span&gt;));
-        System.out.println(l.lengthOfLongestSubstring(&lt;span class=&quot;hljs-string&quot;&gt;&quot;pwwkew&quot;&lt;/span&gt;));
-        System.out.println(l.lengthOfLongestSubstring(&lt;span class=&quot;hljs-string&quot;&gt;&quot;abba&quot;&lt;/span&gt;));
-    &#125;
-</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1329,7 +1313,7 @@ lock.release();释放锁
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
