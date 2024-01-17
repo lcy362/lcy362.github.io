@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+<script data-ad-client="ca-pub-7310841175510611" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE">
+  <meta name="msvalidate.01" content="FEC1AF1D401268A4208AF51DC0275AAA">
+  <meta name="baidu-site-verification" content="code-T8LautTf5f">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"lichuanyang.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="在通常的开发流程中，会有各种各样的评审(review)环节，比如产品稿评审、设计评审、测试用例评审、code review等。为了做这些评审，难免会引入一些会议。有的人会觉得这些事没什么用，太浪费时间。而实际上，这些事情是非常重要的，如果你产生了评审不重要的印象，原因无非两个，一是认知不到位，而是你所在的环境评审实施的不好。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="review的个人价值">
+<meta property="og:url" content="http://lichuanyang.top/en/posts/57205/index.html">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="在通常的开发流程中，会有各种各样的评审(review)环节，比如产品稿评审、设计评审、测试用例评审、code review等。为了做这些评审，难免会引入一些会议。有的人会觉得这些事没什么用，太浪费时间。而实际上，这些事情是非常重要的，如果你产生了评审不重要的印象，原因无非两个，一是认知不到位，而是你所在的环境评审实施的不好。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-04-27T10:07:11.000Z">
+<meta property="article:modified_time" content="2023-01-28T10:53:05.900Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="开发规范">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://lichuanyang.top/en/posts/57205/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://lichuanyang.top/posts/57205/","path":"en/posts/57205/","title":"review的个人价值"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>review的个人价值 | Mobility</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-45390505-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-45390505-1","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?ffb948eb504670b10474a889e9409047"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Mobility</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">聚沙成塔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">流沙</p>
+  <div class="site-description" itemprop="description">关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">88</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lcy362" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lcy362" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/3448633" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;3448633" rel="noopener me" target="_blank"><i class="stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hobermallow" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hobermallow" rel="noopener me" target="_blank"><i class="知乎 fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+
+      
+        <div>
+          <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/upload/qrcode.bmp" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>订阅公众号</div>
+</div>
+
+        </div>
+      
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/57205/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="review的个人价值 | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          review的个人价值
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-27 18:07:11" itemprop="dateCreated datePublished" datetime="2021-04-27T18:07:11+08:00">2021-04-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/en/posts/57205/" class="post-meta-item leancloud_visitors" data-flag-title="review的个人价值" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>在通常的开发流程中，会有各种各样的评审(review)环节，比如产品稿评审、设计评审、测试用例评审、code review等。为了做这些评审，难免会引入一些会议。有的人会觉得这些事没什么用，太浪费时间。而实际上，这些事情是非常重要的，如果你产生了评审不重要的印象，原因无非两个，一是认知不到位，而是你所在的环境评审实施的不好。</p>
+<span id="more"></span>
+
+<p>关于评审的价值，首先对于团队来说，最大的作用其实就是提升团队的下限。试想一下，如果各个环节都不进行评审，而是直接产品交付一个产品稿，开发就对着开发，任何个人的疏忽都会给整个项目带来无尽的风险。多次的评审环节，实际上就是将一个业务方案，分别用产品稿、代码、测试用例等形式描述，再分别引入更多的人来检查，避免一个人的疏忽造成业务上的风险。</p>
+<p>此外，本文的重点，我实际上是想讲讲除了给团队带来的价值外，对于一个个体的人来说，参与评审有什么价值。</p>
+<p>首先说一下对于被评审的人，即产品稿、代码等的提交人来说，评审就是一个其他人来帮助你提升的过程，是难得的能获取直接的反馈信息的机会。其实对于很多人来说，相比于学生时代，工作时代学东西的最大难点就是没有人批改「作业」，看了书看了视频之后，没办法确认自己究竟学没学会。而及时的反馈，无论学什么，都是非常重要的。而在参与评审的人中，会包括你的上级，能力更强的同事。他们能够详细的了解你的方案、代码的话，相信是能够给出很多有价值的反馈的。评审，实际上就是给你自己提供一个机会，能够接收到他们的反馈信息。</p>
+<p>这里其实隐含了一条对于提交人的要求，就是要能够清晰的表达出自己的方案，这样别人才能低成本的参与到评审中来。比如写代码，要运用合理的设计模式，写出易读的代码。写文档，要有合理的布局、分段，突出方案的重点。向别人讲方案时，要考虑听众的知识背景，确保他们可以听的懂你的方案。</p>
+<p>评审对于提交人的另一个重要作用，是分担风险和责任。要知道，无论你公司的制度是什么样的，无论你的职位如何，当你负责的项目没有做好时，最终的结果，一定是有相当一部分是由你自己承担的。承担的形式，可能是直接的绩效损失，可能是别人对你的能力产生了质疑，不管怎样，都是大家不希望面对的。而评审，就是将一部分后果，转移到整个团队上。当然，别想太多，主体的责任一定是还在提交人本人身上。这里，同样体现了提交人清晰表达的重要性。提交人需要将自己方案的关键点，更多的让评审人们接受到。如果评审人成功的接收这些信息，并且在评审时进行充分的讨论并最终达成共识，这一部分决策就可以认为是团队共同做出的了。</p>
+<p>接下来再来看对于评审人来说，积极的参与对其他人的评审，又有什么作用。首先的价值还是一个学习的机会。所谓三人行，必有我师，从别人的方案里，一定是能够发现一些非常好的点，值得自己学习的。当发现别人的方案和自己的设想不一致时，是一个进行深度思考的机会，可以对自己进行一个连续的追问，看看到底哪种方案比较好，直到得出一个无法质疑的结论。这种深度的思考，对于自己的思考方式会有很好的改善作用。</p>
+<p>另外，参与评审也是一个快速提升经验的方法。参与评审，实际上是花费评审的时间，得到一个无限接近于 自己做了这件事 的效果。评审的足够细致的话，你就会对这件事怎么做，有一个非常全面的认识，这件事也就完全可以作为你项目经历的一部分。</p>
+<p>本文到这里就要结束了，不知道大家能否通过本文建立起对为什么要做评审、怎么做评审的认知。大家可以通过 公众号( Mobility ), <a href="https://lichuanyang.top/">个人网站</a> 等和我交流。</p>
+<p>原文地址: <a target="_blank" rel="noopener" href="https://lcy362.github.io/posts/57205">https://lcy362.github.io/posts/57205</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU5MjQ5NjE1OQ==&scene=124#wechat_redirect">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" rel="tag"># 开发规范</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/34931/" rel="prev" title="户口?大厂?高薪?生活?聊聊应届程序员的职业选择">
+                  <i class="fa fa-angle-left"></i> 户口?大厂?高薪?生活?聊聊应届程序员的职业选择
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/3513/" rel="next" title="读书笔记 稻盛和夫《干法》-思考应该怎样去工作">
+                  读书笔记 稻盛和夫《干法》-思考应该怎样去工作 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>English</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="Select language">
+      
+        <option value="zh-CN" data-href="/posts/57205/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/posts/57205/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+  <div class="copyright">
+    &copy; 2012 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">流沙</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/lcy362" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI","app_key":"lW7mfN411Vpjo3x9S5zdOTlE","server_url":"https://ay7gn9nn.api.lncldglobal.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>

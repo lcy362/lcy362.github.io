@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+<script data-ad-client="ca-pub-7310841175510611" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE">
+  <meta name="msvalidate.01" content="FEC1AF1D401268A4208AF51DC0275AAA">
+  <meta name="baidu-site-verification" content="code-T8LautTf5f">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"lichuanyang.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="（最近把这篇文章重新整理了下，欢迎阅读最新版 https:&#x2F;&#x2F;lichuanyang.top&#x2F;posts&#x2F;45718&#x2F;） 本文翻译自https:&#x2F;&#x2F;martinfowler.com&#x2F;articles&#x2F;patterns-of-distributed-systems&#x2F; ，原作者对目前各类企业级架构中使用的多种分布式系统进行了总结，从中提取出了一些通用的“模式”(pattern)。本文作为系列文章的第一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[翻译][关于分布式架构和系统设计]分布式系统的模式-综述">
+<meta property="og:url" content="http://lichuanyang.top/en/posts/3914/index.html">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="（最近把这篇文章重新整理了下，欢迎阅读最新版 https:&#x2F;&#x2F;lichuanyang.top&#x2F;posts&#x2F;45718&#x2F;） 本文翻译自https:&#x2F;&#x2F;martinfowler.com&#x2F;articles&#x2F;patterns-of-distributed-systems&#x2F; ，原作者对目前各类企业级架构中使用的多种分布式系统进行了总结，从中提取出了一些通用的“模式”(pattern)。本文作为系列文章的第一">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://lichuanyang.top/img/paterns.png">
+<meta property="article:published_time" content="2020-08-10T12:33:49.000Z">
+<meta property="article:modified_time" content="2023-01-28T10:53:05.903Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="分布式系统">
+<meta property="article:tag" content="分布式系统设计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://lichuanyang.top/img/paterns.png">
+
+
+<link rel="canonical" href="http://lichuanyang.top/en/posts/3914/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://lichuanyang.top/posts/3914/","path":"en/posts/3914/","title":"[翻译][关于分布式架构和系统设计]分布式系统的模式-综述"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>[翻译][关于分布式架构和系统设计]分布式系统的模式-综述 | Mobility</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-45390505-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-45390505-1","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?ffb948eb504670b10474a889e9409047"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Mobility</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">聚沙成塔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#What-this-is-about"><span class="nav-number">1.</span> <span class="nav-text">What this is about</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F-%E5%AE%9E%E7%8E%B0%E8%A7%92%E5%BA%A6"><span class="nav-number">1.1.</span> <span class="nav-text">分布式系统-实现角度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E5%8F%8A%E5%85%B6%E5%8F%8D%E5%A4%8D%E5%87%BA%E7%8E%B0%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">问题及其反复出现的解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%B4%A9%E6%BA%83"><span class="nav-number">2.1.</span> <span class="nav-text">进程崩溃</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%BB%B6%E8%BF%9F"><span class="nav-number">2.2.</span> <span class="nav-text">网络延迟</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%9A%82%E5%81%9C"><span class="nav-number">2.3.</span> <span class="nav-text">进程暂停</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E4%B8%8D%E5%90%8C%E6%AD%A5%E5%8F%8A%E9%A1%BA%E5%BA%8F%E6%B6%88%E6%81%AF"><span class="nav-number">2.4.</span> <span class="nav-text">时钟不同步及顺序消息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B4%E5%90%88-%E4%B8%80%E4%B8%AA%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">3.</span> <span class="nav-text">整合-一个分布式系统的例子</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%80%E8%87%B4%E6%80%A7%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%88%97%E8%A1%A8"><span class="nav-number">3.1.</span> <span class="nav-text">实现一致性的模式列表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8B%E4%B8%80%E6%AD%A5"><span class="nav-number">4.</span> <span class="nav-text">下一步</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">流沙</p>
+  <div class="site-description" itemprop="description">关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">88</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lcy362" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lcy362" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/3448633" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;3448633" rel="noopener me" target="_blank"><i class="stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hobermallow" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hobermallow" rel="noopener me" target="_blank"><i class="知乎 fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+
+      
+        <div>
+          <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/upload/qrcode.bmp" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>订阅公众号</div>
+</div>
+
+        </div>
+      
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/3914/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="[翻译][关于分布式架构和系统设计]分布式系统的模式-综述 | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [翻译][关于分布式架构和系统设计]分布式系统的模式-综述
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-08-10 20:33:49" itemprop="dateCreated datePublished" datetime="2020-08-10T20:33:49+08:00">2020-08-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">分布式系统模式系列</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/en/posts/3914/" class="post-meta-item leancloud_visitors" data-flag-title="[翻译][关于分布式架构和系统设计]分布式系统的模式-综述" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>（最近把这篇文章重新整理了下，欢迎阅读最新版 <a href="https://lichuanyang.top/posts/45718/%EF%BC%89">https://lichuanyang.top/posts/45718/）</a></p>
+<p>本文翻译自<a target="_blank" rel="noopener" href="https://martinfowler.com/articles/patterns-of-distributed-systems/">https://martinfowler.com/articles/patterns-of-distributed-systems/</a> ，原作者对目前各类企业级架构中使用的多种分布式系统进行了总结，从中提取出了一些通用的“模式”(pattern)。本文作为系列文章的第一篇，介绍了分布式系统的特点和一些常见问题。 建议好好阅读一下本文以及英文原文，对于分布式系统设计和分布式架构理念，会有非常大的帮助。</p>
+<span id="more"></span>
+
+<h1 id="What-this-is-about"><a href="#What-this-is-about" class="headerlink" title="What this is about"></a>What this is about</h1><p>分布式系统给程序设计带来了特殊的挑战。 它们通常要求我们拥有多个数据副本，这些副本需要保持同步。 但是我们无法期望各节点能永远可靠地工作，同时，网络延迟也很容易导致不一致的现象出现。 尽管如此，许多组织仍依赖一系列核心的分布式系统来处理数据存储，消息传递，系统管理和计算等。 这些系统面临很多共同的问题，这些问题也可以通过类似的方案来解决。 本文将这些解决方案定义为模式，通过这些模式，我们对于如何更好地理解，交流和教授分布式系统，将建立起更好的认知。</p>
+<p>在过去的几个月中，我一直在ThoughtWorks进行有关分布式系统的研讨会。研讨会中面临的主要挑战之一是如何将分布式系统的理论映射到诸如Kafka、Cassandra之类的开源项目中，同时还要保持讨论足够通用，能涵盖更广泛的解决方案。模式的概念提供了一个不错的出路。</p>
+<p>“模式”这个结构，本质上使我们能够让我们专注于特定问题，从而很清楚地说明为什么需要特定的解决方案。然后，对解决方案的描述允许我们给出一个代码结构，这个结构足以具体到能够表示出实际解决方案的程度，但同时又足够通用以涵盖各种变化。模式还允许我们将各种模式链接在一起以构建一个完整的系统。这样，我们就有足够的词汇表，来讨论分布式系统的实现。</p>
+<p>接下来是在主流开源分布式系统中观察到的第一组模式。我希望这些模式集对所有开发人员都有用。</p>
+<h2 id="分布式系统-实现角度"><a href="#分布式系统-实现角度" class="headerlink" title="分布式系统-实现角度"></a>分布式系统-实现角度</h2><p>现在的企业架构中有很多天然分布式的平台和框架。如果我们在当前典型的架构抽样查看平台、框架，会看到下面这么一些东西。</p>
+<table>
+<thead>
+<tr>
+<th align="left">Type of platform&#x2F;framework</th>
+<th align="left">Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Databases</td>
+<td align="left">Cassandra, HBase, Riak</td>
+</tr>
+<tr>
+<td align="left">Message Brokers</td>
+<td align="left">Kafka, Pulsar</td>
+</tr>
+<tr>
+<td align="left">Infrastructure</td>
+<td align="left">Kubernetes, Mesos, Zookeeper, etcd, Consul</td>
+</tr>
+<tr>
+<td align="left">In Memory Data&#x2F;Compute Grids</td>
+<td align="left">Hazlecast, Pivotal Gemfire</td>
+</tr>
+<tr>
+<td align="left">Stateful Microservices</td>
+<td align="left">Akka Actors, Axon</td>
+</tr>
+<tr>
+<td align="left">File Systems</td>
+<td align="left">HDFS, Ceph</td>
+</tr>
+</tbody></table>
+<p>这些系统都天然是分布式的。关于什么样的系统叫“分布式”系统，包括两个方面：</p>
+<ul>
+<li>运行在多台服务器上。集群内服务器的数量差别可以非常大，从三台到几千台都可能。</li>
+<li>要处理数据，所以它们是内在“有状态”的系统。</li>
+</ul>
+<p>当多个服务器参与存储数据时，有几种出错的可能。 上述所有系统都需要解决这些问题。 对这些问题，这些系统的实现方式中有一些重复的解决方案。 以更通用的形式理解这些解决方案，有助于理解这些系统的广泛实现方式，并且在需要构建新系统时也可以作为很好的指导。</p>
+<p>模式，是Christopher Alexander提出的，在软件社区中被广泛接受的概念，用于在软件系统设计时记录设计架构。 模式为解决问题提供了一种结构化的方式，可以通过多次查看和验证来解决问题。 使用模式的一种有趣方式是能够以模式序列或模式语言的形式将多个模式链接在一起，这为实现“整个”或完整的系统提供了一些指导。 将分布式系统视为一系列模式，是深入了解其实现方式的有效方法。</p>
+<h1 id="问题及其反复出现的解决方案"><a href="#问题及其反复出现的解决方案" class="headerlink" title="问题及其反复出现的解决方案"></a>问题及其反复出现的解决方案</h1><p>当用多台服务器存储数据时，会有几种出问题的方式。</p>
+<h2 id="进程崩溃"><a href="#进程崩溃" class="headerlink" title="进程崩溃"></a>进程崩溃</h2><p>由于硬件或软件因素，进程在任何时刻都可能崩溃。有若干种进程崩溃的方式。</p>
+<ul>
+<li>系统管理员进行常规的系统维护，进程会被关闭</li>
+<li>进行IO操作，但磁盘空间不足，且异常没有被正确处理时，会导致进程被杀掉</li>
+<li>在云环境下，可能会更复杂，一些无关的原因也可能导致系统宕机。</li>
+</ul>
+<p>最重要的是，如果进程负责存储数据，则必须将它们设计为能够对存储在服务器上的数据提供持久性保证。 即使进程突然崩溃，它也应保留所有成功给过用户ack确认消息的数据。 根据访问模式，不同的存储引擎具有不同的存储结构，范围从简单的hash表到复杂的图结构都有。 将数据刷新到磁盘是最耗时的操作之一，因此无法将每次插入或更新都立即刷新到磁盘。 因此，大多数数据库具有内存存储结构，内存中的数据定期刷新到磁盘。 如果进程突然崩溃，可能会丢失所有这些数据。</p>
+<p>一种叫做Write-Ahead Log的技术就是用来解决这个问题的。服务器将每个状态更改作为命令存储在硬盘上的仅附加(append-only)文件中。 append操作通常是非常快的，因此可以在不影响性能的情况下完成。 顺序写单个日志文件，以存储每个更新。 在服务器启动时，可以重播日志以再次建立内存状态。</p>
+<p>这提供了持久性的保证。 即使服务器突然崩溃，然后重新启动，数据也不会丢失。 但是，在服务器恢复之前，客户端将无法获取或存储任何数据。 因此，如果服务器发生故障，我们会缺乏可用性。</p>
+<p>一种显而易见的解决方案是将数据存储在多个服务器上。 因此，我们可以在多个服务器上复制预写日志。</p>
+<p>当涉及多个服务器时，还有更多的故障情况需要考虑。</p>
+<h2 id="网络延迟"><a href="#网络延迟" class="headerlink" title="网络延迟"></a>网络延迟</h2><p>在TCP &#x2F; IP协议栈中，通过网络传输消息时所引起的延迟没有上限。 它会根据网络上的负载而变化。 例如，一个1 Gbps的网络连接可能会被定时触发的大数据作业淹没，从而填满网络缓冲区，并且可能导致某些消息在不确定的延迟后才到达服务器。</p>
+<p>在典型的数据中心中，服务器打包在机架中，并且通过机架式交换机连接多个机架。 可能会有一棵交换机树将数据中心的一部分连接到另一部分。 在某些情况下，一组服务器可以相互通信，但与另一组服务器的连接是断开的。 这种情况称为网络分区。 服务器通过网络进行通信的基本问题之一是，何时能知道特定服务器发生了故障。</p>
+<p>这里有两个问题要解决。</p>
+<ul>
+<li>一台特定的服务器不能通过无限期的等待，去知道另一台服务器已经宕机。</li>
+<li>不应有两套服务器，每套服务器都认为另一套服务器发生了故障，因此继续为不同的客户端提供服务。 这称为脑裂(split brain)。</li>
+</ul>
+<p>为了解决第一个问题，每台服务器都会定期向其他服务器发送心跳消息。如果没有收到心跳，则将对应的服务器视为已崩溃。心跳间隔足够短，能够确保不需要花费很长时间就能检测服务器故障。在最坏的情况下，服务器可能在正常运行，但是被集群整体认为已经宕机，并继续运行。心跳这种方式可以确保提供给客户端的服务不会中断。</p>
+<p>第二个问题是脑裂。在脑裂的情况下，如果两组服务器独立接受更新，则不同的客户端可以获取和设置不同的数据，当脑裂的问题被解决后，是不可能自动解决冲突的。</p>
+<p>为了解决脑裂的问题，我们必须确保彼此断开连接的两组服务器不能独立地正常运行下去。为确保这一点，服务器执行动作时，只有大多数服务器可以确认这个动作，该才将动作视为成功。如果服务器无法选出来一个”大多数“，则它们将无法提供服务，并且某些客户端组可能无法接收该服务。但是集群中的服务器将始终处于一致状态。占多数的服务器数量称为Quorum。如何确定Quorum？这是根据集群可以容忍的故障数决定的。比如，我们有五个节点的群集，则需要三个quorum。通常，如果我们要容忍f个故障，则需要2f + 1的集群大小。</p>
+<p>Quorum确保我们有足够的数据副本以承受某些服务器故障。但是，仅向客户提供强大的一致性保证是不够的。假设客户端在quorum上启动了写操作，但是该写操作仅在一台服务器上成功。Quorum中的其他服务器仍具有旧值。当客户端从Quorum读取值时，如果具有最新值的服务器可用，则它可能会获得最新值。但是，如果仅当客户端开始读取值时，具有最新值的服务器不可用，它就可以获得旧值。为了避免这种情况，需要有人跟踪判断quorum是否同意特定的操作，并且仅将值发送给保证在所有服务器上都可用的客户端。在这种情况下使用主从模式(master&amp;slave)。其中一台服务器当选为master，其他服务器充当slave。Master控制并协调对slave的复制。Master需要确定哪些更改应对客户可见。高水位标记(High-water mark)用于跟踪预写日志中已成功复制到足够的slave中的条目。客户端可以看到所有高水位之前的条目。Master还将高水位标记发送给slave。因此，如果Master失败并且slave之一成为新master，那么客户看到的内容就不会出现不一致之处。</p>
+<h2 id="进程暂停"><a href="#进程暂停" class="headerlink" title="进程暂停"></a>进程暂停</h2><p>但这还不是全部，即使有了Quorums和Master and Slave，仍然需要解决一个棘手的问题。 Master进程随时可能暂停。 进程暂停的原因很多。 对于支持垃圾回收的语言来说，可能会有很长的垃圾回收暂停。 具有较长垃圾收集暂停时间的Master可能会与slave断开连接，并在暂停结束后继续向slave发送消息。 同时，如果slave没有收到master的任何心跳信号，他们可能选择了新的master并接受了客户端的更新。 如果旧master的请求按原样处理，则它们可能会覆盖某些更新。 因此，我们需要一种机制来检测过时master的请求。 Generation Clock用于标记和检测来自老master的请求。 世代(generation)是单调增加的数字。</p>
+<h2 id="时钟不同步及顺序消息"><a href="#时钟不同步及顺序消息" class="headerlink" title="时钟不同步及顺序消息"></a>时钟不同步及顺序消息</h2><p>从较新的消息中检测较旧的master消息的问题是如何保证消息顺序。看起来我们可以使用系统时间来给一组消息排序，但实际上，是不行的。主要原因是我们无法保证跨服务器的系统时钟是同步的。计算机中的一天中的时钟由石英晶体管理，并根据晶体的振荡来测量时间。</p>
+<p>这种机制容易出错，因为晶体可以更快或更慢地振荡，因此不同的服务器可能具有截然不同的时间。一组服务器上的时钟通过称为NTP的服务进行同步。该服务会定期检查一组全局时间服务器，并相应地调整计算机时钟。</p>
+<p>由于这是通过网络上的通信发生的，并且网络延迟可能会如以上各节中所述发生变化，所以由于网络问题，时钟同步可能会延迟。这可能导致服务器时钟彼此之间漂移，并且在NTP同步发生后甚至会倒退。由于计算机时钟存在这些问题，因此通常不将一天中的时间用于顺序事件。取而代之的是使用一种称为Lamport’s timestamp的简单技术。Generation Clock就是一个例子。</p>
+<h1 id="整合-一个分布式系统的例子"><a href="#整合-一个分布式系统的例子" class="headerlink" title="整合-一个分布式系统的例子"></a>整合-一个分布式系统的例子</h1><p>我们可以看到，从头开始理解这些模式是如何帮助我们建立一个完整系统的。 我们将以一致性为例。 分布式一致性是分布式系统实现的一种特例，它提供了最强的一致性保证。 比如流行的企业架构中常见的Zookeeper，etcd和Consul。 他们实现了zab和Raft等一致性算法，以提供复制和强大的一致性。 还有其他流行的算法可以实现一致性，Google的Chubby中用于锁定服务的Paxos，考虑stamp replication and <a target="_blank" rel="noopener" href="https://www.cs.cornell.edu/ken/History.pdf">virtual-synchrony</a>。 用非常简单的术语来说，一致性是指在一组服务器中，在存储的数据，存储的顺序以及何时使该数据对客户端可见，这些方面达成一致。</p>
+<h2 id="实现一致性的模式列表"><a href="#实现一致性的模式列表" class="headerlink" title="实现一致性的模式列表"></a>实现一致性的模式列表</h2><p>一致性的实现中，使用 state machine replication来实现容错。在state machine replication中，存储服务，比如键值存储，在所有服务器上复制，而且用户的输入也会在每个服务器上以相同顺序执行。用于实现此目的的关键实现技术是在所有服务器上复制Write-Ahead log以具有“ Replicated Wal”。</p>
+<p>我们可以将这些模式放在一起以实现Replicated Wal，如下所示。</p>
+<p>为了提供持久性保证，使用Write-Ahead log。使用Segmented Log将预写日志分为多个段。这有助于Low-Water Mark进行日志清理。通过在多个服务器上复制预写日志来提供容错能力。服务器之间的复制通过使用主从模式进行管理。更新High-Water Mark时，使用Quorum，以确定哪些值对客户可见。通过使用Single Update Quest，使所有请求均按严格顺序处理。使用Single Socket Channel, 将master的请求发送给slave时，事件将得到维护。为了优化Single Socket Channel上的吞吐量和延迟，使用了Request Pipeline。Slavet通过HeartBeat确定Master的可用性。如果Master由于网络分区而暂时从集群断开连接，则可以使用“Generation Clock”来检测它。</p>
+<p><img src="/img/paterns.png" alt="paterns"></p>
+<p>通过这种方式，理解这些问题，和它们的通用解决方式，帮助我们理解构建复杂系统的方式。</p>
+<h1 id="下一步"><a href="#下一步" class="headerlink" title="下一步"></a>下一步</h1><p>分布式系统是一个巨大的话题。 这里涵盖的模式集只是一小部分，涵盖了不同的类别，以展示模式方法如何帮助理解和设计分布式系统。 我将继续向这个合集添加下边这些问题。</p>
+<ul>
+<li>Group Membership and Failure Detection</li>
+<li>Partitioning</li>
+<li>Replication and Consistency</li>
+<li>Storage</li>
+<li>Processing</li>
+</ul>
+<p>原文地址: <a href="http://lichuanyang.top/posts/3914/">http://lichuanyang.top/posts/3914/</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU5MjQ5NjE1OQ==&scene=124#wechat_redirect">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/" rel="tag"># 分布式系统</a>
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" rel="tag"># 分布式系统设计</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/25564/" rel="prev" title="redis的对象">
+                  <i class="fa fa-angle-left"></i> redis的对象
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/6471/" rel="next" title="读书笔记-我曾走在崩溃的边缘">
+                  读书笔记-我曾走在崩溃的边缘 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>English</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="Select language">
+      
+        <option value="zh-CN" data-href="/posts/3914/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/posts/3914/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+  <div class="copyright">
+    &copy; 2012 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">流沙</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/lcy362" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI","app_key":"lW7mfN411Vpjo3x9S5zdOTlE","server_url":"https://ay7gn9nn.api.lncldglobal.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>

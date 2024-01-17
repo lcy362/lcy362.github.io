@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+<script data-ad-client="ca-pub-7310841175510611" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE">
+  <meta name="msvalidate.01" content="FEC1AF1D401268A4208AF51DC0275AAA">
+  <meta name="baidu-site-verification" content="code-T8LautTf5f">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"lichuanyang.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mobility">
+<meta property="og:url" content="http://lichuanyang.top/en/page/8/index.html">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="流沙">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://lichuanyang.top/en/page/8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"en/page/8/index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Mobility</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-45390505-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-45390505-1","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?ffb948eb504670b10474a889e9409047"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Mobility</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">聚沙成塔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">流沙</p>
+  <div class="site-description" itemprop="description">关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">88</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lcy362" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lcy362" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/3448633" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;3448633" rel="noopener me" target="_blank"><i class="stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hobermallow" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hobermallow" rel="noopener me" target="_blank"><i class="知乎 fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+
+      
+        <div>
+          <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/upload/qrcode.bmp" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>订阅公众号</div>
+</div>
+
+        </div>
+      
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/43423/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/43423/" class="post-title-link" itemprop="url">leetcode第三题: 输出不包含重复字母的最长子串</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-02-15 20:34:00" itemprop="dateCreated datePublished" datetime="2017-02-15T20:34:00+08:00">2017-02-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/43423/" class="post-meta-item leancloud_visitors" data-flag-title="leetcode第三题: 输出不包含重复字母的最长子串" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>Given a string, find the length of the longest substring without repeating characters.</p>
+<p>Examples:</p>
+<p>Given &ldquo;abcabcbb&rdquo;, the answer is &ldquo;abc&rdquo;, which the length is 3.</p>
+<p>Given &ldquo;bbbbb&rdquo;, the answer is &ldquo;b&rdquo;, with the length of 1.</p>
+<p>Given &ldquo;pwwkew&rdquo;, the answer is &ldquo;wke&rdquo;, with the length of 3. Note that the answer must be a substring, &ldquo;pwke&rdquo; is a subsequence and not a substring.</p>
+<p>也就是说给定一个字符串，输出不包含重复字母的最长子串长度。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>遍历一次字符串，O(n)复杂度下可以解决。主要思路就是在遍历的过程中 </p>
+<p>1. 记录每个字母上一次出现的位置 </p>
+<p>2.  维持一个从当前位置往前数不包含重复字母的子串，记录这个字串的起止位置start, end</p>
+<p>遍历的过程中就是根据相应位置字母是否出现过，以及上次出现的位置，不断更新start, end的过程。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>可以到github上查看: <a target="_blank" rel="noopener" href="https://github.com/lcy362/Algorithms/tree/master/src/main/java/com/mallow/algorithm">https://github.com/lcy362/Algorithms/tree/master/src/main/java/com/mallow/algorithm</a></p>
+<pre><code>&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; java.util.HashMap;
+
+&lt;span class=&quot;hljs-javadoc&quot;&gt;/**
+ * leetcode 3
+ * https://leetcode.com/problems/longest-substring-without-repeating-characters/
+ * Created by lcy on 2017/2/15.
+ */&lt;/span&gt;
+&lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-class&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;LongestSubstringNotRepeat&lt;/span&gt; &#123;&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;lengthOfLongestSubstring&lt;/span&gt;(String s) &#123;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (s.length() &amp;lt;= &lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;) &#123;
+            &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; s.length();
+        &#125;
+        HashMap&amp;lt;Character, Integer&amp;gt; charPos = &lt;span class=&quot;hljs-keyword&quot;&gt;new&lt;/span&gt; HashMap&amp;lt;&amp;gt;();
+        &lt;span class=&quot;hljs-keyword&quot;&gt;char&lt;/span&gt;[] chars = s.toCharArray();
+        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; len = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; max = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; start = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; end = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;; i &amp;lt; chars.length; i++) &#123;
+            &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (charPos.containsKey(chars[i])) &#123;
+                &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; tempstart = charPos.get(chars[i]) + &lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;;
+                &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (tempstart &amp;gt; start) &#123;
+                    start = tempstart;
+                &#125;
+                end++;
+                len = end - start;
+            &#125; &lt;span class=&quot;hljs-keyword&quot;&gt;else&lt;/span&gt; &#123;
+                len++;
+                end++;
+            &#125;
+            charPos.put(chars[i], i);
+            &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (len &amp;gt; max) &#123;
+                max = len;
+            &#125;
+        &#125;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; max;
+    &#125;
+
+    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;main&lt;/span&gt;(String args[]) &#123;
+        LongestSubstringNotRepeat l = &lt;span class=&quot;hljs-keyword&quot;&gt;new&lt;/span&gt; LongestSubstringNotRepeat();
+        System.out.println(l.lengthOfLongestSubstring(&lt;span class=&quot;hljs-string&quot;&gt;&quot;abcabcbb&quot;&lt;/span&gt;));
+        System.out.println(l.lengthOfLongestSubstring(&lt;span class=&quot;hljs-string&quot;&gt;&quot;bbbbb&quot;&lt;/span&gt;));
+        System.out.println(l.lengthOfLongestSubstring(&lt;span class=&quot;hljs-string&quot;&gt;&quot;pwwkew&quot;&lt;/span&gt;));
+        System.out.println(l.lengthOfLongestSubstring(&lt;span class=&quot;hljs-string&quot;&gt;&quot;abba&quot;&lt;/span&gt;));
+    &#125;
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/60353/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/60353/" class="post-title-link" itemprop="url">java多线程实现三个字母顺序输出</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-01-25 16:59:00" itemprop="dateCreated datePublished" datetime="2017-01-25T16:59:00+08:00">2017-01-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/60353/" class="post-meta-item leancloud_visitors" data-flag-title="java多线程实现三个字母顺序输出" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>主要还是通过一个例子加深一下对java多线程里wait,notify的理解，因此写了一个例子，三个线程分别输出A,B,C三个字母，控制这三个线程的执行顺序，从而实现ABCABCABC..这样的输出。</p>
+<p>这个问题主要还是需要设计一下锁的策略，这里只是提供了一种方式：</p>
+<p>每个线程占用两把锁，分别代表自己(self)和前一个线程（prev）, 三个线程的持有锁情况如下表所示：</p>
+<table>
+<thead>
+<tr><th>线程号</th><th>prev锁</th><th>self锁</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>c</td>
+<td>a</td>
+</tr>
+<tr>
+<td>B</td>
+<td>a</td>
+<td>b</td>
+</tr>
+<tr>
+<td>C</td>
+<td>b</td>
+<td>c</td>
+</tr>
+</tbody>
+</table>
+
+<p>A 首先启动，持有ac, 运行后先释放a, b可以执行。</p>
+<p>线程run方法代码如下：</p>
+<pre><code>    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;run&lt;/span&gt;() &#123;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;while&lt;/span&gt; (&lt;span class=&quot;hljs-keyword&quot;&gt;true&lt;/span&gt;) &#123;
+            &lt;span class=&quot;hljs-keyword&quot;&gt;synchronized&lt;/span&gt; (prev) &#123;
+                &lt;span class=&quot;hljs-keyword&quot;&gt;synchronized&lt;/span&gt; (self) &#123;
+                    System.out.print(name);
+                    self.notify();
+                &#125;
+                &lt;span class=&quot;hljs-keyword&quot;&gt;try&lt;/span&gt; &#123;
+                    &lt;span class=&quot;hljs-comment&quot;&gt;//如果想控制输出速度， 可以将sleep加在此处&lt;/span&gt;
+                    &lt;span class=&quot;hljs-comment&quot;&gt;//如果加在sout之后，会导致c线程启动并占有b锁之后,a线程才会释放a锁，输出顺序会变成acbacb&lt;/span&gt;
+                    &lt;span class=&quot;hljs-comment&quot;&gt;//也可以加大三个线程启动的间隔时间解决这一问题&lt;/span&gt;
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;try&lt;/span&gt; &#123;
+                        Thread.sleep(&lt;span class=&quot;hljs-number&quot;&gt;1000&lt;/span&gt;);
+                    &#125; &lt;span class=&quot;hljs-keyword&quot;&gt;catch&lt;/span&gt; (InterruptedException e) &#123;
+                        e.printStackTrace();
+                    &#125;
+                    prev.wait();
+                &#125; &lt;span class=&quot;hljs-keyword&quot;&gt;catch&lt;/span&gt; (InterruptedException e) &#123;
+                    e.printStackTrace();
+                &#125;
+            &#125;
+
+        &#125;
+</code></pre>
+<p>需要注意的是，如果想控制输出速度，需要考虑一下sleep的位置和时间，避免在A线程执行完并释放a锁之前，C线程已经启动并持有了B锁，导致B线程无法正常启动。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/40931/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/40931/" class="post-title-link" itemprop="url">一次kafka空间激增排查：kafka的数据压缩、批量发送等</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2016-12-29 17:21:00" itemprop="dateCreated datePublished" datetime="2016-12-29T17:21:00+08:00">2016-12-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/40931/" class="post-meta-item leancloud_visitors" data-flag-title="一次kafka空间激增排查：kafka的数据压缩、批量发送等" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="问题过程"><a href="#问题过程" class="headerlink" title="问题过程"></a>问题过程</h2><p>我司需要接收很多外部数据，数据源的形式很多，ibmmq, activemq, redis pubsub, 等等都有。为了将这些数据接到内部amq&#x2F;kafka，之前运行了一大批进程，管理起来十分复杂，因此最近用apache-camel对这些进程作了整合。</p>
+<p>上线几个小时之后，kafka磁盘空间开始报警。初步断定是这次上线导致的。</p>
+<h2 id="排查流程"><a href="#排查流程" class="headerlink" title="排查流程"></a>排查流程</h2><p>主要还是对kafka不熟悉，只是能用而已，因此排查过程走了不少弯路。</p>
+<p>由于camel本身文档很不完善，一开始配置参数时也主要靠看源码+猜，所以首先怀疑配置的压缩参数compressionCodec&#x3D;gzip是否无效。</p>
+<p>因此进行了一次简单的测试（别问我为什么一开始不测）。建了一个单分区的测试topic, 然后分别使用gzip和none模式发送相同的数据，观察kafka的log file文件大小变化趋势。发现压缩确实是有效的。</p>
+<p>因此又跟直接使用kafka api作了对比，发现差别非常大，即使是压缩之后，使用camel-kafka占用的空间也比使用api大数倍。然后去查了两边源码，发现最底层的代码是完全一致的，所以还是怀疑某些参数配的不对。</p>
+<p>之后又注意到一个细节，使用camel时，log的大小跟消息数呈线性关系，比如一条占1字节，10条就占10字节。但使用api的话，1条也占1字节，连续发10条可能才占两字节。</p>
+<p>这时候就怀疑kafka是不是有批量发送之类的机制，然后咨询了负责kafka的同事，果然是这个原因，而造成占用空间差别大的原因就是是否同步发的区别，同步发的话就不存在批量发送了。批量发送的话，这一批消息会被压缩在一起，而单条发时，就是每一条分别压缩。我们知道，在文件非常小的时候，使用gzip压缩的效果是很差的，甚至可能压完比源文件还大。然后又做了些测试，确定了是这个问题。这个参数被同事封装在了kafka的client接口里，因此导致我照着之前代码改参数时漏掉了这一个。</p>
+<h2 id="一些感悟"><a href="#一些感悟" class="headerlink" title="一些感悟"></a>一些感悟</h2><p>其实回想起来，这个问题挺low的，如果对kafka多些了解，是不会有这种问题的。</p>
+<p>首先，对kafka没做过全面的了解，只是学会了怎么用，大概了解了一下它是什么。而很多基本的机制都没有概念。使用一个开源工具时，对它做一次全面的了解还是很重要的，虽然每个工具都深入研究底层代码不现实，但是系统性的了解一遍这些工具有什么机制，确实花不了多少时间。</p>
+<p>再一个，公司内一般会封装一些访问各种组件的工具包，以提升效率，这些工具包最好也了解一下怎么实现的，否则可能不经意间就掉坑里了。</p>
+<p>任重而道远啊..</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/64970/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/64970/" class="post-title-link" itemprop="url">java里128有何魔力？ 聊聊Integer的缓存</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2016-12-02 19:45:00" itemprop="dateCreated datePublished" datetime="2016-12-02T19:45:00+08:00">2016-12-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/64970/" class="post-meta-item leancloud_visitors" data-flag-title="java里128有何魔力？ 聊聊Integer的缓存" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Integer类实质上也是一个普通的java类，即使值相同，也是不同的对象。 </p>
+<p>例如</p>
+<pre><code>        Integer a = &lt;span class=&quot;hljs-number&quot;&gt;148&lt;/span&gt;;
+        Integer b = &lt;span class=&quot;hljs-number&quot;&gt;148&lt;/span&gt;;
+        System.out.println(a==b);`&lt;/pre&gt;
+
+这时输出为false. 很容易理解。
+
+但是如果把值换成128以下的数，比如48.
+
+&lt;pre class=&quot;prettyprint&quot;&gt;`        Integer a = &lt;span class=&quot;hljs-number&quot;&gt;48&lt;/span&gt;;
+        Integer b = &lt;span class=&quot;hljs-number&quot;&gt;48&lt;/span&gt;;
+        System.out.println(a==b);`&lt;/pre&gt;
+
+这时就会发现输出变成了true。原因是jdk对128以下的整数作了缓存，当声明两个值为48的Integer对象时，其实是指向同一位置。
+
+当然也可以强制声明一个新的Integer对象。
+
+&lt;pre class=&quot;prettyprint&quot;&gt;`        Integer a = &lt;span class=&quot;hljs-number&quot;&gt;48&lt;/span&gt;;
+        Integer b = &lt;span class=&quot;hljs-keyword&quot;&gt;new&lt;/span&gt; Integer(&lt;span class=&quot;hljs-number&quot;&gt;48&lt;/span&gt;);
+        System.out.println(a==b); 
+</code></pre>
+<p>这时输出就变成false了</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/22103/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/22103/" class="post-title-link" itemprop="url">storm/jstorm生态与周边工具,storm连接activemq,kafka,hdfs等</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2016-11-16 20:16:00" itemprop="dateCreated datePublished" datetime="2016-11-16T20:16:00+08:00">2016-11-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/22103/" class="post-meta-item leancloud_visitors" data-flag-title="storm/jstorm生态与周边工具,storm连接activemq,kafka,hdfs等" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>storm的周边生态非常丰富，与kafka,activemq,hdfs,hbase等的交互都有现成的工具包可以使用。大部分工具，包括今天介绍的这几个，在jstorm中也可以完全正常的使用。</p>
+<h1 id="storm-jms"><a href="#storm-jms" class="headerlink" title="storm-jms"></a>storm-jms</h1><p>实现了与activemq等jms实现的交互。</p>
+<p>这里主要介绍JmsSpout。由于storm中发送队列数据与普通java程序没有任何区别，专门封装一个bolt显得有些多此一举。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ptgoetz/storm-jms">https://github.com/ptgoetz/storm-jms</a></p>
+<p>包中自带了使用spring方式加载队列配置。</p>
+<h2 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">JmsProvider</span> <span class="variable">jmsQueueProvider</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SpringJmsProvider</span>(</span><br><span class="line">        <span class="string">&quot;jms-activemq.xml&quot;</span>, <span class="string">&quot;jmsConnectionFactory&quot;</span>,</span><br><span class="line">        <span class="string">&quot;TEST_QUEUE&quot;</span>);</span><br><span class="line"><span class="type">JmsTupleProducer</span> <span class="variable">producer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JsonTupleProducer</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// JMS Queue Spout</span></span><br><span class="line"><span class="type">JmsSpout</span> <span class="variable">queueSpout</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JmsSpout</span>();</span><br><span class="line">queueSpout.setJmsProvider(jmsQueueProvider);</span><br><span class="line">queueSpout.setJmsTupleProducer(producer);</span><br><span class="line">queueSpout.setJmsAcknowledgeMode(Session.CLIENT_ACKNOWLEDGE);</span><br><span class="line">queueSpout.setDistributed(<span class="literal">true</span>);</span><br><span class="line"><span class="type">TopologyBuilder</span> <span class="variable">builder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TopologyBuilder</span>();</span><br><span class="line"></span><br><span class="line">builder.setSpout(<span class="string">&quot;jms&quot;</span>, queueSpout, <span class="number">30</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置文件示例"><a href="#配置文件示例" class="headerlink" title="配置文件示例"></a>配置文件示例</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment"> Licensed to the Apache Software Foundation (ASF) under one or more</span></span><br><span class="line"><span class="comment"> contributor license agreements.  See the NOTICE file distributed with</span></span><br><span class="line"><span class="comment"> this work for additional information regarding copyright ownership.</span></span><br><span class="line"><span class="comment"> The ASF licenses this file to You under the Apache License, Version 2.0</span></span><br><span class="line"><span class="comment"> (the &quot;License&quot;); you may not use this file except in compliance with</span></span><br><span class="line"><span class="comment"> the License.  You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"> distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"> WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"> See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"> limitations under the License.</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> </span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span> </span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:amq</span>=<span class="string">&quot;http://activemq.apache.org/schema/core&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">  http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">amq:queue</span> <span class="attr">id</span>=<span class="string">&quot;detrUpdateQueue&quot;</span> <span class="attr">physicalName</span>=<span class="string">&quot;TEST_QUEUE&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">amq:connectionFactory</span> <span class="attr">id</span>=<span class="string">&quot;jmsConnectionFactory&quot;</span></span></span><br><span class="line"><span class="tag">		<span class="attr">brokerURL</span>=<span class="string">&quot;failover:(tcp://xxx:61616)?jms.prefetchPolicy.queuePrefetch=10&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h2><p>新建一个xml配置，<a href="amq:queue">amq:queue</a> 节点配置队列名。</p>
+<p><a href="amq:connectionFactory">amq:connectionFactory</a>节点配置activemq的连接url。</p>
+<p>代码中调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">JmsProvider</span> <span class="variable">jmsQueueProvider</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SpringJmsProvider</span>(</span><br><span class="line">                <span class="string">&quot;jms-activemq.xml&quot;</span>, <span class="string">&quot;jmsConnectionFactory&quot;</span>,</span><br><span class="line">                <span class="string">&quot;TEST_QUEUE&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>三个参数依次为配置文件名, connectionFactory和queue节点的名称。</p>
+<h2 id="自定义输出"><a href="#自定义输出" class="headerlink" title="自定义输出"></a>自定义输出</h2><p>通过实现JmsTupleProducer可以实现个性化的输出。</p>
+<p>以JsonTupleProducer 为例:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JsonTupleProducer</span> <span class="keyword">implements</span> <span class="title class_">JmsTupleProducer</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> Values <span class="title function_">toTuple</span><span class="params">(Message msg)</span> <span class="keyword">throws</span> JMSException &#123;</span><br><span class="line">		<span class="keyword">if</span>(msg <span class="keyword">instanceof</span> TextMessage)&#123;</span><br><span class="line">			<span class="type">String</span> <span class="variable">json</span> <span class="operator">=</span> ((TextMessage) msg).getText();</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Values</span>(json);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">declareOutputFields</span><span class="params">(OutputFieldsDeclarer declarer)</span> &#123;</span><br><span class="line">		declarer.declare(<span class="keyword">new</span> <span class="title class_">Fields</span>(<span class="string">&quot;json&quot;</span>));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>即将整条消息作为一个字段emit出去。</p>
+<p>declareOutputFields和new Values 即storm中的对应函数。</p>
+<p>通过在toTuple中做相应处理，可以实现定制化的输出。</p>
+<h3 id="关闭ack"><a href="#关闭ack" class="headerlink" title="关闭ack"></a>关闭ack</h3><p>除了将ack数设为0外，conf.setNumAckers(0);</p>
+<p>还需要将jms的确认模式修改为自动ack:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">queueSpout.setJmsAcknowledgeMode(Session.AUTO_ACKNOWLEDGE);</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义jms连接器"><a href="#自定义jms连接器" class="headerlink" title="自定义jms连接器"></a>自定义jms连接器</h3><p>JmsProvider类是JmsSpout中用于建立到队列的连接所用的类。</p>
+<p>默认的SpringJmsProvider是通过spring配置来获取jms连接。</p>
+<p>如果有特殊需求，也可以自己实现JmsProvider中的两个接口，用于获取连接ConnectionFactory和队列Destination</p>
+<h1 id="storm-kafka"><a href="#storm-kafka" class="headerlink" title="storm-kafka"></a>storm-kafka</h1><p><a target="_blank" rel="noopener" href="https://github.com/apache/storm/tree/master/external/storm-kafka">https://github.com/apache/storm/tree/master/external/storm-kafka</a></p>
+<p>从kafka中获取数据。</p>
+<h2 id="使用示例-1"><a href="#使用示例-1" class="headerlink" title="使用示例"></a>使用示例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">topic</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>; <span class="comment">//队列名</span></span><br><span class="line"><span class="type">String</span> <span class="variable">zkRoot</span> <span class="operator">=</span> <span class="string">&quot;/kafkastorm&quot;</span>; <span class="comment">//kafka在zookeeper中记录offset的根目录，无需改变</span></span><br><span class="line"><span class="type">String</span> <span class="variable">id</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>; <span class="comment">// consumer id</span></span><br><span class="line"><span class="type">String</span> <span class="variable">kafkaZk</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>; <span class="comment">//kafka的zookeeper地址</span></span><br><span class="line"><span class="type">BrokerHosts</span> <span class="variable">brokerHosts</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ZkHosts</span>(kafkaZk);</span><br><span class="line"><span class="type">SpoutConfig</span> <span class="variable">kafkaConfig</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SpoutConfig</span>(brokerHosts, topic, zkRoot, id);</span><br><span class="line">kafkaConfig.scheme = <span class="keyword">new</span> <span class="title class_">SchemeAsMultiScheme</span>(<span class="keyword">new</span> <span class="title class_">StringScheme</span>());</span><br><span class="line">kafkaConfig.ignoreZkOffsets = <span class="literal">true</span>; <span class="comment">//false时使用kafka中存储的offset信息</span></span><br><span class="line">kafkaConfig.startOffsetTime = kafka.api.OffsetRequest.LatestTime(); <span class="comment">//读取数据开始位置,只有ignoreZkOffsets设为true时startOffsetTime才能生效</span></span><br><span class="line">kafkaConfig.zkServers = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;String&gt;()&#123; &#123;</span><br><span class="line">    add(<span class="string">&quot;1&quot;</span>); <span class="comment">//存储kafkaoffset的zookeeper节点</span></span><br><span class="line">&#125; &#125;;</span><br><span class="line">kafkaConfig.zkPort = <span class="number">2181</span>;</span><br><span class="line"><span class="type">TopologyBuilder</span> <span class="variable">builder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TopologyBuilder</span>();</span><br><span class="line">builder.setSpout(topic, <span class="keyword">new</span> <span class="title class_">KafkaSpout</span>(kafkaConfig), <span class="number">10</span>); <span class="comment">//并行度不能高于kafka分区数</span></span><br><span class="line">builder.setBolt....</span><br></pre></td></tr></table></figure>
+
+<h1 id="storm-hdfs"><a href="#storm-hdfs" class="headerlink" title="storm-hdfs"></a>storm-hdfs</h1><pre><code>HdfsBolt支持向hdfs写入数据
+</code></pre>
+<h2 id="使用示例-2"><a href="#使用示例-2" class="headerlink" title="使用示例"></a>使用示例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">SyncPolicy</span> <span class="variable">syncPolicy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CountSyncPolicy</span>(<span class="number">100</span>); <span class="comment">//每100条hdfs同步一次磁盘</span></span><br><span class="line"><span class="type">DailyRotationPolicy</span> <span class="variable">rotationPolicy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DailyRotationPolicy</span>(); <span class="comment">//文件每天归档</span></span><br><span class="line"></span><br><span class="line"><span class="type">FileFolderByDateNameFormat</span> <span class="variable">fileNameFormat</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileFolderByDateNameFormat</span>()</span><br><span class="line">        .withPath(<span class="string">&quot;/user/lcy/jdata&quot;</span>); <span class="comment">//hdfs路径</span></span><br><span class="line"><span class="type">RecordFormat</span> <span class="variable">format</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DelimitedRecordFormat</span>()</span><br><span class="line">        .withFieldDelimiter(<span class="string">&quot;,&quot;</span>); <span class="comment">//不同field之间的分隔符</span></span><br><span class="line"></span><br><span class="line"><span class="type">UmeHdfsBolt</span> <span class="variable">hdfsbolt</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UmeHdfsBolt</span>()</span><br><span class="line">        .withFsUrl(<span class="string">&quot;hdfs://:8020&quot;</span>) <span class="comment">//hdfs url</span></span><br><span class="line">        .withFileNameFormat(fileNameFormat)</span><br><span class="line">        .withRecordFormat(format)</span><br><span class="line">        .withRotationPolicy(rotationPolicy)</span><br><span class="line">        .withSyncPolicy(syncPolicy);</span><br></pre></td></tr></table></figure>
+<h2 id="示例说明"><a href="#示例说明" class="headerlink" title="示例说明"></a>示例说明</h2><p>按照示例编码，输出到hdfs形式如下：</p>
+<p>bolt接收到的每条数据为hdfs中的一行；</p>
+<p>输出到hdfs路径为 设定的路径&#x2F;日期&#x2F;默认文件名；</p>
+<p>hdfsbolt的每个线程会输出到一个文件，topology重启会产生新文件；</p>
+<p>文件每天归档</p>
+<h2 id="其他功能"><a href="#其他功能" class="headerlink" title="其他功能"></a>其他功能</h2><p>FileSizeRotationPolicy 支持按固定文件大小归档；TimedRotationPolicy支持按固定时间归档；</p>
+<p>如有其他归档方式需求，可以实现FileRotationPolicy接口，参考DailyRotationPolicy源码。</p>
+<p>通过实现FileNameFormat接口自定义文件路径及文件名，参考FileFolderByDateNameFormat</p>
+<h2 id="FileFolderByDateNameFormat"><a href="#FileFolderByDateNameFormat" class="headerlink" title="FileFolderByDateNameFormat"></a>FileFolderByDateNameFormat</h2><p>FileFolderByDateNameFormat实现目前常用的存储路径。<br>使用示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">FileFolderByDateNameFormat</span> <span class="variable">fileNameFormat</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileFolderByDateNameFormat</span>()</span><br><span class="line">         .withPath(<span class="string">&quot;/user/test&quot;</span>).withName(<span class="string">&quot;&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>会自动在路径之后增加日期，文件名中也会增加日期。</p>
+<h2 id="源码参考"><a href="#源码参考" class="headerlink" title="源码参考"></a>源码参考</h2><p>除了storm-hdfs本身源码以外，可以参考<a target="_blank" rel="noopener" href="https://github.com/lcy362/StormTrooper">https://github.com/lcy362/StormTrooper</a> 查看FileFolderByDateNameFormat和DailyRotationPolicy的实现。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/31996/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/31996/" class="post-title-link" itemprop="url">jstorm UI 介绍</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2016-11-16 19:58:00" itemprop="dateCreated datePublished" datetime="2016-11-16T19:58:00+08:00">2016-11-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/31996/" class="post-meta-item leancloud_visitors" data-flag-title="jstorm UI 介绍" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="UI说明"><a href="#UI说明" class="headerlink" title="UI说明"></a>UI说明</h1><p>jstorm的UI相对于storm提供了更为丰富的监控项。UI本身是在tomcat中运行的一个war包，进行二次开发也相对容易。</p>
+<h2 id="cluster页"><a href="#cluster页" class="headerlink" title="cluster页"></a>cluster页</h2><h3 id="Cluster-Summary-Cluster-Stats-Topology-Summary"><a href="#Cluster-Summary-Cluster-Stats-Topology-Summary" class="headerlink" title="Cluster Summary, Cluster Stats, Topology Summary"></a>Cluster Summary, Cluster Stats, Topology Summary</h3><p>cluster的整体信息, conf中是nimbus节点的配置。</p>
+<h3 id="Topology-Summary"><a href="#Topology-Summary" class="headerlink" title="Topology Summary"></a>Topology Summary</h3><p>当前运行的所有topology列表及概要信息，conf中对应的是topology单独配置的配置项。</p>
+<h3 id="Supervisor-Summary"><a href="#Supervisor-Summary" class="headerlink" title="Supervisor Summary"></a>Supervisor Summary</h3><p>所有supervisor列表, 可以查看supervisor的配置、日志等。</p>
+<h2 id="topology页"><a href="#topology页" class="headerlink" title="topology页"></a>topology页</h2><h3 id="Topology-Summary-1"><a href="#Topology-Summary-1" class="headerlink" title="Topology Summary"></a>Topology Summary</h3><p>主要关注Topology Graph 项，这是Component Metrics 页的概要信息，可以较直观的看出运行状况。</p>
+<p>其中，节点大小和箭头粗细代表数据量，节点颜色用于区分spout和bolt。箭头颜色对应TupleLifeCycle属性，由绿到红越来越慢。箭头变红色时，可以适当增加下游节点的并行度。</p>
+<h3 id="Component-Metrics"><a href="#Component-Metrics" class="headerlink" title="Component Metrics"></a>Component Metrics</h3><p>包含每个spout, bolt的统计信息。</p>
+<p>各参数说明:</p>
+<p>tasks : 并行度。对应代码中为每个spout&#x2F;bolt设置的并行度。</p>
+<p>emitted, acked, failed : 发射&#x2F;收到ack&#x2F;未收到ack的消息数。</p>
+<p>sendTps, recvTps: 发送&#x2F;接收数据tps.</p>
+<p>需要注意，以上数据交互类的指标包含了与storm本身组件，topology_master,acker之间的交互，只能用来查看运行状况，<strong>不适合统计用</strong>。</p>
+<p>process: 对于bolt来说，是excute()函数的执行时间，对于spout来说，是整条消息（包含下游各步）被完整处理的时间，体现系统运行效率的主要参数。</p>
+<p>TupleLifeCycle: 从上游消息被emit,到消息处理完所需时间。和process相比相差太大时，说明在bolt队列中等待了较长时间，可以适当增加并发。</p>
+<p>deser, ser: 序列化&#x2F;反序列化耗时，一般无需关注. storm中每一个emit出来的数据都需要做序列化和反序列化。</p>
+<p>error: 鼠标悬浮在E上，可以查看具体的报错信息。<strong>主要寻找带异常堆栈的数据<strong>， 一些诸如is dead, no response之类的信息无需关注。</strong></strong></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/27021/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/27021/" class="post-title-link" itemprop="url">五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2016-11-16 18:21:00" itemprop="dateCreated datePublished" datetime="2016-11-16T18:21:00+08:00">2016-11-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/27021/" class="post-meta-item leancloud_visitors" data-flag-title="五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="运行机制"><a href="#运行机制" class="headerlink" title="运行机制"></a>运行机制</h3><p>topology里spout&#x2F;bolt的整体结构不再细讲，主要说说storm&#x2F;jstorm topology运行时与传统java程序可能存在的区别。其实区别非常少，主要也体现在初始化上，本文的目的在于帮助开发人员在无需了解storm内核原理的情况下，排查topology程序可能出现的问题。</p>
+<p>1个topology会包含多个spout线程和bolt线程，分散运行在数个worker（进程）中。同一个worker中可能同时运行多个bolt&#x2F;spout的数个线程。</p>
+<h3 id="与普通java程序的区别"><a href="#与普通java程序的区别" class="headerlink" title="与普通java程序的区别"></a>与普通java程序的区别</h3><h4 id="main方法"><a href="#main方法" class="headerlink" title="main方法"></a>main方法</h4><p>main方法只在启动时运行在nimbus中，因此除了storm本身的配置项外，其他程序相关的配置，如spring配置等，配置在main方法中<strong>不会起作用<strong>。</strong></strong></p>
+<h4 id="bolt"><a href="#bolt" class="headerlink" title="bolt"></a>bolt</h4><p>bolt 的主体结构包含prepare, excute, cleanup 三部分。</p>
+<p>其中，prepare在初始化时执行一次，cleanup在退出前执行一次，excute每条消息执行。 </p>
+<p>一些配置，<strong>包括加密，spring加载等，建议都放到prepare中<strong>。多个bolt都需要加载spring时，建议使用同样的配置，避免一些诡异问题。</strong></strong></p>
+<h4 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h4><p>所有<strong>静态代码块</strong>中作了初始化的变量，emit的变量，由于都存在网络传输，需要能够被序列化。</p>
+<p>storm默认使用kyro序列化，需要类有无参构造函数。如果无法增加无参构造函数，设置topology.fall.back.on.java.serialization: true使用java自带的序列化。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/32479/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/32479/" class="post-title-link" itemprop="url">activemq web console的权限配置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2016-01-05 18:09:00" itemprop="dateCreated datePublished" datetime="2016-01-05T18:09:00+08:00">2016-01-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/32479/" class="post-meta-item leancloud_visitors" data-flag-title="activemq web console的权限配置" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <div>activemq的web console是基于jetty实现，其权限管理也是基于jetty. 根据需求，可以给不同的用户赋予不同的权限。jetty的权限管理还算灵活，虽然配起来比较麻烦，可以分别设定某个角色（role）下的用户是否有对某个页面的访问权限。</div>
+<div>下面简要介绍一下配置方法，只需要修改/conf 下的&nbsp;jetty.xml，&nbsp;jetty-realm.properties</div>
+<div>1.&nbsp;jetty-realm.properties</div>
+<div>&nbsp; 这里面配置了所有用户的用户名，密码和所属角色，按照如下格式：</div>
+<div>username: password [,rolename ...] &nbsp;&nbsp;</div>
+<div>
+
+</div>
+<div>2\. jetty.xml</div>
+<div>首先对每个角色配置一个Constraint 类，其中roles及对应&nbsp;jetty-realm.properties中的rolename</div>
+<div>
+
+</div>
+<table>
+<tbody>
+<tr>
+<td style="border-style: solid; border-width: 1px; border-color: #d3d3d3; padding: 10px; margin: 0px; width: 100%;">
+<div>&lt;bean id="securityConstraint" class="org.eclipse.jetty.util.security.Constraint"&gt;</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="name" value="BASIC" /&gt;
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name&#x3D;”roles” value&#x3D;”admin” &#x2F;&gt;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name&#x3D;”authenticate” value&#x3D;”true” &#x2F;&gt;</div></p>
+<div>&nbsp;&nbsp;&nbsp; &lt;/bean&gt;</div>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+<div>
+
+</div>
+<div>
+
+</div>
+<div>然后配置securityConstraintMapping,&nbsp;</div>
+<table>
+<tbody>
+<tr>
+<td style="border-style: solid; border-width: 1px; border-color: #d3d3d3; padding: 10px; margin: 0px; width: 100%;">
+<div>&nbsp;&nbsp;&nbsp; &lt;bean id="securityConstraintMapping" class="org.eclipse.jetty.security.ConstraintMapping"&gt;</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="constraint" ref="securityConstraint" /&gt;</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="pathSpec" value="/admin/send.jsp/" /&gt;</div>
+<div>&nbsp;&nbsp;&nbsp; &lt;/bean&gt;</div>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+<div>这表示securityConstraint类对应的角色可以访问/admin/send.jsp 页面。</div>
+<div>可以使用/* 代表所有<span style="color: #ff0000;">未单独配置的</span>页面</div>
+<div>假设我们需要新建一个只读用户，就可以配置两个角色admin和readonly，这两个角色都需要增加/*的ConstraintMapping 条目，然后在admin上额外配置所有涉及写操作的页面，包括/admin/deleteDestination.action/*，&nbsp;/admin/purgeDestination.action/* 等。</div>
+<div>
+
+</div>
+<div>最后，在ConstraintSecurityHandler的constraintMappings属性里，把所有的ConstraintMapping都列出来。</div>
+<div>
+
+</div>
+<table>
+<tbody>
+<tr>
+<td style="border-style: solid; border-width: 1px; border-color: #d3d3d3; padding: 10px; margin: 0px; width: 100%;">
+<div>&lt;bean id="securityHandler" class="org.eclipse.jetty.security.ConstraintSecurityHandler"&gt;</div>
+<div>&nbsp; &nbsp;&nbsp;&lt;property name="constraintMappings"&gt;
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;list&gt;</div></p>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;ref bean="securityConstraintMapping" /&gt;</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/list&gt;</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/property&gt;</div>
+
+</td>
+
+</tr>
+<tr>
+<td style="border-style: solid; border-width: 1px; border-color: #d3d3d3; padding: 10px; margin: 0px; width: 100%;">
+&nbsp;</td>
+
+</tr>
+
+</tbody>
+
+</table>
+<div>这样，就实现了activemq web console用户的权限配置。</div>
+
+<p>&nbsp;</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/62259/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/62259/" class="post-title-link" itemprop="url">storm ui 中一些关键属性的含义</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2015-11-06 21:44:00" itemprop="dateCreated datePublished" datetime="2015-11-06T21:44:00+08:00">2015-11-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/62259/" class="post-meta-item leancloud_visitors" data-flag-title="storm ui 中一些关键属性的含义" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><span style="font-family: FangSong_GB2312; font-size: 14px;">Storm UI对于排查storm使用过程中遇到的问题会很有帮助，但是有些属性的含义不是很明确，虽然都是很简单的概念，如果不知道的话也会很难受。</span></p>
+<p><span style="font-family: FangSong_GB2312; font-size: 14px;">先说一点，鼠标只到UI上的标题栏时，是可以看到这一属性的具体属性的，几篇google rank很高的文章，其实就是把这个信息整理了下来。</span></p>
+<p><span style="font-family: FangSong_GB2312; font-size: 14px;">其实大部分属性都是很直白的，看到名字就知道是什么意思，我在这儿之把一些可能造成困扰的属性列一下，方便大家查问题。</span></p>
+<p>&nbsp;</p>
+<div style="orphans: 2; word-wrap: break-word;"><span style="font-family: FangSong_GB2312; font-size: 14px;">emitted和transfered: emitted，就是发射出的数据条数，也就是调用OutputCollector的emit方法的次数。transferred则是实际tuple发送到下一个task的数目。乍一看是一样的对吗。其实一般情况下也确实是一样的。但是，比如，一个bolt 发射了数据，但是下游并没有其他bolt取这个数，这个bolt的transfer数就会是0\. 又比如，<span style="orphans: 2;">如果一个bolt A使用all group的方式(每一个bolt都要接收到)向bolt B发射tuple，那么transfered就会是emitted的数倍。</span></span></div>
+<div style="orphans: 2; word-wrap: break-word;"><span style="orphans: 2;"><span style="font-family: FangSong_GB2312; font-size: 14px;"><span style="orphans: 2;">excute latency和process latency : excute latency 很直白，就是代码里excute()这个方法的执行时间, 而process latency则是excute方法执行，直到调用ack方法的时间，可以认为是业务代码执行所需的时间，正常情况下，<span style="orphans: 2;">excute latency是会大于<span style="orphans: 2;">process latency的，但是如果你一直不去ack,process latency会远远大于excute latency。</span></span></span>
+
+<p></span></span></div></p>
+<div style="orphans: 2; word-wrap: break-word;"><span style="orphans: 2;"><span style="orphans: 2;"><span style="font-family: FangSong_GB2312; font-size: 14px;"><span style="orphans: 2;"><span style="orphans: 2;"><span style="color: #333333; line-height: 26px;">spout的complete
+ latency: 这个可以参考storm的[ack机制](http://xumingming.sinaapp.com/127/twitter-storm%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E4%B8%8D%E4%B8%A2%E5%A4%B1/)&nbsp;，这个时间就是一个tuple从被发射到这个tuple被ack所需的时间，确切的说，是从spout调用emit方法到调用ack方法的时间差，其实也就是这个由这个tuple生成的tuple树被完全处理所需的时间。</span>
+
+<p></span></span></span></span></span></div></p>
+<p>&nbsp;</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/13925/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/13925/" class="post-title-link" itemprop="url">activemq 5.6 连接池的内存泄露问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2015-08-08 21:16:00" itemprop="dateCreated datePublished" datetime="2015-08-08T21:16:00+08:00">2015-08-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/13925/" class="post-meta-item leancloud_visitors" data-flag-title="activemq 5.6 连接池的内存泄露问题" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近在使用activemq 的连接池时，发现它存在很严重的内存泄露问题。</p>
+<p>通过jmap监控，可以看到java.util.concurrent.locks.ReentrantLock,&nbsp;org.apache.activemq.pool.PooledConnection这两个类占用的空间非常大，而且增长速度也很快。</p>
+<p>网上查了一下，正好找到activemq的<a target="_blank" rel="noopener" href="https://issues.apache.org/jira/browse/AMQ-3997">bug 报告</a>.:<a target="_blank" rel="noopener" href="https://issues.apache.org/jira/browse/AMQ-3997">https://issues.apache.org/jira/browse/AMQ-3997</a></p>
+<p>这个bug 在5.7中已经修复，可以通过升级版本解决。</p>
+<p>同时，也有另一种解决方式，就是使用spring带的连接池替换activemq自带的连接池，配置如下：</p>
+<pre name="code" class="html">  &lt;bean id="jmsConnectionFactory"
+                class="org.apache.activemq.ActiveMQConnectionFactory"&gt;
+                &lt;property name="brokerURL" value="vm://205-amq-broker2?create=false&amp;waitForStart=10000" /&gt;
+        &lt;/bean&gt;
+
+&lt;!--        &lt;bean id="pooledConnectionFactory"
+                class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start" destroy-method="stop"&gt;
+                &lt;property name="maxConnections" value="8" /&gt;
+                &lt;property name="connectionFactory" ref="jmsConnectionFactory" /&gt;
+        &lt;/bean&gt;--&gt;
+      &lt;bean id="cachedConnectionFactory"
+                class="&lt;span style="color:#ff0000;"&gt;org.springframework.jms.connection.CachingConnectionFactory&lt;/span&gt;"&gt;
+                        &lt;property name="targetConnectionFactory" ref="jmsConnectionFactory"&gt;&lt;/property&gt;
+                        &lt;property name="sessionCacheSize" value="10"&gt;&lt;/property&gt;
+        &lt;/bean&gt;
+        &lt;bean id="jmsConfig"
+                class="org.apache.camel.component.jms.JmsConfiguration"&gt;
+                &lt;property name="connectionFactory" ref="cachedConnectionFactory"/&gt;
+                &lt;property name="concurrentConsumers" value="10"/&gt;
+        &lt;/bean&gt;
+
+        &lt;bean id="activemq"
+                class="org.apache.activemq.camel.component.ActiveMQComponent"&gt;
+                &lt;property name="configuration" ref="jmsConfig"/&gt;</pre>
+
+<p>&nbsp;</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/en/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/en/">1</a><span class="space">&hellip;</span><a class="page-number" href="/en/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/en/page/9/">9</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/en/page/9/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>English</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="Select language">
+      
+        <option value="zh-CN" data-href="/page/8/index.html" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/page/8/index.html" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+  <div class="copyright">
+    &copy; 2012 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">流沙</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/lcy362" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI","app_key":"lW7mfN411Vpjo3x9S5zdOTlE","server_url":"https://ay7gn9nn.api.lncldglobal.com","security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>
