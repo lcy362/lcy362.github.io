@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>java项目低学习成本使用kubernetes的实践经验</title>
+    <url>/en/posts/40964/</url>
+    <content><![CDATA[<p>很多创业公司相比于大厂，一个非常重要的劣势就是基础设施不完善，没有各种各样完善的工具。因此，我打算整理一下，基于开源社区提供的能力，如何用尽量小的运维和开发成本，去搭建出一套体验良好的开发流程。</p>
+<span id="more"></span>
+
+<p>首先，我们理一下整个开发流程中的必备步骤都有哪些，我大概罗列一下，包括项目的创建、开发、code review、部署测试环境、部署灰度和线上环境、查看线上监控、日志、以及排查问题等。</p>
+<p>根据这整个流程链条，我们再来理一下为了尽可能的提升开发和运维效率，我们需要把哪些方面保障好，以及这些方面可以有什么低成本的解决方案。</p>
+<p>有几个点吧：</p>
+<ul>
+<li>快速创建一个项目，并且将必备的web、监控、日志等组件添加好；</li>
+<li>提升一些常规的代码开发，比如数据库增删改查的开发效率；</li>
+<li>简化打包到部署的流程，测试环境能自动部署更好；</li>
+<li>能够给每个服务轻松的加上一整套监控和报警，包括通用的机器、jvm、接口层面的指标，和根据业务自定义的指标；</li>
+<li>能有地方集中看各个节点的日志；</li>
+<li>必要的时候，可以在线上节点上有强力的工具帮助排查问题。</li>
+</ul>
+<p>接下来，我们就看一下这些问题分别怎么解决。</p>
+<h2 id="部署环境"><a href="#部署环境" class="headerlink" title="部署环境"></a>部署环境</h2><p>首先，在本文的标题中，其实已经假定了部署环境就是kubernetes, 所以，我先说一下为什么只有kubernetes这一个选项。随便翻开一个kubernetes的介绍资料，我们都可以看到很多它的优势说明，这里我们不多赘述。而其中最关键的，也是每个人都能切身体会到的好处，其实就是它提供了完善的自动扩缩容机制。可以非常简单的设置一个cpu消耗的期望值，k8s集群就可以根据目前cpu的负载去调整pod数量。我对比了我们启用自动扩缩容前后的数据，每天的机器成本可以相差接近600美金，占总成本的1&#x2F;3还要多。</p>
+<p>由于k8s本身的运维成本是很高的，推荐直接购买云服务商的服务，无论aws还是阿里云，都提供了很完善的k8s集群功能。</p>
+<p>另外，推荐使用 kuboard (<a href="https://kuboard.cn/">https://kuboard.cn/</a>) 这个工具对k8s进行管理。kuboard是一个图像化的k8s管理工具，包括部署、配置、扩容、登入pod等常见操作，都可以在图形化界面下操作，使用很方便。</p>
+<h2 id="项目开发"><a href="#项目开发" class="headerlink" title="项目开发"></a>项目开发</h2><p>一般基于spring initializr创建一个项目就可以。对于常用的日志、监控等各类配置，建议整理一份最佳实践并做一个模板项目。新项目可以基于这个模板项目来创建，可以利用mvn archetype或者类似的工具让这个过程更加顺畅。</p>
+<p>至于一些常用的数据库、缓存等基本代码，感觉spring全家桶已经足够好用了。</p>
+<p>对于code review, 我们可以使用gitlab的webhook, 当代码提交时，自动给项目组的人发通知。</p>
+<h2 id="打包-部署"><a href="#打包-部署" class="headerlink" title="打包&amp;部署"></a>打包&amp;部署</h2><p>对于springboot项目，可以用buildpacks 打成docker镜像，而不用再考虑docker file的细节。具体的buildpacks产品，我们用的是paketo buildpacks, 其他的诸如cloudfoundry,heroku也都差不多，目前没有还研究这些包有什么具体需求。</p>
+<p>接下来，我们仍然可以利用gitlab的webhook, 触发一次jenkins的构建任务。在jenkins的构建任务重，我们可以完成打包和部署到kubernetes测试集群这些操作。</p>
+<h2 id="监控-报警"><a href="#监控-报警" class="headerlink" title="监控&amp;报警"></a>监控&amp;报警</h2><p>推荐使用 prometheus + grafana 套餐即可，关于prometheus的使用，以及在springboot项目下的配置，可以参考我之前的文章  h<a href="https://lichuanyang.top/posts/28288/">ttps:&#x2F;&#x2F;lichuanyang.top&#x2F;posts&#x2F;28288&#x2F;</a>  。</p>
+<p>在k8s上，可以装一个weave cloud agent， 然后就可以配置对prometheus接口进行自动抓取了。</p>
+<p>在grafana里，可以直接写promeql配置监控报表。 另外，grafana官网上，有大量的别人共享出来的图表，可以直接使用。</p>
+<p>在grafana里，也可以配置各种各样自定义规则的报警。如果使用飞书的话，在飞书里配置grafana助手，可以很容易的将飞书作为grafana的报警通道。</p>
+<h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><p>可以使用loki (<a href="https://grafana.com/oss/loki/">https://grafana.com/oss/loki/</a>)作为日志收集、查询的工具。loki可以认为是一个轻量级的ELK, 其维护成本会比ELK低很多。</p>
+<h2 id="排查问题"><a href="#排查问题" class="headerlink" title="排查问题"></a>排查问题</h2><p>对于java的项目，使用神器arthas可以解决绝大多数问题排查的需求。对于arthas的接入，可以采用arthas springboot starter这种方式 。而对于k8s上的pod, 如果环境能够和办公环境打通，那可以利用k8s的port forward 功能，将arthas的端口转发到本地来。 当然，这样做的话，务必要控制好权限。</p>
+<h2 id="金丝雀部署"><a href="#金丝雀部署" class="headerlink" title="金丝雀部署"></a>金丝雀部署</h2><p>关于金丝雀部署的作用和实现方式，可以参考我的另一篇文章 <a href="https://lichuanyang.top/posts/30764/">https://lichuanyang.top/posts/30764/</a></p>
+<p>总结一下, 对于运维来说，只需要维护一些诸如gitlab, kuboard, prometheus, grafana, loki之类的基础设施，而且基本都是一些维护较简单的工具。在此基础上，我们辅助以合理的流程和技巧，就能实现一个非常好的开发体验。</p>
+<p>原文地址: <a href="http://lichuanyang.top/posts/40964/">http://lichuanyang.top/posts/40964/</a></p>
+]]></content>
+      <tags>
+        <tag>持续集成</tag>
+        <tag>kubernetes</tag>
+      </tags>
+  </entry>
+</search>
