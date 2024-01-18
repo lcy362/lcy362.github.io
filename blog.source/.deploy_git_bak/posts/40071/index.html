@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+<script data-ad-client="ca-pub-7310841175510611" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE">
+  <meta name="msvalidate.01" content="FEC1AF1D401268A4208AF51DC0275AAA">
+  <meta name="baidu-site-verification" content="code-T8LautTf5f">
+<meta name="360-site-verification" content="1c5bbf05b6055ca3bf0fbac183341c50" />
+<meta name="sogou_site_verification" content="B8l48CQIyW" />
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lichuanyang.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="说一下我个人的经历，其实在我刚毕业的第一家公司里，做的就是底层的中间件开发。但是做的过程中，觉得并不喜欢这种远离实际业务的感觉，所以后来换工作的时候就有意的选择了业务部门。所以，今天想讲一下为什么会做这种选择。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="程序员做业务开发的价值">
+<meta property="og:url" content="http://lichuanyang.top/posts/40071/index.html">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="说一下我个人的经历，其实在我刚毕业的第一家公司里，做的就是底层的中间件开发。但是做的过程中，觉得并不喜欢这种远离实际业务的感觉，所以后来换工作的时候就有意的选择了业务部门。所以，今天想讲一下为什么会做这种选择。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-12T11:27:36.000Z">
+<meta property="article:modified_time" content="2023-01-28T10:53:05.901Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="感悟">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://lichuanyang.top/posts/40071/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>程序员做业务开发的价值 | Mobility</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-45390505-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-45390505-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ffb948eb504670b10474a889e9409047";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Mobility</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">聚沙成塔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xjeTM2Mg==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/40071/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          程序员做业务开发的价值
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-12 19:27:36" itemprop="dateCreated datePublished" datetime="2021-03-12T19:27:36+08:00">2021-03-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/40071/" class="post-meta-item leancloud_visitors" data-flag-title="程序员做业务开发的价值" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/40071/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/40071/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>说一下我个人的经历，其实在我刚毕业的第一家公司里，做的就是底层的中间件开发。但是做的过程中，觉得并不喜欢这种远离实际业务的感觉，所以后来换工作的时候就有意的选择了业务部门。所以，今天想讲一下为什么会做这种选择。</p>
+<span id="more"></span>
+
+<h2 id="我为什么不做底层开发"><a href="#我为什么不做底层开发" class="headerlink" title="我为什么不做底层开发"></a>我为什么不做底层开发</h2><p>首先，我想说一个很多人的认知，就是认为做底层的开发更容易学到东西，成长更快。我觉得这就是业务开发同学的臆想而已，底层开发没有大家想的那么利于学习，业务开发也没有大家想的那么不利于学习，原因我会在后边展开说。而之所以很多人有这样的认知，很大程度上是因为底层开发的招聘标准通常会高一些，所以这些人本身的学习能力和意愿就是要好一些。</p>
+<p>其实底层开发的日常和业务开发也没有太大区别，都是在做需求。只是业务需求的来源是产品经理，底层需求的来源是其他开发，或者底层开发者本人的思考和想法。这里，我要说自己为什么不愿意做底层开发的第一个原因了，就是需求的来源不科学。首先，如果只做底层开发，而脱离了实际业务场景的话，对于技术的认知很可能是有偏差的，这样导致自己想做的一些事很可能是在自嗨，并没有实际应用价值。而如果从其他那些搜集需求呢，也会有类似的问题，业务开发的同学提出的意见可能也就是他自己的非常浅的想法而已，不一定经过了很完善的考虑；再者，业务同学对基础组件究竟该干什么也未必理解准确，他可能分不清楚什么事应该基础组件解决，什么事应该自己解决。</p>
+<p>在这，引入了我不愿意做底层开发的第二个原因，就是职责边界不明确。这个和配合的业务方的能力强相关。有时候，自己有些事没做好，业务方也能找到办法解决；而有时，明明和自己没关系，也要被迫处理一些上层的逻辑。</p>
+<p>大家也可以看到，上边两个问题都极度依赖同事的能力，所以，如果你一定要做底层开发的话，一定要去技术能力储备强的公司，这个直接关系到你的工作幸福度。公司的选择还影响一件事，就是工作内容，简单的说，就是要造轮子，还是完善开源工具，两类工作可以说是天差地别。造轮子，需要对各种底层知识很熟悉，确实是很能促进进步，这个也是“做底层有利于成长”这种想法的来源。但是这种事仅存在为数不多的几家大公司中。其他大量的完善开源工具的工作，其实和业务开发没有任何区别，只需要了解一下开源工具的边边角角，就可以完成大部分工作，既没有深度，也没有广度。我开篇的时候说底层开发并不能帮助学习，原因也就在这。</p>
+<p>所以，要做底层开发，公司的选择至关重要，大，技术能力强，两个条件缺一不可。大家肯定会问，我去这样的公司做不就行了吗。话是这么说没错，但这带来的问题也就来了，这也是我不想做底层开发的第三个原因，职业选择面太窄。国内java底层做的好的也就某里某团两家而已，这两家的企业文化大家也都清楚。所以，不想去这样的公司，是不是就不干了？即使你能接受，巨大的供需量对比，也会带来疯狂的内卷，就像算法岗那样，你是否有足够的把握赢得这场内卷游戏呢？而对于业务开发来说，大厂经历只是一段必要的学习经历和自己简历上的一个亮点，当你对大厂的整个规范流程熟悉了之后，就可以自由的选择想去的公司了。</p>
+<h2 id="业务开发的价值"><a href="#业务开发的价值" class="headerlink" title="业务开发的价值"></a>业务开发的价值</h2><p>前边讲底层开发说的太多了，下边进入正题，就是业务开发的价值。在我看来，业务开发带给我的能力提升主要在三个方面：业务知识的积累，技术广度的提升和综合能力的提升。</p>
+<p>先说业务知识，业务知识其实就是对现实世界的理解。对于我个人来说，工作之余，了解一下其他行业的运转模式，首先就是一个很有意思的事情。其次，不断的去了解不同行业的行业知识，我是完全能感受的到对我认知能力的提升的。这种能力能不能变现？当然是可以的。比如去炒股，工作中的积累让我有了分析一个公司商业模式的能力，对于什么样的是好公司好股票，显然可以比一般人理解的深一些。当然，这儿扯的太远了，大家看看就好，关键是看自己的兴趣，有没有意愿去了解一些技术之外的事情。</p>
+<p>接下来是技术广度。业务开发和底层开发的最大区别，其实就是底层开发对深度要求更高，而业务开发对广度要求更高。业务开发需要对各种各样的框架、中间件都有所了解，并且不能了解的太浅，也需要一定的深度，要能够理解它们能解决什么问题，又会带来什么问题，适用于什么场景；面对复杂的业务场景和复杂的系统，要能够全面理解；发生问题时，要有能力快速定位到问题在哪。这些除了需要知识的积累，也需要实际场景下经验的积累。</p>
+<p>然后说一下综合能力的提升，相比底层开发，业务开发对人的通用基础能力会有更大的锻炼，比如沟通能力、分析解决问题的能力、权衡取舍的能力。这些能力可以说和技术有关，但关联也没那么大，极端的讲，即使你将来转行了，这些普适性的能力也会很有帮助。我时常在想，学着用一个开源工具，和打王者荣耀，究竟有什么区别。作为新手，参考着现成的例子做一个demo, 就相当于第一次接触这个游戏，随便打打。而随着对这个逐渐熟悉，有的人可能就成了没有感情的调包机器，而有的人就可以逐渐去了解底层的实现。就像游戏里，有的人一直浑浑噩噩，打了几千场连电刀和无尽战刃有什么区别都不知道，而有的人就会去探索伤害的数值机制。所以，我觉得大家别把程序员看成一个多特殊的职业，它和其他职业并没有什么本质的区别。大部分职业事实上都是在用不同的方式解决问题，比如律师是依靠法律，基金经理是依靠对市场和基本面的认知，程序员就是靠代码。我们在不断的工作中，锻炼的是解决问题的能力，而解决的方法并没有人要求你一定要限制在技术之内。</p>
+<p>我们在业务开发中，就是要不断积累上边三个方面的能力，这样才能滚起雪球，从而从容的应对中年危机。我写这篇文章，当然也并不是要说业务开发就是好，主要还是想帮大家分析清楚业务开发和底层开发的区别，从而做出一个理性的选择。</p>
+<p>如果大家有什么想法，也可以来和我沟通。</p>
+<p>原文地址: <a href="http://lichuanyang.top/posts/40071/">http://lichuanyang.top/posts/40071/</a></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/54296/" rel="bookmark">信息传播过程中的衰减</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/2345/" rel="bookmark">剧变中的2021-一个中年工程师的年终总结</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/3423/" rel="bookmark">我提升开发效率的经验</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/27398/" rel="bookmark">聊聊程序员的职业生涯，我对程序员这个职业的理解</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/5236/" rel="bookmark">看房小记-2020北京学区</a></div>
+    </li>
+  </ul>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU5MjQ5NjE1OQ==&scene=124#wechat_redirect">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%84%9F%E6%82%9F/" rel="tag"># 感悟</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/58527/" rel="prev" title="设计模式的原则，设计模式究竟是什么">
+      <i class="fa fa-chevron-left"></i> 设计模式的原则，设计模式究竟是什么
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/20888/" rel="next" title="RPC接口将所有输入输出封装成类是合理设计吗">
+      RPC接口将所有输入输出封装成类是合理设计吗 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E5%81%9A%E5%BA%95%E5%B1%82%E5%BC%80%E5%8F%91"><span class="nav-number">1.</span> <span class="nav-text">我为什么不做底层开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E5%BC%80%E5%8F%91%E7%9A%84%E4%BB%B7%E5%80%BC"><span class="nav-number">2.</span> <span class="nav-text">业务开发的价值</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">流沙</p>
+  <div class="site-description" itemprop="description">关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xjeTM2Mg==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lcy362"><i class="github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy8zNDQ4NjMz" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;3448633"><i class="stack-overflow fa-fw"></i>StackOverflow</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9ob2Jlcm1hbGxvdw==" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hobermallow"><i class="知乎 fa-fw"></i>知乎</span>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cHM6Ly93d3cucGFyYWsudG9w" title="https:&#x2F;&#x2F;www.parak.top">Khighness</span>
+        </li>
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cHM6Ly9tb25leTEudXMvNDg5" title="https:&#x2F;&#x2F;money1.us&#x2F;489">money</span>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+      
+      
+        <div>
+          <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/upload/qrcode.bmp" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>订阅公众号</div>
+</div>
+        </div>
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2012 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">流沙</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+        
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1273624188&web_id=1273624188"></script>
+  </div>
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI","app_key":"lW7mfN411Vpjo3x9S5zdOTlE","server_url":"https://ay7gn9nn.api.lncldglobal.com","security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id    : 33277,
+      el    : 'wpac-rating',
+      color : 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = 'https://cdn.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey     : 'lW7mfN411Vpjo3x9S5zdOTlE',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : 'https://ay7gn9nn.api.lncldglobal.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

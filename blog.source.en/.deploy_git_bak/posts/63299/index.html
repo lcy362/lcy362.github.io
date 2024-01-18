@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+<script data-ad-client="ca-pub-7310841175510611" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE">
+  <meta name="msvalidate.01" content="FEC1AF1D401268A4208AF51DC0275AAA">
+  <meta name="baidu-site-verification" content="code-T8LautTf5f">
+<meta name="360-site-verification" content="1c5bbf05b6055ca3bf0fbac183341c50" />
+<meta name="sogou_site_verification" content="B8l48CQIyW" />
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lichuanyang.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="转自http:&#x2F;&#x2F;leyew.blog.51cto.com&#x2F;5043877&#x2F;860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0 前几天开始学习lda,走了不少弯路，对lda仍然是一头雾水。看了这篇文档以后总算明白lda是干啥的了 &amp;nbsp; LDA（Latent Dirichlet Allocation）学习笔记最近在看LDA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一篇不错的lda模型入门文档">
+<meta property="og:url" content="http://lichuanyang.top/posts/63299/index.html">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="转自http:&#x2F;&#x2F;leyew.blog.51cto.com&#x2F;5043877&#x2F;860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0 前几天开始学习lda,走了不少弯路，对lda仍然是一头雾水。看了这篇文档以后总算明白lda是干啥的了 &amp;nbsp; LDA（Latent Dirichlet Allocation）学习笔记最近在看LDA">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2012-12-02T07:20:00.000Z">
+<meta property="article:modified_time" content="2023-01-28T10:53:05.901Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="LDA">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://lichuanyang.top/posts/63299/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>一篇不错的lda模型入门文档 | Mobility</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-45390505-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-45390505-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ffb948eb504670b10474a889e9409047";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Mobility</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">聚沙成塔</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xjeTM2Mg==" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/63299/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一篇不错的lda模型入门文档
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2012-12-02 15:20:00" itemprop="dateCreated datePublished" datetime="2012-12-02T15:20:00+08:00">2012-12-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+              </span>
+
+          
+            <span id="/posts/63299/" class="post-meta-item leancloud_visitors" data-flag-title="一篇不错的lda模型入门文档" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/63299/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/63299/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>转自<span class="exturl" data-url="aHR0cDovL2xleWV3LmJsb2cuNTFjdG8uY29tLzUwNDM4NzcvODYwMjU1IzU1OTE4My10c2luYS0xLTQ2ODYyLWVkMDk3M2EwYzg3MDE1NmVkMTVmMDZhNjU3M2M4YmYw">http://leyew.blog.51cto.com/5043877/860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0<i class="fa fa-external-link-alt"></i></span></p>
+<p>前几天开始学习lda,走了不少弯路，对lda仍然是一头雾水。看了这篇文档以后总算明白lda是干啥的了</p>
+<p>&nbsp;</p>
+<h3 id="LDA（Latent-Dirichlet-Allocation）学习笔记"><a href="#LDA（Latent-Dirichlet-Allocation）学习笔记" class="headerlink" title="LDA（Latent Dirichlet Allocation）学习笔记"></a>LDA（Latent Dirichlet Allocation）学习笔记</h3><p>最近在看LDA算法，经过了几天挣扎，总算大致了解了这个算法的整体框架和流程。</p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>LDA要干的事情简单来说就是为一堆文档进行聚类（所以是非监督学习），一种topic就是一类，要聚成的topic数目是事先指定的。聚类的结果是一个概率，而不是布尔型的100%属于某个类。国外有个博客[1]上有一个清晰的例子，直接引用：</p>
+<blockquote>
+<p>Suppose you have the following set of sentences:</p>
+<ul>
+<li>  I like to eat broccoli and bananas.</li>
+<li>  I ate a banana and spinach smoothie for breakfast.</li>
+<li>  Chinchillas and kittens are cute.</li>
+<li>  My sister adopted a kitten yesterday.</li>
+<li>  Look at this cute hamster munching on a piece of broccoli.</li>
+</ul>
+<p>What is latent Dirichlet allocation? It&rsquo;s a way of automatically discovering topics that these sentences contain. For example, given these sentences and asked for 2 topics, LDA might produce something like</p>
+<ul>
+<li>  <strong>Sentences 1 and 2</strong>: 100% Topic A</li>
+<li>  <strong>Sentences 3 and 4</strong>: 100% Topic B</li>
+<li>  <strong>Sentence 5</strong>: 60% Topic A, 40% Topic B</li>
+<li>  <strong>Topic A</strong>: 30% broccoli, 15% bananas, 10% breakfast, 10% munching, &hellip; (at which point, you could interpret topic A to be about food)</li>
+<li>  <strong>Topic B</strong>: 20% chinchillas, 20% kittens, 20% cute, 15% hamster, &hellip; (at which point, you could interpret topic B to be about cute animals)</li>
+</ul>
+</blockquote>
+<p>上面关于sentence 5的结果，可以看出来是一个明显的概率类型的聚类结果（sentence 1和2正好都是100%的确定性结果）。</p>
+<p>再看例子里的结果，除了为每句话得出了一个概率的聚类结果，而且对每个Topic，都有代表性的词以及一个比例。以Topic A为例，就是说所有对应到Topic A的词里面，有30%的词是broccoli。在LDA算法中，会把每一个文档中的每一个词对应到一个Topic，所以能算出上面这个比例。这些词为描述这个Topic起了一个很好的指导意义，我想这就是LDA区别于传统文本聚类的优势吧。</p>
+<h4 id="LDA整体流程"><a href="#LDA整体流程" class="headerlink" title="LDA整体流程"></a>LDA整体流程</h4><p>先定义一些字母的含义：</p>
+<ul>
+<li>  文档集合<strong>D</strong>，topic集合<strong>T</strong></li>
+<li>  D中每个文档d看作一个单词序列**&lt; w1,w2,…,wn &gt;**，wi表示第i个单词，设d有n个单词。（LDA里面称之为_word bag_，实际上每个单词的出现位置对LDA算法无影响）</li>
+<li>  D中涉及的所有不同单词组成一个大集合<strong>VOCABULARY</strong>（简称<strong>VOC</strong>）</li>
+</ul>
+<p>LDA以文档集合D作为输入（会有切词，去停用词，取词干等常见的预处理，略去不表），希望训练出的两个结果向量（<strong>设聚成k个Topic，VOC中共包含m个词</strong>）：</p>
+<ul>
+<li>  **对每个D中的文档d，对应到不同topic的概率&theta;<sub>d</sub>&nbsp;&lt; p<sub>t1</sub>,…, p<sub>tk</sub>&nbsp;&gt;**，其中，p<sub>ti</sub>表示d对应T中第i个topic的概率。计算方法是直观的，p<sub>ti</sub>=n<sub>ti</sub>/n，其中n<sub>ti</sub>表示d中对应第i个topic的词的数目，n是d中所有词的总数。</li>
+<li>  **对每个T中的topic t，生成不同单词的概率&phi;<sub>t</sub>&nbsp;&lt; p<sub>w1</sub>,…, p<sub>wm</sub>&nbsp;&gt;**，其中，p<sub>wi</sub>表示t生成VOC中第i个单词的概率。计算方法同样很直观，p<sub>wi</sub>=N<sub>wi</sub>/N，其中N<sub>wi</sub>表示对应到topic t的VOC中第i个单词的数目，N表示所有对应到topic t的单词总数。</li>
+</ul>
+<p>LDA的核心公式如下：</p>
+<p>*<em>p(w|d) = p(w|t)<em>p(t|d)</em></em></p>
+<p>直观的看这个公式，就是以Topic作为中间层，可以通过当前的&theta;<sub>d</sub>和&phi;<sub>t</sub>给出了文档d中出现单词w的概率。其中p(t|d)利用&theta;<sub>d</sub>计算得到，p(w|t)利用&phi;<sub>t</sub>计算得到。</p>
+<p>实际上，利用当前的&theta;<sub>d</sub>和&phi;<sub>t</sub>，我们可以为一个文档中的一个单词计算它对应任意一个Topic时的p(w|d)，然后根据这些结果来更新这个词应该对应的topic。然后，如果这个更新改变了这个单词所对应的Topic，就会反过来影响&theta;<sub>d</sub>和&phi;<sub>t</sub>。</p>
+<p>LDA算法开始时，先随机地给&theta;<sub>d</sub>和&phi;<sub>t</sub>赋值（对所有的d和t）。然后上述过程不断重复，最终收敛到的结果就是LDA的输出。</p>
+<p>再详细说一下这个迭代的学习过程：</p>
+<p>针对一个特定的文档d<sub>s</sub>中的第i单词w<sub>i</sub>，如果令该单词对应的topic为t<sub>j</sub>，可以把上述公式改写为：</p>
+<p><em>p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>) = p(w<sub>i</sub>|t<sub>j</sub>)*p(t<sub>j</sub>|d<sub>s</sub>)</em></p>
+<p>先不管这个值怎么计算（可以先理解成直接从&theta;<sub>ds</sub>和&phi;<sub>tj</sub>中取对应的项。实际没这么简单，但对理解整个LDA流程没什么影响，后文再说。）。现在我们可以枚举T中的topic，得到所有的p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)，其中j取值1~k。然后可以根据这些概率值结果为d<sub>s</sub>中的第i个单词w<sub>i</sub>选择一个topic。最简单的想法是取令p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)最大的t<sub>j</sub>（注意，这个式子里只有j是变量），即</p>
+<p><em>argmax[j]p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)</em></p>
+<p>当然这只是一种方法（好像还不怎么常用），实际上这里怎么选择t在学术界有很多方法，我还没有好好去研究。</p>
+<p>然后，如果d<sub>s</sub>中的第i个单词w<sub>i</sub>在这里选择了一个与原先不同的topic，就会对&theta;<sub>d</sub>和&phi;<sub>t</sub>有影响了（根据前面提到过的这两个向量的计算公式可以很容易知道）。它们的影响又会反过来影响对上面提到的p(w|d)的计算。对D中所有的d中的所有w进行一次p(w|d)的计算并重新选择topic看作一次迭代。这样进行n次循环迭代之后，就会收敛到LDA所需要的结果了。&nbsp;<em>【在这里突然想到了一个问题，就是对&theta;<sub>d</sub>和&phi;<sub>t</sub>这两个向量的更新究竟是在一次迭代对所有的d中的所有w更新之后统一更新（也就是在一次迭代中，&theta;<sub>d</sub>和&phi;<sub>t</sub>不变，统一在迭代结束时更新），还是每对一个d中的一个w更新topic之后，就马上对&theta;<sub>d</sub>和&phi;<sub>t</sub>进行更新呢？这个看来要去看一下那篇LDA最原始的论文了】</em></p>
+<h4 id="怎样计算p-w-t-和p-t-d"><a href="#怎样计算p-w-t-和p-t-d" class="headerlink" title="怎样计算p(w|t)和p(t|d)"></a>怎样计算p(w|t)和p(t|d)</h4><p>待续&hellip;&hellip;</p>
+<p>&nbsp;</p>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p>【1】<span class="exturl" data-url="aHR0cDovL2Jsb2cuZWNoZW4ubWUvMjAxMS8wOC8yMi9pbnRyb2R1Y3Rpb24tdG8tbGF0ZW50LWRpcmljaGxldC1hbGxvY2F0aW9uLw==">Introduction to Latent Dirichlet Allocation<i class="fa fa-external-link-alt"></i></span>：国外博客，很不错的入门文章</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/48312/" rel="bookmark">数据分析的利器-clickhouse介绍</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/35575/" rel="bookmark">hadoop基本的学习资料</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/25187/" rel="bookmark">wordcount代码</a></div>
+    </li>
+  </ul>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU5MjQ5NjE1OQ==&scene=124#wechat_redirect">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+              <a href="/tags/LDA/" rel="tag"># LDA</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/25187/" rel="prev" title="wordcount代码">
+      <i class="fa fa-chevron-left"></i> wordcount代码
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/17762/" rel="next" title="关于apache camel的消息转发效率">
+      关于apache camel的消息转发效率 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#LDA%EF%BC%88Latent-Dirichlet-Allocation%EF%BC%89%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">LDA（Latent Dirichlet Allocation）学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.1.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LDA%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">LDA整体流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%8E%E6%A0%B7%E8%AE%A1%E7%AE%97p-w-t-%E5%92%8Cp-t-d"><span class="nav-number">1.3.</span> <span class="nav-text">怎样计算p(w|t)和p(t|d)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.4.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">流沙</p>
+  <div class="site-description" itemprop="description">关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xjeTM2Mg==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lcy362"><i class="github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS91c2Vycy8zNDQ4NjMz" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;3448633"><i class="stack-overflow fa-fw"></i>StackOverflow</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS9ob2Jlcm1hbGxvdw==" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hobermallow"><i class="知乎 fa-fw"></i>知乎</span>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cHM6Ly93d3cucGFyYWsudG9w" title="https:&#x2F;&#x2F;www.parak.top">Khighness</span>
+        </li>
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cHM6Ly9tb25leTEudXMvNDg5" title="https:&#x2F;&#x2F;money1.us&#x2F;489">money</span>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+      
+      
+        <div>
+          <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/upload/qrcode.bmp" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>订阅公众号</div>
+</div>
+        </div>
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2012 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">流沙</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+        
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1273624188&web_id=1273624188"></script>
+  </div>
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI","app_key":"lW7mfN411Vpjo3x9S5zdOTlE","server_url":"https://ay7gn9nn.api.lncldglobal.com","security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id    : 33277,
+      el    : 'wpac-rating',
+      color : 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = 'https://cdn.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey     : 'lW7mfN411Vpjo3x9S5zdOTlE',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : 'https://ay7gn9nn.api.lncldglobal.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

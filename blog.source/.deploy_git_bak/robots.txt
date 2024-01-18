@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: http://lichuanyang.top/sitemap.xml
