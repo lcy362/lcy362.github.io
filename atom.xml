@@ -239,9 +239,9 @@
     
     
     
-    <category term="持续集成" scheme="http://lichuanyang.top/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"/>
-    
     <category term="kubernetes" scheme="http://lichuanyang.top/tags/kubernetes/"/>
+    
+    <category term="持续集成" scheme="http://lichuanyang.top/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"/>
     
   </entry>
   
@@ -340,7 +340,7 @@
     <published>2021-10-08T08:45:42.000Z</published>
     <updated>2023-01-28T10:53:05.901Z</updated>
     
-    <content type="html"><![CDATA[<p>如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。</p><span id="more"></span><p>iterm2 （<a href="https://iterm2.com/">https://iterm2.com/</a>)  是mac下使用非常广泛的一款终端替代产品，提供了很多强大的功能。要实现ssh书签，实现免密码登录、自动登录的效果，关键点是其中的三个特性：profile, trigger 和 password manager.</p><p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <a href="mailto:&#114;&#111;&#x6f;&#116;&#x40;&#x31;&#x2e;&#49;&#x2e;&#x31;&#46;&#x31;">&#114;&#111;&#x6f;&#116;&#x40;&#x31;&#x2e;&#49;&#x2e;&#x31;&#46;&#x31;</a>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p><p>trigger也是profile的一个特性，入口在profile配置页的advanced标签下，它的作用就是利用关键词触发一个动作，我们现在要做的就是用password这个关键词触发打开 password manager。 操作很简单，就是增加一个trigger, regular expression 填入 password,  action选择 open password manager, 注意勾选instant和enabled两个选项。</p><p>最后一个要配置的是password manager, password manager 就是一个密码管理器，是item2中会默认安装的一款插件，入口在工具栏 window 标签下。打开password manager, 将需要保存的密码都录入进去就可以了。</p><p>这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。</p><p>原文地址: <a href="http://lichuanyang.top/posts/20763/">http://lichuanyang.top/posts/20763/</a></p>]]></content>
+    <content type="html"><![CDATA[<p>如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。</p><span id="more"></span><p>iterm2 （<a href="https://iterm2.com/">https://iterm2.com/</a>)  是mac下使用非常广泛的一款终端替代产品，提供了很多强大的功能。要实现ssh书签，实现免密码登录、自动登录的效果，关键点是其中的三个特性：profile, trigger 和 password manager.</p><p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <a href="mailto:&#x72;&#111;&#111;&#x74;&#64;&#x31;&#x2e;&#49;&#x2e;&#49;&#46;&#x31;">&#x72;&#111;&#111;&#x74;&#64;&#x31;&#x2e;&#49;&#x2e;&#49;&#46;&#x31;</a>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p><p>trigger也是profile的一个特性，入口在profile配置页的advanced标签下，它的作用就是利用关键词触发一个动作，我们现在要做的就是用password这个关键词触发打开 password manager。 操作很简单，就是增加一个trigger, regular expression 填入 password,  action选择 open password manager, 注意勾选instant和enabled两个选项。</p><p>最后一个要配置的是password manager, password manager 就是一个密码管理器，是item2中会默认安装的一款插件，入口在工具栏 window 标签下。打开password manager, 将需要保存的密码都录入进去就可以了。</p><p>这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。</p><p>原文地址: <a href="http://lichuanyang.top/posts/20763/">http://lichuanyang.top/posts/20763/</a></p>]]></content>
     
     
     <summary type="html">&lt;p&gt;如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。&lt;/p&gt;</summary>
@@ -623,9 +623,9 @@
     <category term="读书笔记" scheme="http://lichuanyang.top/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="投资" scheme="http://lichuanyang.top/tags/%E6%8A%95%E8%B5%84/"/>
-    
     <category term="个人成长" scheme="http://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
+    
+    <category term="投资" scheme="http://lichuanyang.top/tags/%E6%8A%95%E8%B5%84/"/>
     
     <category term="读书感悟" scheme="http://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E6%84%9F%E6%82%9F/"/>
     
@@ -1124,9 +1124,9 @@
     
     <category term="监控" scheme="http://lichuanyang.top/tags/%E7%9B%91%E6%8E%A7/"/>
     
-    <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
-    
     <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
+    
+    <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
     
   </entry>
   
@@ -1807,9 +1807,9 @@
     
     <category term="activemq" scheme="http://lichuanyang.top/tags/activemq/"/>
     
-    <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
-    
     <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
+    
+    <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
     
     <category term="kafka" scheme="http://lichuanyang.top/tags/kafka/"/>
     
@@ -1836,9 +1836,9 @@
     
     
     
-    <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
-    
     <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
+    
+    <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
     
   </entry>
   
