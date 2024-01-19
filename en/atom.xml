@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Mobility</title>
   
-  <subtitle>聚沙成塔</subtitle>
+  <subtitle>The sand accumulates to form a pagoda</subtitle>
   <link href="http://lichuanyang.top/atom.xml" rel="self"/>
   
   <link href="http://lichuanyang.top/"/>
@@ -10,7 +10,7 @@
   <id>http://lichuanyang.top/</id>
   
   <author>
-    <name>mallow</name>
+    <name>quicksand</name>
     
   </author>
   
