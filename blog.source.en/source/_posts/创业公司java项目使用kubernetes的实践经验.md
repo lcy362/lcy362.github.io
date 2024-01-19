@@ -1,74 +1,74 @@
 ---
-title: java项目低学习成本使用kubernetes的实践经验
+title: Practical experience using kubernetes in java projects with low learning costs
 tags:
-  - 持续集成
+  - continuous integration
   - kubernetes
 abbrlink: 40964
 date: 2022-01-26 15:19:32
 lang: en
 ---
-很多创业公司相比于大厂，一个非常重要的劣势就是基础设施不完善，没有各种各样完善的工具。因此，我打算整理一下，基于开源社区提供的能力，如何用尽量小的运维和开发成本，去搭建出一套体验良好的开发流程。
+Compared with large manufacturers, many start-up companies have a very important disadvantage that their infrastructure is imperfect and they do not have a variety of complete tools. Therefore, I plan to sort out how to build a development process with a good experience based on the capabilities provided by the open source community with as little operation and maintenance and development costs as possible.
 
 <!-- more -->
 
-首先，我们理一下整个开发流程中的必备步骤都有哪些，我大概罗列一下，包括项目的创建、开发、code review、部署测试环境、部署灰度和线上环境、查看线上监控、日志、以及排查问题等。
+First, let’s sort out the necessary steps in the entire development process. I will briefly list them, including project creation, development, code review, deployment of test environment, deployment of grayscale and online environments, viewing online monitoring, and logs. , and troubleshooting problems, etc.
 
-根据这整个流程链条，我们再来理一下为了尽可能的提升开发和运维效率，我们需要把哪些方面保障好，以及这些方面可以有什么低成本的解决方案。
+Based on this entire process chain, let's take a look at what aspects we need to ensure in order to improve development and operation and maintenance efficiency as much as possible, and what low-cost solutions can be found in these aspects.
 
-有几个点吧：
+There are a few points:
 
-* 快速创建一个项目，并且将必备的web、监控、日志等组件添加好；
-* 提升一些常规的代码开发，比如数据库增删改查的开发效率；
-* 简化打包到部署的流程，测试环境能自动部署更好；
-* 能够给每个服务轻松的加上一整套监控和报警，包括通用的机器、jvm、接口层面的指标，和根据业务自定义的指标；
-* 能有地方集中看各个节点的日志；
-* 必要的时候，可以在线上节点上有强力的工具帮助排查问题。
+* Quickly create a project and add necessary web, monitoring, log and other components;
+* Improve the development efficiency of some conventional code development, such as database addition, deletion, modification and query;
+* Simplify the process from packaging to deployment, and the test environment can be deployed automatically;
+* A complete set of monitoring and alarms can be easily added to each service, including common machine, JVM, interface level indicators, and business-customized indicators;
+* There is a place to centrally view the logs of each node;
+* When necessary, powerful tools can be used on online nodes to help troubleshoot problems.
 
-接下来，我们就看一下这些问题分别怎么解决。
+Next, let’s take a look at how to solve these problems respectively.
 
-## 部署环境
+## Deployment environment
 
-首先，在本文的标题中，其实已经假定了部署环境就是kubernetes, 所以，我先说一下为什么只有kubernetes这一个选项。随便翻开一个kubernetes的介绍资料，我们都可以看到很多它的优势说明，这里我们不多赘述。而其中最关键的，也是每个人都能切身体会到的好处，其实就是它提供了完善的自动扩缩容机制。可以非常简单的设置一个cpu消耗的期望值，k8s集群就可以根据目前cpu的负载去调整pod数量。我对比了我们启用自动扩缩容前后的数据，每天的机器成本可以相差接近600美金，占总成本的1/3还要多。
+First of all, in the title of this article, it is actually assumed that the deployment environment is kubernetes, so let me first talk about why kubernetes is the only option. Just flip through any introduction to kubernetes, and we can see many explanations of its advantages, so we won’t go into details here. The most critical one, and the benefit that everyone can experience personally, is that it provides a complete automatic expansion and contraction mechanism. It is very simple to set an expected value for CPU consumption, and the k8s cluster can adjust the number of pods based on the current CPU load. I compared the data before and after we enabled automatic expansion and contraction. The daily machine cost can differ by nearly 600 US dollars, accounting for more than 1/3 of the total cost.
 
-由于k8s本身的运维成本是很高的，推荐直接购买云服务商的服务，无论aws还是阿里云，都提供了很完善的k8s集群功能。
+Since the operation and maintenance cost of k8s itself is very high, it is recommended to directly purchase the services of a cloud service provider. Both AWS and Alibaba Cloud provide very complete k8s cluster functions.
 
-另外，推荐使用 kuboard ([https://kuboard.cn/](https://kuboard.cn/)) 这个工具对k8s进行管理。kuboard是一个图像化的k8s管理工具，包括部署、配置、扩容、登入pod等常见操作，都可以在图形化界面下操作，使用很方便。
+In addition, it is recommended to use kuboard ([https://kuboard.cn/](https://kuboard.cn/)) this tool to manage k8s. kuboard is a graphical k8s management tool, including common operations such as deployment, configuration, expansion, and logging in to pods, all of which can be operated on a graphical interface and is very convenient to use.
 
-## 项目开发
-一般基于spring initializr创建一个项目就可以。对于常用的日志、监控等各类配置，建议整理一份最佳实践并做一个模板项目。新项目可以基于这个模板项目来创建，可以利用mvn archetype或者类似的工具让这个过程更加顺畅。
+## Project Development
+Generally, you can create a project based on spring initializr. For common configurations such as logging and monitoring, it is recommended to compile a list of best practices and create a template project. New projects can be created based on this template project, using mvn archetype or similar tools to make the process smoother.
 
-至于一些常用的数据库、缓存等基本代码，感觉spring全家桶已经足够好用了。
+As for some commonly used basic codes such as databases and caches, I feel that Spring Family Bucket is easy enough to use.
 
-对于code review, 我们可以使用gitlab的webhook, 当代码提交时，自动给项目组的人发通知。
+For code review, we can use GitLab's webhook to automatically send notifications to the project team when the code is submitted.
 
-## 打包&部署  
+## Packaging & Deployment
 
-对于springboot项目，可以用buildpacks 打成docker镜像，而不用再考虑docker file的细节。具体的buildpacks产品，我们用的是paketo buildpacks, 其他的诸如cloudfoundry,heroku也都差不多，目前没有还研究这些包有什么具体需求。
+For springboot projects, you can use buildpacks to create docker images without having to consider the details of the docker file. For specific buildpacks, we use paketo buildpacks. Others such as cloudfoundry and heroku are similar. Currently, we have not studied the specific requirements for these packages.
 
-接下来，我们仍然可以利用gitlab的webhook, 触发一次jenkins的构建任务。在jenkins的构建任务重，我们可以完成打包和部署到kubernetes测试集群这些操作。
+Next, we can still use gitlab's webhook to trigger a Jenkins build task. In the Jenkins build task, we can complete the operations of packaging and deploying to the kubernetes test cluster.
 
-## 监控&报警
+## Monitoring & Alarming
 
-推荐使用 prometheus + grafana 套餐即可，关于prometheus的使用，以及在springboot项目下的配置，可以参考我之前的文章  h[ttps://lichuanyang.top/posts/28288/](https://lichuanyang.top/posts/28288/)  。
+It is recommended to use the prometheus + grafana package. Regarding the use of prometheus and the configuration under the springboot project, you can refer to my previous article h[ttps://lichuanyang.top/posts/28288/](https://lichuanyang. top/posts/28288/) .
 
-在k8s上，可以装一个weave cloud agent， 然后就可以配置对prometheus接口进行自动抓取了。
+On k8s, you can install a weave cloud agent, and then configure the automatic crawling of the prometheus interface.
 
-在grafana里，可以直接写promeql配置监控报表。 另外，grafana官网上，有大量的别人共享出来的图表，可以直接使用。
+In grafana, you can directly write promeql configuration monitoring reports. In addition, on the Grafana official website, there are a large number of charts shared by others that can be used directly.
 
-在grafana里，也可以配置各种各样自定义规则的报警。如果使用飞书的话，在飞书里配置grafana助手，可以很容易的将飞书作为grafana的报警通道。
+In grafana, you can also configure alarms with various custom rules. If you use Feishu, you can easily use Feishu as the alarm channel for grafana by configuring grafana assistant in Feishu.
 
-## 日志
+## log
 
-可以使用loki ([https://grafana.com/oss/loki/](https://grafana.com/oss/loki/))作为日志收集、查询的工具。loki可以认为是一个轻量级的ELK, 其维护成本会比ELK低很多。
+You can use loki ([https://grafana.com/oss/loki/](https://grafana.com/oss/loki/)) as a tool for log collection and query. Loki can be considered as a lightweight ELK, and its maintenance cost will be much lower than ELK.
 
-## 排查问题   
+## Troubleshooting
 
-对于java的项目，使用神器arthas可以解决绝大多数问题排查的需求。对于arthas的接入，可以采用arthas springboot starter这种方式 。而对于k8s上的pod, 如果环境能够和办公环境打通，那可以利用k8s的port forward 功能，将arthas的端口转发到本地来。 当然，这样做的话，务必要控制好权限。
+For java projects, using the artifact arthas can solve most problem troubleshooting needs. For arthas access, you can use arthas springboot starter. For pods on k8s, if the environment can be connected to the office environment, you can use the port forward function of k8s to forward the arthas port to the local. Of course, if you do this, be sure to control permissions.
 
-## 金丝雀部署
+## Canary deployment
 
-关于金丝雀部署的作用和实现方式，可以参考我的另一篇文章 [https://lichuanyang.top/posts/30764/](https://lichuanyang.top/posts/30764/)
+Regarding the role and implementation of canary deployment, you can refer to my other article [https://lichuanyang.top/posts/30764/](https://lichuanyang.top/posts/30764/)
 
-总结一下, 对于运维来说，只需要维护一些诸如gitlab, kuboard, prometheus, grafana, loki之类的基础设施，而且基本都是一些维护较简单的工具。在此基础上，我们辅助以合理的流程和技巧，就能实现一个非常好的开发体验。
+To sum up, for operation and maintenance, you only need to maintain some infrastructure such as gitlab, kuboard, prometheus, grafana, loki, etc., and they are basically tools that are relatively simple to maintain. On this basis, with the help of reasonable processes and techniques, we can achieve a very good development experience.
 
-原文地址: http://lichuanyang.top/posts/40964/
+Original address: http://lichuanyang.top/en/posts/40964/
