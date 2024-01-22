@@ -6,7 +6,7 @@
   <link href="http://lichuanyang.top/atom.xml" rel="self"/>
   
   <link href="http://lichuanyang.top/"/>
-  <updated>2023-12-22T10:13:08.615Z</updated>
+  <updated>2024-01-22T11:58:24.454Z</updated>
   <id>http://lichuanyang.top/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>hexo多语言方案总结及最佳实践</title>
+    <link href="http://lichuanyang.top/posts/40400/"/>
+    <id>http://lichuanyang.top/posts/40400/</id>
+    <published>2024-01-22T10:12:31.000Z</published>
+    <updated>2024-01-22T11:58:24.454Z</updated>
+    
+    <content type="html"><![CDATA[<p>对于hexo的多语言方案，官方并没有提供很完备的支持，但是网络上有很多人尝试过不同的解决方案。今天，我们对这些方案简单做个总结，看看我们需要的多语言方案是什么样子的。</p><span id="more"></span><p>其实，hexo的多语言方案，说白了就是两个思路，一个是在文章维度切换语言，借助hexo原生的能力和hexo-generator-i18n等插件，用一套框架维护两个语言的内容；另一个则是独立维护不同语言的样式、内容，在站点维度切换语言，只是在域名层面合并到同一个域名。</p><p>具体要选择什么方案，取决于大家想要一个什么样的多语言网站。一开始我想象中的多语言网站的是第一种，即统一的首页，在首页和每篇文章上都支持切换语言，对每篇文章，可以通过切换语言，直达对应的其他语言译文上。</p><p>这个思路，借助于hexo-generator-i18n插件，可以实现，但要做比较多的定制开发。所以，我又重新思量了一下思路，我要的多语言网站应该是什么样。重新考虑之后，逐渐觉得第二种思路才是更合理的。我们要做一个多语言网站的目的是什么？对我来说，其实就是要获取一些英文流量。作为一个未备案网站，已经很久无法获取百度的搜索流量了，google在中国占的份额又太低，所以单凭中文内容，很难从搜索中获取较高流量。所以我希望通过提供一些英文内容，获取英文流量。这个目标下，完全不需要对所有的文章都维护多语言版本。何况，不同文章的语言受众也的确有很大区别，所以，语言的切换可以直接在站点层面进行。</p><p>具体操作方式上，一种是直接维护多个站点，两个站点内容、样式完全独立，只是部署在同一个域名下。比如中文站点根路径是lichuanyang.top，英文站点根路径是lichuanyang.top&#x2F;en . 两个站点上各做一个跳转链接，向对方跳转。</p><p>我采用的是另一种方式，相比上述方式，成本小一些，不需要实际维护两个站点。原理大致如下：</p><p>在本地，同样维护两个站点。但是英文站点不会去做实际的部署，只是用作生成静态网页的工具。英文版的内容生成之后，直接复制到中文网站的对应目录下，只对中文网站做部署即可。</p><p>具体操作步骤如下：</p><ul><li><p>将博客目录整体复制一份，作为英文博客目录. 例如，我的博客根目录叫blog.source, 复制出一个blog.source.en. 这步完成后，如果博客源码也是以git维护的，可以直接在原目录的外层直接新建一个git项目，在外层做管理就行了。 示例如下：</p>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blog(git跟目录)/blog.source</span><br><span class="line">              /blog.source.en</span><br></pre></td></tr></table></figure></li><li><p>将en目录下的文章全部删除；站点描述等文本调整为英文内容；英文语言设置为en；英文站点根 (_config.yml中的root配置)设置成&#x2F;en</p></li><li><p>在两个站点下增加跳转链接。我是借助菜单功能，直接在菜单里加一个其他语言项。 next主题中配置如下：</p>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">中文站 ：    English: /en || fa fa-language</span><br><span class="line">英文站：     中文: https://lichuanyang.top || fa fa-language</span><br><span class="line"></span><br></pre></td></tr></table></figure></li><li><p>之后配置基本就完成了，可以在en目录下写英文文章，流程与之前写中文文章时完全一致</p></li><li><p>最后就是生成和发布环节了，这一步要注意，每次生成时，我们需要先生成中文站点，再生成英文站点并将英文内容复制到中文目录下，避免生成中文内容时将英文内容覆盖掉。具体操作示例如下：</p> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp;cd ../blog.source.en &amp;&amp; hexo clean &amp;&amp; hexo g &amp;&amp; cd ../blog.source &amp;&amp;cp -r ../blog.source.en/public/. public/en/ &amp;&amp; hexo s</span><br></pre></td></tr></table></figure><p> 命令最后一段，使用hexo s就是本地启动，使用hexo d就是发布出去，和正常使用时一样。</p></li></ul><p> 这样，我们就有了一个好用的多语言站点了。之后，写中文内容就在中文目录下进行，写英文内容就在英文目录下进行, 最后执行一下上边的命令就可以了。</p><p>原文地址: <a href="http://lichuanyang.top/posts/40400/">http://lichuanyang.top/posts/40400/</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;对于hexo的多语言方案，官方并没有提供很完备的支持，但是网络上有很多人尝试过不同的解决方案。今天，我们对这些方案简单做个总结，看看我们需要的多语言方案是什么样子的。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="hexo" scheme="http://lichuanyang.top/tags/hexo/"/>
+    
+    <category term="个人博客" scheme="http://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
+    
+    <category term="i18n" scheme="http://lichuanyang.top/tags/i18n/"/>
+    
+    <category term="多语言" scheme="http://lichuanyang.top/tags/%E5%A4%9A%E8%AF%AD%E8%A8%80/"/>
+    
+  </entry>
   
   <entry>
     <title>知乎增强工具-评论时间精确到秒</title>
@@ -340,7 +365,7 @@
     <published>2021-10-08T08:45:42.000Z</published>
     <updated>2023-01-28T10:53:05.901Z</updated>
     
-    <content type="html"><![CDATA[<p>如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。</p><span id="more"></span><p>iterm2 （<a href="https://iterm2.com/">https://iterm2.com/</a>)  是mac下使用非常广泛的一款终端替代产品，提供了很多强大的功能。要实现ssh书签，实现免密码登录、自动登录的效果，关键点是其中的三个特性：profile, trigger 和 password manager.</p><p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <a href="mailto:&#114;&#x6f;&#x6f;&#116;&#x40;&#49;&#x2e;&#49;&#46;&#49;&#46;&#x31;">&#114;&#x6f;&#x6f;&#116;&#x40;&#49;&#x2e;&#49;&#46;&#49;&#46;&#x31;</a>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p><p>trigger也是profile的一个特性，入口在profile配置页的advanced标签下，它的作用就是利用关键词触发一个动作，我们现在要做的就是用password这个关键词触发打开 password manager。 操作很简单，就是增加一个trigger, regular expression 填入 password,  action选择 open password manager, 注意勾选instant和enabled两个选项。</p><p>最后一个要配置的是password manager, password manager 就是一个密码管理器，是item2中会默认安装的一款插件，入口在工具栏 window 标签下。打开password manager, 将需要保存的密码都录入进去就可以了。</p><p>这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。</p><p>原文地址: <a href="http://lichuanyang.top/posts/20763/">http://lichuanyang.top/posts/20763/</a></p>]]></content>
+    <content type="html"><![CDATA[<p>如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。</p><span id="more"></span><p>iterm2 （<a href="https://iterm2.com/">https://iterm2.com/</a>)  是mac下使用非常广泛的一款终端替代产品，提供了很多强大的功能。要实现ssh书签，实现免密码登录、自动登录的效果，关键点是其中的三个特性：profile, trigger 和 password manager.</p><p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <a href="mailto:&#114;&#111;&#x6f;&#116;&#x40;&#x31;&#x2e;&#x31;&#46;&#49;&#46;&#49;">&#114;&#111;&#x6f;&#116;&#x40;&#x31;&#x2e;&#x31;&#46;&#49;&#46;&#49;</a>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p><p>trigger也是profile的一个特性，入口在profile配置页的advanced标签下，它的作用就是利用关键词触发一个动作，我们现在要做的就是用password这个关键词触发打开 password manager。 操作很简单，就是增加一个trigger, regular expression 填入 password,  action选择 open password manager, 注意勾选instant和enabled两个选项。</p><p>最后一个要配置的是password manager, password manager 就是一个密码管理器，是item2中会默认安装的一款插件，入口在工具栏 window 标签下。打开password manager, 将需要保存的密码都录入进去就可以了。</p><p>这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。</p><p>原文地址: <a href="http://lichuanyang.top/posts/20763/">http://lichuanyang.top/posts/20763/</a></p>]]></content>
     
     
     <summary type="html">&lt;p&gt;如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。&lt;/p&gt;</summary>
@@ -2019,9 +2044,9 @@
     
     
     
-    <category term="hadoop" scheme="http://lichuanyang.top/tags/hadoop/"/>
-    
     <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+    <category term="hadoop" scheme="http://lichuanyang.top/tags/hadoop/"/>
     
   </entry>
   
@@ -2046,9 +2071,9 @@
     
     
     
-    <category term="hadoop" scheme="http://lichuanyang.top/tags/hadoop/"/>
-    
     <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+    <category term="hadoop" scheme="http://lichuanyang.top/tags/hadoop/"/>
     
   </entry>
   
