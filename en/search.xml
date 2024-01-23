@@ -41,4 +41,35 @@
         <tag>kubernetes</tag>
       </tags>
   </entry>
+  <entry>
+    <title>a easy way to build multi-languages blog with hexo</title>
+    <url>/en/posts/40400/</url>
+    <content><![CDATA[<p>The simplest way to use hexo to build a multilingual website is to directly build two independent sites and make a jump link to each other. </p>
+<p>Here’s how to implement it.</p>
+<span id="more"></span>
+<p>Suppose I now have a Chinese blog and plan to add an English site</p>
+<ul>
+<li><p>Copy the entire blog directory as the English blog directory. For example, my blog root directory is called blog.source, and copy a blog.source.en. After this, if source code of the blog is maintained using git, you can just create a new git project directly in the outer layer of the original directory and manage it in the outer layer. For example:</p>
+   <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">blog(git root directory)/blog.source</span><br><span class="line">                        /blog.source.en</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Delete all articles in the en directory; adjust text such as site description to English content; set the English language to en; set the English site root (root configuration in _config.yml) to &#x2F;en</p>
+</li>
+<li><p>Add jump links under two sites. I used the menu function to directly add an other language item to the menu. The configuration in the next theme is as follows:</p>
+   <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Chinese site:      English: /en || fa fa-language</span><br><span class="line">English site:      Chinese: https://lichuanyang.top || fa fa-language</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>After that, the configuration is basically completed. You can write English articles in the en directory. The process is exactly the same as when writing Chinese articles before.</p>
+</li>
+<li><p>The last step is to generate and publish. Pay attention to this step. Everytime we generate, we need to generate a Chinese site first, then generate an English site and copy the English content to the Chinese directory to avoid overwriting the English content when generating Chinese content.  Specific operation examples are as follows:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp;cd ../blog.source.en &amp;&amp; hexo clean &amp;&amp; hexo g &amp;&amp; cd ../blog.source &amp;&amp;cp -r ../blog.source.en/public/. public/en/ &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
+<p>At the end of the command, use hexo s to start locally, use hexo d to publish it, just like normal use.</p>
+</li>
+</ul>
+<p>In this way, we now have a multi-language site which is quite easy to use. After that, write Chinese content in the Chinese directory, write English content in the English directory, and finally execute the above command.</p>
+<p>Original address： <a href="http://lichuanyang.top/en/posts/40400/">http://lichuanyang.top/en/posts/40400/</a></p>
+]]></content>
+      <tags>
+        <tag>hexo</tag>
+        <tag>blog</tag>
+        <tag>i18n</tag>
+      </tags>
+  </entry>
 </search>
