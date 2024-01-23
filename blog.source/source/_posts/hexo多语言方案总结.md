@@ -28,7 +28,7 @@ date: 2024-01-22 18:12:31
 
 - 将博客目录整体复制一份，作为英文博客目录. 例如，我的博客根目录叫blog.source, 复制出一个blog.source.en. 这步完成后，如果博客源码也是以git维护的，可以直接在原目录的外层直接新建一个git项目，在外层做管理就行了。 示例如下：
     ```
-        blog(git跟目录)/blog.source
+        blog(git根目录)/blog.source
                       /blog.source.en
     ```
 
