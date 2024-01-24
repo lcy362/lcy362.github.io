@@ -17,8 +17,8 @@ i18n:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://lichuanyang.top/
-root: /en
+url: http://lichuanyang.top/en
+root: 
 permalink: posts/:abbrlink/
 permalink_defaults: 
 
@@ -117,7 +117,7 @@ search:
 
 robotstxt:
   useragent: "*"
-  sitemap: http://lichuanyang.top/sitemap.xml
+  sitemap: https://lichuanyang.top/en/sitemap.xml
  
 baidu_url_submit:
   count: 4 ## 提交最新的一个链接

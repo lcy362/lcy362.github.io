@@ -4,11 +4,29 @@
   <url>
     <loc>{{ post.permalink | uriencode }}</loc>
     {% if post.updated %}
-    <lastmod>{{ post.updated.toISOString() }}</lastmod>
+    <lastmod>{{ post.updated | formatDate }}</lastmod>
     {% elif post.date %}
-    <lastmod>{{ post.date.toISOString() }}</lastmod>
+    <lastmod>{{ post.date | formatDate }}</lastmod>
     {% endif %}
   </url>
   {% endfor %}
-</urlset>
 
+  <url>
+    <loc>{{ config.url | uriencode }}</loc>
+    <lastmod>{{ sNow | formatDate }}</lastmod>
+  </url>
+
+  {% for tag in tags %}
+  <url>
+    <loc>{{ tag.permalink | uriencode }}</loc>
+    <lastmod>{{ sNow | formatDate }}</lastmod>
+  </url>
+  {% endfor %}
+
+  {% for cat in categories %}
+  <url>
+    <loc>{{ cat.permalink | uriencode }}</loc>
+    <lastmod>{{ sNow | formatDate }}</lastmod>
+  </url>
+  {% endfor %}
+</urlset>
