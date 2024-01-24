@@ -1,2 +1,3 @@
 User-agent: *
 Sitemap: http://lichuanyang.top/sitemap.xml
+Sitemap: http://lichuanyang.top/en/sitemap.xml

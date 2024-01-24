@@ -2,32 +2,65 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://lichuanyang.top/posts/40400/</loc>
+    <loc>http://lichuanyang.top/en/posts/40400/</loc>
     
-    <lastmod>2024-01-23T11:21:07.762Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lichuanyang.top/posts/40964/</loc>
-    
-    <lastmod>2024-01-19T06:11:35.433Z</lastmod>
+    <lastmod>2024-01-23</lastmod>
     
   </url>
   
   <url>
-    <loc>http://lichuanyang.top/categories/index.html</loc>
+    <loc>http://lichuanyang.top/en/posts/40964/</loc>
     
-    <lastmod>2024-01-18T10:58:35.746Z</lastmod>
+    <lastmod>2024-01-19</lastmod>
     
   </url>
   
   <url>
-    <loc>http://lichuanyang.top/tags/index.html</loc>
+    <loc>http://lichuanyang.top/en/categories/index.html</loc>
     
-    <lastmod>2024-01-18T10:58:35.734Z</lastmod>
+    <lastmod>2024-01-18</lastmod>
     
   </url>
+  
+  <url>
+    <loc>http://lichuanyang.top/en/tags/index.html</loc>
+    
+    <lastmod>2024-01-18</lastmod>
+    
+  </url>
+  
+
+  <url>
+    <loc>http://lichuanyang.top/en</loc>
+    <lastmod>2024-01-24</lastmod>
+  </url>
+
+  
+  <url>
+    <loc>http://lichuanyang.top/en/tags/continuous-integration/</loc>
+    <lastmod>2024-01-24</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://lichuanyang.top/en/tags/kubernetes/</loc>
+    <lastmod>2024-01-24</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://lichuanyang.top/en/tags/hexo/</loc>
+    <lastmod>2024-01-24</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://lichuanyang.top/en/tags/blog/</loc>
+    <lastmod>2024-01-24</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://lichuanyang.top/en/tags/i18n/</loc>
+    <lastmod>2024-01-24</lastmod>
+  </url>
+  
+
   
 </urlset>
-

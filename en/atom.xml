@@ -3,11 +3,11 @@
   <title>Mobility</title>
   
   <subtitle>The sand accumulates to form a pagoda</subtitle>
-  <link href="http://lichuanyang.top/atom.xml" rel="self"/>
+  <link href="http://lichuanyang.top/en/atom.xml" rel="self"/>
   
-  <link href="http://lichuanyang.top/"/>
+  <link href="http://lichuanyang.top/en/"/>
   <updated>2024-01-23T11:21:07.762Z</updated>
-  <id>http://lichuanyang.top/</id>
+  <id>http://lichuanyang.top/en/</id>
   
   <author>
     <name>quicksand</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>a easy way to build multi-languages blog with hexo</title>
-    <link href="http://lichuanyang.top/posts/40400/"/>
-    <id>http://lichuanyang.top/posts/40400/</id>
+    <link href="http://lichuanyang.top/en/posts/40400/"/>
+    <id>http://lichuanyang.top/en/posts/40400/</id>
     <published>2024-01-23T10:41:29.000Z</published>
     <updated>2024-01-23T11:21:07.762Z</updated>
     
@@ -32,18 +32,18 @@
     
     
     
-    <category term="hexo" scheme="http://lichuanyang.top/tags/hexo/"/>
+    <category term="hexo" scheme="http://lichuanyang.top/en/tags/hexo/"/>
     
-    <category term="blog" scheme="http://lichuanyang.top/tags/blog/"/>
+    <category term="blog" scheme="http://lichuanyang.top/en/tags/blog/"/>
     
-    <category term="i18n" scheme="http://lichuanyang.top/tags/i18n/"/>
+    <category term="i18n" scheme="http://lichuanyang.top/en/tags/i18n/"/>
     
   </entry>
   
   <entry>
     <title>Practical experience using kubernetes in java projects with low learning costs</title>
-    <link href="http://lichuanyang.top/posts/40964/"/>
-    <id>http://lichuanyang.top/posts/40964/</id>
+    <link href="http://lichuanyang.top/en/posts/40964/"/>
+    <id>http://lichuanyang.top/en/posts/40964/</id>
     <published>2022-01-26T07:19:32.000Z</published>
     <updated>2024-01-19T06:11:35.433Z</updated>
     
@@ -55,9 +55,9 @@
     
     
     
-    <category term="continuous integration" scheme="http://lichuanyang.top/tags/continuous-integration/"/>
+    <category term="continuous integration" scheme="http://lichuanyang.top/en/tags/continuous-integration/"/>
     
-    <category term="kubernetes" scheme="http://lichuanyang.top/tags/kubernetes/"/>
+    <category term="kubernetes" scheme="http://lichuanyang.top/en/tags/kubernetes/"/>
     
   </entry>
   
