@@ -118,7 +118,7 @@ search:
 robotstxt:
   useragent: "*"
   sitemap: http://lichuanyang.top/sitemap.xml
- 
+
 baidu_url_submit:
   count: 4 ## 提交最新的一个链接
   host: lichuanyang.top ## 在百度站长平台中注册的域名
