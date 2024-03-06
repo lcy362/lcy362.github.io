@@ -159,7 +159,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -170,7 +170,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">91</span>
+        <span class="site-state-item-count">94</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -208,6 +208,95 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/65262/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/65262/" class="post-title-link" itemprop="url">通过加入classpath的形式实现命令行运行java程序时引入第三方jar包</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-05-03 18:42:00" itemprop="dateCreated datePublished" datetime="2017-05-03T18:42:00+08:00">2017-05-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/65262/" class="post-meta-item leancloud_visitors" data-flag-title="通过加入classpath的形式实现命令行运行java程序时引入第三方jar包" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在命令行运行java程序时，如果想引入第三方jar包该怎么办呢。方法其实有很多，一般都是去折腾classloader.</p>
+<p>这里介绍一种操作相对简单的方法，就是在运行之前把需要的jar包都加入到classpath中。</p>
+<p>具体来说，就是写一个shell脚本，定义一个参数，可以就叫CLASSPATH, 也可以叫别的。</p>
+<p> CLASSPATH&#x3D;yourownjar.jar:xxx.jar:&#x2F;xx&#x2F;xx&#x2F;xxx1.jar:”$CLASSPATH” </p>
+<p>需要注意的是，自己写的主类所在的jar也要包含在自己定义的classpath中.</p>
+<p>然后使用java -classpath命令运行即可：</p>
+<p>java -classpath ${CLASSPATH} xx.Main</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1049,127 +1138,6 @@
 <p>先把几个事实摆出来：<br>    1. 打出的debug日志都是用slf4j写的，根据堆栈得知logback具体执行了日志打印<br>    2. logback在无配置文件时默认debug级别<br>    3. 我们的war包中同时包含logback,log4j和slf4j-log4j12<br>    4. Slf4j无法主动选择具体的日志实现<br>想必看到这里，大家也明白了问题所在。根据我们引入的包，log4j和logback都可以实现打印slf4j日志，而具体谁来打，不是一个用正常办法可以控制的事情，在这个具体案例下，logback就成了具体的日志打印者。而因为我们其实是想用lo4j打日志，所以没有配logback配置，所以logback就按默认的debug级别打了大量日志。</p>
 <p>解决办法也很简单，就是把logback的包全去掉。看似有些暴力，但确实是最合理的一个解决办法。</p>
 <p>最后提供一个排查日志问题的通用套路，免得找不到方向乱看。<br>    1. 找几行不符合自己日志配置的具体日志，翻阅对应代码，看看是哪个日志接口打的<br>    2. 查jar包，看看这套日志框架有哪些具体实现<br>        3. 把多的jar包去掉</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/57802/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="流沙">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mobility">
-      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Mobility">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/57802/" class="post-title-link" itemprop="url">Java kryo/protobuf/protostuff序列化 or Json 性能对比</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-03-02 18:10:00" itemprop="dateCreated datePublished" datetime="2017-03-02T18:10:00+08:00">2017-03-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
-    </span>
-
-  
-    <span id="/posts/57802/" class="post-meta-item leancloud_visitors" data-flag-title="Java kryo/protobuf/protostuff序列化 or Json 性能对比" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <div class="markdown_views">
-对于一个java object的序列化，想测一下使用json和使用一般序列化工具，在时间性能、空间性能上的区别。
-
-<p>json选择用fastjson.</p>
-<p>序列化工具使用了protostuff和kyro. 为什么不用protobuf呢？因为感觉对于一个已有的上百个属性的java class来说，再去新建一个匹配的proto文件有点反人类。protostuff是protobuf的改良版本，可以直接将一个java object进行序列化，使用方法与kyro有点类似，没有protobuf那么多中间过程。其他的，hession, java自带序列化之类的，据说性能比kryo和protobuf差很多，就不测了。</p>
-<p>简单测了一下，发现差距还挺明显的，所以感觉也不需要做具体的评测了。把日志截一段发出来，大家感受下。</p>
-<pre><code>fastjson serilise cost &lt;span class=&quot;hljs-number&quot;&gt;555805&lt;/span&gt;  &lt;span class=&quot;hljs-built_in&quot;&gt;length&lt;/span&gt;: &lt;span class=&quot;hljs-number&quot;&gt;1740&lt;/span&gt;
-kyro serilise cost &lt;span class=&quot;hljs-number&quot;&gt;227375&lt;/span&gt;   length502
-protostuff serilise cost &lt;span class=&quot;hljs-number&quot;&gt;78950&lt;/span&gt;   length633
-fastjson deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;130662&lt;/span&gt;
-kyro deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;201716&lt;/span&gt;
-protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;230533&lt;/span&gt;
-fastjson serilise cost &lt;span class=&quot;hljs-number&quot;&gt;727915&lt;/span&gt;  &lt;span class=&quot;hljs-built_in&quot;&gt;length&lt;/span&gt;: &lt;span class=&quot;hljs-number&quot;&gt;1740&lt;/span&gt;
-kyro serilise cost &lt;span class=&quot;hljs-number&quot;&gt;378958&lt;/span&gt;   length502
-protostuff serilise cost &lt;span class=&quot;hljs-number&quot;&gt;94739&lt;/span&gt;   length633
-fastjson deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;154346&lt;/span&gt;
-kyro deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;373432&lt;/span&gt;
-protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;219085&lt;/span&gt;
-fastjson serilise cost &lt;span class=&quot;hljs-number&quot;&gt;804892&lt;/span&gt;  &lt;span class=&quot;hljs-built_in&quot;&gt;length&lt;/span&gt;: &lt;span class=&quot;hljs-number&quot;&gt;1740&lt;/span&gt;
-kyro serilise cost &lt;span class=&quot;hljs-number&quot;&gt;392380&lt;/span&gt;   length502
-protostuff serilise cost &lt;span class=&quot;hljs-number&quot;&gt;220664&lt;/span&gt;   length633
-fastjson deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;243560&lt;/span&gt;
-kyro deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;360010&lt;/span&gt;
-protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;132241&lt;/span&gt;
-fastjson serilise cost &lt;span class=&quot;hljs-number&quot;&gt;601991&lt;/span&gt;  &lt;span class=&quot;hljs-built_in&quot;&gt;length&lt;/span&gt;: &lt;span class=&quot;hljs-number&quot;&gt;1740&lt;/span&gt;
-kyro serilise cost &lt;span class=&quot;hljs-number&quot;&gt;244349&lt;/span&gt;   length502
-protostuff serilise cost &lt;span class=&quot;hljs-number&quot;&gt;80924&lt;/span&gt;   length633
-fastjson deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;241191&lt;/span&gt;
-kyro deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;230928&lt;/span&gt;
-protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;127109&lt;/span&gt;
-</code></pre>
-<p>cost的时间用的是System.nanoTime(); 三种用的都是不加任何配置的默认配置。 </p>
-<p>序列化之后的占用空间，kryo略低于protostuff, 两者都远高于json. 这是很好理解的，毕竟json串是可读的，不要强求太多。 </p>
-<p>而序列化和反序列化的耗时，都是protostuff优于kyro优于fastjson, 而且差别挺明显。</p>
-<p>所以结论呢，如果对空间没有极其苛刻的要求，protostuff也许是最佳选择。protostuff相比于kyro还有一个额外的好处，就是如果序列化之后，反序列化之前这段时间内，java class增加了字段（这在实际业务中是无法避免的事情），kyro就废了。但是protostuff只要保证新字段添加在类的最后，而且用的是sun系列的JDK, 是可以正常使用的。因此，如果序列化是用在缓存等场景下，序列化对象需要存储很久，也就只能选择protostuff了。</p>
-<p>当然，如果有可读性之类的需求，就只能用json了。</p>
-</div>
-
-<p>&nbsp;</p>
 
       
     </div>

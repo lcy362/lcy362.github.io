@@ -159,7 +159,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -170,7 +170,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">91</span>
+        <span class="site-state-item-count">94</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -208,6 +208,109 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/19890/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/19890/" class="post-title-link" itemprop="url">hexo教程：博客系统搭建及部署到github</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-01-19 18:56:07" itemprop="dateCreated datePublished" datetime="2018-01-19T18:56:07+08:00">2018-01-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/19890/" class="post-meta-item leancloud_visitors" data-flag-title="hexo教程：博客系统搭建及部署到github" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>原文地址： <a target="_blank" rel="noopener" href="https://lcy362.github.io/posts/19890/">https://lcy362.github.io/posts/19890/</a></p>
+<p>Hexo是一款开源的博客系统。对于一个后端程序员来说，不想折腾前端的东西，但是csdn,博客园之类的用起来还是不太方便，自己搭博客又麻烦，做出来还丑。偶然间看到了hexo,这个对后端程序员来说可以说是非常友好了。所以也写篇文章记录一下hexo安装,一些关键配置，以及部署到github的过程。</p>
+<h2 id="安装及初始化"><a href="#安装及初始化" class="headerlink" title="安装及初始化"></a>安装及初始化</h2><p>参考<a target="_blank" rel="noopener" href="https://hexo.io/docs/index.html">官方文档</a> 就可以了。hexo是基于node.js的，用过node的自然没有任何问题，没用过也没关系，照着说明文档做就可以了。</p>
+<p>hexo支持直接向github的page发布，只需要配置好自己的github信息就可以。</p>
+<h2 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h2><p>hexo有很多定制<a target="_blank" rel="noopener" href="https://hexo.io/themes/">主题</a>, 按个人喜好使用吧， 我用的是<a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">next</a> , 这款主题功能非常多，统计、搜索之类的都是一条配置都搞定了。不过这款的一些基础配置和其他主题似乎是有些区别的，所以用了以后如果以后想换别的可能会有点困难。</p>
+<h2 id="内容迁移"><a href="#内容迁移" class="headerlink" title="内容迁移"></a>内容迁移</h2><p>hexo提供了多个从其他博客迁移数据的插件，rss,blogger等等都可以。</p>
+<p>以博客园为例，博客园的博客可以导出一个rss文件，然后我们用hexo-migrator-rss就可以生成hexo格式的文件了，不过有可能需要做一些微调。</p>
+<h2 id="插件及第三方服务"><a href="#插件及第三方服务" class="headerlink" title="插件及第三方服务"></a>插件及第三方服务</h2><p>前边说了，hexo配合next主题，很多工具用起来会非常方便。</p>
+<p>主要参考next的<a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/third-party-services.html">文档</a>就可以了，不过这份文档有些老了，具体的还要参考next的主题配置文件，里边的说明也比较详细。</p>
+<p>推荐一些比较有用的：</p>
+<ul>
+<li>百度、google等的统计工具: 在next里是把自己的id配上就可以，就不用去加js代码了</li>
+<li>gitment: 基于github issue的评论系统， 用github账号登录以后就可以发评论了。毕竟看技术博客的人github账号大家都有，这样比其他评论系统方便些。</li>
+<li>hexo-generator-searchdb: 一个本地搜索工具，使用之后在博客首页加个搜索框</li>
+<li>hexo-generator-feed: 生成rss文件，以支持订阅</li>
+<li>hexo-abbrlink：默认的文章地址是带文章标题的，特别是中文标题真的是反人类，这个会给每篇文章生成一个id，然后用id做地址</li>
+<li>hexo-generator-robotstxt， hexo-generator-sitemap: 生成sitemap,robots.txt, 帮助搜索引擎爬数据，不多说了</li>
+<li>leancloud: 统计每篇文章访问量，并且在页面上显示</li>
+</ul>
+<p>包括部署到github， 也有现成的配置可以用，简单配置一下就好了。</p>
+<p>弄完之后，就是大家现在看到的样子了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1024,95 +1127,6 @@
 <h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>可以参考我在github上放的代码： <a target="_blank" rel="noopener" href="https://github.com/lcy362/FoxActivemqPlugin">https://github.com/lcy362/FoxActivemqPlugin</a></p>
 <p>里边提供了两个非常简单的插件示例。FoxBrokerPlugin会在收发消息时记录生产者、消费者的ip; LimitQueueSizePlugin则可以控制队列大小，队列中积压1000条消息以后新的消息就会被丢弃，在测试环境下会比较有用。</p>
 <p>此外，activemq自己也提供了几个常用的插件，包括LoggingBrokerPlugin， StatisticsBrokerPlugin, 等， 也可以参考他们的实现。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/65262/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="流沙">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mobility">
-      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Mobility">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/65262/" class="post-title-link" itemprop="url">通过加入classpath的形式实现命令行运行java程序时引入第三方jar包</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-05-03 18:42:00" itemprop="dateCreated datePublished" datetime="2017-05-03T18:42:00+08:00">2017-05-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
-    </span>
-
-  
-    <span id="/posts/65262/" class="post-meta-item leancloud_visitors" data-flag-title="通过加入classpath的形式实现命令行运行java程序时引入第三方jar包" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>在命令行运行java程序时，如果想引入第三方jar包该怎么办呢。方法其实有很多，一般都是去折腾classloader.</p>
-<p>这里介绍一种操作相对简单的方法，就是在运行之前把需要的jar包都加入到classpath中。</p>
-<p>具体来说，就是写一个shell脚本，定义一个参数，可以就叫CLASSPATH, 也可以叫别的。</p>
-<p> CLASSPATH&#x3D;yourownjar.jar:xxx.jar:&#x2F;xx&#x2F;xx&#x2F;xxx1.jar:”$CLASSPATH” </p>
-<p>需要注意的是，自己写的主类所在的jar也要包含在自己定义的classpath中.</p>
-<p>然后使用java -classpath命令运行即可：</p>
-<p>java -classpath ${CLASSPATH} xx.Main</p>
 
       
     </div>
