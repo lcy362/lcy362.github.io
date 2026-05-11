@@ -6,7 +6,7 @@
   <link href="http://lichuanyang.top/atom.xml" rel="self"/>
   
   <link href="http://lichuanyang.top/"/>
-  <updated>2024-03-06T12:01:12.075Z</updated>
+  <updated>2026-05-11T08:16:43.464Z</updated>
   <id>http://lichuanyang.top/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>用LLM管理安全开发规范：一次llm-wiki实践</title>
+    <link href="http://lichuanyang.top/posts/88001/"/>
+    <id>http://lichuanyang.top/posts/88001/</id>
+    <published>2026-05-11T07:38:16.000Z</published>
+    <updated>2026-05-11T08:16:43.464Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近在整理团队的安全开发规范时，遇到了一个老问题：安全规范文档越积越多，但真正用的时候却找不到。每次新人入职，都要翻遍各种文档才能拼凑出完整的安全规范；每次出安全故障，事后总结的经验也散落在各处，下次遇到类似问题还得重新排查。</p><p>我试过用Confluence、Notion、甚至Git仓库的README来管理，但效果都不理想。直到看到了Karpathy提的llm-wiki思路，才觉得这可能是个突破口。</p><span id="more"></span><h2 id="Karpathy的llm-wiki是什么？"><a href="#Karpathy的llm-wiki是什么？" class="headerlink" title="Karpathy的llm-wiki是什么？"></a>Karpathy的llm-wiki是什么？</h2><p>Karpathy在<a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Gist</a>里提了个想法：让LLM维护一个Wiki中间层。原话是”the wiki is a persistent, compounding artifact”——这个Wiki层就像个编译器，把原始文档编译成结构化数据，这样LLM每次回答问题时就不用从头在原始文档里”找”信息，直接查Wiki就行。</p><p>我觉得这个思路特别妙。传统文档管理是”存”和”找”，而llm-wiki是”编译”和”查询”。原始文档可能很乱、有重复、甚至有矛盾，但Wiki层是干净、结构化、有交叉引用的。</p><p>举个例子：我们团队有十几份安全开发规范文档，从输入验证到渗透测试都有，还有近十份安全故障复盘报告。这些文档格式不一，有的在Word里，有的在Markdown里，有的甚至只是Slack聊天记录。如果让LLM直接处理这些原始材料，效率会很低。但如果先”编译”成Wiki，效果就完全不一样了。</p><h2 id="我的实现过程"><a href="#我的实现过程" class="headerlink" title="我的实现过程"></a>我的实现过程</h2><h3 id="第一步：生成CLAUDE-md"><a href="#第一步：生成CLAUDE-md" class="headerlink" title="第一步：生成CLAUDE.md"></a>第一步：生成CLAUDE.md</h3><p>我首先把Karpathy的Gist链接丢给Claude，让它基于这个思路生成一份CLAUDE.md文件。这个文件相当于给LLM的”操作手册”，告诉它如何维护Wiki。</p><p>生成的CLAUDE.md包含了几个关键部分：</p><ul><li>三层架构说明（raw → wiki → output）</li><li>Wiki页面规范（frontmatter格式、交叉引用规则）</li><li>摄入工作流（如何处理新素材）</li><li>查询工作流（如何回答用户问题）</li><li>Lint检查（如何保证Wiki健康）</li></ul><p>实际用下来，我发现模型生成的结果基本可用，没有做太多微调。只是另外让AI生成了output层，用于存放最终的规范文档。这样三层架构就完整了：raw放原始素材，wiki放结构化Wiki，output放最终输出。</p><h3 id="第二步：收集和整理原始素材"><a href="#第二步：收集和整理原始素材" class="headerlink" title="第二步：收集和整理原始素材"></a>第二步：收集和整理原始素材</h3><p>这是最耗时的一步。我把散落在各处的安全开发规范文档和故障案例都收集起来，统一放到raw&#x2F;sources&#x2F;目录下。为了保持原貌，我没有修改这些文件的内容，也没有统一格式——PDF、Word、PPT、Markdown等各种格式直接放到raw层就行，模型都可以处理。</p><p>具体来说，我收集了：</p><ul><li>十几份安全开发规范文档：涵盖输入验证、SQL注入防护、XSS防护、CSRF防护、敏感数据保护、日志安全等</li><li>近十份安全故障复盘报告：包括SQL注入漏洞、越权访问、敏感信息泄露、会话劫持等真实案例</li><li>几份安全架构方案文档：涉及零信任架构、安全编码指南、渗透测试流程等</li></ul><p>这些素材质量参差不齐。有的写得很规范，有清晰的标题和列表；有的就是随手记的笔记，甚至还有截图。但没关系，llm-wiki的妙处就在于它能处理这种”脏数据”。</p><h3 id="第三步：让LLM生成Wiki层"><a href="#第三步：让LLM生成Wiki层" class="headerlink" title="第三步：让LLM生成Wiki层"></a>第三步：让LLM生成Wiki层</h3><p>有了CLAUDE.md和原始素材，就可以让LLM开始工作了。我这里用的是Claude，主要是因为它的上下文窗口足够大，能一次性处理较多内容。</p><p>具体操作是这样的：</p><ol><li>把CLAUDE.md作为系统提示词</li><li>告诉LLM：”请按照CLAUDE.md中的规范，处理raw&#x2F;sources&#x2F;目录下的所有素材，生成wiki层”</li><li>LLM会依次读取每个原始文件，提取关键信息，生成对应的Wiki页面</li></ol><p>这个过程不是一次就能完成的。LLM生成的初版Wiki会有一些问题：</p><ul><li>交叉引用不够充分</li><li>有些概念没有被提取成独立页面</li><li>页面之间的逻辑关系不够清晰</li></ul><p>所以需要多轮迭代。我会检查生成的Wiki，指出问题，让LLM修正。比如：<br>“这个故障案例里提到了’连接池配置不当’，但为什么没有对应的concept页面？请创建一个[[connection-pool-best-practices]]页面，并在故障案例里引用它。”</p><p>经过5-6轮迭代，Wiki层才逐渐成型。</p><h3 id="第四步：生成最终规范文档"><a href="#第四步：生成最终规范文档" class="headerlink" title="第四步：生成最终规范文档"></a>第四步：生成最终规范文档</h3><p>Wiki层准备好后，就可以生成最终的规范文档了。我让LLM基于Wiki层，生成一份面向开发者的、可直接阅读的规范文档。</p><p>这里有个设计决策：最终文档是放在output&#x2F;目录下，而不是直接修改原始素材。这样保持了三层架构的清晰性：</p><ul><li>raw&#x2F;：原始素材，不可修改</li><li>wiki&#x2F;：结构化Wiki，LLM维护</li><li>output&#x2F;：最终输出，人类阅读</li></ul><p>生成的规范文档有几个特点：</p><ol><li>每个规范条目都有”为什么”——不只是说”要这样做”，还解释”为什么要这样做”</li><li>相关的故障案例会作为”反面教材”链接在旁边</li><li>有交叉引用，比如”数据库连接池配置”会链接到”连接池最佳实践”这个concept页面</li></ol><h2 id="实际效果"><a href="#实际效果" class="headerlink" title="实际效果"></a>实际效果</h2><h3 id="阅读体验"><a href="#阅读体验" class="headerlink" title="阅读体验"></a>阅读体验</h3><p>最终的规范文档可以直接用Obsidian打开阅读。因为是Markdown格式，支持：</p><ul><li>代码块高亮</li><li>内部链接跳转（点击就能跳转到相关概念或故障案例）</li><li>标签筛选（比如筛选所有#安全相关的规范）</li></ul><p>更重要的是，每条安全规范都关联着真实的故障案例。比如在”SQL注入防护”这条规范旁边，就链接着[[sql-injection-vulnerability-incident]]这个故障案例，详细描述了漏洞是怎么产生的、造成了什么影响、怎么修复的。这样开发者不仅能知道”要怎么做”，还能看到”不这么做会出什么问题”。</p><p>比起以前散落在各处的文档，阅读体验好了不止一个量级。</p><h3 id="LLM问答"><a href="#LLM问答" class="headerlink" title="LLM问答"></a>LLM问答</h3><p>更强大的是LLM问答能力。因为有了Wiki层，LLM回答问题时特别准。比如我问：<br>“数据库批量更新时要注意什么？”</p><p>LLM会：</p><ol><li>先在Wiki里找到[[batch-operation-security]]这个concept页面</li><li>结合[[sql-injection-batch-incident]]这个故障案例</li><li>给出具体的建议：必须使用参数化查询、禁止字符串拼接SQL、批量操作要有事务控制、超大批次要分页处理等</li><li>还会解释为什么：因为批量操作一旦出问题，影响范围是单条操作的N倍</li></ol><p>再比如问：”用户上传文件怎么处理才安全？”</p><p>LLM会：</p><ol><li>找到[[file-upload-security]]这个concept页面</li><li>结合[[malicious-file-upload-incident]]这个故障案例</li><li>给出具体建议：文件类型白名单校验、文件内容检测、重命名存储、限制文件大小、隔离存储等</li></ol><p>这比让LLM在十几份原始文档里”找”答案要靠谱得多。</p><h3 id="持续更新"><a href="#持续更新" class="headerlink" title="持续更新"></a>持续更新</h3><p>最让我满意的是更新机制。当有新的规范文档或故障报告时，我只需要：</p><ol><li>把新文件放到raw&#x2F;sources&#x2F;目录下</li><li>告诉LLM：”有新素材需要摄入”</li><li>LLM会自动更新Wiki层和规范文档</li></ol><p>比如上周我们出了个新的安全故障：因为用户输入未过滤导致XSS漏洞。我把故障报告放到raw目录后，LLM自动：</p><ol><li>创建了[[xss-user-input-incident]]这个故障案例页面</li><li>更新了[[input-validation-security]]这个concept页面，补充了XSS相关的注意事项</li><li>在规范文档的”输入验证规范”章节增加了相关条目</li></ol><h2 id="遇到的问题和解决方案"><a href="#遇到的问题和解决方案" class="headerlink" title="遇到的问题和解决方案"></a>遇到的问题和解决方案</h2><h3 id="问题1：LLM生成的Wiki质量不稳定"><a href="#问题1：LLM生成的Wiki质量不稳定" class="headerlink" title="问题1：LLM生成的Wiki质量不稳定"></a>问题1：LLM生成的Wiki质量不稳定</h3><p>刚开始时，LLM生成的Wiki质量波动很大。有时能很好地提取关键信息，有时会漏掉重要内容。</p><p><strong>解决方案</strong>：我细化了CLAUDE.md里的Wiki页面规范。比如要求每个页面必须有：</p><ul><li>Summary行：一句话描述核心内容</li><li>Tags行：用#标签标记主题</li><li>明确的页面类型（concept&#x2F;entity&#x2F;source&#x2F;comparison）</li></ul><p>对于安全故障案例，还要求包含：漏洞类型、攻击向量、影响范围、修复方案、预防措施。这样LLM就有更清晰的指导，生成质量稳定了很多。</p><h3 id="问题2：交叉引用经常断裂"><a href="#问题2：交叉引用经常断裂" class="headerlink" title="问题2：交叉引用经常断裂"></a>问题2：交叉引用经常断裂</h3><p>Wiki的核心价值在于交叉引用，但LLM经常创建单向链接，或者链接到不存在的页面。</p><p><strong>解决方案</strong>：在CLAUDE.md里强化了交叉引用规则：</p><ol><li>必须双向链接：如果A页面引用了[[B]]，那么B页面也必须引用[[A]]</li><li>frontmatter里的related字段必须和正文里的[[wiki-link]]一致</li><li>只能引用已存在的页面，需要先创建再引用</li></ol><p>我还加了Lint检查，定期检查断裂链接和孤儿页面。</p><h3 id="问题3：处理非结构化素材效率低"><a href="#问题3：处理非结构化素材效率低" class="headerlink" title="问题3：处理非结构化素材效率低"></a>问题3：处理非结构化素材效率低</h3><p>有些原始素材质量很差，比如截图、手写笔记、甚至是Slack聊天记录的导出。LLM处理这些素材时效率很低。</p><p><strong>解决方案</strong>：对于这类素材，我会先手动整理成结构化的Markdown，再交给LLM处理。虽然增加了前期工作量，但保证了最终质量。</p><h2 id="一些经验教训"><a href="#一些经验教训" class="headerlink" title="一些经验教训"></a>一些经验教训</h2><ol><li><p><strong>不要追求一步到位</strong>。llm-wiki是个迭代过程。第一版Wiki肯定不完美，但可以通过持续迭代改进。</p></li><li><p><strong>CLAUDE.md要不断优化</strong>。随着使用，你会发现CLAUDE.md里缺失的规则。比如我后来加了”安全故障案例必须包含：漏洞类型、攻击向量、影响范围、修复方案、预防措施”这样的结构化要求。</p></li><li><p><strong>保持三层架构的纯净</strong>。raw&#x2F;就是raw&#x2F;，不要修改；wiki&#x2F;由LLM维护；output&#x2F;面向人类。混在一起会越来越乱。</p></li><li><p><strong>定期做健康检查</strong>。我会每周跑一次Lint，检查断裂链接、孤儿页面、单向链接等问题。发现问题及时修复。</p></li><li><p><strong>接受不完美</strong>。LLM生成的Wiki不会100%准确，会有遗漏和错误。但相比完全靠人工维护，已经好太多了。</p></li></ol><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>用llm-wiki管理安全开发规范，本质上是把”文档管理”变成了”知识工程”。原始文档是”原材料”，Wiki是”半成品”，规范文档是”成品”。LLM在这个过程中充当了”编译器”和”维护者”的角色。</p><p>这个方法最大的价值是<strong>可持续性</strong>。传统的文档管理，时间一长就会荒废，因为维护成本太高。而llm-wiki把维护成本转移给了LLM，人类只需要：</p><ol><li>提供原始素材（这个避免不了）</li><li>检查和修正LLM的工作（比从头写轻松多了）</li><li>使用最终产出（享受成果）</li></ol><p>如果你也在为安全开发规范的管理头疼，不妨试试这个思路。不用完全照搬我的实现，关键是理解”Wiki中间层”这个核心理念。至于具体用什么工具、怎么组织目录，都可以根据实际情况调整。</p><p>毕竟，工具是为人服务的，不是吗？</p><p>原文地址: <a href="http://lichuanyang.top/posts/88001/">http://lichuanyang.top/posts/88001/</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;最近在整理团队的安全开发规范时，遇到了一个老问题：安全规范文档越积越多，但真正用的时候却找不到。每次新人入职，都要翻遍各种文档才能拼凑出完整的安全规范；每次出安全故障，事后总结的经验也散落在各处，下次遇到类似问题还得重新排查。&lt;/p&gt;
+&lt;p&gt;我试过用Confluence、Notion、甚至Git仓库的README来管理，但效果都不理想。直到看到了Karpathy提的llm-wiki思路，才觉得这可能是个突破口。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="llm" scheme="http://lichuanyang.top/tags/llm/"/>
+    
+    <category term="知识管理" scheme="http://lichuanyang.top/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/"/>
+    
+    <category term="安全规范" scheme="http://lichuanyang.top/tags/%E5%AE%89%E5%85%A8%E8%A7%84%E8%8C%83/"/>
+    
+    <category term="wiki" scheme="http://lichuanyang.top/tags/wiki/"/>
+    
+    <category term="实践" scheme="http://lichuanyang.top/tags/%E5%AE%9E%E8%B7%B5/"/>
+    
+  </entry>
   
   <entry>
     <title>Vaadin框架教程：Java工程师的前端开发秘籍</title>
@@ -86,32 +114,6 @@
     <category term="油猴" scheme="http://lichuanyang.top/tags/%E6%B2%B9%E7%8C%B4/"/>
     
     <category term="Tampermonkey" scheme="http://lichuanyang.top/tags/Tampermonkey/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>怎么理解数据库的四个隔离级别</title>
-    <link href="http://lichuanyang.top/posts/9775/"/>
-    <id>http://lichuanyang.top/posts/9775/</id>
-    <published>2023-12-08T09:12:44.000Z</published>
-    <updated>2023-12-08T09:27:38.160Z</updated>
-    
-    <content type="html"><![CDATA[<p>数据库的事务隔离级别实际上是个很好理解的东西。</p><p>但是在一些劣质博客和公众号的努力下，这块知识已经成功的成为了一片烂八股。</p><span id="more"></span><p>接下来，只需要顺着我的思路，回答几个简答的问题，就可以将事务隔离级别理解透彻。</p><p>问：怎么实现不同事务直接的隔离？</p><p>对这个问题，当你处于讨论数据库事务隔离级别语境下时，是不是觉得很难回答？然后先把数据库三个字从脑子里剃掉，不同事务，也就是不同线程，操作数据怎么做隔离？答案是不是很简单？就是加锁。</p><p>问：锁有哪些类型</p><p>答：有很多种分类方式。在这里，我们把锁分成读锁和写锁。</p><p>问：加不同级别锁时，代码的表现会有什么区别？</p><p>到这里，原问题的答案是不是就呼之欲出了。</p><p>事实上，数据库事务为什么会有这些个不同的隔离级别，就是因为不同场景下使用了不同的锁。比前边说的稍微复杂的点，就是数据库中存在范围锁，在其他领域不太常用，就是把某一段数据整体锁住。</p><p>如果我们把所有操作能加的锁都加上，实际上就是串行化的操作了。这种方式隔离性当然很好，但性能就没法说了，所以一般也不会有人使用。</p><p>可重复读则是对涉及到的数据加读锁和写锁，并持有到事务结束，但不会加范围锁。这样就会出现幻读的问题，即一个事务内执行两次范围查询，如果这两次查询之间有新的数据被插入，就会导致两次范围查询的结果不一致。</p><p>读已提交和可重复读的区别是他的读锁会在查询操作结束之后立刻释放掉，这样，在事务执行过程中，已经查询过的数据是可以被其他事务任意修改的，所以也就会有不可重复读的问题。</p><p>读未提交级别下，则完全不会加读锁。这样造成的问题是，由于读操作时不会去申请读锁，所以反而会导致能够读到其他事务上加了写锁的数据，也就会出现脏读的问题。</p><p>当然，为了更好的平衡性能与隔离性，还有一些诸如MVCC之类的方案，用额外的存储来实现事务隔离的效果，这些是取巧解决80%问题的方式。</p><p>原文地址: <a href="http://lichuanyang.top/posts/9775/">http://lichuanyang.top/posts/9775/</a></p>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;数据库的事务隔离级别实际上是个很好理解的东西。&lt;/p&gt;
-&lt;p&gt;但是在一些劣质博客和公众号的努力下，这块知识已经成功的成为了一片烂八股。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="数据库事务" scheme="http://lichuanyang.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1/"/>
-    
-    <category term="数据库" scheme="http://lichuanyang.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-    <category term="ACID" scheme="http://lichuanyang.top/tags/ACID/"/>
-    
-    <category term="事务隔离级别" scheme="http://lichuanyang.top/tags/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/"/>
     
   </entry>
   
@@ -390,7 +392,7 @@
     <published>2021-10-08T08:45:42.000Z</published>
     <updated>2023-01-28T10:53:05.901Z</updated>
     
-    <content type="html"><![CDATA[<p>如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。</p><span id="more"></span><p>iterm2 （<a href="https://iterm2.com/">https://iterm2.com/</a>)  是mac下使用非常广泛的一款终端替代产品，提供了很多强大的功能。要实现ssh书签，实现免密码登录、自动登录的效果，关键点是其中的三个特性：profile, trigger 和 password manager.</p><p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <a href="mailto:&#x72;&#111;&#111;&#116;&#x40;&#x31;&#46;&#x31;&#x2e;&#49;&#x2e;&#49;">&#x72;&#111;&#111;&#116;&#x40;&#x31;&#46;&#x31;&#x2e;&#49;&#x2e;&#49;</a>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p><p>trigger也是profile的一个特性，入口在profile配置页的advanced标签下，它的作用就是利用关键词触发一个动作，我们现在要做的就是用password这个关键词触发打开 password manager。 操作很简单，就是增加一个trigger, regular expression 填入 password,  action选择 open password manager, 注意勾选instant和enabled两个选项。</p><p>最后一个要配置的是password manager, password manager 就是一个密码管理器，是item2中会默认安装的一款插件，入口在工具栏 window 标签下。打开password manager, 将需要保存的密码都录入进去就可以了。</p><p>这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。</p><p>原文地址: <a href="http://lichuanyang.top/posts/20763/">http://lichuanyang.top/posts/20763/</a></p>]]></content>
+    <content type="html"><![CDATA[<p>如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。</p><span id="more"></span><p>iterm2 （<a href="https://iterm2.com/">https://iterm2.com/</a>)  是mac下使用非常广泛的一款终端替代产品，提供了很多强大的功能。要实现ssh书签，实现免密码登录、自动登录的效果，关键点是其中的三个特性：profile, trigger 和 password manager.</p><p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <a href="mailto:&#114;&#x6f;&#111;&#x74;&#x40;&#x31;&#x2e;&#49;&#x2e;&#x31;&#x2e;&#x31;">&#114;&#x6f;&#111;&#x74;&#x40;&#x31;&#x2e;&#49;&#x2e;&#x31;&#x2e;&#x31;</a>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p><p>trigger也是profile的一个特性，入口在profile配置页的advanced标签下，它的作用就是利用关键词触发一个动作，我们现在要做的就是用password这个关键词触发打开 password manager。 操作很简单，就是增加一个trigger, regular expression 填入 password,  action选择 open password manager, 注意勾选instant和enabled两个选项。</p><p>最后一个要配置的是password manager, password manager 就是一个密码管理器，是item2中会默认安装的一款插件，入口在工具栏 window 标签下。打开password manager, 将需要保存的密码都录入进去就可以了。</p><p>这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。</p><p>原文地址: <a href="http://lichuanyang.top/posts/20763/">http://lichuanyang.top/posts/20763/</a></p>]]></content>
     
     
     <summary type="html">&lt;p&gt;如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。&lt;/p&gt;</summary>
@@ -673,9 +675,9 @@
     <category term="读书笔记" scheme="http://lichuanyang.top/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="投资" scheme="http://lichuanyang.top/tags/%E6%8A%95%E8%B5%84/"/>
-    
     <category term="个人成长" scheme="http://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
+    
+    <category term="投资" scheme="http://lichuanyang.top/tags/%E6%8A%95%E8%B5%84/"/>
     
     <category term="读书感悟" scheme="http://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E6%84%9F%E6%82%9F/"/>
     
