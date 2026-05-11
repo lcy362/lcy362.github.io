@@ -37,16 +37,6 @@
 
   
   <url>
-    <loc>http://lichuanyang.top/en/tags/continuous-integration/</loc>
-    <lastmod>2026-05-11</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://lichuanyang.top/en/tags/kubernetes/</loc>
-    <lastmod>2026-05-11</lastmod>
-  </url>
-  
-  <url>
     <loc>http://lichuanyang.top/en/tags/hexo/</loc>
     <lastmod>2026-05-11</lastmod>
   </url>
@@ -58,6 +48,16 @@
   
   <url>
     <loc>http://lichuanyang.top/en/tags/i18n/</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://lichuanyang.top/en/tags/continuous-integration/</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://lichuanyang.top/en/tags/kubernetes/</loc>
     <lastmod>2026-05-11</lastmod>
   </url>
   
