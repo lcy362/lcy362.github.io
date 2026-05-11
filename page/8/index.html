@@ -159,7 +159,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">87</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -170,7 +170,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">99</span>
+        <span class="site-state-item-count">103</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -208,6 +208,95 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/4433/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/4433/" class="post-title-link" itemprop="url">java日志系统简介: 从tomcat大量打印debug日志说起</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-03-31 19:47:00" itemprop="dateCreated datePublished" datetime="2017-03-31T19:47:00+08:00">2017-03-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/4433/" class="post-meta-item leancloud_visitors" data-flag-title="java日志系统简介: 从tomcat大量打印debug日志说起" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>目前，java下应用最广泛的日志系统主要就是两个系列: log4j和slf4j+logback 。</p>
+<p>其中,slf4j只包含日志的接口，logback只包括日志的具体实现，两者加起来才是一个完整的日志系统。Log4j则同时包含了日志接口和实现。</p>
+<p>这两套日志系统之间有可以相互兼容的组件，分别是slf4j-log4j12和 log4j-over-slf4j，引入之后就可以用log4j打出slf4j接口的日志，或者用logback打出log4j接口的日志。</p>
+<p>背景知识介绍到这里，再简单说一下标题里提到的问题。问题的现象就是我们在war包里配置了log4j的日志级别为info, 但在catalina里却一直在打大量的debug日志。初看现象肯定很诡异，前期各种研究tomcat配置也没什么头绪。直到磁盘压力太大，去看jstack发现大量进程是等待在Logback代码中，才发现之前关注错了重点。再去具体了解了java下的日志系统后，问题也就很明了了。</p>
+<p>先把几个事实摆出来：<br>    1. 打出的debug日志都是用slf4j写的，根据堆栈得知logback具体执行了日志打印<br>    2. logback在无配置文件时默认debug级别<br>    3. 我们的war包中同时包含logback,log4j和slf4j-log4j12<br>    4. Slf4j无法主动选择具体的日志实现<br>想必看到这里，大家也明白了问题所在。根据我们引入的包，log4j和logback都可以实现打印slf4j日志，而具体谁来打，不是一个用正常办法可以控制的事情，在这个具体案例下，logback就成了具体的日志打印者。而因为我们其实是想用lo4j打日志，所以没有配logback配置，所以logback就按默认的debug级别打了大量日志。</p>
+<p>解决办法也很简单，就是把logback的包全去掉。看似有些暴力，但确实是最合理的一个解决办法。</p>
+<p>最后提供一个排查日志问题的通用套路，免得找不到方向乱看。<br>    1. 找几行不符合自己日志配置的具体日志，翻阅对应代码，看看是哪个日志接口打的<br>    2. 查jar包，看看这套日志框架有哪些具体实现<br>        3. 把多的jar包去掉</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1209,179 +1298,6 @@ lock.release();释放锁
 <p>一些配置，<strong>包括加密，spring加载等，建议都放到prepare中<strong>。多个bolt都需要加载spring时，建议使用同样的配置，避免一些诡异问题。</strong></strong></p>
 <h4 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h4><p>所有<strong>静态代码块</strong>中作了初始化的变量，emit的变量，由于都存在网络传输，需要能够被序列化。</p>
 <p>storm默认使用kyro序列化，需要类有无参构造函数。如果无法增加无参构造函数，设置topology.fall.back.on.java.serialization: true使用java自带的序列化。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/32479/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="流沙">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mobility">
-      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Mobility">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/32479/" class="post-title-link" itemprop="url">activemq web console的权限配置</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2016-01-05 18:09:00" itemprop="dateCreated datePublished" datetime="2016-01-05T18:09:00+08:00">2016-01-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
-    </span>
-
-  
-    <span id="/posts/32479/" class="post-meta-item leancloud_visitors" data-flag-title="activemq web console的权限配置" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <div>activemq的web console是基于jetty实现，其权限管理也是基于jetty. 根据需求，可以给不同的用户赋予不同的权限。jetty的权限管理还算灵活，虽然配起来比较麻烦，可以分别设定某个角色（role）下的用户是否有对某个页面的访问权限。</div>
-<div>下面简要介绍一下配置方法，只需要修改/conf 下的&nbsp;jetty.xml，&nbsp;jetty-realm.properties</div>
-<div>1.&nbsp;jetty-realm.properties</div>
-<div>&nbsp; 这里面配置了所有用户的用户名，密码和所属角色，按照如下格式：</div>
-<div>username: password [,rolename ...] &nbsp;&nbsp;</div>
-<div>
-
-</div>
-<div>2\. jetty.xml</div>
-<div>首先对每个角色配置一个Constraint 类，其中roles及对应&nbsp;jetty-realm.properties中的rolename</div>
-<div>
-
-</div>
-<table>
-<tbody>
-<tr>
-<td style="border-style: solid; border-width: 1px; border-color: #d3d3d3; padding: 10px; margin: 0px; width: 100%;">
-<div>&lt;bean id="securityConstraint" class="org.eclipse.jetty.util.security.Constraint"&gt;</div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="name" value="BASIC" /&gt;
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name&#x3D;”roles” value&#x3D;”admin” &#x2F;&gt;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name&#x3D;”authenticate” value&#x3D;”true” &#x2F;&gt;</div></p>
-<div>&nbsp;&nbsp;&nbsp; &lt;/bean&gt;</div>
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-<div>
-
-</div>
-<div>
-
-</div>
-<div>然后配置securityConstraintMapping,&nbsp;</div>
-<table>
-<tbody>
-<tr>
-<td style="border-style: solid; border-width: 1px; border-color: #d3d3d3; padding: 10px; margin: 0px; width: 100%;">
-<div>&nbsp;&nbsp;&nbsp; &lt;bean id="securityConstraintMapping" class="org.eclipse.jetty.security.ConstraintMapping"&gt;</div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="constraint" ref="securityConstraint" /&gt;</div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="pathSpec" value="/admin/send.jsp/" /&gt;</div>
-<div>&nbsp;&nbsp;&nbsp; &lt;/bean&gt;</div>
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-<div>这表示securityConstraint类对应的角色可以访问/admin/send.jsp 页面。</div>
-<div>可以使用/* 代表所有<span style="color: #ff0000;">未单独配置的</span>页面</div>
-<div>假设我们需要新建一个只读用户，就可以配置两个角色admin和readonly，这两个角色都需要增加/*的ConstraintMapping 条目，然后在admin上额外配置所有涉及写操作的页面，包括/admin/deleteDestination.action/*，&nbsp;/admin/purgeDestination.action/* 等。</div>
-<div>
-
-</div>
-<div>最后，在ConstraintSecurityHandler的constraintMappings属性里，把所有的ConstraintMapping都列出来。</div>
-<div>
-
-</div>
-<table>
-<tbody>
-<tr>
-<td style="border-style: solid; border-width: 1px; border-color: #d3d3d3; padding: 10px; margin: 0px; width: 100%;">
-<div>&lt;bean id="securityHandler" class="org.eclipse.jetty.security.ConstraintSecurityHandler"&gt;</div>
-<div>&nbsp; &nbsp;&nbsp;&lt;property name="constraintMappings"&gt;
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;list&gt;</div></p>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;ref bean="securityConstraintMapping" /&gt;</div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/list&gt;</div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/property&gt;</div>
-
-</td>
-
-</tr>
-<tr>
-<td style="border-style: solid; border-width: 1px; border-color: #d3d3d3; padding: 10px; margin: 0px; width: 100%;">
-&nbsp;</td>
-
-</tr>
-
-</tbody>
-
-</table>
-<div>这样，就实现了activemq web console用户的权限配置。</div>
-
-<p>&nbsp;</p>
 
       
     </div>

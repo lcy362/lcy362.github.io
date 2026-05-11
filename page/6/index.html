@@ -159,7 +159,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">87</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -170,7 +170,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">99</span>
+        <span class="site-state-item-count">103</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -208,6 +208,118 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/12035/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/12035/" class="post-title-link" itemprop="url">activemq系列-概述</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-01-22 18:33:02" itemprop="dateCreated datePublished" datetime="2018-01-22T18:33:02+08:00">2018-01-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/activemq%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/" itemprop="url" rel="index"><span itemprop="name">activemq系列文章</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/posts/12035/" class="post-meta-item leancloud_visitors" data-flag-title="activemq系列-概述" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Activemq是一种消息中间件(MOM)，基于JMS协议实现。介绍activemq就不得不介绍消息中间件和jms.</p>
+<p>消息中间件是分布式系统十分常见的组件，提供了以比较灵活的方式集成不同应用程序的一种机制，应用程序彼此不直接通信，而是与作为中介的消息中间件进行通信。</p>
+<p>消息中间件主要有两个作用，一是解耦，二是平峰，都是大型系统中经常会遇到的问题。</p>
+<p>所谓解耦，就是要保持系统内各个应用的相对独立性。例如，用户登录的时候，可能有多个应用要触发各种各样的操作，推荐啊，发消息啊之类的，这些操作跟登录这个操作本身是无关的，如果全都放在登录模块去做，显然不合适，而且用户体验会非常差。这个时候就可以在登陆的时候发一条消息出来，其他系统监听这个消息，再进行各自业务的处理。</p>
+<p>平峰，就是为了应对突然的流量增长，毕竟系统分配资源时不可能按最大需求去分配。如果短时间流量太大，可以让消息先留在消息中间件里，业务慢慢处理。</p>
+<p>消息中间件一般有两种传递模式：点对点模式(P2P)和发布-订阅模式(Pub&#x2F;Sub)。</p>
+<p>点对点模式在JMS里叫做Queue, 主要特点有三个:</p>
+<ol>
+<li>每个消息只有一个消费者（Consumer)</li>
+<li>发送者和接收者之间在时间上没有依赖性，也就是说当发送者发送了消息之后，不管接收者有没有正在运行，它不会影响到消息被发送到队列；</li>
+<li>接收者在成功接收消息之后需向队列发送应答(ack)信号。</li>
+</ol>
+<p>发布-订阅模式则对应JMS里的Topic,与点对点模式向对应，有如下特点：</p>
+<ol>
+<li>每条消息可以被多个消费这消费</li>
+<li>发布者和订阅者之间有时间上的依赖性。针对某个主题（Topic）的订阅者，它必须创建一个订阅者之后，才能消费发布者的消息，而且为了消费消息，订阅者必须保持运行的状态；</li>
+</ol>
+<p>JMS是Sun定义的一种标准消息传送API。JMS自身并不是一种消息传送系统;它是消息传送客户端和消息传送系统通信时所需接口和类的一个抽象。与JDBC, JNDI等类似。</p>
+<p>JMS对消息结构、连接、会话、生产者、消费者等都做了规定。</p>
+<p>Activemq就是对JMS1.1的一种具体实现。在后续文章里，我们会对activemq的安装使用以及各种特性进行全面的介绍。</p>
+<p>原文地址： <a target="_blank" rel="noopener" href="https://lcy362.github.io/posts/12035/">https://lcy362.github.io/posts/12035/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1026,107 +1138,6 @@
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-shade-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">phase</span>&gt;</span>package<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">goal</span>&gt;</span>shade<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">transformers</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">transformer</span> <span class="attr">implementation</span>=<span class="string">&quot;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&quot;</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">mainClass</span>&gt;</span>org.sonatype.haven.HavenCli<span class="tag">&lt;/<span class="name">mainClass</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">transformer</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;/<span class="name">transformers</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>然后在用maven打包的时候就可以打出直接可运行的包了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/61645/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="流沙">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mobility">
-      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Mobility">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/61645/" class="post-title-link" itemprop="url">activemq plugin开发指南及示例</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-05-05 16:58:00" itemprop="dateCreated datePublished" datetime="2017-05-05T16:58:00+08:00">2017-05-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
-    </span>
-
-  
-    <span id="/posts/61645/" class="post-meta-item leancloud_visitors" data-flag-title="activemq plugin开发指南及示例" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>activemq提供了一种插件(plugin)开发的机制(<a target="_blank" rel="noopener" href="http://activemq.apache.org/developing-plugins.html">http://activemq.apache.org/developing-plugins.html</a>), 可以方便的添加各种自定义功能。其效果类似于直接去修改activemq的源码，无论从方便性还是风险程度上，使用plugin都要比去修改源码要好很多。通过这种方式，理论上我们可以实现几乎所有能想到的功能。</p>
-<h2 id="开发指南"><a href="#开发指南" class="headerlink" title="开发指南"></a>开发指南</h2><p>首先需要在工程中添加activemq的依赖，为了方便，可以直接用activemq-all包。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.activemq<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>activemq-all<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.13.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Actviemq plugin的开发非常方便，只需要实现两个类。</p>
-<p>一个是plugin类， 需要implements BrokerPlugin这个接口，然后将接口的installPlugin方法实现了即可。</p>
-<p>这个方法的唯一作用就是指定一个broker类，代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Broker <span class="title function_">installPlugin</span><span class="params">(Broker broker)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">LimitQueueSIzeBroker</span>(broker);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>接下来就是在实现一个broker类，一般情况下可以extends BrokerFilter 这个类，然后选择需要的方法重写，构造方法和重写的每个方法执行完毕后，执行以下super类的对应方法，这样就不会对activemq的实际运行造成影响。</p>
-<p>例如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">FoxBroker</span><span class="params">(Broker next)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(next);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">send</span><span class="params">(ProducerBrokerExchange producerExchange, Message messageSend)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">ip</span> <span class="operator">=</span> producerExchange.getConnectionContext().getConnection().getRemoteAddress();</span><br><span class="line">        <span class="type">String</span> <span class="variable">destinationName</span> <span class="operator">=</span> messageSend.getDestination().getPhysicalName();</span><br><span class="line">        logger.info(<span class="string">&quot;send_&quot;</span> + destinationName + <span class="string">&quot; &quot;</span>  + ip);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        logger.error(<span class="string">&quot;activemq send log error: &quot;</span> + e, e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">super</span>.send(producerExchange, messageSend);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里我们重写了activemq的send方法, 并且增加了一些日志。</p>
-<p>然后打包，将jar包放到activemq的lib目录下。再在activemq.xml下增加plugins这个模块，并把需要的插件依次列在里边。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span> <span class="attr">id</span>=<span class="string">&quot;testPlugin&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.mallow.activemq.FoxBrokerPlugin&quot;</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span> <span class="attr">id</span>=<span class="string">&quot;purgePlugin&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.mallow.activemq.LimitQueueSizePlugin&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>重启activemq,再收发消息的时候就能看到效果了。</p>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>可以参考我在github上放的代码： <a target="_blank" rel="noopener" href="https://github.com/lcy362/FoxActivemqPlugin">https://github.com/lcy362/FoxActivemqPlugin</a></p>
-<p>里边提供了两个非常简单的插件示例。FoxBrokerPlugin会在收发消息时记录生产者、消费者的ip; LimitQueueSizePlugin则可以控制队列大小，队列中积压1000条消息以后新的消息就会被丢弃，在测试环境下会比较有用。</p>
-<p>此外，activemq自己也提供了几个常用的插件，包括LoggingBrokerPlugin， StatisticsBrokerPlugin, 等， 也可以参考他们的实现。</p>
 
       
     </div>

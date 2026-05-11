@@ -32,47 +32,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Practical experience using kubernetes in java projects with low learning costs</title>
-    <url>/en/posts/40964/</url>
-    <content><![CDATA[<p>Compared with large manufacturers, many start-up companies have a very important disadvantage that their infrastructure is imperfect and they do not have a variety of complete tools. Therefore, I plan to sort out how to build a development process with a good experience based on the capabilities provided by the open source community with as little operation and maintenance and development costs as possible.</p>
-<span id="more"></span>
-
-<p>First, let’s sort out the necessary steps in the entire development process. I will briefly list them, including project creation, development, code review, deployment of test environment, deployment of grayscale and online environments, viewing online monitoring, and logs. , and troubleshooting problems, etc.</p>
-<p>Based on this entire process chain, let’s take a look at what aspects we need to ensure in order to improve development and operation and maintenance efficiency as much as possible, and what low-cost solutions can be found in these aspects.</p>
-<p>There are a few points:</p>
-<ul>
-<li>Quickly create a project and add necessary web, monitoring, log and other components;</li>
-<li>Improve the development efficiency of some conventional code development, such as database addition, deletion, modification and query;</li>
-<li>Simplify the process from packaging to deployment, and the test environment can be deployed automatically;</li>
-<li>A complete set of monitoring and alarms can be easily added to each service, including common machine, JVM, interface level indicators, and business-customized indicators;</li>
-<li>There is a place to centrally view the logs of each node;</li>
-<li>When necessary, powerful tools can be used on online nodes to help troubleshoot problems.</li>
-</ul>
-<p>Next, let’s take a look at how to solve these problems respectively.</p>
-<h2 id="Deployment-environment"><a href="#Deployment-environment" class="headerlink" title="Deployment environment"></a>Deployment environment</h2><p>First of all, in the title of this article, it is actually assumed that the deployment environment is kubernetes, so let me first talk about why kubernetes is the only option. Just flip through any introduction to kubernetes, and we can see many explanations of its advantages, so we won’t go into details here. The most critical one, and the benefit that everyone can experience personally, is that it provides a complete automatic expansion and contraction mechanism. It is very simple to set an expected value for CPU consumption, and the k8s cluster can adjust the number of pods based on the current CPU load. I compared the data before and after we enabled automatic expansion and contraction. The daily machine cost can differ by nearly 600 US dollars, accounting for more than 1&#x2F;3 of the total cost.</p>
-<p>Since the operation and maintenance cost of k8s itself is very high, it is recommended to directly purchase the services of a cloud service provider. Both AWS and Alibaba Cloud provide very complete k8s cluster functions.</p>
-<p>In addition, it is recommended to use kuboard (<a href="https://kuboard.cn/">https://kuboard.cn/</a>) this tool to manage k8s. kuboard is a graphical k8s management tool, including common operations such as deployment, configuration, expansion, and logging in to pods, all of which can be operated on a graphical interface and is very convenient to use.</p>
-<h2 id="Project-Development"><a href="#Project-Development" class="headerlink" title="Project Development"></a>Project Development</h2><p>Generally, you can create a project based on spring initializr. For common configurations such as logging and monitoring, it is recommended to compile a list of best practices and create a template project. New projects can be created based on this template project, using mvn archetype or similar tools to make the process smoother.</p>
-<p>As for some commonly used basic codes such as databases and caches, I feel that Spring Family Bucket is easy enough to use.</p>
-<p>For code review, we can use GitLab’s webhook to automatically send notifications to the project team when the code is submitted.</p>
-<h2 id="Packaging-Deployment"><a href="#Packaging-Deployment" class="headerlink" title="Packaging &amp; Deployment"></a>Packaging &amp; Deployment</h2><p>For springboot projects, you can use buildpacks to create docker images without having to consider the details of the docker file. For specific buildpacks, we use paketo buildpacks. Others such as cloudfoundry and heroku are similar. Currently, we have not studied the specific requirements for these packages.</p>
-<p>Next, we can still use gitlab’s webhook to trigger a Jenkins build task. In the Jenkins build task, we can complete the operations of packaging and deploying to the kubernetes test cluster.</p>
-<h2 id="Monitoring-Alarming"><a href="#Monitoring-Alarming" class="headerlink" title="Monitoring &amp; Alarming"></a>Monitoring &amp; Alarming</h2><p>It is recommended to use the prometheus + grafana package. Regarding the use of prometheus and the configuration under the springboot project, you can refer to my previous article h[ttps:&#x2F;&#x2F;lichuanyang.top&#x2F;posts&#x2F;28288&#x2F;](<a href="https://lichuanyang/">https://lichuanyang</a>. top&#x2F;posts&#x2F;28288&#x2F;) .</p>
-<p>On k8s, you can install a weave cloud agent, and then configure the automatic crawling of the prometheus interface.</p>
-<p>In grafana, you can directly write promeql configuration monitoring reports. In addition, on the Grafana official website, there are a large number of charts shared by others that can be used directly.</p>
-<p>In grafana, you can also configure alarms with various custom rules. If you use Feishu, you can easily use Feishu as the alarm channel for grafana by configuring grafana assistant in Feishu.</p>
-<h2 id="log"><a href="#log" class="headerlink" title="log"></a>log</h2><p>You can use loki (<a href="https://grafana.com/oss/loki/">https://grafana.com/oss/loki/</a>) as a tool for log collection and query. Loki can be considered as a lightweight ELK, and its maintenance cost will be much lower than ELK.</p>
-<h2 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h2><p>For java projects, using the artifact arthas can solve most problem troubleshooting needs. For arthas access, you can use arthas springboot starter. For pods on k8s, if the environment can be connected to the office environment, you can use the port forward function of k8s to forward the arthas port to the local. Of course, if you do this, be sure to control permissions.</p>
-<h2 id="Canary-deployment"><a href="#Canary-deployment" class="headerlink" title="Canary deployment"></a>Canary deployment</h2><p>Regarding the role and implementation of canary deployment, you can refer to my other article <a href="https://lichuanyang.top/posts/30764/">https://lichuanyang.top/posts/30764/</a></p>
-<p>To sum up, for operation and maintenance, you only need to maintain some infrastructure such as gitlab, kuboard, prometheus, grafana, loki, etc., and they are basically tools that are relatively simple to maintain. On this basis, with the help of reasonable processes and techniques, we can achieve a very good development experience.</p>
-<p>Original address: <a href="http://lichuanyang.top/en/posts/40964/">http://lichuanyang.top/en/posts/40964/</a></p>
-]]></content>
-      <tags>
-        <tag>continuous integration</tag>
-        <tag>kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Using LLM to Manage Security Development Standards - An llm-wiki Practice</title>
     <url>/en/posts/16495/</url>
     <content><![CDATA[<p>When I was organizing our team’s security development standards recently, I encountered an old problem: security documentation keeps piling up, but when you actually need it, you can’t find it. Every time a new team member joins, they have to dig through various documents to piece together the complete security standards. Every time we have a security incident, the lessons learned are scattered everywhere, and we end up rediscovering the same issues next time.</p>
@@ -211,6 +170,47 @@
         <tag>security-standards</tag>
         <tag>wiki</tag>
         <tag>practice</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Practical experience using kubernetes in java projects with low learning costs</title>
+    <url>/en/posts/40964/</url>
+    <content><![CDATA[<p>Compared with large manufacturers, many start-up companies have a very important disadvantage that their infrastructure is imperfect and they do not have a variety of complete tools. Therefore, I plan to sort out how to build a development process with a good experience based on the capabilities provided by the open source community with as little operation and maintenance and development costs as possible.</p>
+<span id="more"></span>
+
+<p>First, let’s sort out the necessary steps in the entire development process. I will briefly list them, including project creation, development, code review, deployment of test environment, deployment of grayscale and online environments, viewing online monitoring, and logs. , and troubleshooting problems, etc.</p>
+<p>Based on this entire process chain, let’s take a look at what aspects we need to ensure in order to improve development and operation and maintenance efficiency as much as possible, and what low-cost solutions can be found in these aspects.</p>
+<p>There are a few points:</p>
+<ul>
+<li>Quickly create a project and add necessary web, monitoring, log and other components;</li>
+<li>Improve the development efficiency of some conventional code development, such as database addition, deletion, modification and query;</li>
+<li>Simplify the process from packaging to deployment, and the test environment can be deployed automatically;</li>
+<li>A complete set of monitoring and alarms can be easily added to each service, including common machine, JVM, interface level indicators, and business-customized indicators;</li>
+<li>There is a place to centrally view the logs of each node;</li>
+<li>When necessary, powerful tools can be used on online nodes to help troubleshoot problems.</li>
+</ul>
+<p>Next, let’s take a look at how to solve these problems respectively.</p>
+<h2 id="Deployment-environment"><a href="#Deployment-environment" class="headerlink" title="Deployment environment"></a>Deployment environment</h2><p>First of all, in the title of this article, it is actually assumed that the deployment environment is kubernetes, so let me first talk about why kubernetes is the only option. Just flip through any introduction to kubernetes, and we can see many explanations of its advantages, so we won’t go into details here. The most critical one, and the benefit that everyone can experience personally, is that it provides a complete automatic expansion and contraction mechanism. It is very simple to set an expected value for CPU consumption, and the k8s cluster can adjust the number of pods based on the current CPU load. I compared the data before and after we enabled automatic expansion and contraction. The daily machine cost can differ by nearly 600 US dollars, accounting for more than 1&#x2F;3 of the total cost.</p>
+<p>Since the operation and maintenance cost of k8s itself is very high, it is recommended to directly purchase the services of a cloud service provider. Both AWS and Alibaba Cloud provide very complete k8s cluster functions.</p>
+<p>In addition, it is recommended to use kuboard (<a href="https://kuboard.cn/">https://kuboard.cn/</a>) this tool to manage k8s. kuboard is a graphical k8s management tool, including common operations such as deployment, configuration, expansion, and logging in to pods, all of which can be operated on a graphical interface and is very convenient to use.</p>
+<h2 id="Project-Development"><a href="#Project-Development" class="headerlink" title="Project Development"></a>Project Development</h2><p>Generally, you can create a project based on spring initializr. For common configurations such as logging and monitoring, it is recommended to compile a list of best practices and create a template project. New projects can be created based on this template project, using mvn archetype or similar tools to make the process smoother.</p>
+<p>As for some commonly used basic codes such as databases and caches, I feel that Spring Family Bucket is easy enough to use.</p>
+<p>For code review, we can use GitLab’s webhook to automatically send notifications to the project team when the code is submitted.</p>
+<h2 id="Packaging-Deployment"><a href="#Packaging-Deployment" class="headerlink" title="Packaging &amp; Deployment"></a>Packaging &amp; Deployment</h2><p>For springboot projects, you can use buildpacks to create docker images without having to consider the details of the docker file. For specific buildpacks, we use paketo buildpacks. Others such as cloudfoundry and heroku are similar. Currently, we have not studied the specific requirements for these packages.</p>
+<p>Next, we can still use gitlab’s webhook to trigger a Jenkins build task. In the Jenkins build task, we can complete the operations of packaging and deploying to the kubernetes test cluster.</p>
+<h2 id="Monitoring-Alarming"><a href="#Monitoring-Alarming" class="headerlink" title="Monitoring &amp; Alarming"></a>Monitoring &amp; Alarming</h2><p>It is recommended to use the prometheus + grafana package. Regarding the use of prometheus and the configuration under the springboot project, you can refer to my previous article h[ttps:&#x2F;&#x2F;lichuanyang.top&#x2F;posts&#x2F;28288&#x2F;](<a href="https://lichuanyang/">https://lichuanyang</a>. top&#x2F;posts&#x2F;28288&#x2F;) .</p>
+<p>On k8s, you can install a weave cloud agent, and then configure the automatic crawling of the prometheus interface.</p>
+<p>In grafana, you can directly write promeql configuration monitoring reports. In addition, on the Grafana official website, there are a large number of charts shared by others that can be used directly.</p>
+<p>In grafana, you can also configure alarms with various custom rules. If you use Feishu, you can easily use Feishu as the alarm channel for grafana by configuring grafana assistant in Feishu.</p>
+<h2 id="log"><a href="#log" class="headerlink" title="log"></a>log</h2><p>You can use loki (<a href="https://grafana.com/oss/loki/">https://grafana.com/oss/loki/</a>) as a tool for log collection and query. Loki can be considered as a lightweight ELK, and its maintenance cost will be much lower than ELK.</p>
+<h2 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h2><p>For java projects, using the artifact arthas can solve most problem troubleshooting needs. For arthas access, you can use arthas springboot starter. For pods on k8s, if the environment can be connected to the office environment, you can use the port forward function of k8s to forward the arthas port to the local. Of course, if you do this, be sure to control permissions.</p>
+<h2 id="Canary-deployment"><a href="#Canary-deployment" class="headerlink" title="Canary deployment"></a>Canary deployment</h2><p>Regarding the role and implementation of canary deployment, you can refer to my other article <a href="https://lichuanyang.top/posts/30764/">https://lichuanyang.top/posts/30764/</a></p>
+<p>To sum up, for operation and maintenance, you only need to maintain some infrastructure such as gitlab, kuboard, prometheus, grafana, loki, etc., and they are basically tools that are relatively simple to maintain. On this basis, with the help of reasonable processes and techniques, we can achieve a very good development experience.</p>
+<p>Original address: <a href="http://lichuanyang.top/en/posts/40964/">http://lichuanyang.top/en/posts/40964/</a></p>
+]]></content>
+      <tags>
+        <tag>continuous integration</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
 </search>

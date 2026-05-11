@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>RPC接口将所有输入输出封装成类是合理设计吗</title>
+    <url>/posts/20888/</url>
+    <content><![CDATA[<p>关于rpc接口的输入和输出，一直有一种观点是将输入和输出都包装成单个request和response类。本文，我们就分析一下这种方式是否是一个合理的设计。</p>
+<!--- more -->
+
+<p>先说输入, 这个我先说结论，当且仅当输入参数过多时，才应该做封装。其他情况下完全没有做封装的理由。</p>
+<p>对于将输入参数包装成request类的理由，无非是下边这些</p>
+<ul>
+<li>修改接口参数时保持兼容性</li>
+<li>可以定义通用的抽象request类，方便做统一管理</li>
+</ul>
+<p>首先，第一条完全就是个伪命题，第一次看到这种论断的时候，我也差一点被绕进去，但是仔细思考一下，就会发现这个完全不成立。</p>
+<p>即便使用request体的形式，如果接口提供方增加了必传的字段，调用方仍然需要增加这个参数才能调用，那相比于直接传参数，没有解决任何问题。而这种问题实际上也是无法解决的，因为就不应该让这种情况出现。接口提供方有义务保证后续的修改是向前兼容的。而对于增加的是非必传字段这种情况，即便不包装request类，也可以通过适配器的形式实现新接口并兼容老接口，后续再找机会异步的将老接口下线。</p>
+<p>第二条的话，确实存在一定意义。</p>
+<ul>
+<li>比如在抽象类里加一些统一的请求参数，这一点我认为做在框架里更合适，没有必要暴露在业务代码中</li>
+<li>再比如添加统一的参数校验，但是单纯为这种效果的话，我觉得用一个过于抽象的类是不合适的，而是应当一类相关的业务用一个抽象类，因为一类业务才会有这种需求。同时，即便不包装成request类，这类需求也没什么难做的，因为它的难度本身就不在输入结构不统一上。</li>
+</ul>
+<p>而将输入参数包装成request类的最大问题就是会破坏代码的可读性，会造成语义不明确。本身类似 queryById(long id) 这么一个方法的语义是非常明确的，扫一眼接口定义就可以看清楚输入输出。但是强行封装之后，这个接口究竟要输入什么就不是那么明确了。同时，如果request中有三个参数，是否传入任意组合都能返回结果呢？这也是靠看接口看不明白的。而正常的用参数定义的话，可以使用适配器的形式定义一系列接口，接口调用方也更容易理解。</p>
+<p>封装输入参数的唯一条件就是传入参数过多，这时候需要通过其他的方式，比如注释、文档，去约定接口的合法输入值和升级方案。</p>
+<p>接下来说输出，将输出结果封装成一个response体，相对于封装输入参数，会合理一些，但也不能乱用。一般将输出结果封装的目的就是包一层返回状态码。</p>
+<p>这一点实质上就是强迫调用方来了解接口的异常情况。我们知道，基本的设计原则中有一条叫「接口隔离原则」，其具体描述是 Clients should not be forced to depend upon interfaces that they do not use。对于这儿的情况要类似，如果调用方确实不关心请求成功或者失败的原因，那就不应该强迫调用方来了解这个。比如我就是要查个数，只存在查到或者查不到两种情况，并不想关心到底为什么没查到。</p>
+<p>所以，在设计接口的时候，需要慎重的考虑接口的异常原因是否是一个应当提供出去的信息，在此基础上，才能说保障response合适或者不合适。</p>
+<p>综上所述，盲目的一味去封装所有输入和输出参数，一定是不可取的。对于何时应该做封装，何时不应该，务必要做慎重的考虑。大家有什么想法的话，也可以跟我沟通。</p>
+<p>原文地址：<a href="https://lichuanyang.top/posts/20888/">https://lichuanyang.top/posts/20888/</a></p>
+]]></content>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java kryo/protobuf/protostuff序列化 or Json 性能对比</title>
     <url>/posts/57802/</url>
     <content><![CDATA[<div class="markdown_views">
@@ -51,37 +82,6 @@ protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;127109&lt;/
       </tags>
   </entry>
   <entry>
-    <title>RPC接口将所有输入输出封装成类是合理设计吗</title>
-    <url>/posts/20888/</url>
-    <content><![CDATA[<p>关于rpc接口的输入和输出，一直有一种观点是将输入和输出都包装成单个request和response类。本文，我们就分析一下这种方式是否是一个合理的设计。</p>
-<!--- more -->
-
-<p>先说输入, 这个我先说结论，当且仅当输入参数过多时，才应该做封装。其他情况下完全没有做封装的理由。</p>
-<p>对于将输入参数包装成request类的理由，无非是下边这些</p>
-<ul>
-<li>修改接口参数时保持兼容性</li>
-<li>可以定义通用的抽象request类，方便做统一管理</li>
-</ul>
-<p>首先，第一条完全就是个伪命题，第一次看到这种论断的时候，我也差一点被绕进去，但是仔细思考一下，就会发现这个完全不成立。</p>
-<p>即便使用request体的形式，如果接口提供方增加了必传的字段，调用方仍然需要增加这个参数才能调用，那相比于直接传参数，没有解决任何问题。而这种问题实际上也是无法解决的，因为就不应该让这种情况出现。接口提供方有义务保证后续的修改是向前兼容的。而对于增加的是非必传字段这种情况，即便不包装request类，也可以通过适配器的形式实现新接口并兼容老接口，后续再找机会异步的将老接口下线。</p>
-<p>第二条的话，确实存在一定意义。</p>
-<ul>
-<li>比如在抽象类里加一些统一的请求参数，这一点我认为做在框架里更合适，没有必要暴露在业务代码中</li>
-<li>再比如添加统一的参数校验，但是单纯为这种效果的话，我觉得用一个过于抽象的类是不合适的，而是应当一类相关的业务用一个抽象类，因为一类业务才会有这种需求。同时，即便不包装成request类，这类需求也没什么难做的，因为它的难度本身就不在输入结构不统一上。</li>
-</ul>
-<p>而将输入参数包装成request类的最大问题就是会破坏代码的可读性，会造成语义不明确。本身类似 queryById(long id) 这么一个方法的语义是非常明确的，扫一眼接口定义就可以看清楚输入输出。但是强行封装之后，这个接口究竟要输入什么就不是那么明确了。同时，如果request中有三个参数，是否传入任意组合都能返回结果呢？这也是靠看接口看不明白的。而正常的用参数定义的话，可以使用适配器的形式定义一系列接口，接口调用方也更容易理解。</p>
-<p>封装输入参数的唯一条件就是传入参数过多，这时候需要通过其他的方式，比如注释、文档，去约定接口的合法输入值和升级方案。</p>
-<p>接下来说输出，将输出结果封装成一个response体，相对于封装输入参数，会合理一些，但也不能乱用。一般将输出结果封装的目的就是包一层返回状态码。</p>
-<p>这一点实质上就是强迫调用方来了解接口的异常情况。我们知道，基本的设计原则中有一条叫「接口隔离原则」，其具体描述是 Clients should not be forced to depend upon interfaces that they do not use。对于这儿的情况要类似，如果调用方确实不关心请求成功或者失败的原因，那就不应该强迫调用方来了解这个。比如我就是要查个数，只存在查到或者查不到两种情况，并不想关心到底为什么没查到。</p>
-<p>所以，在设计接口的时候，需要慎重的考虑接口的异常原因是否是一个应当提供出去的信息，在此基础上，才能说保障response合适或者不合适。</p>
-<p>综上所述，盲目的一味去封装所有输入和输出参数，一定是不可取的。对于何时应该做封装，何时不应该，务必要做慎重的考虑。大家有什么想法的话，也可以跟我沟通。</p>
-<p>原文地址：<a href="https://lichuanyang.top/posts/20888/">https://lichuanyang.top/posts/20888/</a></p>
-]]></content>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SSP,DSP,RTB,ADX都是什么? 讲讲互联网广告的概念与发展</title>
     <url>/posts/27934/</url>
     <content><![CDATA[<p>本文中，我会介绍一下互联网广告的发展状态，并梳理一下互联网广告的底层逻辑，帮助大家更好的理解这个行业。</p>
@@ -122,6 +122,57 @@ protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;127109&lt;/
         <tag>计算广告</tag>
         <tag>互联网广告</tag>
         <tag>RTB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vercel封禁163邮箱后，我是怎么恢复博客的</title>
+    <url>/posts/39648/</url>
+    <content><![CDATA[<p>前几天写了篇新文章，照常往 Vercel 部署，结果 pipeline 直接报错了。一开始以为是构建问题，折腾了一会儿才发现不对——是 Vercel 账号出了状况。用 163 邮箱注册的账号怎么都登不上去了。后来才搞清楚，Vercel 把整个 163.com 邮箱根域给封禁了。</p>
+<span id="more"></span>
+
+<h2 id="先说说-Vercel-是什么"><a href="#先说说-Vercel-是什么" class="headerlink" title="先说说 Vercel 是什么"></a>先说说 Vercel 是什么</h2><p>如果你是搞独立博客的，大概率听过或者正在用 Vercel。简单说，它是一个前端部署平台，支持自动从 GitHub 仓库拉代码、构建、部署，给你的网站分配一个域名，还自带 CDN 加速。很多人的博客就是 GitHub Pages + Vercel 的组合——代码放在 GitHub，用 Vercel 来部署和托管。</p>
+<p>我自己的博客也是这么搞的。GitHub Pages 本来也能直接部署静态页面，但 Vercel 在自定义域名、HTTPS、CDN 这些方面用起来更方便，所以就选了它。</p>
+<h2 id="163-邮箱被封禁的来龙去脉"><a href="#163-邮箱被封禁的来龙去脉" class="headerlink" title="163 邮箱被封禁的来龙去脉"></a>163 邮箱被封禁的来龙去脉</h2><p>大概在 2026 年 5 月 4 号左右，大量使用 163 邮箱注册 Vercel 的用户发现，自己的账号突然无法登录了。我在网上搜了一下，发现不只是我一个人遇到这个问题。NodeSeek、V2EX 这些论坛上都有人在讨论。</p>
+<p>根据网上的信息，Vercel 在 2026 年 4 月中旬遭遇了一次比较严重的安全事件。黑客团伙 ShinyHunters 通过一个第三方 AI 工具入侵了 Vercel 的内部系统，窃取了员工数据、企业后台权限和一些部署凭证，还索要了 200 万美元的赎金。</p>
+<p>这次封禁 163 邮箱，大概率是安全事件后的应对措施之一。可能是因为 163 邮箱在此次事件中被大量用于恶意注册或攻击行为，也可能只是 Vercel 对某些邮箱域名做了更严格的风控。具体原因 Vercel 没有公开说明，但结果就是：整个 163.com 邮箱域名被一刀切了。</p>
+<p>影响范围不小。很多国内开发者和独立博客作者都是用 163 邮箱注册的 Vercel，这次封禁直接导致这些人的博客全部无法访问。</p>
+<p>不过如果你现在 Vercel 账号还处于登录状态（比如工作电脑的浏览器还保持着登录），其实是可以抢救一下的：进账号设置，添加一个新邮箱（Outlook、Gmail 都行），然后把 163 邮箱去掉。这样账号就能继续正常使用，不需要重新部署。网上有人分享了这个方法，能省不少事。但如果你跟我一样，发现的时候已经完全登不上去了，那就只能走下面的重建流程了。</p>
+<h2 id="回忆我的博客部署架构"><a href="#回忆我的博客部署架构" class="headerlink" title="回忆我的博客部署架构"></a>回忆我的博客部署架构</h2><p>账号被封了，博客打不开了，第一件事就是得搞清楚自己的博客到底是怎么部署的。说实话，这个博客配置的时间已经比较久了，当时配完之后就没怎么动过，具体流程已经记不太清了。</p>
+<p>花了不少功夫才回忆起来，大概的链路是这样的：</p>
+<ol>
+<li>博客源码放在 GitHub 仓库里</li>
+<li>Vercel 连接 GitHub 仓库，负责构建和部署</li>
+<li>域名解析这块，分了两层：阿里云的 DNS 指向 Cloudflare，Cloudflare 再指向 Vercel</li>
+</ol>
+<p>为什么要搞这么复杂？主要是为了用 Cloudflare 的 CDN 和安全防护能力。阿里云做域名注册商，Cloudflare 做中间层的 DNS 管理和 CDN，Vercel 做最终的静态页面托管。当年配的时候也是参考了网上的一些教程，虽然链路长了点，但稳定运行了很久，也就没再动过。</p>
+<h2 id="恢复过程：新账号-重新部署"><a href="#恢复过程：新账号-重新部署" class="headerlink" title="恢复过程：新账号 + 重新部署"></a>恢复过程：新账号 + 重新部署</h2><p>搞清楚部署架构之后，恢复操作其实并不复杂。</p>
+<p><strong>第一步：注册新的 Vercel 账号</strong></p>
+<p>这次学聪明了，不用 163 邮箱了，用 Outlook 重新注册了一个 Vercel 账号。其实 Gmail 也行，但考虑到这次是 Vercel 封禁了特定邮箱域名，用国外主流的邮箱服务会更稳妥一些。</p>
+<p><strong>第二步：重新部署 GitHub 项目</strong></p>
+<p>登录新账号后，连接 GitHub，把博客仓库导入 Vercel。Vercel 自动识别了项目类型，构建和部署都是自动完成的，跟之前的操作基本一样。</p>
+<p><strong>第三步：重新配置域名</strong></p>
+<p>这一步是关键。因为之前域名解析是阿里云 → Cloudflare → Vercel 的链路，重新部署后需要把域名绑定到新的 Vercel 项目上。</p>
+<p>让我惊喜的是，现在 Vercel 在添加自定义域名的时候，已经支持自动修改 Cloudflare 的 DNS 配置了。以前我记得需要手动去 Cloudflare 后台添加 CNAME 记录，现在 Vercel 直接通过 API 帮你搞定，点几下就完事了。</p>
+<p>整个恢复过程，从注册新账号到博客重新可以访问，大概花了不到半小时。</p>
+<h2 id="几点经验"><a href="#几点经验" class="headerlink" title="几点经验"></a>几点经验</h2><ol>
+<li><p><strong>不要用国内邮箱注册海外服务</strong>。163、QQ 邮箱这类国内邮箱，在海外服务的风控体系里天然就是高风险对象。这次是 Vercel，下次可能是别的服务。建议主力账号用 Gmail 或 Outlook。</p>
+</li>
+<li><p><strong>记录好自己的部署架构</strong>。这次最浪费时间的环节就是回忆部署链路。当时配置完觉得都记住了，结果过了这么久早就忘得差不多了。建议把部署架构和关键配置写在笔记里，哪怕只是几句话。</p>
+</li>
+<li><p><strong>Vercel 现在对 Cloudflare 的集成做得不错</strong>。以前手动配 DNS 的时候容易出错，现在自动化程度高了很多，重新部署的成本降低了不少。</p>
+</li>
+<li><p><strong>有条件的话，做好备份和多平台准备</strong>。这次运气好，恢复起来比较快。但如果 GitHub 仓库也出了问题，或者 Vercel 彻底封了项目而不只是账号，恢复就会麻烦很多。重要的博客内容，建议在本地或者别的平台也有一份。</p>
+</li>
+</ol>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>这次 Vercel 封禁 163 邮箱的事，算是给所有用国内邮箱注册海外服务的人提了个醒。平台侧的安全措施我们控制不了，但自己的账号安全和部署架构，还是可以提前做好准备的。</p>
+<p>如果你也遇到了 Vercel 163 邮箱被封、Vercel 账号无法登录的问题，希望这篇文章能帮到你。恢复的核心思路就是：换一个邮箱重新注册，把项目重新部署一遍，域名重新绑定一下。操作不复杂，但前提是你得记得自己的部署链路。</p>
+<p>原文地址: <a href="http://lichuanyang.top/posts/39648/">http://lichuanyang.top/posts/39648/</a></p>
+]]></content>
+      <tags>
+        <tag>Vercel</tag>
+        <tag>博客</tag>
+        <tag>运维</tag>
+        <tag>独立博客</tag>
       </tags>
   </entry>
   <entry>
@@ -350,17 +401,27 @@ protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;127109&lt;/
       </tags>
   </entry>
   <entry>
-    <title>activemq多线程消费的不同处理方式</title>
-    <url>/posts/20459/</url>
-    <content><![CDATA[<p>之前在<a href="https://lcy362.github.io/posts/48216/">另一篇文章</a>里介绍过使用activemq时，client端的基本语法。</p>
-<p>值得注意的是消费者，</p>
-<span id="more"></span>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">consume</span><span class="params">()</span> <span class="keyword">throws</span> JMSException &#123;</span><br><span class="line">        <span class="type">ActiveMQConnectionFactory</span> <span class="variable">cf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ActiveMQConnectionFactory</span>();</span><br><span class="line">        cf.setBrokerURL(<span class="string">&quot;tcp://localhost:61616&quot;</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> cf.createConnection();</span><br><span class="line">        connection.start();</span><br><span class="line">        <span class="type">Session</span> <span class="variable">session</span> <span class="operator">=</span> connection.createSession(<span class="literal">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue</span> <span class="operator">=</span> session.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageConsumer</span> <span class="variable">consumer</span> <span class="operator">=</span> session.createConsumer(queue);</span><br><span class="line"></span><br><span class="line"><span class="comment">//        Message message = consumer.receive();</span></span><br><span class="line"><span class="comment">//        TextMessage textMessage = (TextMessage) message;</span></span><br><span class="line"><span class="comment">//        System.out.println(textMessage.getText());</span></span><br><span class="line"></span><br><span class="line">        consumer.setMessageListener(message -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;consumer1: &quot;</span> + ((TextMessage) message).getText());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="type">Session</span> <span class="variable">session2</span> <span class="operator">=</span> connection.createSession(<span class="literal">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue2</span> <span class="operator">=</span> session2.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageConsumer</span> <span class="variable">consumer2</span> <span class="operator">=</span> session2.createConsumer(queue2);</span><br><span class="line">        consumer2.setMessageListener(message -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;consumer2: &quot;</span> + ((TextMessage) message).getText());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue3</span> <span class="operator">=</span> session2.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageConsumer</span> <span class="variable">consumer3</span> <span class="operator">=</span> session2.createConsumer(queue3);</span><br><span class="line">        consumer3.setMessageListener(message -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;consumer3: &quot;</span> + ((TextMessage) message).getText());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.MINUTES.sleep(<span class="number">100</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到，实际上有三种方式都可以实现多线程消费同一队列，分别是定义多个connection, session和consumer。这三种方式在应用层面的效果是一样的，都是会生成多个消费者，并行处理队列中的消息。但是在性能上，这三种方式会有较明显的差别。下边详细介绍一下。</p>
-<p>首先，定于多个consumer只是一种伪并行，并没有真正并发消费。原因是在JMS协议列，一个session在同一时间点只能被一个线程使用，所以多consumer复用同一session时，只是这些consumer轮流使用这一个session。</p>
-<p>而可以考虑开多个connection对应的是物理的tcp连接，一个producer可以新建多个session，这些session就是复用同一个tcp链接。多session和多可以考虑开多个connection都是真正的并发操作，区别只在于是开一个还是多个tcp连接。这个造成的影响很容易理解，多个tcp连接，可以处理更大的网络流量，当然在建立、维护连接时也会带来一定开销。</p>
-<p>总的来说，大部分情况下，我们可以定义多session来实现activemq的并行消费。在流量较大时，可以考虑开多个connection。而多个consumer, 目前没有想出有什么场景能用到。</p>
-<p>原文链接：<a href="https://lcy362.github.io/posts/20459/">https://lcy362.github.io/posts/20459/</a></p>
+    <title>activemq的安装及基本使用</title>
+    <url>/posts/48216/</url>
+    <content><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>从<a href="http://activemq.apache.org/download.html">官网</a>下载最新版本，解压，其他的前期准备只需要安装jdk。 从activemq 5.14开始，只支持jdk8。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>核心配置文件是conf目录下的activemq.xml, 默认的配置无需修改即可使用,其他配置我们会在后续文章介绍activemq各种特性时详细介绍。</p>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p>bin目录下运行<code> activemq start</code> 即可 ，启动之后浏览器打开localhost:8161 可以打开web管理页面。</p>
+<h2 id="基本api使用"><a href="#基本api使用" class="headerlink" title="基本api使用"></a>基本api使用</h2><p>这里只介绍java下的api使用，activemq默认的openwire协议是只支持java的，因为实现的JMS协议是java下的协议。如果有其他语言的访问需求，可以用stomp,amqp等协议。</p>
+<h3 id="依赖包"><a href="#依赖包" class="headerlink" title="依赖包"></a>依赖包</h3><p>引入activemq官方的client包。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.activemq<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>activemq-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>actibemq收发消息的主要步骤类似，都需要先建立连接，然后建立会话，然后再新建需要的producer,consumer. </p>
+<p>示例代码如下</p>
+<h3 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">produce</span><span class="params">()</span> <span class="keyword">throws</span> JMSException &#123;</span><br><span class="line">        <span class="type">ActiveMQConnectionFactory</span> <span class="variable">cf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ActiveMQConnectionFactory</span>();</span><br><span class="line">        cf.setBrokerURL(<span class="string">&quot;tcp://localhost:61616&quot;</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> cf.createConnection();</span><br><span class="line">        connection.start();</span><br><span class="line">        <span class="type">Session</span> <span class="variable">session</span> <span class="operator">=</span> connection.createSession(<span class="literal">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue</span> <span class="operator">=</span> session.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageProducer</span> <span class="variable">producer</span> <span class="operator">=</span> session.createProducer(queue);</span><br><span class="line">        <span class="type">TextMessage</span> <span class="variable">message</span> <span class="operator">=</span> session.createTextMessage(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">        producer.send(message);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="接收消息"><a href="#接收消息" class="headerlink" title="接收消息"></a>接收消息</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">consume</span><span class="params">()</span> <span class="keyword">throws</span> JMSException &#123;</span><br><span class="line">        <span class="type">ActiveMQConnectionFactory</span> <span class="variable">cf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ActiveMQConnectionFactory</span>();</span><br><span class="line">        cf.setBrokerURL(<span class="string">&quot;tcp://localhost:61616&quot;</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> cf.createConnection();</span><br><span class="line">        connection.start();</span><br><span class="line">        <span class="type">Session</span> <span class="variable">session</span> <span class="operator">=</span> connection.createSession(<span class="literal">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue</span> <span class="operator">=</span> session.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageConsumer</span> <span class="variable">consumer</span> <span class="operator">=</span> session.createConsumer(queue);</span><br><span class="line"></span><br><span class="line"><span class="comment">//        Message message = consumer.receive();</span></span><br><span class="line"><span class="comment">//        TextMessage textMessage = (TextMessage) message;</span></span><br><span class="line"><span class="comment">//        System.out.println(textMessage.getText());</span></span><br><span class="line"></span><br><span class="line">        consumer.setMessageListener(message -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;consumer1: &quot;</span> + ((TextMessage) message).getText());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="type">Session</span> <span class="variable">session2</span> <span class="operator">=</span> connection.createSession(<span class="literal">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue2</span> <span class="operator">=</span> session2.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageConsumer</span> <span class="variable">consumer2</span> <span class="operator">=</span> session2.createConsumer(queue2);</span><br><span class="line">        consumer2.setMessageListener(message -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;consumer2: &quot;</span> + ((TextMessage) message).getText());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue3</span> <span class="operator">=</span> session2.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageConsumer</span> <span class="variable">consumer3</span> <span class="operator">=</span> session2.createConsumer(queue3);</span><br><span class="line">        consumer3.setMessageListener(message -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;consumer3: &quot;</span> + ((TextMessage) message).getText());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.MINUTES.sleep(<span class="number">100</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>connection,session,consumer都可以创建多个，实现并行消费。一般来说需要使用多connection或者多session,因为只是多consumer的话，共用一个session,只是多个consumer轮流执行而已，不是真正的并行消费。至于connection和session的选择，一般看具体的流量需求。一个connection对应的是一个物理的tcp连接。</p>
+<p>producer其实也类似，只是一般并行发消息意义不大，所以就不贴代码了。</p>
+<h3 id="浏览消息"><a href="#浏览消息" class="headerlink" title="浏览消息"></a>浏览消息</h3><p>activemq提供了一个有用的功能，brower, 作用与consumer类似，只是不会真正将消息消费掉，只是预览消息内容。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">brower</span><span class="params">()</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">ActiveMQConnectionFactory</span> <span class="variable">cf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ActiveMQConnectionFactory</span>();</span><br><span class="line">        cf.setBrokerURL(<span class="string">&quot;tcp://localhost:61616&quot;</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> cf.createConnection();</span><br><span class="line">        connection.start();</span><br><span class="line">        <span class="type">Session</span> <span class="variable">session</span> <span class="operator">=</span> connection.createSession(<span class="literal">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue</span> <span class="operator">=</span> session.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">QueueBrowser</span> <span class="variable">browser</span> <span class="operator">=</span> session.createBrowser(queue);</span><br><span class="line">        Enumeration&lt;?&gt; enumeration = browser.getEnumeration();</span><br><span class="line">        <span class="keyword">while</span> (enumeration.hasMoreElements()) &#123;</span><br><span class="line">            <span class="type">TextMessage</span> <span class="variable">message</span> <span class="operator">=</span> (TextMessage) enumeration.nextElement();</span><br><span class="line">            System.out.println(<span class="string">&quot;Browsing: &quot;</span> + message.getText());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>原文地址： <a href="https://lcy362.github.io/posts/48216/">https://lcy362.github.io/posts/48216/</a></p>
 ]]></content>
       <categories>
         <category>activemq系列文章</category>
@@ -402,48 +463,23 @@ protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;127109&lt;/
       </tags>
   </entry>
   <entry>
-    <title>activemq的安装及基本使用</title>
-    <url>/posts/48216/</url>
-    <content><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>从<a href="http://activemq.apache.org/download.html">官网</a>下载最新版本，解压，其他的前期准备只需要安装jdk。 从activemq 5.14开始，只支持jdk8。</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>核心配置文件是conf目录下的activemq.xml, 默认的配置无需修改即可使用,其他配置我们会在后续文章介绍activemq各种特性时详细介绍。</p>
-<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p>bin目录下运行<code> activemq start</code> 即可 ，启动之后浏览器打开localhost:8161 可以打开web管理页面。</p>
-<h2 id="基本api使用"><a href="#基本api使用" class="headerlink" title="基本api使用"></a>基本api使用</h2><p>这里只介绍java下的api使用，activemq默认的openwire协议是只支持java的，因为实现的JMS协议是java下的协议。如果有其他语言的访问需求，可以用stomp,amqp等协议。</p>
-<h3 id="依赖包"><a href="#依赖包" class="headerlink" title="依赖包"></a>依赖包</h3><p>引入activemq官方的client包。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.activemq<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>activemq-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>actibemq收发消息的主要步骤类似，都需要先建立连接，然后建立会话，然后再新建需要的producer,consumer. </p>
-<p>示例代码如下</p>
-<h3 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">produce</span><span class="params">()</span> <span class="keyword">throws</span> JMSException &#123;</span><br><span class="line">        <span class="type">ActiveMQConnectionFactory</span> <span class="variable">cf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ActiveMQConnectionFactory</span>();</span><br><span class="line">        cf.setBrokerURL(<span class="string">&quot;tcp://localhost:61616&quot;</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> cf.createConnection();</span><br><span class="line">        connection.start();</span><br><span class="line">        <span class="type">Session</span> <span class="variable">session</span> <span class="operator">=</span> connection.createSession(<span class="literal">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue</span> <span class="operator">=</span> session.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageProducer</span> <span class="variable">producer</span> <span class="operator">=</span> session.createProducer(queue);</span><br><span class="line">        <span class="type">TextMessage</span> <span class="variable">message</span> <span class="operator">=</span> session.createTextMessage(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">        producer.send(message);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="接收消息"><a href="#接收消息" class="headerlink" title="接收消息"></a>接收消息</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">consume</span><span class="params">()</span> <span class="keyword">throws</span> JMSException &#123;</span><br><span class="line">        <span class="type">ActiveMQConnectionFactory</span> <span class="variable">cf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ActiveMQConnectionFactory</span>();</span><br><span class="line">        cf.setBrokerURL(<span class="string">&quot;tcp://localhost:61616&quot;</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> cf.createConnection();</span><br><span class="line">        connection.start();</span><br><span class="line">        <span class="type">Session</span> <span class="variable">session</span> <span class="operator">=</span> connection.createSession(<span class="literal">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue</span> <span class="operator">=</span> session.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageConsumer</span> <span class="variable">consumer</span> <span class="operator">=</span> session.createConsumer(queue);</span><br><span class="line"></span><br><span class="line"><span class="comment">//        Message message = consumer.receive();</span></span><br><span class="line"><span class="comment">//        TextMessage textMessage = (TextMessage) message;</span></span><br><span class="line"><span class="comment">//        System.out.println(textMessage.getText());</span></span><br><span class="line"></span><br><span class="line">        consumer.setMessageListener(message -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;consumer1: &quot;</span> + ((TextMessage) message).getText());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="type">Session</span> <span class="variable">session2</span> <span class="operator">=</span> connection.createSession(<span class="literal">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue2</span> <span class="operator">=</span> session2.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageConsumer</span> <span class="variable">consumer2</span> <span class="operator">=</span> session2.createConsumer(queue2);</span><br><span class="line">        consumer2.setMessageListener(message -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;consumer2: &quot;</span> + ((TextMessage) message).getText());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue3</span> <span class="operator">=</span> session2.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageConsumer</span> <span class="variable">consumer3</span> <span class="operator">=</span> session2.createConsumer(queue3);</span><br><span class="line">        consumer3.setMessageListener(message -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;consumer3: &quot;</span> + ((TextMessage) message).getText());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.MINUTES.sleep(<span class="number">100</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>connection,session,consumer都可以创建多个，实现并行消费。一般来说需要使用多connection或者多session,因为只是多consumer的话，共用一个session,只是多个consumer轮流执行而已，不是真正的并行消费。至于connection和session的选择，一般看具体的流量需求。一个connection对应的是一个物理的tcp连接。</p>
-<p>producer其实也类似，只是一般并行发消息意义不大，所以就不贴代码了。</p>
-<h3 id="浏览消息"><a href="#浏览消息" class="headerlink" title="浏览消息"></a>浏览消息</h3><p>activemq提供了一个有用的功能，brower, 作用与consumer类似，只是不会真正将消息消费掉，只是预览消息内容。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">brower</span><span class="params">()</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">ActiveMQConnectionFactory</span> <span class="variable">cf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ActiveMQConnectionFactory</span>();</span><br><span class="line">        cf.setBrokerURL(<span class="string">&quot;tcp://localhost:61616&quot;</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> cf.createConnection();</span><br><span class="line">        connection.start();</span><br><span class="line">        <span class="type">Session</span> <span class="variable">session</span> <span class="operator">=</span> connection.createSession(<span class="literal">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue</span> <span class="operator">=</span> session.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">QueueBrowser</span> <span class="variable">browser</span> <span class="operator">=</span> session.createBrowser(queue);</span><br><span class="line">        Enumeration&lt;?&gt; enumeration = browser.getEnumeration();</span><br><span class="line">        <span class="keyword">while</span> (enumeration.hasMoreElements()) &#123;</span><br><span class="line">            <span class="type">TextMessage</span> <span class="variable">message</span> <span class="operator">=</span> (TextMessage) enumeration.nextElement();</span><br><span class="line">            System.out.println(<span class="string">&quot;Browsing: &quot;</span> + message.getText());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>原文地址： <a href="https://lcy362.github.io/posts/48216/">https://lcy362.github.io/posts/48216/</a></p>
+    <title>activemq多线程消费的不同处理方式</title>
+    <url>/posts/20459/</url>
+    <content><![CDATA[<p>之前在<a href="https://lcy362.github.io/posts/48216/">另一篇文章</a>里介绍过使用activemq时，client端的基本语法。</p>
+<p>值得注意的是消费者，</p>
+<span id="more"></span>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">consume</span><span class="params">()</span> <span class="keyword">throws</span> JMSException &#123;</span><br><span class="line">        <span class="type">ActiveMQConnectionFactory</span> <span class="variable">cf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ActiveMQConnectionFactory</span>();</span><br><span class="line">        cf.setBrokerURL(<span class="string">&quot;tcp://localhost:61616&quot;</span>);</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> cf.createConnection();</span><br><span class="line">        connection.start();</span><br><span class="line">        <span class="type">Session</span> <span class="variable">session</span> <span class="operator">=</span> connection.createSession(<span class="literal">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue</span> <span class="operator">=</span> session.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageConsumer</span> <span class="variable">consumer</span> <span class="operator">=</span> session.createConsumer(queue);</span><br><span class="line"></span><br><span class="line"><span class="comment">//        Message message = consumer.receive();</span></span><br><span class="line"><span class="comment">//        TextMessage textMessage = (TextMessage) message;</span></span><br><span class="line"><span class="comment">//        System.out.println(textMessage.getText());</span></span><br><span class="line"></span><br><span class="line">        consumer.setMessageListener(message -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;consumer1: &quot;</span> + ((TextMessage) message).getText());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="type">Session</span> <span class="variable">session2</span> <span class="operator">=</span> connection.createSession(<span class="literal">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue2</span> <span class="operator">=</span> session2.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageConsumer</span> <span class="variable">consumer2</span> <span class="operator">=</span> session2.createConsumer(queue2);</span><br><span class="line">        consumer2.setMessageListener(message -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;consumer2: &quot;</span> + ((TextMessage) message).getText());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue3</span> <span class="operator">=</span> session2.createQueue(<span class="string">&quot;TEST&quot;</span>);</span><br><span class="line">        <span class="type">MessageConsumer</span> <span class="variable">consumer3</span> <span class="operator">=</span> session2.createConsumer(queue3);</span><br><span class="line">        consumer3.setMessageListener(message -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;consumer3: &quot;</span> + ((TextMessage) message).getText());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.MINUTES.sleep(<span class="number">100</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，实际上有三种方式都可以实现多线程消费同一队列，分别是定义多个connection, session和consumer。这三种方式在应用层面的效果是一样的，都是会生成多个消费者，并行处理队列中的消息。但是在性能上，这三种方式会有较明显的差别。下边详细介绍一下。</p>
+<p>首先，定于多个consumer只是一种伪并行，并没有真正并发消费。原因是在JMS协议列，一个session在同一时间点只能被一个线程使用，所以多consumer复用同一session时，只是这些consumer轮流使用这一个session。</p>
+<p>而可以考虑开多个connection对应的是物理的tcp连接，一个producer可以新建多个session，这些session就是复用同一个tcp链接。多session和多可以考虑开多个connection都是真正的并发操作，区别只在于是开一个还是多个tcp连接。这个造成的影响很容易理解，多个tcp连接，可以处理更大的网络流量，当然在建立、维护连接时也会带来一定开销。</p>
+<p>总的来说，大部分情况下，我们可以定义多session来实现activemq的并行消费。在流量较大时，可以考虑开多个connection。而多个consumer, 目前没有想出有什么场景能用到。</p>
+<p>原文链接：<a href="https://lcy362.github.io/posts/20459/">https://lcy362.github.io/posts/20459/</a></p>
 ]]></content>
       <categories>
         <category>activemq系列文章</category>
       </categories>
       <tags>
         <tag>activemq</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hadoop基本的学习资料</title>
-    <url>/posts/35575/</url>
-    <content><![CDATA[<p><a href="http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html">http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html</a>&nbsp;wordcount运行过程详解</p>
-<p><a href="http://www.cnblogs.com/gpcuster/archive/2010/06/04/1751538.html">http://www.cnblogs.com/gpcuster/archive/2010/06/04/1751538.html</a>&nbsp;hdfs命令介绍</p>
-<p><a href="http://hi.baidu.com/gkf8605/item/d6b8af09c3463512eafe38b1">http://hi.baidu.com/gkf8605/item/d6b8af09c3463512eafe38b1</a>&nbsp;hdfs命令</p>
-<p><a href="http://www.cnblogs.com/forfuture1978/archive/2010/11/14/1877086.html">http://www.cnblogs.com/forfuture1978/archive/2010/11/14/1877086.html</a>&nbsp;mapreduce入门</p>
-<p>&nbsp;</p>
-<p><a href="http://hadoop.apache.org/docs/r0.20.2/api/index.html">http://hadoop.apache.org/docs/r0.20.2/api/index.html</a>&nbsp;hadoop0.20.2 api</p>
-]]></content>
-      <tags>
-        <tag>hadoop</tag>
-        <tag>大数据</tag>
       </tags>
   </entry>
   <entry>
@@ -462,36 +498,6 @@ protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;127109&lt;/
 ]]></content>
       <tags>
         <tag>camel</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo教程：博客系统搭建及部署到github</title>
-    <url>/posts/19890/</url>
-    <content><![CDATA[<p>原文地址： <a href="https://lcy362.github.io/posts/19890/">https://lcy362.github.io/posts/19890/</a></p>
-<p>Hexo是一款开源的博客系统。对于一个后端程序员来说，不想折腾前端的东西，但是csdn,博客园之类的用起来还是不太方便，自己搭博客又麻烦，做出来还丑。偶然间看到了hexo,这个对后端程序员来说可以说是非常友好了。所以也写篇文章记录一下hexo安装,一些关键配置，以及部署到github的过程。</p>
-<h2 id="安装及初始化"><a href="#安装及初始化" class="headerlink" title="安装及初始化"></a>安装及初始化</h2><p>参考<a href="https://hexo.io/docs/index.html">官方文档</a> 就可以了。hexo是基于node.js的，用过node的自然没有任何问题，没用过也没关系，照着说明文档做就可以了。</p>
-<p>hexo支持直接向github的page发布，只需要配置好自己的github信息就可以。</p>
-<h2 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h2><p>hexo有很多定制<a href="https://hexo.io/themes/">主题</a>, 按个人喜好使用吧， 我用的是<a href="https://github.com/theme-next/hexo-theme-next">next</a> , 这款主题功能非常多，统计、搜索之类的都是一条配置都搞定了。不过这款的一些基础配置和其他主题似乎是有些区别的，所以用了以后如果以后想换别的可能会有点困难。</p>
-<h2 id="内容迁移"><a href="#内容迁移" class="headerlink" title="内容迁移"></a>内容迁移</h2><p>hexo提供了多个从其他博客迁移数据的插件，rss,blogger等等都可以。</p>
-<p>以博客园为例，博客园的博客可以导出一个rss文件，然后我们用hexo-migrator-rss就可以生成hexo格式的文件了，不过有可能需要做一些微调。</p>
-<h2 id="插件及第三方服务"><a href="#插件及第三方服务" class="headerlink" title="插件及第三方服务"></a>插件及第三方服务</h2><p>前边说了，hexo配合next主题，很多工具用起来会非常方便。</p>
-<p>主要参考next的<a href="http://theme-next.iissnan.com/third-party-services.html">文档</a>就可以了，不过这份文档有些老了，具体的还要参考next的主题配置文件，里边的说明也比较详细。</p>
-<p>推荐一些比较有用的：</p>
-<ul>
-<li>百度、google等的统计工具: 在next里是把自己的id配上就可以，就不用去加js代码了</li>
-<li>gitment: 基于github issue的评论系统， 用github账号登录以后就可以发评论了。毕竟看技术博客的人github账号大家都有，这样比其他评论系统方便些。</li>
-<li>hexo-generator-searchdb: 一个本地搜索工具，使用之后在博客首页加个搜索框</li>
-<li>hexo-generator-feed: 生成rss文件，以支持订阅</li>
-<li>hexo-abbrlink：默认的文章地址是带文章标题的，特别是中文标题真的是反人类，这个会给每篇文章生成一个id，然后用id做地址</li>
-<li>hexo-generator-robotstxt， hexo-generator-sitemap: 生成sitemap,robots.txt, 帮助搜索引擎爬数据，不多说了</li>
-<li>leancloud: 统计每篇文章访问量，并且在页面上显示</li>
-</ul>
-<p>包括部署到github， 也有现成的配置可以用，简单配置一下就好了。</p>
-<p>弄完之后，就是大家现在看到的样子了。</p>
-]]></content>
-      <tags>
-        <tag>hexo</tag>
-        <tag>博客搭建</tag>
       </tags>
   </entry>
   <entry>
@@ -543,40 +549,48 @@ protostuff deserilise cost &lt;span class=&quot;hljs-number&quot;&gt;127109&lt;/
       </tags>
   </entry>
   <entry>
-    <title>java分布式锁入门实战</title>
-    <url>/posts/48104/</url>
-    <content><![CDATA[<p>这篇文章只讲使用，不讲原理，简单粗暴。</p>
-<p>分布式锁，顾名思义，就是分布式的锁，应用于一些分布式系统中。例如，有一个服务部在数太机器上，然后有可能操作数据库中的同一条记录。这时，就需要分布式锁。</p>
-<p>分布式锁实现的方式很多，一般来说需要一个实体来代表一个锁，占用锁时就新建这个实体，锁释放时也对应将相应实体删除。同时，一般还需要一个锁超时过期的策略，避免一些异常情况造成锁无法被释放。</p>
-<p>zookeeper和redis都是常用的实现分布式锁的方式。接下来就简单介绍一下这两种方式的使用。</p>
-<h2 id="基于zookeeper的分布式锁"><a href="#基于zookeeper的分布式锁" class="headerlink" title="基于zookeeper的分布式锁"></a>基于zookeeper的分布式锁</h2><p>使用zookeeper的话，建议直接使用curator客户端.</p>
-<pre><code>        &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-title&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-title&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;org.apache.curator&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-title&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-title&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;curator-recipes&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-title&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-title&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;2.9.1&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-title&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-title&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;`&lt;/pre&gt;
-
-curator中实现了一个InterProcessSemaphoreMutex类，用作分布式锁。
-
-实现原理其实也很直白：建立锁的时候约定一个路径新建一个节点，作为锁的实体；锁释放时就将这个节点删除。
-
-代码例子片段:
-
-&lt;pre class=&quot;prettyprint&quot;&gt;`InterProcessSemaphoreMutex lock;
-lock.acquire(&amp;hellip;);  &lt;span class=&quot;hljs-comment&quot;&gt;//acquire获取锁&lt;/span&gt;
-&amp;hellip;.
-lock.release();释放锁
-</code></pre>
-<p>详细的使用例子代码可以参考 <a href="https://github.com/lcy362/Scenes/blob/master/src/main/java/com/mallow/concurrent/zklock/InterProcessMutexExample.java">https://github.com/lcy362/Scenes/blob/master/src/main/java/com/mallow/concurrent/zklock/InterProcessMutexExample.java</a></p>
-<h2 id="基于redis的分布式锁"><a href="#基于redis的分布式锁" class="headerlink" title="基于redis的分布式锁"></a>基于redis的分布式锁</h2><p>同样推荐一个第三方的redis客户端redisson, <a href="https://github.com/redisson/redisson">https://github.com/redisson/redisson</a>. redisson的知名度不如curator高，但也是一个非常优秀的开源工具，支持各种集群、数据结构。</p>
-<p>redis锁的原理就是占用锁时新建一个key, 锁释放时key删除。</p>
-<p>代码示例可以参考<a href="https://github.com/lcy362/Scenes/blob/master/src/main/java/com/mallow/concurrent/redislock/ValuelockExample.java">https://github.com/lcy362/Scenes/blob/master/src/main/java/com/mallow/concurrent/redislock/ValuelockExample.java</a></p>
+    <title>hexo教程：博客系统搭建及部署到github</title>
+    <url>/posts/19890/</url>
+    <content><![CDATA[<p>原文地址： <a href="https://lcy362.github.io/posts/19890/">https://lcy362.github.io/posts/19890/</a></p>
+<p>Hexo是一款开源的博客系统。对于一个后端程序员来说，不想折腾前端的东西，但是csdn,博客园之类的用起来还是不太方便，自己搭博客又麻烦，做出来还丑。偶然间看到了hexo,这个对后端程序员来说可以说是非常友好了。所以也写篇文章记录一下hexo安装,一些关键配置，以及部署到github的过程。</p>
+<h2 id="安装及初始化"><a href="#安装及初始化" class="headerlink" title="安装及初始化"></a>安装及初始化</h2><p>参考<a href="https://hexo.io/docs/index.html">官方文档</a> 就可以了。hexo是基于node.js的，用过node的自然没有任何问题，没用过也没关系，照着说明文档做就可以了。</p>
+<p>hexo支持直接向github的page发布，只需要配置好自己的github信息就可以。</p>
+<h2 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h2><p>hexo有很多定制<a href="https://hexo.io/themes/">主题</a>, 按个人喜好使用吧， 我用的是<a href="https://github.com/theme-next/hexo-theme-next">next</a> , 这款主题功能非常多，统计、搜索之类的都是一条配置都搞定了。不过这款的一些基础配置和其他主题似乎是有些区别的，所以用了以后如果以后想换别的可能会有点困难。</p>
+<h2 id="内容迁移"><a href="#内容迁移" class="headerlink" title="内容迁移"></a>内容迁移</h2><p>hexo提供了多个从其他博客迁移数据的插件，rss,blogger等等都可以。</p>
+<p>以博客园为例，博客园的博客可以导出一个rss文件，然后我们用hexo-migrator-rss就可以生成hexo格式的文件了，不过有可能需要做一些微调。</p>
+<h2 id="插件及第三方服务"><a href="#插件及第三方服务" class="headerlink" title="插件及第三方服务"></a>插件及第三方服务</h2><p>前边说了，hexo配合next主题，很多工具用起来会非常方便。</p>
+<p>主要参考next的<a href="http://theme-next.iissnan.com/third-party-services.html">文档</a>就可以了，不过这份文档有些老了，具体的还要参考next的主题配置文件，里边的说明也比较详细。</p>
+<p>推荐一些比较有用的：</p>
+<ul>
+<li>百度、google等的统计工具: 在next里是把自己的id配上就可以，就不用去加js代码了</li>
+<li>gitment: 基于github issue的评论系统， 用github账号登录以后就可以发评论了。毕竟看技术博客的人github账号大家都有，这样比其他评论系统方便些。</li>
+<li>hexo-generator-searchdb: 一个本地搜索工具，使用之后在博客首页加个搜索框</li>
+<li>hexo-generator-feed: 生成rss文件，以支持订阅</li>
+<li>hexo-abbrlink：默认的文章地址是带文章标题的，特别是中文标题真的是反人类，这个会给每篇文章生成一个id，然后用id做地址</li>
+<li>hexo-generator-robotstxt， hexo-generator-sitemap: 生成sitemap,robots.txt, 帮助搜索引擎爬数据，不多说了</li>
+<li>leancloud: 统计每篇文章访问量，并且在页面上显示</li>
+</ul>
+<p>包括部署到github， 也有现成的配置可以用，简单配置一下就好了。</p>
+<p>弄完之后，就是大家现在看到的样子了。</p>
 ]]></content>
       <tags>
-        <tag>java</tag>
-        <tag>redis</tag>
-        <tag>zookeeper</tag>
-        <tag>分布式</tag>
+        <tag>hexo</tag>
+        <tag>博客搭建</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hadoop基本的学习资料</title>
+    <url>/posts/35575/</url>
+    <content><![CDATA[<p><a href="http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html">http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html</a>&nbsp;wordcount运行过程详解</p>
+<p><a href="http://www.cnblogs.com/gpcuster/archive/2010/06/04/1751538.html">http://www.cnblogs.com/gpcuster/archive/2010/06/04/1751538.html</a>&nbsp;hdfs命令介绍</p>
+<p><a href="http://hi.baidu.com/gkf8605/item/d6b8af09c3463512eafe38b1">http://hi.baidu.com/gkf8605/item/d6b8af09c3463512eafe38b1</a>&nbsp;hdfs命令</p>
+<p><a href="http://www.cnblogs.com/forfuture1978/archive/2010/11/14/1877086.html">http://www.cnblogs.com/forfuture1978/archive/2010/11/14/1877086.html</a>&nbsp;mapreduce入门</p>
+<p>&nbsp;</p>
+<p><a href="http://hadoop.apache.org/docs/r0.20.2/api/index.html">http://hadoop.apache.org/docs/r0.20.2/api/index.html</a>&nbsp;hadoop0.20.2 api</p>
+]]></content>
+      <tags>
+        <tag>大数据</tag>
+        <tag>hadoop</tag>
       </tags>
   </entry>
   <entry>
@@ -672,31 +686,6 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
-    <title>jstorm UI 介绍</title>
-    <url>/posts/31996/</url>
-    <content><![CDATA[<h1 id="UI说明"><a href="#UI说明" class="headerlink" title="UI说明"></a>UI说明</h1><p>jstorm的UI相对于storm提供了更为丰富的监控项。UI本身是在tomcat中运行的一个war包，进行二次开发也相对容易。</p>
-<h2 id="cluster页"><a href="#cluster页" class="headerlink" title="cluster页"></a>cluster页</h2><h3 id="Cluster-Summary-Cluster-Stats-Topology-Summary"><a href="#Cluster-Summary-Cluster-Stats-Topology-Summary" class="headerlink" title="Cluster Summary, Cluster Stats, Topology Summary"></a>Cluster Summary, Cluster Stats, Topology Summary</h3><p>cluster的整体信息, conf中是nimbus节点的配置。</p>
-<h3 id="Topology-Summary"><a href="#Topology-Summary" class="headerlink" title="Topology Summary"></a>Topology Summary</h3><p>当前运行的所有topology列表及概要信息，conf中对应的是topology单独配置的配置项。</p>
-<h3 id="Supervisor-Summary"><a href="#Supervisor-Summary" class="headerlink" title="Supervisor Summary"></a>Supervisor Summary</h3><p>所有supervisor列表, 可以查看supervisor的配置、日志等。</p>
-<h2 id="topology页"><a href="#topology页" class="headerlink" title="topology页"></a>topology页</h2><h3 id="Topology-Summary-1"><a href="#Topology-Summary-1" class="headerlink" title="Topology Summary"></a>Topology Summary</h3><p>主要关注Topology Graph 项，这是Component Metrics 页的概要信息，可以较直观的看出运行状况。</p>
-<p>其中，节点大小和箭头粗细代表数据量，节点颜色用于区分spout和bolt。箭头颜色对应TupleLifeCycle属性，由绿到红越来越慢。箭头变红色时，可以适当增加下游节点的并行度。</p>
-<h3 id="Component-Metrics"><a href="#Component-Metrics" class="headerlink" title="Component Metrics"></a>Component Metrics</h3><p>包含每个spout, bolt的统计信息。</p>
-<p>各参数说明:</p>
-<p>tasks : 并行度。对应代码中为每个spout&#x2F;bolt设置的并行度。</p>
-<p>emitted, acked, failed : 发射&#x2F;收到ack&#x2F;未收到ack的消息数。</p>
-<p>sendTps, recvTps: 发送&#x2F;接收数据tps.</p>
-<p>需要注意，以上数据交互类的指标包含了与storm本身组件，topology_master,acker之间的交互，只能用来查看运行状况，<strong>不适合统计用</strong>。</p>
-<p>process: 对于bolt来说，是excute()函数的执行时间，对于spout来说，是整条消息（包含下游各步）被完整处理的时间，体现系统运行效率的主要参数。</p>
-<p>TupleLifeCycle: 从上游消息被emit,到消息处理完所需时间。和process相比相差太大时，说明在bolt队列中等待了较长时间，可以适当增加并发。</p>
-<p>deser, ser: 序列化&#x2F;反序列化耗时，一般无需关注. storm中每一个emit出来的数据都需要做序列化和反序列化。</p>
-<p>error: 鼠标悬浮在E上，可以查看具体的报错信息。<strong>主要寻找带异常堆栈的数据<strong>， 一些诸如is dead, no response之类的信息无需关注。</strong></strong></p>
-]]></content>
-      <tags>
-        <tag>storm</tag>
-        <tag>jstorm</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hexo多语言方案总结及最佳实践</title>
     <url>/posts/40400/</url>
     <content><![CDATA[<p>对于hexo的多语言方案，官方并没有提供很完备的支持，但是网络上有很多人尝试过不同的解决方案。今天，我们对这些方案简单做个总结，看看我们需要的多语言方案是什么样子的。</p>
@@ -760,6 +749,68 @@ lock.release();释放锁
 ]]></content>
       <tags>
         <tag>java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>java分布式锁入门实战</title>
+    <url>/posts/48104/</url>
+    <content><![CDATA[<p>这篇文章只讲使用，不讲原理，简单粗暴。</p>
+<p>分布式锁，顾名思义，就是分布式的锁，应用于一些分布式系统中。例如，有一个服务部在数太机器上，然后有可能操作数据库中的同一条记录。这时，就需要分布式锁。</p>
+<p>分布式锁实现的方式很多，一般来说需要一个实体来代表一个锁，占用锁时就新建这个实体，锁释放时也对应将相应实体删除。同时，一般还需要一个锁超时过期的策略，避免一些异常情况造成锁无法被释放。</p>
+<p>zookeeper和redis都是常用的实现分布式锁的方式。接下来就简单介绍一下这两种方式的使用。</p>
+<h2 id="基于zookeeper的分布式锁"><a href="#基于zookeeper的分布式锁" class="headerlink" title="基于zookeeper的分布式锁"></a>基于zookeeper的分布式锁</h2><p>使用zookeeper的话，建议直接使用curator客户端.</p>
+<pre><code>        &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-title&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-title&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;org.apache.curator&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-title&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-title&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;curator-recipes&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-title&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-title&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;2.9.1&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-title&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-title&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;`&lt;/pre&gt;
+
+curator中实现了一个InterProcessSemaphoreMutex类，用作分布式锁。
+
+实现原理其实也很直白：建立锁的时候约定一个路径新建一个节点，作为锁的实体；锁释放时就将这个节点删除。
+
+代码例子片段:
+
+&lt;pre class=&quot;prettyprint&quot;&gt;`InterProcessSemaphoreMutex lock;
+lock.acquire(&amp;hellip;);  &lt;span class=&quot;hljs-comment&quot;&gt;//acquire获取锁&lt;/span&gt;
+&amp;hellip;.
+lock.release();释放锁
+</code></pre>
+<p>详细的使用例子代码可以参考 <a href="https://github.com/lcy362/Scenes/blob/master/src/main/java/com/mallow/concurrent/zklock/InterProcessMutexExample.java">https://github.com/lcy362/Scenes/blob/master/src/main/java/com/mallow/concurrent/zklock/InterProcessMutexExample.java</a></p>
+<h2 id="基于redis的分布式锁"><a href="#基于redis的分布式锁" class="headerlink" title="基于redis的分布式锁"></a>基于redis的分布式锁</h2><p>同样推荐一个第三方的redis客户端redisson, <a href="https://github.com/redisson/redisson">https://github.com/redisson/redisson</a>. redisson的知名度不如curator高，但也是一个非常优秀的开源工具，支持各种集群、数据结构。</p>
+<p>redis锁的原理就是占用锁时新建一个key, 锁释放时key删除。</p>
+<p>代码示例可以参考<a href="https://github.com/lcy362/Scenes/blob/master/src/main/java/com/mallow/concurrent/redislock/ValuelockExample.java">https://github.com/lcy362/Scenes/blob/master/src/main/java/com/mallow/concurrent/redislock/ValuelockExample.java</a></p>
+]]></content>
+      <tags>
+        <tag>java</tag>
+        <tag>redis</tag>
+        <tag>zookeeper</tag>
+        <tag>分布式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>jstorm UI 介绍</title>
+    <url>/posts/31996/</url>
+    <content><![CDATA[<h1 id="UI说明"><a href="#UI说明" class="headerlink" title="UI说明"></a>UI说明</h1><p>jstorm的UI相对于storm提供了更为丰富的监控项。UI本身是在tomcat中运行的一个war包，进行二次开发也相对容易。</p>
+<h2 id="cluster页"><a href="#cluster页" class="headerlink" title="cluster页"></a>cluster页</h2><h3 id="Cluster-Summary-Cluster-Stats-Topology-Summary"><a href="#Cluster-Summary-Cluster-Stats-Topology-Summary" class="headerlink" title="Cluster Summary, Cluster Stats, Topology Summary"></a>Cluster Summary, Cluster Stats, Topology Summary</h3><p>cluster的整体信息, conf中是nimbus节点的配置。</p>
+<h3 id="Topology-Summary"><a href="#Topology-Summary" class="headerlink" title="Topology Summary"></a>Topology Summary</h3><p>当前运行的所有topology列表及概要信息，conf中对应的是topology单独配置的配置项。</p>
+<h3 id="Supervisor-Summary"><a href="#Supervisor-Summary" class="headerlink" title="Supervisor Summary"></a>Supervisor Summary</h3><p>所有supervisor列表, 可以查看supervisor的配置、日志等。</p>
+<h2 id="topology页"><a href="#topology页" class="headerlink" title="topology页"></a>topology页</h2><h3 id="Topology-Summary-1"><a href="#Topology-Summary-1" class="headerlink" title="Topology Summary"></a>Topology Summary</h3><p>主要关注Topology Graph 项，这是Component Metrics 页的概要信息，可以较直观的看出运行状况。</p>
+<p>其中，节点大小和箭头粗细代表数据量，节点颜色用于区分spout和bolt。箭头颜色对应TupleLifeCycle属性，由绿到红越来越慢。箭头变红色时，可以适当增加下游节点的并行度。</p>
+<h3 id="Component-Metrics"><a href="#Component-Metrics" class="headerlink" title="Component Metrics"></a>Component Metrics</h3><p>包含每个spout, bolt的统计信息。</p>
+<p>各参数说明:</p>
+<p>tasks : 并行度。对应代码中为每个spout&#x2F;bolt设置的并行度。</p>
+<p>emitted, acked, failed : 发射&#x2F;收到ack&#x2F;未收到ack的消息数。</p>
+<p>sendTps, recvTps: 发送&#x2F;接收数据tps.</p>
+<p>需要注意，以上数据交互类的指标包含了与storm本身组件，topology_master,acker之间的交互，只能用来查看运行状况，<strong>不适合统计用</strong>。</p>
+<p>process: 对于bolt来说，是excute()函数的执行时间，对于spout来说，是整条消息（包含下游各步）被完整处理的时间，体现系统运行效率的主要参数。</p>
+<p>TupleLifeCycle: 从上游消息被emit,到消息处理完所需时间。和process相比相差太大时，说明在bolt队列中等待了较长时间，可以适当增加并发。</p>
+<p>deser, ser: 序列化&#x2F;反序列化耗时，一般无需关注. storm中每一个emit出来的数据都需要做序列化和反序列化。</p>
+<p>error: 鼠标悬浮在E上，可以查看具体的报错信息。<strong>主要寻找带异常堆栈的数据<strong>， 一些诸如is dead, no response之类的信息无需关注。</strong></strong></p>
+]]></content>
+      <tags>
+        <tag>storm</tag>
+        <tag>jstorm</tag>
       </tags>
   </entry>
   <entry>
@@ -844,31 +895,48 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
-    <title>kubernetes环境下做金丝雀发布的一种思路</title>
-    <url>/posts/30764/</url>
-    <content><![CDATA[<p>金丝雀发布其实是一种非常适合在云原生体系下进行的流程，因此相信很多人有在kubernetes下做金丝雀发布的需求。通过本文，我们就介绍一种非常简单的做金丝雀发布的思路。</p>
+    <title>kubernetes是什么-实用向教程</title>
+    <url>/posts/55227/</url>
+    <content><![CDATA[<p>这篇教程不会关注 kubernetes 的部署、架构、实现方式等内部原理，而是完全从一个使用 kubernetes 的开发人员的视角去介绍kubernetes是什么，从而帮助了解如何更好的去利用 kubernetes 的特性。</p>
 <span id="more"></span>
 
-<p>首先介绍一下金丝雀发布是什么，金丝雀这个名字，起源是，矿井工人发现，金丝雀对瓦斯气体很敏感，矿工会在下井之前，先放一只金丝雀到井中，如果金丝雀不叫了，就代表瓦斯浓度高。</p>
-<p>在系统层面的具体含义就是，发布开始后，先启动一个新版本应用，但是并不直接将流量切过来，而是测试人员对新版本进行线上测试，启动的这个新版本应用，就是我们的金丝雀。在金丝雀上测试没有问题后，再将线上的流量切换到新版本上。</p>
-<p>再具体点讲，可以将一个域名映射到两组服务器上，一组是正式的线上环境，另一组就可以是金丝雀环境了。</p>
-<p>假如说我们不是用k8s做部署，而是直接部署到多台服务器上的话，金丝雀部署就很简单，任意指定一台或多台机器做金丝雀即可。</p>
-<p>而在k8s环境下，由于k8s接管了部署的流程，我们就需要做一些别的事情来实现这个效果。</p>
-<p>有一种很简单的思路，就是创建两个deployment, 但是通过label关联到同一个service上，就可以将同一个service的流量分配到两组容器中了。两个deployment可以分别部署，也就可以部署不同版本的镜像了。</p>
-<p>例如下边两个deployment</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deployment</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.7.9</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-service</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx-port</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">nodePort:</span> <span class="number">32600</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">80</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deployment-canary</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">track:</span> <span class="string">canary</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">      <span class="attr">track:</span> <span class="string">canary</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">track:</span> <span class="string">canary</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.8.0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>只在第一个deployment中配置service，其配置的selector规则是app:nginx, 然后两个deployment都打上app:nginx的label.</p>
-<p>这样就实现了我们所说的效果。</p>
-<p>当然，这种方式只是实现了一种非常简单的金丝雀发布流程，是没有办法做更精细，比如说按用户信息去灰度的规则的。对于同一个用户，也有可能一次请求到了金丝雀中，下一次请求又到了正式环境中。假如需要更加精细的灰度规则，可以考虑采用spring cloud, istio等工具。</p>
-<p>原文地址: <a href="http://lichuanyang.top/posts/30764/">http://lichuanyang.top/posts/30764/</a></p>
+<h1 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h1><p>对于kubernetes是什么，一个比较官方的定义，Kubernetes是一个开源容器编排平台，管理大规模分布式容器化软件应用，简称为k8s.</p>
+<p>通俗一些来讲，k8s 的核心理念是以应用为中心，向下屏蔽基础设施的差异，向上通过容器镜像实现应用的标准化，帮助开发人员在仅需关注应用本身，无需考虑部署、容灾、伸缩等运维细节的情况下，开发出大规模、可靠的分布式应用。</p>
+<h1 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h1><p>如上所述，k8s的核心优势就是降低运维成本，让应用开发人员能够专注于应用本身。具体来讲，包括如下几点：</p>
+<ul>
+<li>便捷的部署流程和大规模的复制分发能力：应用提供标准化的容器镜像，之后的部署发布流程都可以做到自动化；应用也无需再做更多的事情就可以实现跨平台、跨区域的部署。</li>
+<li>服务自愈能力：自动摘除不健康的节点并做恢复。</li>
+<li>敏捷的自动伸缩：根据设定的系统负载，做快速的自动伸缩，实现系统处理能力和成本之间的平衡。</li>
+</ul>
+<h1 id="主要概念及实现方式介绍"><a href="#主要概念及实现方式介绍" class="headerlink" title="主要概念及实现方式介绍"></a>主要概念及实现方式介绍</h1><p>这篇kubernetes教程的剩余部分会从应用开发人员视角，介绍需要了解的k8s概念，主要包括以下几类：</p>
+<ul>
+<li>Pod, service, deployment等基本概念</li>
+<li>spec+controller这套基本实现原理</li>
+<li>k8s提供给应用的扩展点</li>
+</ul>
+<h2 id="spec-controller"><a href="#spec-controller" class="headerlink" title="spec+controller"></a>spec+controller</h2><p>这是k8s内部大部分逻辑的实现方式，了解这个逻辑，可以帮助开发人员更好的理解某些特定情况下k8s的行为。</p>
+<p>如果翻看k8s的yaml配置，就会发现k8s的大部分组件中都有一个或若干个spec字段，它的含义很好理解，就是对于某个属性的期望值，比如一个服务节点数量的期望值。</p>
+<p>controller的作用就是持续监测期望值和实际指标是否一致，不一致时就进行相应的操作进行处理，比如发现节点数不够了，就会启动对应数量的新节点。</p>
+<p>这样，无论是上线、扩缩容、还是故障恢复，我们会发现这些逻辑都变得非常清晰，都是触发一下对容器数期望值或实际值的调整，然后让controller去增删节点就可以了。</p>
+<p>这套机制是k8s里广泛使用的一个底层设计原则，作用是解开监控和操作逻辑之间的耦合。举个例子，我们在很多情况下都需要触发启动新的节点，包括要做扩容时、部分节点挂了时、要上线时，等等。这些完全没关联的场景如何去触发相同的操作，代码要如何保持整洁呢？k8s的做法就是用一个期望值的概念做中间层，将操作的触发时机和操作本身拆分成独立的逻辑。</p>
+<p>了解了这个逻辑，我们可以更容易的理解k8s是怎么工作的。 比如基于HPA做自动扩容，就是根据当前的CPU使用情况，和期望的CPU使用量，决定是增加还是减少节点。</p>
+<h2 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h2><p>Deployment 用于指示 k8s 如何创建和更新应用程序，我们通常理解的一个“服务”、“应用”大体上就对应在deployment这一层上。 像镜像、内存cpu使用限制、节点数、环境变量等各种配置，都是在deployment上。</p>
+<h2 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h2><p>pod比较好理解，就是我们通常理解的一个节点。pod是 k8s 中最小可管理单元。</p>
+<h2 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h2><p>Service是一个需要着重了解的概念，它是一个抽象层，它选择具备某些特征的 Pod（容器组）并为它们定义一个访问方式。 通常的应用场景下，deployment和service是一一对应的，但实际上deployment和service之间并没有必然的联系。</p>
+<p>一个请求恰好可以打到某个deployment关联的所有pod上，看起来是一件非常正常的事情。而事实上，这件事情的发生不是由于这些pod通过一个deployment产生，而是因为deployment上配置了一个标签，通过这个deployment生成的pod都获得了这个标签; 同时，另外存在一个service, 设置通过这个标签选择pod, 请求进入的是通过service选择出的一批pod.</p>
+<h2 id="探针-probe-和钩子-hook"><a href="#探针-probe-和钩子-hook" class="headerlink" title="探针(probe)和钩子(hook)"></a>探针(probe)和钩子(hook)</h2><p>k8s提供了一些用于应用扩展的接口，其中就包括probe和hook, 可以帮助应用更好的利用k8s的能力。</p>
+<p>k8s提供了 liveness和 readiness 探针，顾名思义，liveness probe的作用是判断应用是否存活，readiness probe的作用是判断应用是否已经启动完毕。</p>
+<p>应用可以用http接口等不同形式提供探针，k8s则负责在探测到不同状态时做不同的操作。比如说探测到liveness probe返回状态异常，则可以认为此节点已经丢失，对此节点做删除处理。</p>
+<p>hook则支持应用在一些特定阶段插入一些行为，比如preStop hook, 运行应用关闭之前先做一些操作，可以用来做graceful shutdown.</p>
+<h1 id="实践思考"><a href="#实践思考" class="headerlink" title="实践思考"></a>实践思考</h1><p>通过对本篇kubernetes教程上文列出的概念的了解，相信大家可以从应用开发人员的视角完全理解kubernetes是什么, 也可以大致想象出应用方使用k8s的基本思路： 构建标准镜像，暴露出必要的监控数据，剩下的事情都交给k8s来做。</p>
+<p>在准确的数据下，k8s可以帮我们做好系统的自愈、扩缩容等操作，而我们要做的是，结合应用场景，尽量给出更加准确的监控数据。</p>
+<p>举一些例子，比如说应用提供的liveness探针，如何能尽量确保准确的展示系统的健康状态，某个接口可以访问，某个端口可以调通，能否等价的说明这个应用是否健康。</p>
+<p>比如说k8s以cpu、内存等指标来判断系统负载时，这些机器指标能否真实的展现出应用的真实负载，是否有可能连接池、IO等其他瓶颈会在cpu、内存等瓶颈到来之前就达到。</p>
+<p>这些都是需要应用方结合应用的实际情况精心设计的。</p>
+<p>此外，k8s的设计理念决定了在k8s环境下，“重启”会是一件非常稀松平常的事，像硬件故障、小概率的死循环、不健康的gc, 等不同类型的问题，都可以在k8s的自主重启下实现自愈； 自动的扩缩容扩充中，也会经常性的有节点启停。 所以说，应用需要让自己的启动流程顺畅一些，避免大量耗时或大量资源消耗。</p>
 ]]></content>
       <tags>
-        <tag>云原生</tag>
-        <tag>持续集成</tag>
-        <tag>金丝雀</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -938,59 +1006,31 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
-    <title>kubernetes是什么-实用向教程</title>
-    <url>/posts/55227/</url>
-    <content><![CDATA[<p>这篇教程不会关注 kubernetes 的部署、架构、实现方式等内部原理，而是完全从一个使用 kubernetes 的开发人员的视角去介绍kubernetes是什么，从而帮助了解如何更好的去利用 kubernetes 的特性。</p>
+    <title>kubernetes环境下做金丝雀发布的一种思路</title>
+    <url>/posts/30764/</url>
+    <content><![CDATA[<p>金丝雀发布其实是一种非常适合在云原生体系下进行的流程，因此相信很多人有在kubernetes下做金丝雀发布的需求。通过本文，我们就介绍一种非常简单的做金丝雀发布的思路。</p>
 <span id="more"></span>
 
-<h1 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h1><p>对于kubernetes是什么，一个比较官方的定义，Kubernetes是一个开源容器编排平台，管理大规模分布式容器化软件应用，简称为k8s.</p>
-<p>通俗一些来讲，k8s 的核心理念是以应用为中心，向下屏蔽基础设施的差异，向上通过容器镜像实现应用的标准化，帮助开发人员在仅需关注应用本身，无需考虑部署、容灾、伸缩等运维细节的情况下，开发出大规模、可靠的分布式应用。</p>
-<h1 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h1><p>如上所述，k8s的核心优势就是降低运维成本，让应用开发人员能够专注于应用本身。具体来讲，包括如下几点：</p>
-<ul>
-<li>便捷的部署流程和大规模的复制分发能力：应用提供标准化的容器镜像，之后的部署发布流程都可以做到自动化；应用也无需再做更多的事情就可以实现跨平台、跨区域的部署。</li>
-<li>服务自愈能力：自动摘除不健康的节点并做恢复。</li>
-<li>敏捷的自动伸缩：根据设定的系统负载，做快速的自动伸缩，实现系统处理能力和成本之间的平衡。</li>
-</ul>
-<h1 id="主要概念及实现方式介绍"><a href="#主要概念及实现方式介绍" class="headerlink" title="主要概念及实现方式介绍"></a>主要概念及实现方式介绍</h1><p>这篇kubernetes教程的剩余部分会从应用开发人员视角，介绍需要了解的k8s概念，主要包括以下几类：</p>
-<ul>
-<li>Pod, service, deployment等基本概念</li>
-<li>spec+controller这套基本实现原理</li>
-<li>k8s提供给应用的扩展点</li>
-</ul>
-<h2 id="spec-controller"><a href="#spec-controller" class="headerlink" title="spec+controller"></a>spec+controller</h2><p>这是k8s内部大部分逻辑的实现方式，了解这个逻辑，可以帮助开发人员更好的理解某些特定情况下k8s的行为。</p>
-<p>如果翻看k8s的yaml配置，就会发现k8s的大部分组件中都有一个或若干个spec字段，它的含义很好理解，就是对于某个属性的期望值，比如一个服务节点数量的期望值。</p>
-<p>controller的作用就是持续监测期望值和实际指标是否一致，不一致时就进行相应的操作进行处理，比如发现节点数不够了，就会启动对应数量的新节点。</p>
-<p>这样，无论是上线、扩缩容、还是故障恢复，我们会发现这些逻辑都变得非常清晰，都是触发一下对容器数期望值或实际值的调整，然后让controller去增删节点就可以了。</p>
-<p>这套机制是k8s里广泛使用的一个底层设计原则，作用是解开监控和操作逻辑之间的耦合。举个例子，我们在很多情况下都需要触发启动新的节点，包括要做扩容时、部分节点挂了时、要上线时，等等。这些完全没关联的场景如何去触发相同的操作，代码要如何保持整洁呢？k8s的做法就是用一个期望值的概念做中间层，将操作的触发时机和操作本身拆分成独立的逻辑。</p>
-<p>了解了这个逻辑，我们可以更容易的理解k8s是怎么工作的。 比如基于HPA做自动扩容，就是根据当前的CPU使用情况，和期望的CPU使用量，决定是增加还是减少节点。</p>
-<h2 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h2><p>Deployment 用于指示 k8s 如何创建和更新应用程序，我们通常理解的一个“服务”、“应用”大体上就对应在deployment这一层上。 像镜像、内存cpu使用限制、节点数、环境变量等各种配置，都是在deployment上。</p>
-<h2 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h2><p>pod比较好理解，就是我们通常理解的一个节点。pod是 k8s 中最小可管理单元。</p>
-<h2 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h2><p>Service是一个需要着重了解的概念，它是一个抽象层，它选择具备某些特征的 Pod（容器组）并为它们定义一个访问方式。 通常的应用场景下，deployment和service是一一对应的，但实际上deployment和service之间并没有必然的联系。</p>
-<p>一个请求恰好可以打到某个deployment关联的所有pod上，看起来是一件非常正常的事情。而事实上，这件事情的发生不是由于这些pod通过一个deployment产生，而是因为deployment上配置了一个标签，通过这个deployment生成的pod都获得了这个标签; 同时，另外存在一个service, 设置通过这个标签选择pod, 请求进入的是通过service选择出的一批pod.</p>
-<h2 id="探针-probe-和钩子-hook"><a href="#探针-probe-和钩子-hook" class="headerlink" title="探针(probe)和钩子(hook)"></a>探针(probe)和钩子(hook)</h2><p>k8s提供了一些用于应用扩展的接口，其中就包括probe和hook, 可以帮助应用更好的利用k8s的能力。</p>
-<p>k8s提供了 liveness和 readiness 探针，顾名思义，liveness probe的作用是判断应用是否存活，readiness probe的作用是判断应用是否已经启动完毕。</p>
-<p>应用可以用http接口等不同形式提供探针，k8s则负责在探测到不同状态时做不同的操作。比如说探测到liveness probe返回状态异常，则可以认为此节点已经丢失，对此节点做删除处理。</p>
-<p>hook则支持应用在一些特定阶段插入一些行为，比如preStop hook, 运行应用关闭之前先做一些操作，可以用来做graceful shutdown.</p>
-<h1 id="实践思考"><a href="#实践思考" class="headerlink" title="实践思考"></a>实践思考</h1><p>通过对本篇kubernetes教程上文列出的概念的了解，相信大家可以从应用开发人员的视角完全理解kubernetes是什么, 也可以大致想象出应用方使用k8s的基本思路： 构建标准镜像，暴露出必要的监控数据，剩下的事情都交给k8s来做。</p>
-<p>在准确的数据下，k8s可以帮我们做好系统的自愈、扩缩容等操作，而我们要做的是，结合应用场景，尽量给出更加准确的监控数据。</p>
-<p>举一些例子，比如说应用提供的liveness探针，如何能尽量确保准确的展示系统的健康状态，某个接口可以访问，某个端口可以调通，能否等价的说明这个应用是否健康。</p>
-<p>比如说k8s以cpu、内存等指标来判断系统负载时，这些机器指标能否真实的展现出应用的真实负载，是否有可能连接池、IO等其他瓶颈会在cpu、内存等瓶颈到来之前就达到。</p>
-<p>这些都是需要应用方结合应用的实际情况精心设计的。</p>
-<p>此外，k8s的设计理念决定了在k8s环境下，“重启”会是一件非常稀松平常的事，像硬件故障、小概率的死循环、不健康的gc, 等不同类型的问题，都可以在k8s的自主重启下实现自愈； 自动的扩缩容扩充中，也会经常性的有节点启停。 所以说，应用需要让自己的启动流程顺畅一些，避免大量耗时或大量资源消耗。</p>
+<p>首先介绍一下金丝雀发布是什么，金丝雀这个名字，起源是，矿井工人发现，金丝雀对瓦斯气体很敏感，矿工会在下井之前，先放一只金丝雀到井中，如果金丝雀不叫了，就代表瓦斯浓度高。</p>
+<p>在系统层面的具体含义就是，发布开始后，先启动一个新版本应用，但是并不直接将流量切过来，而是测试人员对新版本进行线上测试，启动的这个新版本应用，就是我们的金丝雀。在金丝雀上测试没有问题后，再将线上的流量切换到新版本上。</p>
+<p>再具体点讲，可以将一个域名映射到两组服务器上，一组是正式的线上环境，另一组就可以是金丝雀环境了。</p>
+<p>假如说我们不是用k8s做部署，而是直接部署到多台服务器上的话，金丝雀部署就很简单，任意指定一台或多台机器做金丝雀即可。</p>
+<p>而在k8s环境下，由于k8s接管了部署的流程，我们就需要做一些别的事情来实现这个效果。</p>
+<p>有一种很简单的思路，就是创建两个deployment, 但是通过label关联到同一个service上，就可以将同一个service的流量分配到两组容器中了。两个deployment可以分别部署，也就可以部署不同版本的镜像了。</p>
+<p>例如下边两个deployment</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deployment</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.7.9</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-service</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx-port</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">nodePort:</span> <span class="number">32600</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">80</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deployment-canary</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">track:</span> <span class="string">canary</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">      <span class="attr">track:</span> <span class="string">canary</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">track:</span> <span class="string">canary</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.8.0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>只在第一个deployment中配置service，其配置的selector规则是app:nginx, 然后两个deployment都打上app:nginx的label.</p>
+<p>这样就实现了我们所说的效果。</p>
+<p>当然，这种方式只是实现了一种非常简单的金丝雀发布流程，是没有办法做更精细，比如说按用户信息去灰度的规则的。对于同一个用户，也有可能一次请求到了金丝雀中，下一次请求又到了正式环境中。假如需要更加精细的灰度规则，可以考虑采用spring cloud, istio等工具。</p>
+<p>原文地址: <a href="http://lichuanyang.top/posts/30764/">http://lichuanyang.top/posts/30764/</a></p>
 ]]></content>
       <tags>
-        <tag>kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>log4j动态添加appender</title>
-    <url>/posts/42764/</url>
-    <content><![CDATA[<p>除了通过properties，xml等格式的配置文件对log4j进行配置外，log4j还提供了各种接口，可以用代码动态修改log4j的配置，例如给一个logger增加一个appender。方法很简单，就是新建一个appder，然后添加到logger上，示例代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">KafkaLog4jAppender kafkaAppender = new KafkaLog4jAppender();</span><br><span class="line">kafkaAppender.setBrokerList(broker);</span><br><span class="line">kafkaAppender.setTopic(topic);</span><br><span class="line">kafkaAppender.setCompressionType(&quot;gzip&quot;);</span><br><span class="line">kafkaAppender.setSyncSend(false);</span><br><span class="line">kafkaAppender.setLayout(new PatternLayout(layout));</span><br><span class="line">kafkaAppender.activateOptions();</span><br><span class="line">logger.addAppender(kafkaAppender);</span><br><span class="line">logger.setLevel(Level.INFO);</span><br></pre></td></tr></table></figure>
-<p>这里以一个kafkaappender做例子，其他的，例如DailyRollingFileAppender等，都是类似的。</p>
-]]></content>
-      <tags>
-        <tag>日志</tag>
+        <tag>云原生</tag>
+        <tag>持续集成</tag>
+        <tag>金丝雀</tag>
       </tags>
   </entry>
   <entry>
@@ -1010,35 +1050,14 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
-    <title>redis cluster的数据迁移</title>
-    <url>/posts/37583/</url>
-    <content><![CDATA[<p>在之前的一篇文章<a href="https://lcy362.github.io/posts/9329/">通过实际操作理解redis cluster原理</a>中，我们简单介绍过redis cluster的设计原理。redis cluster中的数据是根据一定规则分配到16384个slot中，这些slot又根据配置对应到不同的节点上。我们知道，在集群稳定运行后，仍然可以以slot为单位转移数据，不过对于具体的转移过程，包括转移过程中集群的可用性等问题，一直不是太确定，所以这次详细了解了一下。</p>
-<span id="more"></span>
-
-<h2 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h2><p>redis官方文档中提供的数据迁移办法是借助redis-trib脚本，其实严格来说，这个redis-trib并不是redis本体的一部分，它只是官方按照redis设计规范实现的一套脚本集合，帮助用户更方便的使用redis-cluster。 实际上，我们完全可以脱离这个脚本来使用cluster, 或者用其他方式实现这套逻辑，比如搜狐tv的redis运维工具cachecloud里，就用java实现了整套逻辑。</p>
-<p>我们可以参考redis-trip或者cachecloud的代码来了解cluster数据迁移的流程，主要分为如下几部:</p>
-<ol>
-<li>设定迁移中的节点状态，比如要把slot x的数据从节点A迁移到节点B的话，需要把A设置成MIGRATING状态，B设置成IMPORTING状态。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CLUSTER SETSLOT &lt;slot&gt; IMPORTING &lt;node_id&gt;</span><br></pre></td></tr></table></figure>
- <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CLUSTER SETSLOT &lt;slot&gt; MIGRATING &lt;node_id&gt;</span><br></pre></td></tr></table></figure></li>
-<li>迁移数据，这一步首先使用CLUSTER GETKEYSINSLOT 命令获取该slot中所有的key, 然后每个key依次用MIGRATE命令转移数据。</li>
-<li>数据转移完毕之后，正式将slot指派给新的节点B <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CLUSTER SETSLOT &lt;slot&gt; NODE &lt;node_id&gt;</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="可用性"><a href="#可用性" class="headerlink" title="可用性"></a>可用性</h2><p>在整个迁移中，会出现对于单个key的阻塞情况，原因是MIGRATE命令是原子性的，在单个key的迁移过程中，对这个key的访问会被阻塞。但是，一般来说，一个key的数据不会特别大，所以绝大多数情况下瞬间都能完成，所以一般不会真正影响使用。而其他任何情况都不会造成集群的不可用，如果出现了，比如出现slot级的不可用，说明client端的处理存在某些问题。接下来，本文也会介绍一些client端使用的注意事项。</p>
-<h2 id="ASK和MOVED转向"><a href="#ASK和MOVED转向" class="headerlink" title="ASK和MOVED转向"></a>ASK和MOVED转向</h2><p>前边说了，redis cluster的数据迁移基本不会影响集群使用，但是，在数据从节点A迁移到B的过程中，数据可能在A上，也可能在B上，redis是怎么知道要到哪个节点上去找的呢？这里就要先介绍一下ask和moved这两个转向信号了。顾名思义，出现这个信息就说明需要的数据并不在当前节点上，需要做一次转向处理，其中，MOVED是永久转向信号，ASK则表示只需要这一次操作做转向。</p>
-<p>比如，在节点A向节点B的数据迁移过程中，各个key分散在节点A和节点B中,所以当客户端在A中没找到某个key时,就会得到一个ASK，然后再去B中查找，实际上就是多查一次。</p>
-<p>需要注意的是，客户端查询B时，需要先发一条ASKING命令，否则这个针对带有IMPORTING状态的槽的命令请求将被节点B拒绝执行。</p>
-<p>对于客户端，简单来说就是，收到MOVED时，需要更新slot映射信息，收到ASK时，则需要向新节点发ASKING命令并重新执行操作。</p>
-<p>看了一下jedis代码，也正是按照这个逻辑实现的。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&#125; <span class="keyword">catch</span> (JedisRedirectionException jre) &#123;</span><br><span class="line">      <span class="comment">// if MOVED redirection occurred,</span></span><br><span class="line">      <span class="keyword">if</span> (jre <span class="keyword">instanceof</span> JedisMovedDataException) &#123;</span><br><span class="line">        <span class="comment">// it rebuilds cluster&#x27;s slot cache</span></span><br><span class="line">        <span class="comment">// recommended by Redis cluster specification</span></span><br><span class="line">        <span class="built_in">this</span>.connectionHandler.renewSlotCache(connection);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// release current connection before recursion or renewing</span></span><br><span class="line">      releaseConnection(connection);</span><br><span class="line">      connection = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (jre <span class="keyword">instanceof</span> JedisAskDataException) &#123;</span><br><span class="line">        asking = <span class="literal">true</span>;</span><br><span class="line">        askConnection.set(<span class="built_in">this</span>.connectionHandler.getConnectionFromNode(jre.getTargetNode()));</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (jre <span class="keyword">instanceof</span> JedisMovedDataException) &#123;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">JedisClusterOperationException</span>(jre);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> runWithRetries(slot, attempts - <span class="number">1</span>, <span class="literal">false</span>, asking);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br></pre></td></tr></table></figure>
-<p>操作出现异常时，会分别判断MovedException和AskException,然后作相应处理。</p>
-<p>原文地址：<a href="https://lcy362.github.io/posts/37583/">https://lcy362.github.io/posts/37583/</a></p>
+    <title>log4j动态添加appender</title>
+    <url>/posts/42764/</url>
+    <content><![CDATA[<p>除了通过properties，xml等格式的配置文件对log4j进行配置外，log4j还提供了各种接口，可以用代码动态修改log4j的配置，例如给一个logger增加一个appender。方法很简单，就是新建一个appder，然后添加到logger上，示例代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">KafkaLog4jAppender kafkaAppender = new KafkaLog4jAppender();</span><br><span class="line">kafkaAppender.setBrokerList(broker);</span><br><span class="line">kafkaAppender.setTopic(topic);</span><br><span class="line">kafkaAppender.setCompressionType(&quot;gzip&quot;);</span><br><span class="line">kafkaAppender.setSyncSend(false);</span><br><span class="line">kafkaAppender.setLayout(new PatternLayout(layout));</span><br><span class="line">kafkaAppender.activateOptions();</span><br><span class="line">logger.addAppender(kafkaAppender);</span><br><span class="line">logger.setLevel(Level.INFO);</span><br></pre></td></tr></table></figure>
+<p>这里以一个kafkaappender做例子，其他的，例如DailyRollingFileAppender等，都是类似的。</p>
 ]]></content>
-      <categories>
-        <category>redis系列</category>
-      </categories>
       <tags>
-        <tag>redis</tag>
-        <tag>redis-cluster</tag>
+        <tag>日志</tag>
       </tags>
   </entry>
   <entry>
@@ -1077,6 +1096,59 @@ lock.release();释放锁
       </categories>
       <tags>
         <tag>redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>maven里的mirror和repository: 配置多repository</title>
+    <url>/posts/32793/</url>
+    <content><![CDATA[<p>maven里的mirror和repository是两个比较容易混淆的概念，它们的作用都是配置远程maven仓库的地址。顾名思义，repository就是直接配置站点地址，mirror则是作为站点的镜像，代理某个或某几个站点的请求，实现对repository的完全代替。</p>
+<h2 id="repository"><a href="#repository" class="headerlink" title="repository"></a>repository</h2><p>有两种形式可以配置多个repository, 配置多个profile或者在同一个profile中配置多个repository.配置多profile时，还需要配置activeProfiles使配置生效。</p>
+<p>配置示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">      &lt;profiles&gt;</span><br><span class="line">&lt;/profile&gt;</span><br><span class="line">	&lt;profile&gt;</span><br><span class="line">	&lt;id&gt;central&lt;/id&gt;</span><br><span class="line">	&lt;repositories&gt;</span><br><span class="line">		&lt;repository&gt;</span><br><span class="line">			&lt;id&gt;central&lt;/id&gt;</span><br><span class="line">			&lt;url&gt;http://search.maven.org/&lt;/url&gt;</span><br><span class="line">			&lt;!-- &lt;releases&gt; &lt;enabled&gt;true&lt;/enabled&gt; &lt;/releases&gt; &lt;snapshots&gt; &lt;enabled&gt;true&lt;/enabled&gt; </span><br><span class="line">				&lt;/snapshots&gt; --&gt;</span><br><span class="line">			&lt;releases&gt;</span><br><span class="line">				&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/releases&gt;</span><br><span class="line">			&lt;snapshots&gt;</span><br><span class="line">				&lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/snapshots&gt;</span><br><span class="line">		&lt;/repository&gt;</span><br><span class="line">	&lt;/repositories&gt;</span><br><span class="line">	&lt;pluginRepositories&gt;</span><br><span class="line">		&lt;pluginRepository&gt;</span><br><span class="line">			&lt;id&gt;central&lt;/id&gt;</span><br><span class="line">			&lt;url&gt;http://search.maven.org/&lt;/url&gt;</span><br><span class="line">			&lt;releases&gt;</span><br><span class="line">				&lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/releases&gt;</span><br><span class="line">			&lt;snapshots&gt;</span><br><span class="line">				&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/snapshots&gt;</span><br><span class="line">		&lt;/pluginRepository&gt;</span><br><span class="line">	&lt;/pluginRepositories&gt;</span><br><span class="line">&lt;/profile&gt;</span><br><span class="line">&lt;profile&gt;</span><br><span class="line">	&lt;id&gt;aliyun&lt;/id&gt;</span><br><span class="line">	&lt;repositories&gt;</span><br><span class="line">		&lt;repository&gt;</span><br><span class="line">			&lt;id&gt;aliyun&lt;/id&gt;</span><br><span class="line">			&lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">			&lt;!-- &lt;releases&gt; &lt;enabled&gt;true&lt;/enabled&gt; &lt;/releases&gt; &lt;snapshots&gt; &lt;enabled&gt;true&lt;/enabled&gt; </span><br><span class="line">				&lt;/snapshots&gt; --&gt;</span><br><span class="line">			&lt;releases&gt;</span><br><span class="line">				&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/releases&gt;</span><br><span class="line">			&lt;snapshots&gt;</span><br><span class="line">				&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/snapshots&gt;</span><br><span class="line">		&lt;/repository&gt;</span><br><span class="line">	&lt;/repositories&gt;</span><br><span class="line">	&lt;pluginRepositories&gt;</span><br><span class="line">		&lt;pluginRepository&gt;</span><br><span class="line">			&lt;id&gt;aliyun&lt;/id&gt;</span><br><span class="line">			&lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">			&lt;releases&gt;</span><br><span class="line">				&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/releases&gt;</span><br><span class="line">			&lt;snapshots&gt;</span><br><span class="line">				&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/snapshots&gt;</span><br><span class="line">		&lt;/pluginRepository&gt;</span><br><span class="line">	&lt;/pluginRepositories&gt;</span><br><span class="line">&lt;/profile&gt;</span><br><span class="line">          &lt;/profiles&gt;</span><br><span class="line"></span><br><span class="line">          &lt;activeProfiles&gt;</span><br><span class="line">&lt;activeProfile&gt;aliyun&lt;/activeProfile&gt;</span><br><span class="line">&lt;activeProfile&gt;central&lt;/activeProfile&gt;</span><br><span class="line">  &lt;/activeProfiles&gt;</span><br></pre></td></tr></table></figure>
+<p>单profile,多repository的配置也类似。</p>
+<p>这样就实现了多站点的配置。下载依赖时，maven会按照配置从上到下的顺序，依次尝试从各个地址下载，成功下载为止。</p>
+<h2 id="mirror"><a href="#mirror" class="headerlink" title="mirror"></a>mirror</h2><p>个人感觉mirror的存在有些鸡肋，如果不想用repository里配的地址，完全可以直接改掉，而不用再加一条mirror配置。</p>
+<p>如果setting.xml和pom里都配置了repository, 配置的mirror是可以对两个配置文件都生效的，这可能是mirror存在的唯一意义。</p>
+<p>mirror的配置示例：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus-aliyun<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>Nexus aliyun<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.aliyun.com/nexus/content/groups/public<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>使用mirrorOf指定这个镜像是针对哪个repository的，配置成*就表示要代理所有repository的请求。</p>
+<p>需要注意的是，与repository不同，配置到同一个repository的多个mirror时，相互之间是备份的关系，只有在仓库连不上的时候才会切换另一个，而如果在能连上的情况下找不到包，是不会尝试下一个地址的。</p>
+<p>所以，一般情况下，无论是配置国内的maven仓库，还是配置nexus之类私服，都可以直接配置成repository， 这样即使配置的这些仓库有些问题导致一些包下不下来，也可以继续用别的仓库尝试。</p>
+]]></content>
+      <tags>
+        <tag>maven</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>redis cluster的数据迁移</title>
+    <url>/posts/37583/</url>
+    <content><![CDATA[<p>在之前的一篇文章<a href="https://lcy362.github.io/posts/9329/">通过实际操作理解redis cluster原理</a>中，我们简单介绍过redis cluster的设计原理。redis cluster中的数据是根据一定规则分配到16384个slot中，这些slot又根据配置对应到不同的节点上。我们知道，在集群稳定运行后，仍然可以以slot为单位转移数据，不过对于具体的转移过程，包括转移过程中集群的可用性等问题，一直不是太确定，所以这次详细了解了一下。</p>
+<span id="more"></span>
+
+<h2 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h2><p>redis官方文档中提供的数据迁移办法是借助redis-trib脚本，其实严格来说，这个redis-trib并不是redis本体的一部分，它只是官方按照redis设计规范实现的一套脚本集合，帮助用户更方便的使用redis-cluster。 实际上，我们完全可以脱离这个脚本来使用cluster, 或者用其他方式实现这套逻辑，比如搜狐tv的redis运维工具cachecloud里，就用java实现了整套逻辑。</p>
+<p>我们可以参考redis-trip或者cachecloud的代码来了解cluster数据迁移的流程，主要分为如下几部:</p>
+<ol>
+<li>设定迁移中的节点状态，比如要把slot x的数据从节点A迁移到节点B的话，需要把A设置成MIGRATING状态，B设置成IMPORTING状态。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CLUSTER SETSLOT &lt;slot&gt; IMPORTING &lt;node_id&gt;</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CLUSTER SETSLOT &lt;slot&gt; MIGRATING &lt;node_id&gt;</span><br></pre></td></tr></table></figure></li>
+<li>迁移数据，这一步首先使用CLUSTER GETKEYSINSLOT 命令获取该slot中所有的key, 然后每个key依次用MIGRATE命令转移数据。</li>
+<li>数据转移完毕之后，正式将slot指派给新的节点B <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CLUSTER SETSLOT &lt;slot&gt; NODE &lt;node_id&gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="可用性"><a href="#可用性" class="headerlink" title="可用性"></a>可用性</h2><p>在整个迁移中，会出现对于单个key的阻塞情况，原因是MIGRATE命令是原子性的，在单个key的迁移过程中，对这个key的访问会被阻塞。但是，一般来说，一个key的数据不会特别大，所以绝大多数情况下瞬间都能完成，所以一般不会真正影响使用。而其他任何情况都不会造成集群的不可用，如果出现了，比如出现slot级的不可用，说明client端的处理存在某些问题。接下来，本文也会介绍一些client端使用的注意事项。</p>
+<h2 id="ASK和MOVED转向"><a href="#ASK和MOVED转向" class="headerlink" title="ASK和MOVED转向"></a>ASK和MOVED转向</h2><p>前边说了，redis cluster的数据迁移基本不会影响集群使用，但是，在数据从节点A迁移到B的过程中，数据可能在A上，也可能在B上，redis是怎么知道要到哪个节点上去找的呢？这里就要先介绍一下ask和moved这两个转向信号了。顾名思义，出现这个信息就说明需要的数据并不在当前节点上，需要做一次转向处理，其中，MOVED是永久转向信号，ASK则表示只需要这一次操作做转向。</p>
+<p>比如，在节点A向节点B的数据迁移过程中，各个key分散在节点A和节点B中,所以当客户端在A中没找到某个key时,就会得到一个ASK，然后再去B中查找，实际上就是多查一次。</p>
+<p>需要注意的是，客户端查询B时，需要先发一条ASKING命令，否则这个针对带有IMPORTING状态的槽的命令请求将被节点B拒绝执行。</p>
+<p>对于客户端，简单来说就是，收到MOVED时，需要更新slot映射信息，收到ASK时，则需要向新节点发ASKING命令并重新执行操作。</p>
+<p>看了一下jedis代码，也正是按照这个逻辑实现的。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&#125; <span class="keyword">catch</span> (JedisRedirectionException jre) &#123;</span><br><span class="line">      <span class="comment">// if MOVED redirection occurred,</span></span><br><span class="line">      <span class="keyword">if</span> (jre <span class="keyword">instanceof</span> JedisMovedDataException) &#123;</span><br><span class="line">        <span class="comment">// it rebuilds cluster&#x27;s slot cache</span></span><br><span class="line">        <span class="comment">// recommended by Redis cluster specification</span></span><br><span class="line">        <span class="built_in">this</span>.connectionHandler.renewSlotCache(connection);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// release current connection before recursion or renewing</span></span><br><span class="line">      releaseConnection(connection);</span><br><span class="line">      connection = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (jre <span class="keyword">instanceof</span> JedisAskDataException) &#123;</span><br><span class="line">        asking = <span class="literal">true</span>;</span><br><span class="line">        askConnection.set(<span class="built_in">this</span>.connectionHandler.getConnectionFromNode(jre.getTargetNode()));</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (jre <span class="keyword">instanceof</span> JedisMovedDataException) &#123;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">JedisClusterOperationException</span>(jre);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> runWithRetries(slot, attempts - <span class="number">1</span>, <span class="literal">false</span>, asking);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br></pre></td></tr></table></figure>
+<p>操作出现异常时，会分别判断MovedException和AskException,然后作相应处理。</p>
+<p>原文地址：<a href="https://lcy362.github.io/posts/37583/">https://lcy362.github.io/posts/37583/</a></p>
+]]></content>
+      <categories>
+        <category>redis系列</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+        <tag>redis-cluster</tag>
       </tags>
   </entry>
   <entry>
@@ -1131,24 +1203,24 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
-    <title>maven里的mirror和repository: 配置多repository</title>
-    <url>/posts/32793/</url>
-    <content><![CDATA[<p>maven里的mirror和repository是两个比较容易混淆的概念，它们的作用都是配置远程maven仓库的地址。顾名思义，repository就是直接配置站点地址，mirror则是作为站点的镜像，代理某个或某几个站点的请求，实现对repository的完全代替。</p>
-<h2 id="repository"><a href="#repository" class="headerlink" title="repository"></a>repository</h2><p>有两种形式可以配置多个repository, 配置多个profile或者在同一个profile中配置多个repository.配置多profile时，还需要配置activeProfiles使配置生效。</p>
-<p>配置示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">      &lt;profiles&gt;</span><br><span class="line">&lt;/profile&gt;</span><br><span class="line">	&lt;profile&gt;</span><br><span class="line">	&lt;id&gt;central&lt;/id&gt;</span><br><span class="line">	&lt;repositories&gt;</span><br><span class="line">		&lt;repository&gt;</span><br><span class="line">			&lt;id&gt;central&lt;/id&gt;</span><br><span class="line">			&lt;url&gt;http://search.maven.org/&lt;/url&gt;</span><br><span class="line">			&lt;!-- &lt;releases&gt; &lt;enabled&gt;true&lt;/enabled&gt; &lt;/releases&gt; &lt;snapshots&gt; &lt;enabled&gt;true&lt;/enabled&gt; </span><br><span class="line">				&lt;/snapshots&gt; --&gt;</span><br><span class="line">			&lt;releases&gt;</span><br><span class="line">				&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/releases&gt;</span><br><span class="line">			&lt;snapshots&gt;</span><br><span class="line">				&lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/snapshots&gt;</span><br><span class="line">		&lt;/repository&gt;</span><br><span class="line">	&lt;/repositories&gt;</span><br><span class="line">	&lt;pluginRepositories&gt;</span><br><span class="line">		&lt;pluginRepository&gt;</span><br><span class="line">			&lt;id&gt;central&lt;/id&gt;</span><br><span class="line">			&lt;url&gt;http://search.maven.org/&lt;/url&gt;</span><br><span class="line">			&lt;releases&gt;</span><br><span class="line">				&lt;enabled&gt;false&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/releases&gt;</span><br><span class="line">			&lt;snapshots&gt;</span><br><span class="line">				&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/snapshots&gt;</span><br><span class="line">		&lt;/pluginRepository&gt;</span><br><span class="line">	&lt;/pluginRepositories&gt;</span><br><span class="line">&lt;/profile&gt;</span><br><span class="line">&lt;profile&gt;</span><br><span class="line">	&lt;id&gt;aliyun&lt;/id&gt;</span><br><span class="line">	&lt;repositories&gt;</span><br><span class="line">		&lt;repository&gt;</span><br><span class="line">			&lt;id&gt;aliyun&lt;/id&gt;</span><br><span class="line">			&lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">			&lt;!-- &lt;releases&gt; &lt;enabled&gt;true&lt;/enabled&gt; &lt;/releases&gt; &lt;snapshots&gt; &lt;enabled&gt;true&lt;/enabled&gt; </span><br><span class="line">				&lt;/snapshots&gt; --&gt;</span><br><span class="line">			&lt;releases&gt;</span><br><span class="line">				&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/releases&gt;</span><br><span class="line">			&lt;snapshots&gt;</span><br><span class="line">				&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/snapshots&gt;</span><br><span class="line">		&lt;/repository&gt;</span><br><span class="line">	&lt;/repositories&gt;</span><br><span class="line">	&lt;pluginRepositories&gt;</span><br><span class="line">		&lt;pluginRepository&gt;</span><br><span class="line">			&lt;id&gt;aliyun&lt;/id&gt;</span><br><span class="line">			&lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">			&lt;releases&gt;</span><br><span class="line">				&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/releases&gt;</span><br><span class="line">			&lt;snapshots&gt;</span><br><span class="line">				&lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">				&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;</span><br><span class="line">			&lt;/snapshots&gt;</span><br><span class="line">		&lt;/pluginRepository&gt;</span><br><span class="line">	&lt;/pluginRepositories&gt;</span><br><span class="line">&lt;/profile&gt;</span><br><span class="line">          &lt;/profiles&gt;</span><br><span class="line"></span><br><span class="line">          &lt;activeProfiles&gt;</span><br><span class="line">&lt;activeProfile&gt;aliyun&lt;/activeProfile&gt;</span><br><span class="line">&lt;activeProfile&gt;central&lt;/activeProfile&gt;</span><br><span class="line">  &lt;/activeProfiles&gt;</span><br></pre></td></tr></table></figure>
-<p>单profile,多repository的配置也类似。</p>
-<p>这样就实现了多站点的配置。下载依赖时，maven会按照配置从上到下的顺序，依次尝试从各个地址下载，成功下载为止。</p>
-<h2 id="mirror"><a href="#mirror" class="headerlink" title="mirror"></a>mirror</h2><p>个人感觉mirror的存在有些鸡肋，如果不想用repository里配的地址，完全可以直接改掉，而不用再加一条mirror配置。</p>
-<p>如果setting.xml和pom里都配置了repository, 配置的mirror是可以对两个配置文件都生效的，这可能是mirror存在的唯一意义。</p>
-<p>mirror的配置示例：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus-aliyun<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>Nexus aliyun<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.aliyun.com/nexus/content/groups/public<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>使用mirrorOf指定这个镜像是针对哪个repository的，配置成*就表示要代理所有repository的请求。</p>
-<p>需要注意的是，与repository不同，配置到同一个repository的多个mirror时，相互之间是备份的关系，只有在仓库连不上的时候才会切换另一个，而如果在能连上的情况下找不到包，是不会尝试下一个地址的。</p>
-<p>所以，一般情况下，无论是配置国内的maven仓库，还是配置nexus之类私服，都可以直接配置成repository， 这样即使配置的这些仓库有些问题导致一些包下不下来，也可以继续用别的仓库尝试。</p>
+    <title>storm ui 中一些关键属性的含义</title>
+    <url>/posts/62259/</url>
+    <content><![CDATA[<p><span style="font-family: FangSong_GB2312; font-size: 14px;">Storm UI对于排查storm使用过程中遇到的问题会很有帮助，但是有些属性的含义不是很明确，虽然都是很简单的概念，如果不知道的话也会很难受。</span></p>
+<p><span style="font-family: FangSong_GB2312; font-size: 14px;">先说一点，鼠标只到UI上的标题栏时，是可以看到这一属性的具体属性的，几篇google rank很高的文章，其实就是把这个信息整理了下来。</span></p>
+<p><span style="font-family: FangSong_GB2312; font-size: 14px;">其实大部分属性都是很直白的，看到名字就知道是什么意思，我在这儿之把一些可能造成困扰的属性列一下，方便大家查问题。</span></p>
+<p>&nbsp;</p>
+<div style="orphans: 2; word-wrap: break-word;"><span style="font-family: FangSong_GB2312; font-size: 14px;">emitted和transfered: emitted，就是发射出的数据条数，也就是调用OutputCollector的emit方法的次数。transferred则是实际tuple发送到下一个task的数目。乍一看是一样的对吗。其实一般情况下也确实是一样的。但是，比如，一个bolt 发射了数据，但是下游并没有其他bolt取这个数，这个bolt的transfer数就会是0\. 又比如，<span style="orphans: 2;">如果一个bolt A使用all group的方式(每一个bolt都要接收到)向bolt B发射tuple，那么transfered就会是emitted的数倍。</span></span></div>
+<div style="orphans: 2; word-wrap: break-word;"><span style="orphans: 2;"><span style="font-family: FangSong_GB2312; font-size: 14px;"><span style="orphans: 2;">excute latency和process latency : excute latency 很直白，就是代码里excute()这个方法的执行时间, 而process latency则是excute方法执行，直到调用ack方法的时间，可以认为是业务代码执行所需的时间，正常情况下，<span style="orphans: 2;">excute latency是会大于<span style="orphans: 2;">process latency的，但是如果你一直不去ack,process latency会远远大于excute latency。</span></span></span>
+
+<p></span></span></div></p>
+<div style="orphans: 2; word-wrap: break-word;"><span style="orphans: 2;"><span style="orphans: 2;"><span style="font-family: FangSong_GB2312; font-size: 14px;"><span style="orphans: 2;"><span style="orphans: 2;"><span style="color: #333333; line-height: 26px;">spout的complete
+ latency: 这个可以参考storm的[ack机制](http://xumingming.sinaapp.com/127/twitter-storm%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E4%B8%8D%E4%B8%A2%E5%A4%B1/)&nbsp;，这个时间就是一个tuple从被发射到这个tuple被ack所需的时间，确切的说，是从spout调用emit方法到调用ack方法的时间差，其实也就是这个由这个tuple生成的tuple树被完全处理所需的时间。</span>
+
+<p></span></span></span></span></span></div></p>
+<p>&nbsp;</p>
 ]]></content>
       <tags>
-        <tag>maven</tag>
+        <tag>storm</tag>
       </tags>
   </entry>
   <entry>
@@ -1169,27 +1241,6 @@ lock.release();释放锁
 ]]></content>
       <tags>
         <tag>开发规范</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>storm ui 中一些关键属性的含义</title>
-    <url>/posts/62259/</url>
-    <content><![CDATA[<p><span style="font-family: FangSong_GB2312; font-size: 14px;">Storm UI对于排查storm使用过程中遇到的问题会很有帮助，但是有些属性的含义不是很明确，虽然都是很简单的概念，如果不知道的话也会很难受。</span></p>
-<p><span style="font-family: FangSong_GB2312; font-size: 14px;">先说一点，鼠标只到UI上的标题栏时，是可以看到这一属性的具体属性的，几篇google rank很高的文章，其实就是把这个信息整理了下来。</span></p>
-<p><span style="font-family: FangSong_GB2312; font-size: 14px;">其实大部分属性都是很直白的，看到名字就知道是什么意思，我在这儿之把一些可能造成困扰的属性列一下，方便大家查问题。</span></p>
-<p>&nbsp;</p>
-<div style="orphans: 2; word-wrap: break-word;"><span style="font-family: FangSong_GB2312; font-size: 14px;">emitted和transfered: emitted，就是发射出的数据条数，也就是调用OutputCollector的emit方法的次数。transferred则是实际tuple发送到下一个task的数目。乍一看是一样的对吗。其实一般情况下也确实是一样的。但是，比如，一个bolt 发射了数据，但是下游并没有其他bolt取这个数，这个bolt的transfer数就会是0\. 又比如，<span style="orphans: 2;">如果一个bolt A使用all group的方式(每一个bolt都要接收到)向bolt B发射tuple，那么transfered就会是emitted的数倍。</span></span></div>
-<div style="orphans: 2; word-wrap: break-word;"><span style="orphans: 2;"><span style="font-family: FangSong_GB2312; font-size: 14px;"><span style="orphans: 2;">excute latency和process latency : excute latency 很直白，就是代码里excute()这个方法的执行时间, 而process latency则是excute方法执行，直到调用ack方法的时间，可以认为是业务代码执行所需的时间，正常情况下，<span style="orphans: 2;">excute latency是会大于<span style="orphans: 2;">process latency的，但是如果你一直不去ack,process latency会远远大于excute latency。</span></span></span>
-
-<p></span></span></div></p>
-<div style="orphans: 2; word-wrap: break-word;"><span style="orphans: 2;"><span style="orphans: 2;"><span style="font-family: FangSong_GB2312; font-size: 14px;"><span style="orphans: 2;"><span style="orphans: 2;"><span style="color: #333333; line-height: 26px;">spout的complete
- latency: 这个可以参考storm的[ack机制](http://xumingming.sinaapp.com/127/twitter-storm%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E4%B8%8D%E4%B8%A2%E5%A4%B1/)&nbsp;，这个时间就是一个tuple从被发射到这个tuple被ack所需的时间，确切的说，是从spout调用emit方法到调用ack方法的时间差，其实也就是这个由这个tuple生成的tuple树被完全处理所需的时间。</span>
-
-<p></span></span></span></span></span></div></p>
-<p>&nbsp;</p>
-]]></content>
-      <tags>
-        <tag>storm</tag>
       </tags>
   </entry>
   <entry>
@@ -1361,8 +1412,30 @@ lock.release();释放锁
 <p>&nbsp;</p>
 ]]></content>
       <tags>
-        <tag>hadoop</tag>
         <tag>大数据</tag>
+        <tag>hadoop</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【翻译】java里编写基准测试的一些经验</title>
+    <url>/posts/4987/</url>
+    <content><![CDATA[<p>有时候我们需要写一些简单的性能测试代码，恰好在stackoverflow上看到一篇经验之谈，<a href="https://stackoverflow.com/questions/504103/how-do-i-write-a-correct-micro-benchmark-in-java%EF%BC%8C">https://stackoverflow.com/questions/504103/how-do-i-write-a-correct-micro-benchmark-in-java，</a> 怎样写基准测试来尽量屏蔽掉环境的影响。</p>
+<p>翻译出来贴在这儿：</p>
+<p>来自Java HotSpot作者的撰写微基准的提示：</p>
+<p>规则0：阅读有关JVM和微型基准测试的好论文。比如<a href="https://www.ibm.com/developerworks/java/library/j-jtp02225/%E3%80%82%E4%B8%8D%E8%A6%81%E5%AF%B9%E8%BF%99%E7%A7%8D%E6%B5%8B%E8%AF%95%E6%9C%89%E5%A4%AA%E9%AB%98%E7%9A%84%E6%9C%9F%E6%9C%9B;%E5%AE%83%E4%BB%AC%E5%AF%B9JVM%E6%80%A7%E8%83%BD%E7%9A%84%E6%B5%8B%E8%AF%95%E4%BB%85%E8%83%BD%E8%B5%B7%E5%88%B0%E6%9C%89%E9%99%90%E6%95%88%E6%9E%9C%E3%80%82">https://www.ibm.com/developerworks/java/library/j-jtp02225/。不要对这种测试有太高的期望;它们对JVM性能的测试仅能起到有限效果。</a></p>
+<p>规则1：始终包含一个预热阶段，它一直运行，直到触发所有的初始化和编译。 （预热阶段的迭代次数可以减少，经验法则是几万次循环。）</p>
+<p>规则2：始终使用-XX:+PrintCompilation -verbose:gc 等参数来运行，这样可以确定编译阶段和JVM的其他部分在计时时是否进行了一些意外的工作。</p>
+<p>规则2.1：在计时和预热阶段的开始和结束打印消息，这样可以确定计时时是否有规则2的输出。</p>
+<p>规则3：了解-client与-server之间的区别，还有OSR和常规汇编之间的区别。 -server优于-client, 常规编译优于OSR</p>
+<p>规则4：注意初始化的影响，第一次计时不要打印结果，除非是在测试类加载的过程，规则2是你对抗这种效果的第一道防线。</p>
+<p>规则5：注意编译器优化和重新编译的效果。计时时不要使用任何代码路径，因为编译器可能会基于一些乐观假设进行优化，导致根本不会使用该路径，从而可以对代码进行垃圾和重新编译。规则2是你对抗这种效果的第一道防线。</p>
+<p>规则6：使用适当的工具读取编译器的工作过程，并对它产生一些令人惊讶的代码做好。在形成关于什么使事情更快或更慢的理论之前自己检查代码。</p>
+<p>规则7：减少测量中的噪音。在一台安静的机器上运行基准测试，并运行几次，抛弃异常值。使用-Xbatch将编译器与应用程序串行化，并考虑设置 -XX：CICompilerCount &#x3D; 1以防止编译器与其自身并行运行。</p>
+<p>规则8：使用一些库用来做基准测试，因为它可能更有效率。比如JMH，Caliper，UCSD Benchmarks for Java等。</p>
+]]></content>
+      <tags>
+        <tag>java</tag>
+        <tag>测试</tag>
       </tags>
   </entry>
   <entry>
@@ -1459,40 +1532,6 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
-    <title>不实现equals方法的情况下比较java list</title>
-    <url>/posts/28720/</url>
-    <content><![CDATA[<p>java里比较两个list的值是否一致，不考虑顺序，有多种方法，比如排序后直接用equals比较，相互之间执行两次containsAll等，这些办法都需要我们给list的元素类实现equals和hashcode方法。但是有一种特殊情况，如果我们并不方便去实习类的equals方法，例如是一个古老的第三方jar包，改代码会带来很多未知问题，这时候该怎么办呢。</p>
-<p>其实很简单，万能的apache-commons早就想到了这一点，所以在commons-collections4中增加了外部输入equals和hashcode的方法，甚至equals和hashcode方法本身也不需要我们自己写代码，可以用comons-lang包实现，具体代码如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-collections4&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.5&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public static &lt;T&gt; boolean isEqualCollection(Collection&lt;T&gt; l1, Collection&lt;T&gt; l2, final String... exludedFields) &#123;</span><br><span class="line">    Equator&lt;T&gt; equator = generateEquator(exludedFields);</span><br><span class="line">    return CollectionUtils.isEqualCollection(l1, l2, equator);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static  &lt;T&gt; Equator&lt;T&gt; generateEquator(final String... exludedFields) &#123;</span><br><span class="line">    Equator&lt;T&gt; equator = new Equator&lt;T&gt;() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public boolean equate(T o1, T o2) &#123;</span><br><span class="line">            if (o1 == null &amp;&amp; o2 == null) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            if (o1 == null || o2 == null) &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            if (o1.getClass() != o2.getClass()) &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            return EqualsBuilder.reflectionEquals(o1, o2, exludedFields);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public int hash(T o) &#123;</span><br><span class="line">            return HashCodeBuilder.reflectionHashCode(o, exludedFields);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    return equator;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【翻译】java里编写基准测试的一些经验</title>
-    <url>/posts/4987/</url>
-    <content><![CDATA[<p>有时候我们需要写一些简单的性能测试代码，恰好在stackoverflow上看到一篇经验之谈，<a href="https://stackoverflow.com/questions/504103/how-do-i-write-a-correct-micro-benchmark-in-java%EF%BC%8C">https://stackoverflow.com/questions/504103/how-do-i-write-a-correct-micro-benchmark-in-java，</a> 怎样写基准测试来尽量屏蔽掉环境的影响。</p>
-<p>翻译出来贴在这儿：</p>
-<p>来自Java HotSpot作者的撰写微基准的提示：</p>
-<p>规则0：阅读有关JVM和微型基准测试的好论文。比如<a href="https://www.ibm.com/developerworks/java/library/j-jtp02225/%E3%80%82%E4%B8%8D%E8%A6%81%E5%AF%B9%E8%BF%99%E7%A7%8D%E6%B5%8B%E8%AF%95%E6%9C%89%E5%A4%AA%E9%AB%98%E7%9A%84%E6%9C%9F%E6%9C%9B;%E5%AE%83%E4%BB%AC%E5%AF%B9JVM%E6%80%A7%E8%83%BD%E7%9A%84%E6%B5%8B%E8%AF%95%E4%BB%85%E8%83%BD%E8%B5%B7%E5%88%B0%E6%9C%89%E9%99%90%E6%95%88%E6%9E%9C%E3%80%82">https://www.ibm.com/developerworks/java/library/j-jtp02225/。不要对这种测试有太高的期望;它们对JVM性能的测试仅能起到有限效果。</a></p>
-<p>规则1：始终包含一个预热阶段，它一直运行，直到触发所有的初始化和编译。 （预热阶段的迭代次数可以减少，经验法则是几万次循环。）</p>
-<p>规则2：始终使用-XX:+PrintCompilation -verbose:gc 等参数来运行，这样可以确定编译阶段和JVM的其他部分在计时时是否进行了一些意外的工作。</p>
-<p>规则2.1：在计时和预热阶段的开始和结束打印消息，这样可以确定计时时是否有规则2的输出。</p>
-<p>规则3：了解-client与-server之间的区别，还有OSR和常规汇编之间的区别。 -server优于-client, 常规编译优于OSR</p>
-<p>规则4：注意初始化的影响，第一次计时不要打印结果，除非是在测试类加载的过程，规则2是你对抗这种效果的第一道防线。</p>
-<p>规则5：注意编译器优化和重新编译的效果。计时时不要使用任何代码路径，因为编译器可能会基于一些乐观假设进行优化，导致根本不会使用该路径，从而可以对代码进行垃圾和重新编译。规则2是你对抗这种效果的第一道防线。</p>
-<p>规则6：使用适当的工具读取编译器的工作过程，并对它产生一些令人惊讶的代码做好。在形成关于什么使事情更快或更慢的理论之前自己检查代码。</p>
-<p>规则7：减少测量中的噪音。在一台安静的机器上运行基准测试，并运行几次，抛弃异常值。使用-Xbatch将编译器与应用程序串行化，并考虑设置 -XX：CICompilerCount &#x3D; 1以防止编译器与其自身并行运行。</p>
-<p>规则8：使用一些库用来做基准测试，因为它可能更有效率。比如JMH，Caliper，UCSD Benchmarks for Java等。</p>
-]]></content>
-      <tags>
-        <tag>java</tag>
-        <tag>测试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>prometheus教程： 一篇文章讲懂prometheus</title>
     <url>/posts/28288/</url>
     <content><![CDATA[<p>作为云原生体系下的“默认”监控系统，prometheus正在获得越来越广泛的关注。今天，我们就写一篇教程，讲一下prometheus的设计理念，看看它是如何用非常简单的设计支撑起如此复杂的功能的。</p>
@@ -1551,6 +1590,18 @@ lock.release();释放锁
         <tag>prometheus</tag>
         <tag>grafana</tag>
         <tag>prometheus教程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>不实现equals方法的情况下比较java list</title>
+    <url>/posts/28720/</url>
+    <content><![CDATA[<p>java里比较两个list的值是否一致，不考虑顺序，有多种方法，比如排序后直接用equals比较，相互之间执行两次containsAll等，这些办法都需要我们给list的元素类实现equals和hashcode方法。但是有一种特殊情况，如果我们并不方便去实习类的equals方法，例如是一个古老的第三方jar包，改代码会带来很多未知问题，这时候该怎么办呢。</p>
+<p>其实很简单，万能的apache-commons早就想到了这一点，所以在commons-collections4中增加了外部输入equals和hashcode的方法，甚至equals和hashcode方法本身也不需要我们自己写代码，可以用comons-lang包实现，具体代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-collections4&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.5&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public static &lt;T&gt; boolean isEqualCollection(Collection&lt;T&gt; l1, Collection&lt;T&gt; l2, final String... exludedFields) &#123;</span><br><span class="line">    Equator&lt;T&gt; equator = generateEquator(exludedFields);</span><br><span class="line">    return CollectionUtils.isEqualCollection(l1, l2, equator);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static  &lt;T&gt; Equator&lt;T&gt; generateEquator(final String... exludedFields) &#123;</span><br><span class="line">    Equator&lt;T&gt; equator = new Equator&lt;T&gt;() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public boolean equate(T o1, T o2) &#123;</span><br><span class="line">            if (o1 == null &amp;&amp; o2 == null) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            if (o1 == null || o2 == null) &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            if (o1.getClass() != o2.getClass()) &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            return EqualsBuilder.reflectionEquals(o1, o2, exludedFields);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public int hash(T o) &#123;</span><br><span class="line">            return HashCodeBuilder.reflectionHashCode(o, exludedFields);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    return equator;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>java</tag>
       </tags>
   </entry>
   <entry>
@@ -1615,6 +1666,41 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
+    <title>五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别</title>
+    <url>/posts/27021/</url>
+    <content><![CDATA[<h3 id="运行机制"><a href="#运行机制" class="headerlink" title="运行机制"></a>运行机制</h3><p>topology里spout&#x2F;bolt的整体结构不再细讲，主要说说storm&#x2F;jstorm topology运行时与传统java程序可能存在的区别。其实区别非常少，主要也体现在初始化上，本文的目的在于帮助开发人员在无需了解storm内核原理的情况下，排查topology程序可能出现的问题。</p>
+<p>1个topology会包含多个spout线程和bolt线程，分散运行在数个worker（进程）中。同一个worker中可能同时运行多个bolt&#x2F;spout的数个线程。</p>
+<h3 id="与普通java程序的区别"><a href="#与普通java程序的区别" class="headerlink" title="与普通java程序的区别"></a>与普通java程序的区别</h3><h4 id="main方法"><a href="#main方法" class="headerlink" title="main方法"></a>main方法</h4><p>main方法只在启动时运行在nimbus中，因此除了storm本身的配置项外，其他程序相关的配置，如spring配置等，配置在main方法中<strong>不会起作用<strong>。</strong></strong></p>
+<h4 id="bolt"><a href="#bolt" class="headerlink" title="bolt"></a>bolt</h4><p>bolt 的主体结构包含prepare, excute, cleanup 三部分。</p>
+<p>其中，prepare在初始化时执行一次，cleanup在退出前执行一次，excute每条消息执行。 </p>
+<p>一些配置，<strong>包括加密，spring加载等，建议都放到prepare中<strong>。多个bolt都需要加载spring时，建议使用同样的配置，避免一些诡异问题。</strong></strong></p>
+<h4 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h4><p>所有<strong>静态代码块</strong>中作了初始化的变量，emit的变量，由于都存在网络传输，需要能够被序列化。</p>
+<p>storm默认使用kyro序列化，需要类有无参构造函数。如果无法增加无参构造函数，设置topology.fall.back.on.java.serialization: true使用java自带的序列化。</p>
+]]></content>
+      <tags>
+        <tag>storm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>iterm2配置ssh书签, 实现记住密码和自动登录</title>
+    <url>/posts/20763/</url>
+    <content><![CDATA[<p>如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。</p>
+<span id="more"></span>
+
+<p>iterm2 （<a href="https://iterm2.com/">https://iterm2.com/</a>)  是mac下使用非常广泛的一款终端替代产品，提供了很多强大的功能。要实现ssh书签，实现免密码登录、自动登录的效果，关键点是其中的三个特性：profile, trigger 和 password manager.</p>
+<p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <a href="mailto:&#x72;&#111;&#111;&#x74;&#64;&#x31;&#x2e;&#49;&#x2e;&#49;&#x2e;&#49;">&#x72;&#111;&#111;&#x74;&#64;&#x31;&#x2e;&#49;&#x2e;&#49;&#x2e;&#49;</a>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p>
+<p>trigger也是profile的一个特性，入口在profile配置页的advanced标签下，它的作用就是利用关键词触发一个动作，我们现在要做的就是用password这个关键词触发打开 password manager。 操作很简单，就是增加一个trigger, regular expression 填入 password,  action选择 open password manager, 注意勾选instant和enabled两个选项。</p>
+<p>最后一个要配置的是password manager, password manager 就是一个密码管理器，是item2中会默认安装的一款插件，入口在工具栏 window 标签下。打开password manager, 将需要保存的密码都录入进去就可以了。</p>
+<p>这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。</p>
+<p>原文地址: <a href="http://lichuanyang.top/posts/20763/">http://lichuanyang.top/posts/20763/</a></p>
+]]></content>
+      <tags>
+        <tag>iterm2</tag>
+        <tag>ssh自动登录</tag>
+        <tag>ssh免密码登录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据</title>
     <url>/posts/63756/</url>
     <content><![CDATA[<p>redis中set系列命令(包括set,hset等等)，基本上都包括两个版本，纯粹的set和setnx, setnx即set not exist, 也就是只有Key不存在时才会执行set, 而不会覆盖原有的值。</p>
@@ -1634,58 +1720,6 @@ lock.release();释放锁
       <tags>
         <tag>redis</tag>
         <tag>lua</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别</title>
-    <url>/posts/27021/</url>
-    <content><![CDATA[<h3 id="运行机制"><a href="#运行机制" class="headerlink" title="运行机制"></a>运行机制</h3><p>topology里spout&#x2F;bolt的整体结构不再细讲，主要说说storm&#x2F;jstorm topology运行时与传统java程序可能存在的区别。其实区别非常少，主要也体现在初始化上，本文的目的在于帮助开发人员在无需了解storm内核原理的情况下，排查topology程序可能出现的问题。</p>
-<p>1个topology会包含多个spout线程和bolt线程，分散运行在数个worker（进程）中。同一个worker中可能同时运行多个bolt&#x2F;spout的数个线程。</p>
-<h3 id="与普通java程序的区别"><a href="#与普通java程序的区别" class="headerlink" title="与普通java程序的区别"></a>与普通java程序的区别</h3><h4 id="main方法"><a href="#main方法" class="headerlink" title="main方法"></a>main方法</h4><p>main方法只在启动时运行在nimbus中，因此除了storm本身的配置项外，其他程序相关的配置，如spring配置等，配置在main方法中<strong>不会起作用<strong>。</strong></strong></p>
-<h4 id="bolt"><a href="#bolt" class="headerlink" title="bolt"></a>bolt</h4><p>bolt 的主体结构包含prepare, excute, cleanup 三部分。</p>
-<p>其中，prepare在初始化时执行一次，cleanup在退出前执行一次，excute每条消息执行。 </p>
-<p>一些配置，<strong>包括加密，spring加载等，建议都放到prepare中<strong>。多个bolt都需要加载spring时，建议使用同样的配置，避免一些诡异问题。</strong></strong></p>
-<h4 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h4><p>所有<strong>静态代码块</strong>中作了初始化的变量，emit的变量，由于都存在网络传输，需要能够被序列化。</p>
-<p>storm默认使用kyro序列化，需要类有无参构造函数。如果无法增加无参构造函数，设置topology.fall.back.on.java.serialization: true使用java自带的序列化。</p>
-]]></content>
-      <tags>
-        <tag>storm</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于rocketmq的readQueue和writeQueue</title>
-    <url>/posts/32580/</url>
-    <content><![CDATA[<p>解释一下rocketMq里的messageQueue为什么要拆分成writeQueue和readQueue.</p>
-<span id="more"></span>
-
-<p>首先，简单介绍一下rocketmq的queue是什么，从网上找了一个rocketMq的架构图。<br><img src="/img/rocketmq_model.jpeg" alt="rocketMq架构"><br>我们知道，使用rocketMq时，我们都是针对一个topic区进行生产或者消费。而messageQueue就是topic的一部分，类似于kafka中分区的概念。queue是consumer消费时的最小单元，也就是说，consumer的数量无法高于queue的数量。</p>
-<p>rocketMq中有很特殊的一点是分了writeQueue和readQueue。其实，在绝大对数情况下，这两件事是无法分开的，如果readQueue和writeQueue的数量不一致，会产生非常严重的问题。例如，writeQueue的数量高于readQueue, 就说明有些queue只有写没有读，也就是说会有一部分消息永远都不会消费掉。readQueue多于writeQueue的话，就说明有一部分consumer处在空跑的状态，不可能接收到消息。</p>
-<p>那么，rocketMq这么设计的意义在哪里呢。其实，拆分readQueue和writeQueue, 目的就是能让扩容或缩容的过程更加平滑。以扩容为例，可以先增加readQueue的数量，这时候consumer已经能关联到queue上，然后再去修改writeQueue,因为consumer已经扩容完成了，进入新的queue的消息马上就可以被消费掉。这样整个过程就非常平滑且健壮，所有消息都可以及时交给consumer. </p>
-<p>大家可以考虑一下如果没有这样的机制应该如何去设计扩容或者缩容的流程，其实，无论如何都会造成一些消息无法被及时处理。说明这种设计是非常巧妙的。</p>
-<p>原文地址: <a href="http://lichuanyang.top/posts/32580/">http://lichuanyang.top/posts/32580/</a></p>
-]]></content>
-      <tags>
-        <tag>rocketMq</tag>
-        <tag>消息队列</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>iterm2配置ssh书签, 实现记住密码和自动登录</title>
-    <url>/posts/20763/</url>
-    <content><![CDATA[<p>如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。</p>
-<span id="more"></span>
-
-<p>iterm2 （<a href="https://iterm2.com/">https://iterm2.com/</a>)  是mac下使用非常广泛的一款终端替代产品，提供了很多强大的功能。要实现ssh书签，实现免密码登录、自动登录的效果，关键点是其中的三个特性：profile, trigger 和 password manager.</p>
-<p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <a href="mailto:&#114;&#111;&#111;&#116;&#x40;&#x31;&#x2e;&#49;&#46;&#49;&#x2e;&#49;">&#114;&#111;&#111;&#116;&#x40;&#x31;&#x2e;&#49;&#46;&#49;&#x2e;&#49;</a>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p>
-<p>trigger也是profile的一个特性，入口在profile配置页的advanced标签下，它的作用就是利用关键词触发一个动作，我们现在要做的就是用password这个关键词触发打开 password manager。 操作很简单，就是增加一个trigger, regular expression 填入 password,  action选择 open password manager, 注意勾选instant和enabled两个选项。</p>
-<p>最后一个要配置的是password manager, password manager 就是一个密码管理器，是item2中会默认安装的一款插件，入口在工具栏 window 标签下。打开password manager, 将需要保存的密码都录入进去就可以了。</p>
-<p>这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。</p>
-<p>原文地址: <a href="http://lichuanyang.top/posts/20763/">http://lichuanyang.top/posts/20763/</a></p>
-]]></content>
-      <tags>
-        <tag>iterm2</tag>
-        <tag>ssh自动登录</tag>
-        <tag>ssh免密码登录</tag>
       </tags>
   </entry>
   <entry>
@@ -1755,6 +1789,23 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
+    <title>关于rocketmq的readQueue和writeQueue</title>
+    <url>/posts/32580/</url>
+    <content><![CDATA[<p>解释一下rocketMq里的messageQueue为什么要拆分成writeQueue和readQueue.</p>
+<span id="more"></span>
+
+<p>首先，简单介绍一下rocketmq的queue是什么，从网上找了一个rocketMq的架构图。<br><img src="/img/rocketmq_model.jpeg" alt="rocketMq架构"><br>我们知道，使用rocketMq时，我们都是针对一个topic区进行生产或者消费。而messageQueue就是topic的一部分，类似于kafka中分区的概念。queue是consumer消费时的最小单元，也就是说，consumer的数量无法高于queue的数量。</p>
+<p>rocketMq中有很特殊的一点是分了writeQueue和readQueue。其实，在绝大对数情况下，这两件事是无法分开的，如果readQueue和writeQueue的数量不一致，会产生非常严重的问题。例如，writeQueue的数量高于readQueue, 就说明有些queue只有写没有读，也就是说会有一部分消息永远都不会消费掉。readQueue多于writeQueue的话，就说明有一部分consumer处在空跑的状态，不可能接收到消息。</p>
+<p>那么，rocketMq这么设计的意义在哪里呢。其实，拆分readQueue和writeQueue, 目的就是能让扩容或缩容的过程更加平滑。以扩容为例，可以先增加readQueue的数量，这时候consumer已经能关联到queue上，然后再去修改writeQueue,因为consumer已经扩容完成了，进入新的queue的消息马上就可以被消费掉。这样整个过程就非常平滑且健壮，所有消息都可以及时交给consumer. </p>
+<p>大家可以考虑一下如果没有这样的机制应该如何去设计扩容或者缩容的流程，其实，无论如何都会造成一些消息无法被及时处理。说明这种设计是非常巧妙的。</p>
+<p>原文地址: <a href="http://lichuanyang.top/posts/32580/">http://lichuanyang.top/posts/32580/</a></p>
+]]></content>
+      <tags>
+        <tag>rocketMq</tag>
+        <tag>消息队列</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>信息传播过程中的衰减</title>
     <url>/posts/54296/</url>
     <content><![CDATA[<p>看到这个标题，是不是有种要讲信息学的感觉。其实并不是，只是最近观察到一些事情，有些感触所以说一下。最近在网上碰巧看到过两个言论，恰好事实我是比较了解的，所以感慨，二手的信息实在不可信。</p>
@@ -1817,93 +1868,8 @@ lock.release();释放锁
 <p>原文地址: <a href="http://lichuanyang.top/posts/40964/">http://lichuanyang.top/posts/40964/</a></p>
 ]]></content>
       <tags>
-        <tag>持续集成</tag>
         <tag>kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>剧变中的2021-一个中年工程师的年终总结</title>
-    <url>/posts/2345/</url>
-    <content><![CDATA[<p>2021年对于我个人来说可以说是剧变的一年，原本准备长期发展的，工作舒适度和前景都非常高的工作，因为某些原因突然崩塌。随之而来的，关于未来往哪走，也到了一个重要的岔路口上。至少到目前为止，感觉还是做出了一些正确的选择。对于年初定下的一些个人成长上的目标，也有了不错的进展。所以，我还是带着不错的心情来做这个年终总结的。</p>
-<span id="more"></span>
-
-<p>2021年里，最大的变化还是来自工作，由于所在的行业一夜之间直接在风口上消失，原本在一家公司长期发展的愿望落空，所以我也被迫重新开始了新的职业规划。一个关键的考量点就是要去大公司还是小公司。我在前边为什么说自己走到了一个重要的岔路口上，其实最关键的一点原因就是感觉无论做哪个选择，在这个年龄其实都不会有什么回头路了。大公司和小公司对一个资深员工的能力要求，差别实际上是非常大的。到了这个阶段，不会再有刚毕业那几年随时大小公司左右横跳的机会。</p>
-<p>为了做这个决策，我问了自己几个问题。</p>
-<p>在大公司，个人能力会比在小公司成长的更快吗？</p>
-<p>在大公司，生活是否会比小公司更舒适？</p>
-<p>我在将来是否还需要一份新大公司经历做背书？</p>
-<p>在大公司能获得更多的经济收入吗？</p>
-<p>经过慎重的考虑，对这几个问题的回答其实都是否。个人成长看个人，我实质上不是一个会受环境影响太大的人。对于work life balance的问题，按理说其实和公司大小没太大的关系，只是凑巧国内的几个大公司这方面都不太行。背书的问题，因为我本来也有大厂的经历，包括综合学历和之前的其他经历，我觉得是不太有可能在这方面吃亏的，另外，根据这一波找工作，以及这两年面试别人的感受，我也会觉得项目本身的含金量，会比在哪个公司更重要一些。至于收入，看大环境、看公司的变化情况、看老板风格、看运气，总之不会和公司大小有太大的关系。</p>
-<p>想来想去，感觉去大厂的唯一作用，就是说出去面子上好看一些。所以，也就把这个决定做下了，就是彻底放弃大公司的想法，而是去寻找一些氛围好、前景优良的创业公司机会。说到这儿，有时候我其实非常感激上天的眷顾，仿佛她总会在我一些关键节点上适时的给我抛出一些合适的选项。当然实际上主要是感谢猎头小姐姐提供的信息和整个过程中的帮助，让我来到了一个各方面都非常满意的新公司。在新公司也快4个月了，这段时间包括做事的空间、个人成长、WLB、经济回报，其实都是高于预期的。</p>
-<p>在新的工作时间下，也有了更多的时间陪女儿。小姑娘最近也处在一个语言的爆发期，基本每天都会说新的话，生活的幸福感也到了一个非常高的阶段。</p>
-<p>另外，我每年初都会定一些个人成长上的目标。2021年初，我的关键目标其实就是扩大和巩固自己的能力圈，争取掌握一些新的技能，并巩固已有的技能。具体来说包括本职工作相关的技术和管理能力提升，提升商业认知和投资能力，以及建立一些底层的同样技能。</p>
-<p>本职工作上，阅读了周志明老师的《凤凰架构》这本书，这本书的关键作用是帮助我建立起了更完善的知识体系，也补全了一些知识上的盲区。学习了极客时间上王争小哥的设计模式专栏，对设计模式有了更深刻的理解，也在公司内做了一次设计模式主题的分享。此外，对于用了很久都没太认真了解过的elasticsearch, 做了一次集中的学习。</p>
-<p>对于管理，今年内学习了一些理论知识，也在设法将理论知识运用到实际工作中，感觉还不错。</p>
-<p>投资上，今年实际上做了一些非常错误的尝试。今年初开始，我在试图自己去分析公司的基本面，从而找到合适的投资标的，读了很多书，也看了很多大V的经验。我的目前结论是，这个事情的门槛是非常高的，通过自己的学习去达到专业人士的投资效果，是不现实的。基于此次尝试，我的投资收益在今年第一次变成负数。而在未来，我也会放弃个股投资，转向彻底的基金和指数定投。但是我倒不会停止对商业和投资知识的学习，因为我感受到了这些知识对于我思维方式的转变，实际上是会有不错的收获的。</p>
-<p>关于底层能力，我今年着重培养的是”清晰力“这么一个能力。这个概念来自于《认知觉醒》这本书，意思是说我们的恐惧很多时候是“模糊”，即没有想明白要面对的究竟是个什么事。而一旦能对事情有清晰的认知，会发现事情并没有那么难。当第一次看到这个概念的时候，我立刻就感觉到我自己一直以来在这方面上问题很大，所以就着手在这方面上进行刻意的练习。效果也很不错，无论是工作还是生活上的事，处理起来都感觉得心应手了很多。</p>
-<p>总而言之，这一年对我来说，是一个关键的抉择之年，也在向着人生的目标稳步前行。感谢所有曾经帮助过我的人。希望2022也继续加油。</p>
-<p>原文地址: <a href="http://lichuanyang.top/posts/2345/">http://lichuanyang.top/posts/2345/</a></p>
-]]></content>
-      <tags>
-        <tag>感悟</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【实践经验】单元测试怎么写</title>
-    <url>/posts/695/</url>
-    <content><![CDATA[<p>之前一段时间，在尝试完善项目的单元测试，做起来才发现，其实自己对于单元测试该怎么写一直没有特别清晰的认识，因此查了一些资料, 查的过程中发现，其实每个人的看法都不尽相同。每阅读一篇文章，都是对自己认知的一次更新。本文就是结合前人的看法，和自己的实践经验，总结出一些我自己当前认知状态下认为正确的东西，分享给大家。估计也不会是最正确的，也欢迎大家留言讨论。</p>
-<span id="more"></span>
-<p>先说一下我们写单元测试的目的，这个是下边所有讨论的基础。单元测试的意义应当在于保障修改代码的时候，保障存量代码的正确性。也就是说，修改代码后，执行一遍已有的测试用例，能执行的话就代表之前的逻辑依然是可用的。</p>
-<p>下面就具体列一下个人认为写单元测试应当遵守的准侧。</p>
-<h3 id="避免对环境的依赖"><a href="#避免对环境的依赖" class="headerlink" title="避免对环境的依赖"></a>避免对环境的依赖</h3><p>单元测试不应当依赖于环境，包括对网络、db、io、数据、外部接口等的依赖。这一点应该争议不大，因为单元测试会有很多的执行场景，比如开发人员手动触发、提交代码时自动触发、打包时自动触发等，如果单元测试不能解除对环境的依赖，它的执行场景就会大大受限。</p>
-<p>实现这一点，需要借助很多工具，例如内存数据库、redis的内嵌server, mock等待，势必会给写单元测试这个过程增加很多工作量，但是是无法避免的。</p>
-<h3 id="针对业务逻辑测试"><a href="#针对业务逻辑测试" class="headerlink" title="针对业务逻辑测试"></a>针对业务逻辑测试</h3><p>测试应当是针对业务逻辑，而不是实现逻辑。这一点是争议会比较多的一点，主要是大家对于“单元”这个词的定义无法统一。有人认为一个函数就是一个“单元”，但是如果按这个标准去做单元测试，单元测试是达不到预期效果的。</p>
-<p>举个简单的例子，代码重构的时候，要不要改单元测试？答案当然是不能，如果每次代码重构都要对应修改单元测试的话，单元测试的作用可以说就失去了一大半。所以说测试的一个“单元”应当是一个业务上的单元。当然这一点也不能太死板，比如你写了一个很复杂的方法，针对这个方法写一个单元测试也完全没有问题。这一点其实可以换个更准确的方法：针对意图写单元测试，而不是针对实现。也就是说，把代码的实现逻辑当做一个黑盒，只针对输入输出做测试。</p>
-<h3 id="去mock化"><a href="#去mock化" class="headerlink" title="去mock化"></a>去mock化</h3><p>前边第一点里，我们提到过可以利用mock避免对外部环境的依赖。但是一定不能滥用mock, 可以阅读一下<a href="https://gitbook.cn/books/58fa1af500a2684bf77511bc/index.html">mock七宗罪</a> , 一个原则就是能不mock的时候就不要mock。什么时候是必须要mock的呢？就是前边说的要依赖外部环境的时候。除了这种情况，都不要mock. </p>
-<h3 id="单元测试倒逼重构"><a href="#单元测试倒逼重构" class="headerlink" title="单元测试倒逼重构"></a>单元测试倒逼重构</h3><p>在写单元测试的时候，会发现有些测试会非常难写，而具体分析难写的原因，会发现有一些是因为代码本身写的不好。比如，一个类的依赖特别多，可能就是因为这个类的职责不明确，将不相关的代码放到了一起。这时候，就应该直接将代码重构，拆分成几个类，写单元测试的难度也会随之降低。</p>
-<p>原文地址: <a href="http://lichuanyang.top/posts/695/">http://lichuanyang.top/posts/695/</a></p>
-]]></content>
-      <tags>
-        <tag>开发规范</tag>
-        <tag>单元测试</tag>
-        <tag>单元测试怎么写</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID</title>
-    <url>/posts/7774/</url>
-    <content><![CDATA[<p>前些日子读了周志明老师的《凤凰架构》这本书，对于很多方面的技术有了更深的认知，因此打算做一些总结。今天先以讲事务的这一段做个印子，结合书中内容和个人理解，争取将本地事务的相关知识讲个命名白白。如果有讲的不对的地方，欢迎大家多多指正。</p>
-<span id="more"></span>
-
-<p>所谓事务，就是保证数据库中的数据都是符合期望的，在不断的增删改查中，数据库会不断的从一个正确的状态变化到另一个正确的状态，而不会被外界感知到不“正确”的中间状态。</p>
-<p>举个常见的例子，就是在 A有100元，B有100元的状态下，A要给B转账10元，肯定会有A先转出10元，再转给B,这样的中间状态。事务就是，对于用户来说，只能感知到 A100 B100 和 A90 B110 这两个状态，而不会感知到过程中的A90 B100等等奇奇怪怪的状态。</p>
-<p>这个介绍，其实也就是事务ACID特性中一致性的概念。ACID这个说法虽然很流行，但A、C、I、D之间其实并不是平等的概念，简单来说，AID是方法，C是目的。也就是说，实现了原子性、持久性、隔离性，也就实现了一致性，也就实现了事务。</p>
-<p>接下来，我们就依次看看AID分别要如何实现。</p>
-<h2 id="原子性和持久性"><a href="#原子性和持久性" class="headerlink" title="原子性和持久性"></a>原子性和持久性</h2><p>实现原子性和持久性面临的相同问题其实挺多的，所以把它们放在一起介绍。</p>
-<p>先复习一下基本概念，所谓原子性，就是事务内的操作要么都成功，要么都失败；所谓持久性，就是已经完成的操作不会丢失。</p>
-<p>值得说明的是，单纯的“实现原子性和持久性”并不存在任何难度，要讨论的问题其实是“如何更高性能的实现原子性和持久性”，（后面要说的隔离性也是一个概念，只有高性能的隔离性才有意义）。</p>
-<p>其中一个关键点在于，写磁盘是一个非常重的操作，所以通常会存在一个内存缓冲区，要写磁盘的数据会先写到缓冲区里，再择机落盘。那么假如在事务已提交而尚未落盘的这个时间点，系统出现故障，那么这部分未落盘的数据自然就会丢失，数据库也就失去了持久性。针对这个问题，一个很自然的想法就是事务提交的时候强制刷盘。这个方案可不可行？当然是可行的。但它的问题就是会影响性能。系统出故障毕竟是小概率事件，为了处理这个小概率事件，相当于所有操作都要额外付出一些代价。</p>
-<p>实际上为了解决这个问题，一个常规的处理思路就是使用一个commit Log, 也就是在实际写数据之前，先将所有要修改的信息记录在一个log里，如果出现上面描述的问题，系统重启时，会先根据commit log进行数据恢复。而由于写这份log是一个顺序写磁盘的操作，性能会远远好于随机写磁盘，所以这个方式的性能是没有问题的。在数据真正写入之后，再加一个标记，表示这条log已经完成了持久化。</p>
-<p>接下来，我们再看一下commit log是否还有优化空间？自然是有的。Commit log的一个重要缺陷就是所有真实的磁盘操作都必须发生在事务提交之后。假如说这个事务非常大，就会占用很大的内存缓冲区，这也会影响系统的性能。改进方案是 write-ahead log 这个机制，这个机制我在之前的文章(<a href="https://lichuanyang.top/posts/3914/">https://lichuanyang.top/posts/3914/</a>)里也介绍过，和commit log其实非常像，也是先顺序写一个log文件，唯一的区别就是write-ahead log允许在事务提交之前写入。mysql里的redo log，其实就是一个典型的write-ahead log实现。</p>
-<p>讲到这里，我们先暂停一下，回顾一下上面的内容，会发现上边其实基本都在说持久性，原因是对于上边的机制来说，原子性其实都是自然而然的事情，commit log写进去了，这条事务就相当于完成了；commit log没写入，这个事务就相当于不存在。但是使用了write-ahead log的话，情况就不一样了，一个事务会涉及多次磁盘写入，所以也就不满足原子性了。因此，需要引入别的机制来保证原子性，undo log就是实现这个目标的一个典型思路。当变动数据写入磁盘前，必须先记录undo log，注明修改了哪个位置的数据、从什么值改成什么值等，以便在事务回滚或者崩溃恢复时根据undo log对提前写入的数据变动进行擦除。</p>
-<p>像在mysql中，实际上也就是像我们上边讲的那样，利用redo log和undo log实现高效可靠的持久性和原子性。</p>
-<h2 id="隔离性，隔离级别"><a href="#隔离性，隔离级别" class="headerlink" title="隔离性，隔离级别"></a>隔离性，隔离级别</h2><p>如何实现不同事务之间的隔离，一个很自然的思路就是加锁，实际上常规的数据库实现也就是这么做的。一般来说，有这么几种类型的锁：读锁（也叫共享锁），写锁（也叫排他锁），范围锁。</p>
-<p>对于一条数据，只有一个事务能持有写锁；不同的事务可以同时持有读锁，数据被添加读锁后不能再添加写锁, 添加写锁后也不能再添加读锁；范围锁则是对一个范围加写锁，在这个范围内都不能写入数据。</p>
-<p>我们知道，数据库有四种常见的隔离级别：可串行化，可重复读，读已提交，读未提交。其区别其实就是加锁粒度的不同。</p>
-<p>如果我们把所有操作能加的锁都加上，实际上就是串行化的操作了。这种方式隔离性当然很好，但性能就没法说了，所以一般也不会有人使用。</p>
-<p>可重复读则是对涉及到的数据加读锁和写锁，并持有到事务结束，但不会加范围锁。这样就会出现幻读的问题，即一个事务内执行两次范围查询，如果这两次查询之间有新的数据被插入，就会导致两次范围查询的结果不一致。</p>
-<p>读已提交和可重复读的区别是他的读锁会在查询操作结束之后立刻释放掉，这样，在事务执行过程中，已经查询过的数据是可以被其他事务任意修改的，所以也就会有不可重复读的问题。</p>
-<p>读未提交级别下，则完全不会加读锁。这样造成的问题是，由于读操作时不会去申请读锁，所以反而会导致能够读到其他事务上加了写锁的数据，也就会出现脏读的问题。</p>
-<p>其实说到底，隔离性和性能就是一对相互矛盾的需求。加锁加的越多，隔离性自然越好，性能也自然越差。我们需要根据实际的使用场景来决定锁究竟要加到什么程度。</p>
-<p>而另一个思路，则是再看看有没有锁以外的方式，考虑28原则，看看有没有什么办法，牺牲20%的性能去解决80%的问题。具体来讲，涉及隔离性问题的场景，其实可以简化为一个读事务+一个写事务，和两个写事务，这两种场景。大部分场景下，当然是读+写的情况更多，所以我们找个方式去解决读+写场景下的幻读问题。相信很多人已经猜到了，这种方式就是MVCC。关于MVCC, 网上介绍资料实在太多，我们就不再赘述了。</p>
-<p>经过上面对于事务几个特性的介绍，相信大家已经对本地事务有了非常深刻的认识。如有问题，欢迎留言讨论。下一篇文章，我会继续讲一下分布式事务的相关知识，如果感兴趣，可以关注我的个人博客、知乎或者公众号追更~</p>
-<p>原文地址: <a href="http://lichuanyang.top/posts/7774/">http://lichuanyang.top/posts/7774/</a></p>
-]]></content>
-      <tags>
-        <tag>数据库事务</tag>
-        <tag>数据库</tag>
-        <tag>ACID</tag>
-        <tag>事务隔离级别</tag>
+        <tag>持续集成</tag>
       </tags>
   </entry>
   <entry>
@@ -1977,23 +1943,67 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
-    <title>怎么更科学的用知乎摸鱼</title>
-    <url>/posts/23393/</url>
-    <content><![CDATA[<p>知乎是个什么样的网站，大家都比较了解，今天我们分享个小工具让我们更开心的使用知乎摸鱼。</p>
+    <title>从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID</title>
+    <url>/posts/7774/</url>
+    <content><![CDATA[<p>前些日子读了周志明老师的《凤凰架构》这本书，对于很多方面的技术有了更深的认知，因此打算做一些总结。今天先以讲事务的这一段做个印子，结合书中内容和个人理解，争取将本地事务的相关知识讲个命名白白。如果有讲的不对的地方，欢迎大家多多指正。</p>
 <span id="more"></span>
 
-<p>之前我在看我自己账号知乎数据的时候，发现一个挺有意思的事情，就是PC端的流量居然有40%以上，这在移动互联网时代，简直是不可想象的。后来也从一些其他渠道了解到，知乎周末、节假日的流量是不如工作日的。</p>
-<p>这说明什么呢？上班刷知乎的你，不是一个人。对相当一部分人来说，知乎主要是在上班摸鱼的时候使用的。</p>
-<p>知乎这个网站，的确挺适合摸鱼，毕竟以文字内容为主，而且还有相当多的专业性内容，所以工作时上知乎还真的有可能是在查资料。</p>
-<p>但是，知乎有些小体验，对摸鱼就不太友好了。比如说图片尺寸太大，还有浏览问题的时候标题浮窗总是会出现，还会很显眼的展示出来。所以，我就写了个简单的油猴脚本，优化了这两个问题，顺便把知乎的logo也给去掉了。</p>
-<p>脚本地址： <a href="https://greasyfork.org/zh-CN/scripts/483047-%E6%91%B8%E9%B1%BC%E5%8A%A9%E6%89%8B-%E7%9F%A5%E4%B9%8E">安装地址</a></p>
-<p>大家感兴趣的话欢迎使用。对知乎的使用有什么痛点也欢迎提出来。</p>
-<p>原文地址: <a href="http://lichuanyang.top/posts/23393/">http://lichuanyang.top/posts/23393/</a></p>
+<p>所谓事务，就是保证数据库中的数据都是符合期望的，在不断的增删改查中，数据库会不断的从一个正确的状态变化到另一个正确的状态，而不会被外界感知到不“正确”的中间状态。</p>
+<p>举个常见的例子，就是在 A有100元，B有100元的状态下，A要给B转账10元，肯定会有A先转出10元，再转给B,这样的中间状态。事务就是，对于用户来说，只能感知到 A100 B100 和 A90 B110 这两个状态，而不会感知到过程中的A90 B100等等奇奇怪怪的状态。</p>
+<p>这个介绍，其实也就是事务ACID特性中一致性的概念。ACID这个说法虽然很流行，但A、C、I、D之间其实并不是平等的概念，简单来说，AID是方法，C是目的。也就是说，实现了原子性、持久性、隔离性，也就实现了一致性，也就实现了事务。</p>
+<p>接下来，我们就依次看看AID分别要如何实现。</p>
+<h2 id="原子性和持久性"><a href="#原子性和持久性" class="headerlink" title="原子性和持久性"></a>原子性和持久性</h2><p>实现原子性和持久性面临的相同问题其实挺多的，所以把它们放在一起介绍。</p>
+<p>先复习一下基本概念，所谓原子性，就是事务内的操作要么都成功，要么都失败；所谓持久性，就是已经完成的操作不会丢失。</p>
+<p>值得说明的是，单纯的“实现原子性和持久性”并不存在任何难度，要讨论的问题其实是“如何更高性能的实现原子性和持久性”，（后面要说的隔离性也是一个概念，只有高性能的隔离性才有意义）。</p>
+<p>其中一个关键点在于，写磁盘是一个非常重的操作，所以通常会存在一个内存缓冲区，要写磁盘的数据会先写到缓冲区里，再择机落盘。那么假如在事务已提交而尚未落盘的这个时间点，系统出现故障，那么这部分未落盘的数据自然就会丢失，数据库也就失去了持久性。针对这个问题，一个很自然的想法就是事务提交的时候强制刷盘。这个方案可不可行？当然是可行的。但它的问题就是会影响性能。系统出故障毕竟是小概率事件，为了处理这个小概率事件，相当于所有操作都要额外付出一些代价。</p>
+<p>实际上为了解决这个问题，一个常规的处理思路就是使用一个commit Log, 也就是在实际写数据之前，先将所有要修改的信息记录在一个log里，如果出现上面描述的问题，系统重启时，会先根据commit log进行数据恢复。而由于写这份log是一个顺序写磁盘的操作，性能会远远好于随机写磁盘，所以这个方式的性能是没有问题的。在数据真正写入之后，再加一个标记，表示这条log已经完成了持久化。</p>
+<p>接下来，我们再看一下commit log是否还有优化空间？自然是有的。Commit log的一个重要缺陷就是所有真实的磁盘操作都必须发生在事务提交之后。假如说这个事务非常大，就会占用很大的内存缓冲区，这也会影响系统的性能。改进方案是 write-ahead log 这个机制，这个机制我在之前的文章(<a href="https://lichuanyang.top/posts/3914/">https://lichuanyang.top/posts/3914/</a>)里也介绍过，和commit log其实非常像，也是先顺序写一个log文件，唯一的区别就是write-ahead log允许在事务提交之前写入。mysql里的redo log，其实就是一个典型的write-ahead log实现。</p>
+<p>讲到这里，我们先暂停一下，回顾一下上面的内容，会发现上边其实基本都在说持久性，原因是对于上边的机制来说，原子性其实都是自然而然的事情，commit log写进去了，这条事务就相当于完成了；commit log没写入，这个事务就相当于不存在。但是使用了write-ahead log的话，情况就不一样了，一个事务会涉及多次磁盘写入，所以也就不满足原子性了。因此，需要引入别的机制来保证原子性，undo log就是实现这个目标的一个典型思路。当变动数据写入磁盘前，必须先记录undo log，注明修改了哪个位置的数据、从什么值改成什么值等，以便在事务回滚或者崩溃恢复时根据undo log对提前写入的数据变动进行擦除。</p>
+<p>像在mysql中，实际上也就是像我们上边讲的那样，利用redo log和undo log实现高效可靠的持久性和原子性。</p>
+<h2 id="隔离性，隔离级别"><a href="#隔离性，隔离级别" class="headerlink" title="隔离性，隔离级别"></a>隔离性，隔离级别</h2><p>如何实现不同事务之间的隔离，一个很自然的思路就是加锁，实际上常规的数据库实现也就是这么做的。一般来说，有这么几种类型的锁：读锁（也叫共享锁），写锁（也叫排他锁），范围锁。</p>
+<p>对于一条数据，只有一个事务能持有写锁；不同的事务可以同时持有读锁，数据被添加读锁后不能再添加写锁, 添加写锁后也不能再添加读锁；范围锁则是对一个范围加写锁，在这个范围内都不能写入数据。</p>
+<p>我们知道，数据库有四种常见的隔离级别：可串行化，可重复读，读已提交，读未提交。其区别其实就是加锁粒度的不同。</p>
+<p>如果我们把所有操作能加的锁都加上，实际上就是串行化的操作了。这种方式隔离性当然很好，但性能就没法说了，所以一般也不会有人使用。</p>
+<p>可重复读则是对涉及到的数据加读锁和写锁，并持有到事务结束，但不会加范围锁。这样就会出现幻读的问题，即一个事务内执行两次范围查询，如果这两次查询之间有新的数据被插入，就会导致两次范围查询的结果不一致。</p>
+<p>读已提交和可重复读的区别是他的读锁会在查询操作结束之后立刻释放掉，这样，在事务执行过程中，已经查询过的数据是可以被其他事务任意修改的，所以也就会有不可重复读的问题。</p>
+<p>读未提交级别下，则完全不会加读锁。这样造成的问题是，由于读操作时不会去申请读锁，所以反而会导致能够读到其他事务上加了写锁的数据，也就会出现脏读的问题。</p>
+<p>其实说到底，隔离性和性能就是一对相互矛盾的需求。加锁加的越多，隔离性自然越好，性能也自然越差。我们需要根据实际的使用场景来决定锁究竟要加到什么程度。</p>
+<p>而另一个思路，则是再看看有没有锁以外的方式，考虑28原则，看看有没有什么办法，牺牲20%的性能去解决80%的问题。具体来讲，涉及隔离性问题的场景，其实可以简化为一个读事务+一个写事务，和两个写事务，这两种场景。大部分场景下，当然是读+写的情况更多，所以我们找个方式去解决读+写场景下的幻读问题。相信很多人已经猜到了，这种方式就是MVCC。关于MVCC, 网上介绍资料实在太多，我们就不再赘述了。</p>
+<p>经过上面对于事务几个特性的介绍，相信大家已经对本地事务有了非常深刻的认识。如有问题，欢迎留言讨论。下一篇文章，我会继续讲一下分布式事务的相关知识，如果感兴趣，可以关注我的个人博客、知乎或者公众号追更~</p>
+<p>原文地址: <a href="http://lichuanyang.top/posts/7774/">http://lichuanyang.top/posts/7774/</a></p>
 ]]></content>
       <tags>
-        <tag>知乎</tag>
-        <tag>油猴</tag>
-        <tag>Tampermonkey</tag>
+        <tag>数据库事务</tag>
+        <tag>数据库</tag>
+        <tag>ACID</tag>
+        <tag>事务隔离级别</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>剧变中的2021-一个中年工程师的年终总结</title>
+    <url>/posts/2345/</url>
+    <content><![CDATA[<p>2021年对于我个人来说可以说是剧变的一年，原本准备长期发展的，工作舒适度和前景都非常高的工作，因为某些原因突然崩塌。随之而来的，关于未来往哪走，也到了一个重要的岔路口上。至少到目前为止，感觉还是做出了一些正确的选择。对于年初定下的一些个人成长上的目标，也有了不错的进展。所以，我还是带着不错的心情来做这个年终总结的。</p>
+<span id="more"></span>
+
+<p>2021年里，最大的变化还是来自工作，由于所在的行业一夜之间直接在风口上消失，原本在一家公司长期发展的愿望落空，所以我也被迫重新开始了新的职业规划。一个关键的考量点就是要去大公司还是小公司。我在前边为什么说自己走到了一个重要的岔路口上，其实最关键的一点原因就是感觉无论做哪个选择，在这个年龄其实都不会有什么回头路了。大公司和小公司对一个资深员工的能力要求，差别实际上是非常大的。到了这个阶段，不会再有刚毕业那几年随时大小公司左右横跳的机会。</p>
+<p>为了做这个决策，我问了自己几个问题。</p>
+<p>在大公司，个人能力会比在小公司成长的更快吗？</p>
+<p>在大公司，生活是否会比小公司更舒适？</p>
+<p>我在将来是否还需要一份新大公司经历做背书？</p>
+<p>在大公司能获得更多的经济收入吗？</p>
+<p>经过慎重的考虑，对这几个问题的回答其实都是否。个人成长看个人，我实质上不是一个会受环境影响太大的人。对于work life balance的问题，按理说其实和公司大小没太大的关系，只是凑巧国内的几个大公司这方面都不太行。背书的问题，因为我本来也有大厂的经历，包括综合学历和之前的其他经历，我觉得是不太有可能在这方面吃亏的，另外，根据这一波找工作，以及这两年面试别人的感受，我也会觉得项目本身的含金量，会比在哪个公司更重要一些。至于收入，看大环境、看公司的变化情况、看老板风格、看运气，总之不会和公司大小有太大的关系。</p>
+<p>想来想去，感觉去大厂的唯一作用，就是说出去面子上好看一些。所以，也就把这个决定做下了，就是彻底放弃大公司的想法，而是去寻找一些氛围好、前景优良的创业公司机会。说到这儿，有时候我其实非常感激上天的眷顾，仿佛她总会在我一些关键节点上适时的给我抛出一些合适的选项。当然实际上主要是感谢猎头小姐姐提供的信息和整个过程中的帮助，让我来到了一个各方面都非常满意的新公司。在新公司也快4个月了，这段时间包括做事的空间、个人成长、WLB、经济回报，其实都是高于预期的。</p>
+<p>在新的工作时间下，也有了更多的时间陪女儿。小姑娘最近也处在一个语言的爆发期，基本每天都会说新的话，生活的幸福感也到了一个非常高的阶段。</p>
+<p>另外，我每年初都会定一些个人成长上的目标。2021年初，我的关键目标其实就是扩大和巩固自己的能力圈，争取掌握一些新的技能，并巩固已有的技能。具体来说包括本职工作相关的技术和管理能力提升，提升商业认知和投资能力，以及建立一些底层的同样技能。</p>
+<p>本职工作上，阅读了周志明老师的《凤凰架构》这本书，这本书的关键作用是帮助我建立起了更完善的知识体系，也补全了一些知识上的盲区。学习了极客时间上王争小哥的设计模式专栏，对设计模式有了更深刻的理解，也在公司内做了一次设计模式主题的分享。此外，对于用了很久都没太认真了解过的elasticsearch, 做了一次集中的学习。</p>
+<p>对于管理，今年内学习了一些理论知识，也在设法将理论知识运用到实际工作中，感觉还不错。</p>
+<p>投资上，今年实际上做了一些非常错误的尝试。今年初开始，我在试图自己去分析公司的基本面，从而找到合适的投资标的，读了很多书，也看了很多大V的经验。我的目前结论是，这个事情的门槛是非常高的，通过自己的学习去达到专业人士的投资效果，是不现实的。基于此次尝试，我的投资收益在今年第一次变成负数。而在未来，我也会放弃个股投资，转向彻底的基金和指数定投。但是我倒不会停止对商业和投资知识的学习，因为我感受到了这些知识对于我思维方式的转变，实际上是会有不错的收获的。</p>
+<p>关于底层能力，我今年着重培养的是”清晰力“这么一个能力。这个概念来自于《认知觉醒》这本书，意思是说我们的恐惧很多时候是“模糊”，即没有想明白要面对的究竟是个什么事。而一旦能对事情有清晰的认知，会发现事情并没有那么难。当第一次看到这个概念的时候，我立刻就感觉到我自己一直以来在这方面上问题很大，所以就着手在这方面上进行刻意的练习。效果也很不错，无论是工作还是生活上的事，处理起来都感觉得心应手了很多。</p>
+<p>总而言之，这一年对我来说，是一个关键的抉择之年，也在向着人生的目标稳步前行。感谢所有曾经帮助过我的人。希望2022也继续加油。</p>
+<p>原文地址: <a href="http://lichuanyang.top/posts/2345/">http://lichuanyang.top/posts/2345/</a></p>
+]]></content>
+      <tags>
+        <tag>感悟</tag>
       </tags>
   </entry>
   <entry>
@@ -2039,6 +2049,26 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
+    <title>怎么更科学的用知乎摸鱼</title>
+    <url>/posts/23393/</url>
+    <content><![CDATA[<p>知乎是个什么样的网站，大家都比较了解，今天我们分享个小工具让我们更开心的使用知乎摸鱼。</p>
+<span id="more"></span>
+
+<p>之前我在看我自己账号知乎数据的时候，发现一个挺有意思的事情，就是PC端的流量居然有40%以上，这在移动互联网时代，简直是不可想象的。后来也从一些其他渠道了解到，知乎周末、节假日的流量是不如工作日的。</p>
+<p>这说明什么呢？上班刷知乎的你，不是一个人。对相当一部分人来说，知乎主要是在上班摸鱼的时候使用的。</p>
+<p>知乎这个网站，的确挺适合摸鱼，毕竟以文字内容为主，而且还有相当多的专业性内容，所以工作时上知乎还真的有可能是在查资料。</p>
+<p>但是，知乎有些小体验，对摸鱼就不太友好了。比如说图片尺寸太大，还有浏览问题的时候标题浮窗总是会出现，还会很显眼的展示出来。所以，我就写了个简单的油猴脚本，优化了这两个问题，顺便把知乎的logo也给去掉了。</p>
+<p>脚本地址： <a href="https://greasyfork.org/zh-CN/scripts/483047-%E6%91%B8%E9%B1%BC%E5%8A%A9%E6%89%8B-%E7%9F%A5%E4%B9%8E">安装地址</a></p>
+<p>大家感兴趣的话欢迎使用。对知乎的使用有什么痛点也欢迎提出来。</p>
+<p>原文地址: <a href="http://lichuanyang.top/posts/23393/">http://lichuanyang.top/posts/23393/</a></p>
+]]></content>
+      <tags>
+        <tag>知乎</tag>
+        <tag>油猴</tag>
+        <tag>Tampermonkey</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>怎样做一个好的技术分享</title>
     <url>/posts/54216/</url>
     <content><![CDATA[<p>技术分享基本在每个公司都会有。分享的效果因人，因团队而异。在有些团队中，分享会因为种种原因，逐渐沦为一个没什么用的时间杀手。</p>
@@ -2075,6 +2105,27 @@ lock.release();释放锁
       <tags>
         <tag>技术分享</tag>
         <tag>技术分享选题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【实践经验】单元测试怎么写</title>
+    <url>/posts/695/</url>
+    <content><![CDATA[<p>之前一段时间，在尝试完善项目的单元测试，做起来才发现，其实自己对于单元测试该怎么写一直没有特别清晰的认识，因此查了一些资料, 查的过程中发现，其实每个人的看法都不尽相同。每阅读一篇文章，都是对自己认知的一次更新。本文就是结合前人的看法，和自己的实践经验，总结出一些我自己当前认知状态下认为正确的东西，分享给大家。估计也不会是最正确的，也欢迎大家留言讨论。</p>
+<span id="more"></span>
+<p>先说一下我们写单元测试的目的，这个是下边所有讨论的基础。单元测试的意义应当在于保障修改代码的时候，保障存量代码的正确性。也就是说，修改代码后，执行一遍已有的测试用例，能执行的话就代表之前的逻辑依然是可用的。</p>
+<p>下面就具体列一下个人认为写单元测试应当遵守的准侧。</p>
+<h3 id="避免对环境的依赖"><a href="#避免对环境的依赖" class="headerlink" title="避免对环境的依赖"></a>避免对环境的依赖</h3><p>单元测试不应当依赖于环境，包括对网络、db、io、数据、外部接口等的依赖。这一点应该争议不大，因为单元测试会有很多的执行场景，比如开发人员手动触发、提交代码时自动触发、打包时自动触发等，如果单元测试不能解除对环境的依赖，它的执行场景就会大大受限。</p>
+<p>实现这一点，需要借助很多工具，例如内存数据库、redis的内嵌server, mock等待，势必会给写单元测试这个过程增加很多工作量，但是是无法避免的。</p>
+<h3 id="针对业务逻辑测试"><a href="#针对业务逻辑测试" class="headerlink" title="针对业务逻辑测试"></a>针对业务逻辑测试</h3><p>测试应当是针对业务逻辑，而不是实现逻辑。这一点是争议会比较多的一点，主要是大家对于“单元”这个词的定义无法统一。有人认为一个函数就是一个“单元”，但是如果按这个标准去做单元测试，单元测试是达不到预期效果的。</p>
+<p>举个简单的例子，代码重构的时候，要不要改单元测试？答案当然是不能，如果每次代码重构都要对应修改单元测试的话，单元测试的作用可以说就失去了一大半。所以说测试的一个“单元”应当是一个业务上的单元。当然这一点也不能太死板，比如你写了一个很复杂的方法，针对这个方法写一个单元测试也完全没有问题。这一点其实可以换个更准确的方法：针对意图写单元测试，而不是针对实现。也就是说，把代码的实现逻辑当做一个黑盒，只针对输入输出做测试。</p>
+<h3 id="去mock化"><a href="#去mock化" class="headerlink" title="去mock化"></a>去mock化</h3><p>前边第一点里，我们提到过可以利用mock避免对外部环境的依赖。但是一定不能滥用mock, 可以阅读一下<a href="https://gitbook.cn/books/58fa1af500a2684bf77511bc/index.html">mock七宗罪</a> , 一个原则就是能不mock的时候就不要mock。什么时候是必须要mock的呢？就是前边说的要依赖外部环境的时候。除了这种情况，都不要mock. </p>
+<h3 id="单元测试倒逼重构"><a href="#单元测试倒逼重构" class="headerlink" title="单元测试倒逼重构"></a>单元测试倒逼重构</h3><p>在写单元测试的时候，会发现有些测试会非常难写，而具体分析难写的原因，会发现有一些是因为代码本身写的不好。比如，一个类的依赖特别多，可能就是因为这个类的职责不明确，将不相关的代码放到了一起。这时候，就应该直接将代码重构，拆分成几个类，写单元测试的难度也会随之降低。</p>
+<p>原文地址: <a href="http://lichuanyang.top/posts/695/">http://lichuanyang.top/posts/695/</a></p>
+]]></content>
+      <tags>
+        <tag>开发规范</tag>
+        <tag>单元测试</tag>
+        <tag>单元测试怎么写</tag>
       </tags>
   </entry>
   <entry>
@@ -2148,6 +2199,48 @@ lock.release();释放锁
 ]]></content>
       <tags>
         <tag>感悟</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>户口?大厂?高薪?生活?聊聊应届程序员的职业选择</title>
+    <url>/posts/34931/</url>
+    <content><![CDATA[<p>今天结合我的个人经历来聊一聊应届生的职业选择问题，主要针对后端开发（对岗位的选择，话题也比较大，后边有机会的话会单独开一篇文章写），我这几年的时间里历经了国企、大公司、小公司这样不同的工作环境，所以对于不同公司的情况还是比较有发言权的。</p>
+<span id="more"></span>
+
+<p>职业选择，最重要的无非就是城市和公司选择。城市选择是一件非常主观的事情，比如我，作为一个北方人，既不喜欢南方城市的气候，又想离家近，还需要大城市的机会，北京就几乎成了唯一选择。当然，给大家的建议，功利点的话，建议选择一些快速发展中的强二线城市，比如重庆、合肥，这样随着城市平台的发展，你自己身处其中，身价也会提升。</p>
+<p>接下来，我会限定在北京的范围内，结合我自己的经历，说一下公司的选择。</p>
+<p>提到北京，一个不得不提的问题就是户口的问题。不过，<strong>我强烈不建议你依据一个户口就决定了整个人生怎么走</strong>，比如明明不想进体制内，却为了个户口就去了。务必在考虑户口问题之前，优先想好职业发展方向的问题。</p>
+<p>很多人会纠结于体制内&#x2F;体制外、大公司&#x2F;小公司这些明面上的选择，但这些其实都只是表象而已，同样是体制内，也可能有天差地别的变化。一个正确的做法是想清楚自己真正想要的，然后再去寻找合适的工作机会。对于什么是自己想要的，确实不是每个人都能想的清楚。所以，我把这个问题拆解一下，看看工作的选择究竟意味着什么。大家可以思考以下几个问题：</p>
+<ul>
+<li>你最希望从工作中获得什么？钱？权力？还是内心的成就感？或是并不想从工作中获得任何东西？</li>
+<li>你希望工作在你的人生中占据多大的比例</li>
+<li>对于工作中获取的资源（人脉、信息等），和通过工作提升的能力，那一项你更有信心能带到其他的环境里</li>
+<li>你喜欢做常规的事务性工作，还是希望持续的去挑战困难问题</li>
+</ul>
+<p>对于上边的任何一个问题，任何回答都没有高下之分，比如挑战困难问题并不比做常规工作更优越，这个只是大家根据个人价值观做出的选择而已。</p>
+<p>这些选择的任意排列组合，相信都可以找到合适的机会。比如不期待从工作中有所得，不想工作占据太多人生，也愿意做常规的工作，那就可以考虑一些边缘的体制内单位；期望有权力，可以让工作占据很多生活时间，更想通过工作积累资源，就可以考虑核心的、有实权的体制内单位；而如果期望挣钱，更希望通过工作提升个人能力，程序员就是个不错的选择。</p>
+<p>想好了上边的问题，就可以选择公司了。很多时候，我们可能无法找到并顺利的进入一个满足所有要求的地方。这也没关系，我们可以利用跳槽，每次解决其中一部分问题，并且持续的搜集信息和提升能力，寻找到合适的机会，并有能力获得这个机会。</p>
+<p>我以自己的经历讲一下我的几个关键选择是怎么考虑的。</p>
+<p>刚毕业的时候，我的期望是获得一个北京户口，并且能留在互联网行业内。那个时候我的选择有两个大方向，一是去互联网公司竞争ssp offer, 但是当时的能力确实不足，所以这条路很难走的通；另一条路就是在体制内寻找业务接近互联网场景的机会，最好是面向普通用户的C端产品，因为这样可以有充足的用户量和数据量，让我不至于离业内先进的技术太远。很幸运，我找到了这样的机会，也成功的抓住了。入职之后，也基本如我所料，虽然公司技术水平并不高，企业文化也有很多问题，但是业务场景是非常好的，我也有充足的自己发挥的机会，借助工作，也学到了很多东西。</p>
+<p>接下来，我要解决的问题就是大厂经历，所以接下来跳槽的时候就只考虑了几个一线大厂。关于工作本身，倒没什么好说的，这段经历虽然过的很不开心，但是希望达到的目标也达到了，所以也没什么遗憾的。</p>
+<p>再下一次跳槽，我期望解决的问题有三个：大幅提高收入，抹平因为在国企呆的时间比较长造成的和同龄人的收入差距；别加班太多；人际关系轻松一些。这三个问题看似矛盾是不是？但是用心去找总是能找到合适的机会的，我也就这样来到了现在的公司。当然不是所有问题都解决的非常好，但是已经足够让我的工作体验非常幸福了。</p>
+<p>通过我自己的经历，其实大家也可以看到，我总是似乎在提互相矛盾的要求，总是想鱼与熊掌兼得，而且最后也能幸运的都得到。其实这世界上公司那么多，并不是说有哪两个条件是必然互相矛盾的。<strong>大家没有必要过早的就舍弃什么，比如做程序员就一定意味着996，意味着放弃生活吗？显然不是。</strong></p>
+<p>上边可以衍生出两个比较细的问题，我也一起说下吧。</p>
+<p>一是要不要选择北京户口。我先说一下我通过这个户口获得了什么吧，首先是赶上了15，16年那波房价大涨，让家庭资产在我并没有什么理财观念的时候，也获得了大幅增值。这一点我觉得放在今天，已经不成立了，房住不炒的大前提下，就算北京的房子，也不可能跑的过股市。第二点，就是一些手续办的方便一点，这个我觉得基本可以忽略不计吧，一年估计都办不了一次事，而且越来越多的手续也支持异地办理了。第三点，就是可以放心的让孩子在北京接受教育，不用担忧未来的不确定性。为什么我说是不确定性，因为我觉得接近二十年之后，非京的孩子是否依旧不能在北京高考，是有很大的不确定性的。北京的高考难度会卷成什么样，也是有很大的不确定性的。北京户口，只能说让我个人未来的选择固定了下来，但这个选择未来会是什么效果，其实很难说的准。</p>
+<p>所以说，当前来看，北京户口的价值其实非常有限。回到2015年的话，我仍然会毫不犹豫的选择要北京户口。但是如果让我在2021年的今天做这个选择，其实我大概率是不要的。</p>
+<p>第二点，是关于大厂经历。这一点，我的看法是必须要有，而且尽早有，但是没必要一辈子都呆在大公司里。大厂经历的价值，其实很多人已经说的很清楚了，所以我也不想再赘述。感兴趣的话可以私下找我沟通。</p>
+<p>上边的篇幅里，主要说的是方向的选择。选定了方向之后，还有个重要的问题是具体公司的选择。面对一个公司，其实考虑两个问题就可以：</p>
+<ul>
+<li>我通过这个工作能得到什么</li>
+<li>我因为这个工作会失去什么，将来有什么办法可以弥补</li>
+</ul>
+<p>以我的第一份工作来说，获得的就是户口和互联网的业务场景。同时会失去大公司的学习资源、优良的公司氛围、高薪水等等，这些问题都需要自己想办法去解决。</p>
+<p>好了，上文已经讲完了本文的大部分内容。有个点，我一直没有提，就是中年危机的问题，可能会有人问。我为什么不提呢，因为我不觉得这是一个能靠选择解决的问题。有些人会觉得体制内很稳定，即使天天混日子也没人能把你怎么着。但是我不觉得这种依赖外部条件的事情能算稳定，历史上体制内不是没出过问题。走这条路或许你有99.99%的机会一辈子过的安安稳稳，但是如果那万分之一的可能性发生了，你打算怎么办呢。而做程序员就不一样，或许只有50%的机会能平稳的呆在一家公司，但是随着工作提升的能力，让我可以很安心的应对另一半可能性。解决中年危机的唯一方式就是提升自己，不管是提升能力还是积累资源，你总要从工作中有所得，才能持续的保持自己的竞争力。</p>
+<p>我是流沙，大家可以通过公众号( Mobility ), <a href="https://lichuanyang.top/">个人网站</a> 等和我交流。</p>
+<p>原文地址: <a href="http://lichuanyang.top/posts/34931/">http://lichuanyang.top/posts/34931/</a></p>
+]]></content>
+      <tags>
+        <tag>职业发展</tag>
       </tags>
   </entry>
   <entry>
@@ -2325,66 +2418,6 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
-    <title>户口?大厂?高薪?生活?聊聊应届程序员的职业选择</title>
-    <url>/posts/34931/</url>
-    <content><![CDATA[<p>今天结合我的个人经历来聊一聊应届生的职业选择问题，主要针对后端开发（对岗位的选择，话题也比较大，后边有机会的话会单独开一篇文章写），我这几年的时间里历经了国企、大公司、小公司这样不同的工作环境，所以对于不同公司的情况还是比较有发言权的。</p>
-<span id="more"></span>
-
-<p>职业选择，最重要的无非就是城市和公司选择。城市选择是一件非常主观的事情，比如我，作为一个北方人，既不喜欢南方城市的气候，又想离家近，还需要大城市的机会，北京就几乎成了唯一选择。当然，给大家的建议，功利点的话，建议选择一些快速发展中的强二线城市，比如重庆、合肥，这样随着城市平台的发展，你自己身处其中，身价也会提升。</p>
-<p>接下来，我会限定在北京的范围内，结合我自己的经历，说一下公司的选择。</p>
-<p>提到北京，一个不得不提的问题就是户口的问题。不过，<strong>我强烈不建议你依据一个户口就决定了整个人生怎么走</strong>，比如明明不想进体制内，却为了个户口就去了。务必在考虑户口问题之前，优先想好职业发展方向的问题。</p>
-<p>很多人会纠结于体制内&#x2F;体制外、大公司&#x2F;小公司这些明面上的选择，但这些其实都只是表象而已，同样是体制内，也可能有天差地别的变化。一个正确的做法是想清楚自己真正想要的，然后再去寻找合适的工作机会。对于什么是自己想要的，确实不是每个人都能想的清楚。所以，我把这个问题拆解一下，看看工作的选择究竟意味着什么。大家可以思考以下几个问题：</p>
-<ul>
-<li>你最希望从工作中获得什么？钱？权力？还是内心的成就感？或是并不想从工作中获得任何东西？</li>
-<li>你希望工作在你的人生中占据多大的比例</li>
-<li>对于工作中获取的资源（人脉、信息等），和通过工作提升的能力，那一项你更有信心能带到其他的环境里</li>
-<li>你喜欢做常规的事务性工作，还是希望持续的去挑战困难问题</li>
-</ul>
-<p>对于上边的任何一个问题，任何回答都没有高下之分，比如挑战困难问题并不比做常规工作更优越，这个只是大家根据个人价值观做出的选择而已。</p>
-<p>这些选择的任意排列组合，相信都可以找到合适的机会。比如不期待从工作中有所得，不想工作占据太多人生，也愿意做常规的工作，那就可以考虑一些边缘的体制内单位；期望有权力，可以让工作占据很多生活时间，更想通过工作积累资源，就可以考虑核心的、有实权的体制内单位；而如果期望挣钱，更希望通过工作提升个人能力，程序员就是个不错的选择。</p>
-<p>想好了上边的问题，就可以选择公司了。很多时候，我们可能无法找到并顺利的进入一个满足所有要求的地方。这也没关系，我们可以利用跳槽，每次解决其中一部分问题，并且持续的搜集信息和提升能力，寻找到合适的机会，并有能力获得这个机会。</p>
-<p>我以自己的经历讲一下我的几个关键选择是怎么考虑的。</p>
-<p>刚毕业的时候，我的期望是获得一个北京户口，并且能留在互联网行业内。那个时候我的选择有两个大方向，一是去互联网公司竞争ssp offer, 但是当时的能力确实不足，所以这条路很难走的通；另一条路就是在体制内寻找业务接近互联网场景的机会，最好是面向普通用户的C端产品，因为这样可以有充足的用户量和数据量，让我不至于离业内先进的技术太远。很幸运，我找到了这样的机会，也成功的抓住了。入职之后，也基本如我所料，虽然公司技术水平并不高，企业文化也有很多问题，但是业务场景是非常好的，我也有充足的自己发挥的机会，借助工作，也学到了很多东西。</p>
-<p>接下来，我要解决的问题就是大厂经历，所以接下来跳槽的时候就只考虑了几个一线大厂。关于工作本身，倒没什么好说的，这段经历虽然过的很不开心，但是希望达到的目标也达到了，所以也没什么遗憾的。</p>
-<p>再下一次跳槽，我期望解决的问题有三个：大幅提高收入，抹平因为在国企呆的时间比较长造成的和同龄人的收入差距；别加班太多；人际关系轻松一些。这三个问题看似矛盾是不是？但是用心去找总是能找到合适的机会的，我也就这样来到了现在的公司。当然不是所有问题都解决的非常好，但是已经足够让我的工作体验非常幸福了。</p>
-<p>通过我自己的经历，其实大家也可以看到，我总是似乎在提互相矛盾的要求，总是想鱼与熊掌兼得，而且最后也能幸运的都得到。其实这世界上公司那么多，并不是说有哪两个条件是必然互相矛盾的。<strong>大家没有必要过早的就舍弃什么，比如做程序员就一定意味着996，意味着放弃生活吗？显然不是。</strong></p>
-<p>上边可以衍生出两个比较细的问题，我也一起说下吧。</p>
-<p>一是要不要选择北京户口。我先说一下我通过这个户口获得了什么吧，首先是赶上了15，16年那波房价大涨，让家庭资产在我并没有什么理财观念的时候，也获得了大幅增值。这一点我觉得放在今天，已经不成立了，房住不炒的大前提下，就算北京的房子，也不可能跑的过股市。第二点，就是一些手续办的方便一点，这个我觉得基本可以忽略不计吧，一年估计都办不了一次事，而且越来越多的手续也支持异地办理了。第三点，就是可以放心的让孩子在北京接受教育，不用担忧未来的不确定性。为什么我说是不确定性，因为我觉得接近二十年之后，非京的孩子是否依旧不能在北京高考，是有很大的不确定性的。北京的高考难度会卷成什么样，也是有很大的不确定性的。北京户口，只能说让我个人未来的选择固定了下来，但这个选择未来会是什么效果，其实很难说的准。</p>
-<p>所以说，当前来看，北京户口的价值其实非常有限。回到2015年的话，我仍然会毫不犹豫的选择要北京户口。但是如果让我在2021年的今天做这个选择，其实我大概率是不要的。</p>
-<p>第二点，是关于大厂经历。这一点，我的看法是必须要有，而且尽早有，但是没必要一辈子都呆在大公司里。大厂经历的价值，其实很多人已经说的很清楚了，所以我也不想再赘述。感兴趣的话可以私下找我沟通。</p>
-<p>上边的篇幅里，主要说的是方向的选择。选定了方向之后，还有个重要的问题是具体公司的选择。面对一个公司，其实考虑两个问题就可以：</p>
-<ul>
-<li>我通过这个工作能得到什么</li>
-<li>我因为这个工作会失去什么，将来有什么办法可以弥补</li>
-</ul>
-<p>以我的第一份工作来说，获得的就是户口和互联网的业务场景。同时会失去大公司的学习资源、优良的公司氛围、高薪水等等，这些问题都需要自己想办法去解决。</p>
-<p>好了，上文已经讲完了本文的大部分内容。有个点，我一直没有提，就是中年危机的问题，可能会有人问。我为什么不提呢，因为我不觉得这是一个能靠选择解决的问题。有些人会觉得体制内很稳定，即使天天混日子也没人能把你怎么着。但是我不觉得这种依赖外部条件的事情能算稳定，历史上体制内不是没出过问题。走这条路或许你有99.99%的机会一辈子过的安安稳稳，但是如果那万分之一的可能性发生了，你打算怎么办呢。而做程序员就不一样，或许只有50%的机会能平稳的呆在一家公司，但是随着工作提升的能力，让我可以很安心的应对另一半可能性。解决中年危机的唯一方式就是提升自己，不管是提升能力还是积累资源，你总要从工作中有所得，才能持续的保持自己的竞争力。</p>
-<p>我是流沙，大家可以通过公众号( Mobility ), <a href="https://lichuanyang.top/">个人网站</a> 等和我交流。</p>
-<p>原文地址: <a href="http://lichuanyang.top/posts/34931/">http://lichuanyang.top/posts/34931/</a></p>
-]]></content>
-      <tags>
-        <tag>职业发展</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>知乎增强工具-评论时间精确到秒</title>
-    <url>/posts/44912/</url>
-    <content><![CDATA[<p>一个优化知乎显示的油猴工具</p>
-<span id="more"></span>
-
-<p>之前在 <a href="https://meta.appinn.net/t/topic/47711/18">小众软件</a> 上看到一个知乎评论区时间展示混乱的吐槽，有大佬立刻就给了一个油猴脚本。</p>
-<p>用了一段时间很舒服，然后前几天知乎做了个更新，导致展示开始混乱。研究了一下，做了更新，想着就发布到GreasyFork上吧，后边知乎再有调整，可以直接从线上更新。</p>
-<p>脚本地址： <a href="https://greasyfork.org/zh-CN/scripts/482871-%E7%9F%A5%E4%B9%8E%E5%A2%9E%E5%BC%BA-%E8%AF%84%E8%AE%BA%E6%97%B6%E9%97%B4%E7%B2%BE%E7%A1%AE%E5%88%B0%E7%A7%92">安装地址</a></p>
-<p>大家感兴趣的话，欢迎留言，后边考虑做个油猴脚本的开发教程。</p>
-<p>原文地址: <a href="http://lichuanyang.top/posts/44912/">http://lichuanyang.top/posts/44912/</a></p>
-]]></content>
-      <tags>
-        <tag>知乎</tag>
-        <tag>油猴</tag>
-        <tag>Tampermonkey</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>看房小记-2020北京学区</title>
     <url>/posts/5236/</url>
     <content><![CDATA[<p>从今年十一左右开始看房，到上个月初就定了下来。其实没想到会定那么快，只能说缘分到了吧。回想起当时的经历，感觉还是要记录一下，毕竟是人生中最大的几件事之一了。</p>
@@ -2409,6 +2442,24 @@ lock.release();释放锁
       <tags>
         <tag>感悟</tag>
         <tag>记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>知乎增强工具-评论时间精确到秒</title>
+    <url>/posts/44912/</url>
+    <content><![CDATA[<p>一个优化知乎显示的油猴工具</p>
+<span id="more"></span>
+
+<p>之前在 <a href="https://meta.appinn.net/t/topic/47711/18">小众软件</a> 上看到一个知乎评论区时间展示混乱的吐槽，有大佬立刻就给了一个油猴脚本。</p>
+<p>用了一段时间很舒服，然后前几天知乎做了个更新，导致展示开始混乱。研究了一下，做了更新，想着就发布到GreasyFork上吧，后边知乎再有调整，可以直接从线上更新。</p>
+<p>脚本地址： <a href="https://greasyfork.org/zh-CN/scripts/482871-%E7%9F%A5%E4%B9%8E%E5%A2%9E%E5%BC%BA-%E8%AF%84%E8%AE%BA%E6%97%B6%E9%97%B4%E7%B2%BE%E7%A1%AE%E5%88%B0%E7%A7%92">安装地址</a></p>
+<p>大家感兴趣的话，欢迎留言，后边考虑做个油猴脚本的开发教程。</p>
+<p>原文地址: <a href="http://lichuanyang.top/posts/44912/">http://lichuanyang.top/posts/44912/</a></p>
+]]></content>
+      <tags>
+        <tag>知乎</tag>
+        <tag>油猴</tag>
+        <tag>Tampermonkey</tag>
       </tags>
   </entry>
   <entry>
@@ -2709,43 +2760,6 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
-    <title>设计一个开源的北京地铁路线规划小工具 java版本</title>
-    <url>/posts/13793/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>最近在找房子，因为想找一个去几个地方都相对方便的位置，自己去地图上看还挺麻烦的，所以想做个小工具，用来对北京地铁的路线做规划，本文就简单介绍一下实现过程。目前的功能还比较简单，主体方法就是根据一个输入的始发站，列出其他所有站点到这个地方的站数最少路线。</p>
-<span id="more"></span>
-
-<h2 id="数据获取"><a href="#数据获取" class="headerlink" title="数据获取"></a>数据获取</h2><p>从网上找了高德地图的接口数据: <a href="http://map.amap.com/service/subway?_1469083453978&srhdata=1100_drw_beijing.json">http://map.amap.com/service/subway?_1469083453978&amp;srhdata=1100_drw_beijing.json</a> . 对拿到的json串进行解析，其中包含每条地铁线路的信息，并依次列出线路上的每个站点。</p>
-<p>通过解析数据，要得到的主要就是各个站点的信息，站点定义的数据结构如下:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> String id;</span><br><span class="line"><span class="keyword">private</span> String name;</span><br><span class="line"><span class="keyword">private</span> Set&lt;String&gt; lines = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;String&gt;(); <span class="comment">//所在线路</span></span><br><span class="line"><span class="keyword">private</span> String position;</span><br><span class="line"><span class="keyword">private</span> String pinyin;</span><br><span class="line"><span class="keyword">private</span> Set&lt;String&gt; nextStations = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;String&gt;(); <span class="comment">//相邻站点</span></span><br></pre></td></tr></table></figure>
-
-<p>所有站点汇总后可以看做一张图，nextStations字段就是用来表示边的信息。</p>
-<h2 id="路线规划"><a href="#路线规划" class="headerlink" title="路线规划"></a>路线规划</h2><p>路线规划算法可以参考Dijkstra算法，由于现有的表现形式下，只是一个无向无权重的图，实现起来还要简单一些。</p>
-<p>实现过程描述如下：</p>
-<ol>
-<li>新建两个map, knownPath和waitingPath，分别用来表示已经确定了最短路径的站点列表，和待处理的站点列表。初始化时，knownPath中只包含指定的起点，waitingPath中包含其他所有站点，并将距离设置成无穷大(用MAX &#x3D; 20000表示)</li>
-<li>指定起点为当前节点</li>
-<li>依次处理当前的相邻节点，更新每个节点的最短距离</li>
-<li>从waitingPath中找到距离最短的节点，作为当前节点，重复第3步，并从waitingPath转移到knownPath</li>
-</ol>
-<p>整个过程结束之后，会得到每个节点到起点的最短距离以及路线详情，然后可以根据这些数据计算路线详情的换乘情况。</p>
-<p>对于换乘，主体判断逻辑是，如果一个站点的上一站和下一站所在路线不重合，就可以确定在这一站进行了换乘，比如灯市口-东四-朝阳门，灯市口在5号线上，朝阳门在2，6号线上，可以断定在东四肯定作了换乘。不过还有一些特殊情况要处理，比如说西直门到平安里，中间那站如果是车公庄（虽然现实中没人会这么干），实际就是作了换乘的，但是按刚才的逻辑就会判断成未换乘。</p>
-<p>最终得到的路线信息中包含以下信息：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> String stationId;</span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> length;</span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> transferNum; <span class="comment">//换乘数</span></span><br><span class="line"><span class="keyword">private</span> List&lt;String&gt; detail = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(); <span class="comment">//详细路径</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>主体功能在上面已经完成，后边就可以根据需要再去自定义处理了。比如，加入我现在需要找到”距奥林匹克公园站15站以内且距天安门东站7站以内的位置”，就可以分别输入奥林匹克公园和天安门东，然后在结果中作相应的过滤，再取交集。</p>
-<h2 id="后续计划"><a href="#后续计划" class="headerlink" title="后续计划"></a>后续计划</h2><p>目前做的还比较简单，只是简单考虑站数，但是实际上，不同站点的距离、耗时相差会比较大，再一个不同地方的换乘开销差别也很大。所以后续会试试能不能找到换乘站的详情数据，还有两站之间耗时的数据，并应用到算法中。</p>
-<p>再一个是要找一个合适的方法做个界面出来，因为一直做的是纯后台，还没考虑清楚用什么合适。</p>
-<p>其他的，还在考虑爬一下房价信息。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><a href="https://github.com/lcy362/FoxSubway">https://github.com/lcy362/FoxSubway</a></p>
-<p>欢迎提意见。</p>
-<p>原文地址: <a href="https://lcy362.github.io/posts/13793">https://lcy362.github.io/posts/13793</a></p>
-]]></content>
-      <tags>
-        <tag>开源项目</tag>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>设计模式备忘录</title>
     <url>/posts/21897/</url>
     <content><![CDATA[<p>众所周知，对于程序员来说，设计模式是一门极其重要的学科。不过，由于设计模式的涉及面太广，也有很多非常抽象的概念，还是很难掌握的。要学习设计模式，最好还是能结合实际。每次做需求，尤其是一些复杂的需求，或者嗅到了烂代码味道的时候，就可以翻一遍设计模式，看看有什么可以应用的模式。所以，我总结了这篇文章，以尽量短的语言描述主要的设计模式，可能是定义中的关键部分，也可能是典型的应用场景，或者只是个英文单词，目的在于帮助回忆起每个设计模式的作用和应用场景。</p>
@@ -2785,6 +2799,43 @@ lock.release();释放锁
 ]]></content>
       <tags>
         <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>设计一个开源的北京地铁路线规划小工具 java版本</title>
+    <url>/posts/13793/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>最近在找房子，因为想找一个去几个地方都相对方便的位置，自己去地图上看还挺麻烦的，所以想做个小工具，用来对北京地铁的路线做规划，本文就简单介绍一下实现过程。目前的功能还比较简单，主体方法就是根据一个输入的始发站，列出其他所有站点到这个地方的站数最少路线。</p>
+<span id="more"></span>
+
+<h2 id="数据获取"><a href="#数据获取" class="headerlink" title="数据获取"></a>数据获取</h2><p>从网上找了高德地图的接口数据: <a href="http://map.amap.com/service/subway?_1469083453978&srhdata=1100_drw_beijing.json">http://map.amap.com/service/subway?_1469083453978&amp;srhdata=1100_drw_beijing.json</a> . 对拿到的json串进行解析，其中包含每条地铁线路的信息，并依次列出线路上的每个站点。</p>
+<p>通过解析数据，要得到的主要就是各个站点的信息，站点定义的数据结构如下:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> String id;</span><br><span class="line"><span class="keyword">private</span> String name;</span><br><span class="line"><span class="keyword">private</span> Set&lt;String&gt; lines = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;String&gt;(); <span class="comment">//所在线路</span></span><br><span class="line"><span class="keyword">private</span> String position;</span><br><span class="line"><span class="keyword">private</span> String pinyin;</span><br><span class="line"><span class="keyword">private</span> Set&lt;String&gt; nextStations = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;String&gt;(); <span class="comment">//相邻站点</span></span><br></pre></td></tr></table></figure>
+
+<p>所有站点汇总后可以看做一张图，nextStations字段就是用来表示边的信息。</p>
+<h2 id="路线规划"><a href="#路线规划" class="headerlink" title="路线规划"></a>路线规划</h2><p>路线规划算法可以参考Dijkstra算法，由于现有的表现形式下，只是一个无向无权重的图，实现起来还要简单一些。</p>
+<p>实现过程描述如下：</p>
+<ol>
+<li>新建两个map, knownPath和waitingPath，分别用来表示已经确定了最短路径的站点列表，和待处理的站点列表。初始化时，knownPath中只包含指定的起点，waitingPath中包含其他所有站点，并将距离设置成无穷大(用MAX &#x3D; 20000表示)</li>
+<li>指定起点为当前节点</li>
+<li>依次处理当前的相邻节点，更新每个节点的最短距离</li>
+<li>从waitingPath中找到距离最短的节点，作为当前节点，重复第3步，并从waitingPath转移到knownPath</li>
+</ol>
+<p>整个过程结束之后，会得到每个节点到起点的最短距离以及路线详情，然后可以根据这些数据计算路线详情的换乘情况。</p>
+<p>对于换乘，主体判断逻辑是，如果一个站点的上一站和下一站所在路线不重合，就可以确定在这一站进行了换乘，比如灯市口-东四-朝阳门，灯市口在5号线上，朝阳门在2，6号线上，可以断定在东四肯定作了换乘。不过还有一些特殊情况要处理，比如说西直门到平安里，中间那站如果是车公庄（虽然现实中没人会这么干），实际就是作了换乘的，但是按刚才的逻辑就会判断成未换乘。</p>
+<p>最终得到的路线信息中包含以下信息：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> String stationId;</span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> length;</span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> transferNum; <span class="comment">//换乘数</span></span><br><span class="line"><span class="keyword">private</span> List&lt;String&gt; detail = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(); <span class="comment">//详细路径</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>主体功能在上面已经完成，后边就可以根据需要再去自定义处理了。比如，加入我现在需要找到”距奥林匹克公园站15站以内且距天安门东站7站以内的位置”，就可以分别输入奥林匹克公园和天安门东，然后在结果中作相应的过滤，再取交集。</p>
+<h2 id="后续计划"><a href="#后续计划" class="headerlink" title="后续计划"></a>后续计划</h2><p>目前做的还比较简单，只是简单考虑站数，但是实际上，不同站点的距离、耗时相差会比较大，再一个不同地方的换乘开销差别也很大。所以后续会试试能不能找到换乘站的详情数据，还有两站之间耗时的数据，并应用到算法中。</p>
+<p>再一个是要找一个合适的方法做个界面出来，因为一直做的是纯后台，还没考虑清楚用什么合适。</p>
+<p>其他的，还在考虑爬一下房价信息。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><a href="https://github.com/lcy362/FoxSubway">https://github.com/lcy362/FoxSubway</a></p>
+<p>欢迎提意见。</p>
+<p>原文地址: <a href="https://lcy362.github.io/posts/13793">https://lcy362.github.io/posts/13793</a></p>
+]]></content>
+      <tags>
+        <tag>开源项目</tag>
+        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -2841,6 +2892,50 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
+    <title>读书感悟：文明、现代化、价值投资与中国</title>
+    <url>/posts/44866/</url>
+    <content><![CDATA[<p>《文明、现代化、价值投资与中国》这本书，是著名的价值投资者李录先生所著的，分别讲述了文明的发展、现代化的产生、价值投资，并且结合中国的实际情况对这些内容作了阐述。个人感觉是一本价值极高的书，值得反复阅读，对于帮助我们认识这个世界的运行逻辑，建立正确的投资理念，都有非常大的帮助。</p>
+<span id="more"></span>
+
+<p>从书名可以看出，这本书其实讲了两个相对独立的话题，一个是文明、现代化，一个是价值投资，并分别阐述了这些和中国的关系。</p>
+<h1 id="文明与现代化"><a href="#文明与现代化" class="headerlink" title="文明与现代化"></a>文明与现代化</h1><h2 id="农业文明的局限性"><a href="#农业文明的局限性" class="headerlink" title="农业文明的局限性"></a>农业文明的局限性</h2><p>作者首先用了很大篇幅讲述了文明产生与演化的整个过程。其中尤为精彩的就是对于农业文明天花板的论述。也就是农业文明的产出，本质上来源于光合作用。植物通过光合作用生长，而喂养牲畜也需要消耗植物。而光合作用产生的能量上限，受制于土地面积和土地的单位产出，这两者都有非常明显的上限，所以自然资源也就有了上限。有限的自然资源和近乎无限的人口增长，决定了人口最终只能通过非自然灾害来消化。</p>
+<h2 id="现代化的产生与本质"><a href="#现代化的产生与本质" class="headerlink" title="现代化的产生与本质"></a>现代化的产生与本质</h2><p>现代化的产生源自新大陆带来的环大西洋自由市场经济和同时代的科学革命。1776年是一个重要的年份，这一年发生了三件事情，对现代化的发展都起到了至关重要的作用。一是亚当斯密出版了《国富论》，《国富论》讨论的核心问题是大西洋经济的本质，即自由贸易；二是独立宣言发表，一个深受亚当斯密理论影响的全新政权诞生，对于自由市场的发展也会提供非常大的帮助；三是蒸汽机的产生，生产力得以大幅度提高。从此，自由市场和科技的结合，释放出惊人的力量。</p>
+<p>自由市场本身是一个可以不断自我进化、自我进步、自我完善的机制。现代科技的介入使得这一过程异常迅猛。这样，在相互竞争的的不同市场之间，最大的市场最终会成为唯一的市场。</p>
+<p>任何组织如果离开这个市场，都会不断落后，一如当年的苏联。</p>
+<p>我国这几年的很多举措，诸如一带一路，RECP，都是在尽力提升能够影响到的自由市场规模。我们要感谢川建国，不断退群，自己离开这个最大的自由市场。</p>
+<h2 id="现代化与中国"><a href="#现代化与中国" class="headerlink" title="现代化与中国"></a>现代化与中国</h2><p>那么，现代化是否有可能诞生在中国呢。答案是否定的。因为现代化的诞生过程中，私人资本一直起着至关重要的作用。而中国自秦汉起，就一直有着非常强有力的中央政府，私人资本难以兴起。另外，新大陆的发现，其初衷原本就是要寻找中国。中国作为当时的文明中心，并没有动力去寻找更富足的地方。</p>
+<p>可以说，现代化的产生原本就源自一系列非常偶然的因素。原本野蛮的盎格鲁撒克逊人，开中了这张彩票，得以弯道超车。但历史终究会回到她应该在的位置上。所以我们完全没有必要遗憾现代化为什么没有在中国产生。</p>
+<p>过去几十年间，中国的快速发展，其实是在走其他人走过的路。这种情况下，一个强有力的政府可以起到非常重要的作用。而随着我们逐渐赶上了其他人的进度，需要去探索下一步的方向时，自由市场将会逐渐发挥出优势。</p>
+<p>文化上，在中国，恢复传统文化的正确地位其实别无选择。文化的产生，有很深的历史和地理渊源，早已深入骨髓。随着经济发展，人们的精神需求不断提高，很可能会出现中国式的文艺复兴，让国人重新发现中国文化最精华的部分。</p>
+<p>总有一天，大部分国人会认识到，二十四史、唐诗宋词、四大名著、论语、道德经、孙子兵法，这些渊远的文化遗产，是要远比“感恩印第安人被我们杀”这样的文化优质的多的。</p>
+<h1 id="价值投资"><a href="#价值投资" class="headerlink" title="价值投资"></a>价值投资</h1><h2 id="投资行业的现状"><a href="#投资行业的现状" class="headerlink" title="投资行业的现状"></a>投资行业的现状</h2><p>说起投资，不得不看看当前整个行业的状态。当前投资业最大的问题当然就是没有办法评价一个产品的好坏。投资是一个长期的过程，短期的涨跌可以说没有任何参考价值。而当前基金的盈利模式，导致业绩很差的基金经理同样可以收很多钱。</p>
+<p>作者讲到了一个重要的观念，也就是受托人责任。只有行业内大部分人都能有这个概念时，行业才能向好的方向发展。</p>
+<h2 id="投资的历史经验"><a href="#投资的历史经验" class="headerlink" title="投资的历史经验"></a>投资的历史经验</h2><p>长期来看，股票的收益远高过其他任何类型资产几个数量级。在中国，这个情况也不例外。有两方面的原因，一是通货膨胀，二是来源于经济增长，股票事实上可以很大程度体现出GDP的增长。</p>
+<h2 id="价值投资的理念"><a href="#价值投资的理念" class="headerlink" title="价值投资的理念"></a>价值投资的理念</h2><p>价值投资的基本理念只有四个。</p>
+<h3 id="股票代表对公司的所有权"><a href="#股票代表对公司的所有权" class="headerlink" title="股票代表对公司的所有权"></a>股票代表对公司的所有权</h3><p>投资的收益来源于公司的发展，你之所以能获得收益，是因为你给公司的发展带来了帮助。这不是零和游戏。而靠赌市场的波动盈利，这是投机行为，是和赌博没有区别的零和甚至负和游戏。因此，价值投资是一条正道、大道。我们为社会创造价值，然后获得收益，仅此而已，我们不希望通过欺骗、通过剥削别人去获取收益。</p>
+<h3 id="对市场的认知"><a href="#对市场的认知" class="headerlink" title="对市场的认知"></a>对市场的认知</h3><p>市场只是一个为你提供服务的机构而已。你可以在这里获得购买的机会，也可以在要用钱的时候卖出。市场透露出的其他信息，诸如一支股票的短期涨跌，纯粹是噪音而已。</p>
+<h3 id="安全边际"><a href="#安全边际" class="headerlink" title="安全边际"></a>安全边际</h3><p>投资本质是对未来的预测，而预测就必然不可能百分之百正确。因此，提升安全边际，就尤为重要。</p>
+<h3 id="建立能力圈"><a href="#建立能力圈" class="headerlink" title="建立能力圈"></a>建立能力圈</h3><p>能力圈是可以通过长期努力训练获得的。在建立能力圈之前有一个前提条件，是我们需要对自己的能力圈有所认知，能够识别自己的能力边界。这需要我们对知识有一个诚实的态度。当我们有一个观点时，需要找到最聪明的持反对意见的人，并且能够反驳他的观点，这样才配说有了这个观点。</p>
+<p>关于如何建立能力圈，对每个人来说确实是不一样的，这个取决于每个人一贯的学习方法和学习能力。不过李录先生也给我们提了一些建议：1. 以所有者角度看生意 2.慢慢积累 3.用兴趣和机会去主导研究 4.多实践，选一家公司，以投资的心态把它彻头彻尾研究个透。</p>
+<h2 id="什么样的人适合价值投资"><a href="#什么样的人适合价值投资" class="headerlink" title="什么样的人适合价值投资"></a>什么样的人适合价值投资</h2><p>最后，说一下价值投资对人的本性的一些要求。</p>
+<ul>
+<li>独立，需要一个人更看重自己内心的判断标准</li>
+<li>相对客观，受情绪的影响较小</li>
+<li>耐心&amp;果断。这两点或许是有些矛盾的要求，但是对于一个价值投资者来说，既需要有足够的耐心，等待多年不出手；而一旦到了合适的时机，又能果断的迅速出手</li>
+<li>要有对商业的兴趣</li>
+</ul>
+<p>原文地址: <a href="http://lichuanyang.top/posts/44866/">http://lichuanyang.top/posts/44866/</a></p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>个人成长</tag>
+        <tag>投资</tag>
+        <tag>读书感悟</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>读书笔记-我曾走在崩溃的边缘</title>
     <url>/posts/6471/</url>
     <content><![CDATA[<p>今天讲的这本书，《我曾走在崩溃的边缘：俞敏洪亲述新东方创业发展之路》，是俞敏洪老师写的一本自传性质的书，讲述了他从创立新东方以来的诸多经历和心路历程。今天就总结一下这本书的内容，并且讲一下自己的感悟。</p>
@@ -2876,23 +2971,8 @@ lock.release();释放锁
       </categories>
       <tags>
         <tag>个人成长</tag>
-        <tag>教育</tag>
         <tag>读书感悟</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>通过加入classpath的形式实现命令行运行java程序时引入第三方jar包</title>
-    <url>/posts/65262/</url>
-    <content><![CDATA[<p>在命令行运行java程序时，如果想引入第三方jar包该怎么办呢。方法其实有很多，一般都是去折腾classloader.</p>
-<p>这里介绍一种操作相对简单的方法，就是在运行之前把需要的jar包都加入到classpath中。</p>
-<p>具体来说，就是写一个shell脚本，定义一个参数，可以就叫CLASSPATH, 也可以叫别的。</p>
-<p> CLASSPATH&#x3D;yourownjar.jar:xxx.jar:&#x2F;xx&#x2F;xx&#x2F;xxx1.jar:”$CLASSPATH” </p>
-<p>需要注意的是，自己写的主类所在的jar也要包含在自己定义的classpath中.</p>
-<p>然后使用java -classpath命令运行即可：</p>
-<p>java -classpath ${CLASSPATH} xx.Main</p>
-]]></content>
-      <tags>
-        <tag>java</tag>
+        <tag>教育</tag>
       </tags>
   </entry>
   <entry>
@@ -3001,6 +3081,21 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
+    <title>通过位运算转换大小写</title>
+    <url>/posts/9193/</url>
+    <content><![CDATA[<p>位运算是计算机科学领域用的非常广泛的一种计算方式。再合理的使用方式下，会大大提升运算效率，今天就介绍一下位运算的一个巧妙应用：转换大小写字母。</p>
+<span id="more"></span>
+<p>针对这个问题，我们可以首先观察一下大小写字母的ascii码特点。</p>
+<p><img src="/img/letter_ascii.png"></p>
+<p>可以看到每一对大小写字母的ascii码值都是差32,对应到二进制上，就是只有第六位相反，其他的值都一样。</p>
+<p>因此，用一个字母的值与 0010 0000 （32）作亦或，就可以得到它对应的大写或小写字母了。</p>
+<p>原文地址：<a href="https://lcy362.github.io/posts/9193/">https://lcy362.github.io/posts/9193/</a></p>
+]]></content>
+      <tags>
+        <tag>位运算</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>通过合理的设计降低软件开发复杂度</title>
     <url>/posts/33852/</url>
     <content><![CDATA[<p>对于一个程序员来说，日常最常说的词恐怕就是「复杂」了，这段代码太复杂了，这个逻辑太复杂了，所以，在这篇文章里，我们就好好掰扯掰扯「复杂」到底是怎么产生的，又要怎么去避免。</p>
@@ -3042,18 +3137,18 @@ lock.release();释放锁
       </tags>
   </entry>
   <entry>
-    <title>通过位运算转换大小写</title>
-    <url>/posts/9193/</url>
-    <content><![CDATA[<p>位运算是计算机科学领域用的非常广泛的一种计算方式。再合理的使用方式下，会大大提升运算效率，今天就介绍一下位运算的一个巧妙应用：转换大小写字母。</p>
-<span id="more"></span>
-<p>针对这个问题，我们可以首先观察一下大小写字母的ascii码特点。</p>
-<p><img src="/img/letter_ascii.png"></p>
-<p>可以看到每一对大小写字母的ascii码值都是差32,对应到二进制上，就是只有第六位相反，其他的值都一样。</p>
-<p>因此，用一个字母的值与 0010 0000 （32）作亦或，就可以得到它对应的大写或小写字母了。</p>
-<p>原文地址：<a href="https://lcy362.github.io/posts/9193/">https://lcy362.github.io/posts/9193/</a></p>
+    <title>通过加入classpath的形式实现命令行运行java程序时引入第三方jar包</title>
+    <url>/posts/65262/</url>
+    <content><![CDATA[<p>在命令行运行java程序时，如果想引入第三方jar包该怎么办呢。方法其实有很多，一般都是去折腾classloader.</p>
+<p>这里介绍一种操作相对简单的方法，就是在运行之前把需要的jar包都加入到classpath中。</p>
+<p>具体来说，就是写一个shell脚本，定义一个参数，可以就叫CLASSPATH, 也可以叫别的。</p>
+<p> CLASSPATH&#x3D;yourownjar.jar:xxx.jar:&#x2F;xx&#x2F;xx&#x2F;xxx1.jar:”$CLASSPATH” </p>
+<p>需要注意的是，自己写的主类所在的jar也要包含在自己定义的classpath中.</p>
+<p>然后使用java -classpath命令运行即可：</p>
+<p>java -classpath ${CLASSPATH} xx.Main</p>
 ]]></content>
       <tags>
-        <tag>位运算</tag>
+        <tag>java</tag>
       </tags>
   </entry>
   <entry>
@@ -3152,50 +3247,6 @@ lock.release();释放锁
         <tag>高并发</tag>
         <tag>高并发解决方案</tag>
         <tag>高并发设计</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>读书感悟：文明、现代化、价值投资与中国</title>
-    <url>/posts/44866/</url>
-    <content><![CDATA[<p>《文明、现代化、价值投资与中国》这本书，是著名的价值投资者李录先生所著的，分别讲述了文明的发展、现代化的产生、价值投资，并且结合中国的实际情况对这些内容作了阐述。个人感觉是一本价值极高的书，值得反复阅读，对于帮助我们认识这个世界的运行逻辑，建立正确的投资理念，都有非常大的帮助。</p>
-<span id="more"></span>
-
-<p>从书名可以看出，这本书其实讲了两个相对独立的话题，一个是文明、现代化，一个是价值投资，并分别阐述了这些和中国的关系。</p>
-<h1 id="文明与现代化"><a href="#文明与现代化" class="headerlink" title="文明与现代化"></a>文明与现代化</h1><h2 id="农业文明的局限性"><a href="#农业文明的局限性" class="headerlink" title="农业文明的局限性"></a>农业文明的局限性</h2><p>作者首先用了很大篇幅讲述了文明产生与演化的整个过程。其中尤为精彩的就是对于农业文明天花板的论述。也就是农业文明的产出，本质上来源于光合作用。植物通过光合作用生长，而喂养牲畜也需要消耗植物。而光合作用产生的能量上限，受制于土地面积和土地的单位产出，这两者都有非常明显的上限，所以自然资源也就有了上限。有限的自然资源和近乎无限的人口增长，决定了人口最终只能通过非自然灾害来消化。</p>
-<h2 id="现代化的产生与本质"><a href="#现代化的产生与本质" class="headerlink" title="现代化的产生与本质"></a>现代化的产生与本质</h2><p>现代化的产生源自新大陆带来的环大西洋自由市场经济和同时代的科学革命。1776年是一个重要的年份，这一年发生了三件事情，对现代化的发展都起到了至关重要的作用。一是亚当斯密出版了《国富论》，《国富论》讨论的核心问题是大西洋经济的本质，即自由贸易；二是独立宣言发表，一个深受亚当斯密理论影响的全新政权诞生，对于自由市场的发展也会提供非常大的帮助；三是蒸汽机的产生，生产力得以大幅度提高。从此，自由市场和科技的结合，释放出惊人的力量。</p>
-<p>自由市场本身是一个可以不断自我进化、自我进步、自我完善的机制。现代科技的介入使得这一过程异常迅猛。这样，在相互竞争的的不同市场之间，最大的市场最终会成为唯一的市场。</p>
-<p>任何组织如果离开这个市场，都会不断落后，一如当年的苏联。</p>
-<p>我国这几年的很多举措，诸如一带一路，RECP，都是在尽力提升能够影响到的自由市场规模。我们要感谢川建国，不断退群，自己离开这个最大的自由市场。</p>
-<h2 id="现代化与中国"><a href="#现代化与中国" class="headerlink" title="现代化与中国"></a>现代化与中国</h2><p>那么，现代化是否有可能诞生在中国呢。答案是否定的。因为现代化的诞生过程中，私人资本一直起着至关重要的作用。而中国自秦汉起，就一直有着非常强有力的中央政府，私人资本难以兴起。另外，新大陆的发现，其初衷原本就是要寻找中国。中国作为当时的文明中心，并没有动力去寻找更富足的地方。</p>
-<p>可以说，现代化的产生原本就源自一系列非常偶然的因素。原本野蛮的盎格鲁撒克逊人，开中了这张彩票，得以弯道超车。但历史终究会回到她应该在的位置上。所以我们完全没有必要遗憾现代化为什么没有在中国产生。</p>
-<p>过去几十年间，中国的快速发展，其实是在走其他人走过的路。这种情况下，一个强有力的政府可以起到非常重要的作用。而随着我们逐渐赶上了其他人的进度，需要去探索下一步的方向时，自由市场将会逐渐发挥出优势。</p>
-<p>文化上，在中国，恢复传统文化的正确地位其实别无选择。文化的产生，有很深的历史和地理渊源，早已深入骨髓。随着经济发展，人们的精神需求不断提高，很可能会出现中国式的文艺复兴，让国人重新发现中国文化最精华的部分。</p>
-<p>总有一天，大部分国人会认识到，二十四史、唐诗宋词、四大名著、论语、道德经、孙子兵法，这些渊远的文化遗产，是要远比“感恩印第安人被我们杀”这样的文化优质的多的。</p>
-<h1 id="价值投资"><a href="#价值投资" class="headerlink" title="价值投资"></a>价值投资</h1><h2 id="投资行业的现状"><a href="#投资行业的现状" class="headerlink" title="投资行业的现状"></a>投资行业的现状</h2><p>说起投资，不得不看看当前整个行业的状态。当前投资业最大的问题当然就是没有办法评价一个产品的好坏。投资是一个长期的过程，短期的涨跌可以说没有任何参考价值。而当前基金的盈利模式，导致业绩很差的基金经理同样可以收很多钱。</p>
-<p>作者讲到了一个重要的观念，也就是受托人责任。只有行业内大部分人都能有这个概念时，行业才能向好的方向发展。</p>
-<h2 id="投资的历史经验"><a href="#投资的历史经验" class="headerlink" title="投资的历史经验"></a>投资的历史经验</h2><p>长期来看，股票的收益远高过其他任何类型资产几个数量级。在中国，这个情况也不例外。有两方面的原因，一是通货膨胀，二是来源于经济增长，股票事实上可以很大程度体现出GDP的增长。</p>
-<h2 id="价值投资的理念"><a href="#价值投资的理念" class="headerlink" title="价值投资的理念"></a>价值投资的理念</h2><p>价值投资的基本理念只有四个。</p>
-<h3 id="股票代表对公司的所有权"><a href="#股票代表对公司的所有权" class="headerlink" title="股票代表对公司的所有权"></a>股票代表对公司的所有权</h3><p>投资的收益来源于公司的发展，你之所以能获得收益，是因为你给公司的发展带来了帮助。这不是零和游戏。而靠赌市场的波动盈利，这是投机行为，是和赌博没有区别的零和甚至负和游戏。因此，价值投资是一条正道、大道。我们为社会创造价值，然后获得收益，仅此而已，我们不希望通过欺骗、通过剥削别人去获取收益。</p>
-<h3 id="对市场的认知"><a href="#对市场的认知" class="headerlink" title="对市场的认知"></a>对市场的认知</h3><p>市场只是一个为你提供服务的机构而已。你可以在这里获得购买的机会，也可以在要用钱的时候卖出。市场透露出的其他信息，诸如一支股票的短期涨跌，纯粹是噪音而已。</p>
-<h3 id="安全边际"><a href="#安全边际" class="headerlink" title="安全边际"></a>安全边际</h3><p>投资本质是对未来的预测，而预测就必然不可能百分之百正确。因此，提升安全边际，就尤为重要。</p>
-<h3 id="建立能力圈"><a href="#建立能力圈" class="headerlink" title="建立能力圈"></a>建立能力圈</h3><p>能力圈是可以通过长期努力训练获得的。在建立能力圈之前有一个前提条件，是我们需要对自己的能力圈有所认知，能够识别自己的能力边界。这需要我们对知识有一个诚实的态度。当我们有一个观点时，需要找到最聪明的持反对意见的人，并且能够反驳他的观点，这样才配说有了这个观点。</p>
-<p>关于如何建立能力圈，对每个人来说确实是不一样的，这个取决于每个人一贯的学习方法和学习能力。不过李录先生也给我们提了一些建议：1. 以所有者角度看生意 2.慢慢积累 3.用兴趣和机会去主导研究 4.多实践，选一家公司，以投资的心态把它彻头彻尾研究个透。</p>
-<h2 id="什么样的人适合价值投资"><a href="#什么样的人适合价值投资" class="headerlink" title="什么样的人适合价值投资"></a>什么样的人适合价值投资</h2><p>最后，说一下价值投资对人的本性的一些要求。</p>
-<ul>
-<li>独立，需要一个人更看重自己内心的判断标准</li>
-<li>相对客观，受情绪的影响较小</li>
-<li>耐心&amp;果断。这两点或许是有些矛盾的要求，但是对于一个价值投资者来说，既需要有足够的耐心，等待多年不出手；而一旦到了合适的时机，又能果断的迅速出手</li>
-<li>要有对商业的兴趣</li>
-</ul>
-<p>原文地址: <a href="http://lichuanyang.top/posts/44866/">http://lichuanyang.top/posts/44866/</a></p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>个人成长</tag>
-        <tag>读书感悟</tag>
-        <tag>投资</tag>
       </tags>
   </entry>
 </search>

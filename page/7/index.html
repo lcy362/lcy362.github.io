@@ -159,7 +159,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">87</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -170,7 +170,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">99</span>
+        <span class="site-state-item-count">103</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -208,6 +208,107 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/61645/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流沙">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/61645/" class="post-title-link" itemprop="url">activemq plugin开发指南及示例</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-05-05 16:58:00" itemprop="dateCreated datePublished" datetime="2017-05-05T16:58:00+08:00">2017-05-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
+    </span>
+
+  
+    <span id="/posts/61645/" class="post-meta-item leancloud_visitors" data-flag-title="activemq plugin开发指南及示例" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>activemq提供了一种插件(plugin)开发的机制(<a target="_blank" rel="noopener" href="http://activemq.apache.org/developing-plugins.html">http://activemq.apache.org/developing-plugins.html</a>), 可以方便的添加各种自定义功能。其效果类似于直接去修改activemq的源码，无论从方便性还是风险程度上，使用plugin都要比去修改源码要好很多。通过这种方式，理论上我们可以实现几乎所有能想到的功能。</p>
+<h2 id="开发指南"><a href="#开发指南" class="headerlink" title="开发指南"></a>开发指南</h2><p>首先需要在工程中添加activemq的依赖，为了方便，可以直接用activemq-all包。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.activemq<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>activemq-all<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.13.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Actviemq plugin的开发非常方便，只需要实现两个类。</p>
+<p>一个是plugin类， 需要implements BrokerPlugin这个接口，然后将接口的installPlugin方法实现了即可。</p>
+<p>这个方法的唯一作用就是指定一个broker类，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Broker <span class="title function_">installPlugin</span><span class="params">(Broker broker)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">LimitQueueSIzeBroker</span>(broker);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来就是在实现一个broker类，一般情况下可以extends BrokerFilter 这个类，然后选择需要的方法重写，构造方法和重写的每个方法执行完毕后，执行以下super类的对应方法，这样就不会对activemq的实际运行造成影响。</p>
+<p>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">FoxBroker</span><span class="params">(Broker next)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(next);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">send</span><span class="params">(ProducerBrokerExchange producerExchange, Message messageSend)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">ip</span> <span class="operator">=</span> producerExchange.getConnectionContext().getConnection().getRemoteAddress();</span><br><span class="line">        <span class="type">String</span> <span class="variable">destinationName</span> <span class="operator">=</span> messageSend.getDestination().getPhysicalName();</span><br><span class="line">        logger.info(<span class="string">&quot;send_&quot;</span> + destinationName + <span class="string">&quot; &quot;</span>  + ip);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        logger.error(<span class="string">&quot;activemq send log error: &quot;</span> + e, e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">super</span>.send(producerExchange, messageSend);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们重写了activemq的send方法, 并且增加了一些日志。</p>
+<p>然后打包，将jar包放到activemq的lib目录下。再在activemq.xml下增加plugins这个模块，并把需要的插件依次列在里边。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span> <span class="attr">id</span>=<span class="string">&quot;testPlugin&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.mallow.activemq.FoxBrokerPlugin&quot;</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span> <span class="attr">id</span>=<span class="string">&quot;purgePlugin&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.mallow.activemq.LimitQueueSizePlugin&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>重启activemq,再收发消息的时候就能看到效果了。</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>可以参考我在github上放的代码： <a target="_blank" rel="noopener" href="https://github.com/lcy362/FoxActivemqPlugin">https://github.com/lcy362/FoxActivemqPlugin</a></p>
+<p>里边提供了两个非常简单的插件示例。FoxBrokerPlugin会在收发消息时记录生产者、消费者的ip; LimitQueueSizePlugin则可以控制队列大小，队列中积压1000条消息以后新的消息就会被丢弃，在测试环境下会比较有用。</p>
+<p>此外，activemq自己也提供了几个常用的插件，包括LoggingBrokerPlugin， StatisticsBrokerPlugin, 等， 也可以参考他们的实现。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1049,95 +1150,6 @@
 <p>使用main.setWar配置的是war包具体路径，可以在工程内，也可以在工程外，但是并非官方文档所说的“包含war包的目录路径(somePathOrDirectoryContainingHawtioWar)”<br>之后运行main.run就可以启动hawtio了.</p>
 <h2 id="权限"><a href="#权限" class="headerlink" title="权限"></a>权限</h2><p>新版本的hawtio默认是要密码的，如果想简单，可以配置一条jvm参数： -Dhawtio.authenticationEnabled&#x3D;false， 关掉权限验证。</p>
 <p>示例代码可以在github (<a target="_blank" rel="noopener" href="https://github.com/lcy362/CamelDemo/blob/master/src/main/java/com/mallow/demo/camel/MainWithHawtio.java">https://github.com/lcy362/CamelDemo/blob/master/src/main/java/com/mallow/demo/camel/MainWithHawtio.java</a>) 上看，可以直接下载运行，不过需要在本地启动一个activemq. 这里的例子是一个使用hawtio监控apache-camel的简单例子，启动后，在hawtio页面上栏可以直接看到camel的标签，使用非常方便。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/posts/4433/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="流沙">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mobility">
-      <meta itemprop="description" content="关注服务端开发, 架构设计，个人成长等，涵盖java, go, 消息队列，数据库，云原生等各种话题">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Mobility">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/4433/" class="post-title-link" itemprop="url">java日志系统简介: 从tomcat大量打印debug日志说起</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-03-31 19:47:00" itemprop="dateCreated datePublished" datetime="2017-03-31T19:47:00+08:00">2017-03-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-28 18:53:05" itemprop="dateModified" datetime="2023-01-28T18:53:05+08:00">2023-01-28</time>
-    </span>
-
-  
-    <span id="/posts/4433/" class="post-meta-item leancloud_visitors" data-flag-title="java日志系统简介: 从tomcat大量打印debug日志说起" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>目前，java下应用最广泛的日志系统主要就是两个系列: log4j和slf4j+logback 。</p>
-<p>其中,slf4j只包含日志的接口，logback只包括日志的具体实现，两者加起来才是一个完整的日志系统。Log4j则同时包含了日志接口和实现。</p>
-<p>这两套日志系统之间有可以相互兼容的组件，分别是slf4j-log4j12和 log4j-over-slf4j，引入之后就可以用log4j打出slf4j接口的日志，或者用logback打出log4j接口的日志。</p>
-<p>背景知识介绍到这里，再简单说一下标题里提到的问题。问题的现象就是我们在war包里配置了log4j的日志级别为info, 但在catalina里却一直在打大量的debug日志。初看现象肯定很诡异，前期各种研究tomcat配置也没什么头绪。直到磁盘压力太大，去看jstack发现大量进程是等待在Logback代码中，才发现之前关注错了重点。再去具体了解了java下的日志系统后，问题也就很明了了。</p>
-<p>先把几个事实摆出来：<br>    1. 打出的debug日志都是用slf4j写的，根据堆栈得知logback具体执行了日志打印<br>    2. logback在无配置文件时默认debug级别<br>    3. 我们的war包中同时包含logback,log4j和slf4j-log4j12<br>    4. Slf4j无法主动选择具体的日志实现<br>想必看到这里，大家也明白了问题所在。根据我们引入的包，log4j和logback都可以实现打印slf4j日志，而具体谁来打，不是一个用正常办法可以控制的事情，在这个具体案例下，logback就成了具体的日志打印者。而因为我们其实是想用lo4j打日志，所以没有配logback配置，所以logback就按默认的debug级别打了大量日志。</p>
-<p>解决办法也很简单，就是把logback的包全去掉。看似有些暴力，但确实是最合理的一个解决办法。</p>
-<p>最后提供一个排查日志问题的通用套路，免得找不到方向乱看。<br>    1. 找几行不符合自己日志配置的具体日志，翻阅对应代码，看看是哪个日志接口打的<br>    2. 查jar包，看看这套日志框架有哪些具体实现<br>        3. 把多的jar包去掉</p>
 
       
     </div>
