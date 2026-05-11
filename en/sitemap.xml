@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://lichuanyang.top/en/posts/16495/</loc>
+    
+    <lastmod>2026-05-11</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://lichuanyang.top/en/posts/40400/</loc>
     
     <lastmod>2024-01-23</lastmod>
@@ -48,6 +55,31 @@
   
   <url>
     <loc>http://lichuanyang.top/en/tags/i18n/</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://lichuanyang.top/en/tags/llm/</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://lichuanyang.top/en/tags/knowledge-management/</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://lichuanyang.top/en/tags/security-standards/</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://lichuanyang.top/en/tags/wiki/</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://lichuanyang.top/en/tags/practice/</loc>
     <lastmod>2026-05-11</lastmod>
   </url>
   

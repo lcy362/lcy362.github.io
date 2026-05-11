@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/en/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/en/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/en/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/en/images/logo.svg" color="#222">
+<script data-ad-client="ca-pub-7310841175510611" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU">
+  <meta name="msvalidate.01" content="FEC1AF1D401268A4208AF51DC0275AAA">
+  <meta name="baidu-site-verification" content="code-T8LautTf5f">
+
+<link rel="stylesheet" href="/en/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"lichuanyang.top","root":"/en/","images":"/en/images","scheme":"Gemini","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/en/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/en/js/config.js"></script>
+
+    <meta name="description" content="When I was organizing our team’s security development standards recently, I encountered an old problem: security documentation keeps piling up, but when you actually need it, you can’t find it. Every">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Using LLM to Manage Security Development Standards - An llm-wiki Practice">
+<meta property="og:url" content="http://lichuanyang.top/en/posts/16495/index.html">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="When I was organizing our team’s security development standards recently, I encountered an old problem: security documentation keeps piling up, but when you actually need it, you can’t find it. Every">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-05-11T07:38:16.000Z">
+<meta property="article:modified_time" content="2026-05-11T09:41:31.747Z">
+<meta property="article:author" content="quicksand">
+<meta property="article:tag" content="llm">
+<meta property="article:tag" content="knowledge-management">
+<meta property="article:tag" content="security-standards">
+<meta property="article:tag" content="wiki">
+<meta property="article:tag" content="practice">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://lichuanyang.top/en/posts/16495/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://lichuanyang.top/en/posts/16495/","path":"posts/16495/","title":"Using LLM to Manage Security Development Standards - An llm-wiki Practice"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Using LLM to Manage Security Development Standards - An llm-wiki Practice | Mobility</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-45390505-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-45390505-1","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/en/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/en/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?ffb948eb504670b10474a889e9409047"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/en/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/en/atom.xml" title="Mobility" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/en/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Mobility</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The sand accumulates to form a pagoda</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/en/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/en/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/en/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/en/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/en/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li><li class="menu-item menu-item-中文"><a href="https://lichuanyang.top/" rel="section"><i class="fa fa-language fa-fw"></i>中文</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-Karpathy%E2%80%99s-llm-wiki"><span class="nav-number">1.</span> <span class="nav-text">What is Karpathy’s llm-wiki?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#My-Implementation-Process"><span class="nav-number">2.</span> <span class="nav-text">My Implementation Process</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-1-Generate-CLAUDE-md"><span class="nav-number">2.1.</span> <span class="nav-text">Step 1: Generate CLAUDE.md</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-2-Collect-and-Organize-Raw-Materials"><span class="nav-number">2.2.</span> <span class="nav-text">Step 2: Collect and Organize Raw Materials</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-3-Let-the-LLM-Generate-the-Wiki-Layer"><span class="nav-number">2.3.</span> <span class="nav-text">Step 3: Let the LLM Generate the Wiki Layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-4-Generate-Final-Specification-Documents"><span class="nav-number">2.4.</span> <span class="nav-text">Step 4: Generate Final Specification Documents</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Actual-Results"><span class="nav-number">3.</span> <span class="nav-text">Actual Results</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Reading-Experience"><span class="nav-number">3.1.</span> <span class="nav-text">Reading Experience</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LLM-Q-A"><span class="nav-number">3.2.</span> <span class="nav-text">LLM Q&amp;A</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Continuous-Updates"><span class="nav-number">3.3.</span> <span class="nav-text">Continuous Updates</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Problems-Encountered-and-Solutions"><span class="nav-number">4.</span> <span class="nav-text">Problems Encountered and Solutions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Problem-1-Unstable-Wiki-Quality-from-LLM"><span class="nav-number">4.1.</span> <span class="nav-text">Problem 1: Unstable Wiki Quality from LLM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Problem-2-Cross-References-Frequently-Break"><span class="nav-number">4.2.</span> <span class="nav-text">Problem 2: Cross-References Frequently Break</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Problem-3-Low-Efficiency-Processing-Unstructured-Materials"><span class="nav-number">4.3.</span> <span class="nav-text">Problem 3: Low Efficiency Processing Unstructured Materials</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lessons-Learned"><span class="nav-number">5.</span> <span class="nav-text">Lessons Learned</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">6.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">quicksand</p>
+  <div class="site-description" itemprop="description">Focus on server-side development, architecture design, personal growth, etc., covering various topics such as java, go, message queue, database, cloud native, etc.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/en/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/en/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lcy362" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lcy362" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/3448633" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;3448633" rel="noopener me" target="_blank"><i class="stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hobermallow" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hobermallow" rel="noopener me" target="_blank"><i class="知乎 fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+
+      
+        <div>
+          <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/en/upload/qrcode.bmp" alt=" wechat" style="width: 200px; max-width: 100%;"/>
+    <div>订阅公众号</div>
+</div>
+
+        </div>
+      
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lichuanyang.top/en/posts/16495/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/en/images/avatar.gif">
+      <meta itemprop="name" content="quicksand">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mobility">
+      <meta itemprop="description" content="Focus on server-side development, architecture design, personal growth, etc., covering various topics such as java, go, message queue, database, cloud native, etc.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Using LLM to Manage Security Development Standards - An llm-wiki Practice | Mobility">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Using LLM to Manage Security Development Standards - An llm-wiki Practice
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2026-05-11 15:38:16 / Modified: 17:41:31" itemprop="dateCreated datePublished" datetime="2026-05-11T15:38:16+08:00">2026-05-11</time>
+    </span>
+
+  
+    <span id="/en/posts/16495/" class="post-meta-item leancloud_visitors" data-flag-title="Using LLM to Manage Security Development Standards - An llm-wiki Practice" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>When I was organizing our team’s security development standards recently, I encountered an old problem: security documentation keeps piling up, but when you actually need it, you can’t find it. Every time a new team member joins, they have to dig through various documents to piece together the complete security standards. Every time we have a security incident, the lessons learned are scattered everywhere, and we end up rediscovering the same issues next time.</p>
+<p>I’ve tried managing this with Confluence, Notion, even Git repository READMEs, but none worked well. It wasn’t until I saw Karpathy’s llm-wiki concept that I thought this might be a breakthrough approach.</p>
+<span id="more"></span>
+
+<h2 id="What-is-Karpathy’s-llm-wiki"><a href="#What-is-Karpathy’s-llm-wiki" class="headerlink" title="What is Karpathy’s llm-wiki?"></a>What is Karpathy’s llm-wiki?</h2><p>Karpathy proposed an idea in his <a target="_blank" rel="noopener" href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Gist</a>: let LLMs maintain a Wiki middleware layer. His exact words were “the wiki is a persistent, compounding artifact” - this Wiki layer acts like a compiler, compiling raw documents into structured data. This way, when the LLM answers questions, it doesn’t need to search through raw documents from scratch; it can directly query the Wiki.</p>
+<p>I think this approach is brilliant. Traditional document management is about “storing” and “finding”, while llm-wiki is about “compiling” and “querying”. Raw documents might be messy, duplicated, or even contradictory, but the Wiki layer is clean, structured, and cross-referenced.</p>
+<p>For example: our team has over a dozen security development standard documents, covering everything from input validation to penetration testing, plus nearly ten security incident post-mortem reports. These documents come in different formats - some in Word, some in Markdown, some are even just Slack chat exports. If we let the LLM process these raw materials directly, efficiency would be very low. But if we first “compile” them into a Wiki, the results are completely different.</p>
+<h2 id="My-Implementation-Process"><a href="#My-Implementation-Process" class="headerlink" title="My Implementation Process"></a>My Implementation Process</h2><h3 id="Step-1-Generate-CLAUDE-md"><a href="#Step-1-Generate-CLAUDE-md" class="headerlink" title="Step 1: Generate CLAUDE.md"></a>Step 1: Generate CLAUDE.md</h3><p>I first gave Claude Karpathy’s Gist link and asked it to generate a CLAUDE.md file based on this concept. This file serves as an “operation manual” for the LLM, telling it how to maintain the Wiki.</p>
+<p>The generated CLAUDE.md contained several key sections:</p>
+<ul>
+<li>Three-layer architecture explanation (raw → wiki → output)</li>
+<li>Wiki page specification (frontmatter format, cross-reference rules)</li>
+<li>Ingestion workflow (how to process new materials)</li>
+<li>Query workflow (how to answer user questions)</li>
+<li>Lint checks (how to maintain Wiki health)</li>
+</ul>
+<p>In practice, I found the model’s output was basically usable without much fine-tuning. I also had the AI generate the output layer for final specification documents. This completed the three-layer architecture: raw for original materials, wiki for structured Wiki, output for final output.</p>
+<h3 id="Step-2-Collect-and-Organize-Raw-Materials"><a href="#Step-2-Collect-and-Organize-Raw-Materials" class="headerlink" title="Step 2: Collect and Organize Raw Materials"></a>Step 2: Collect and Organize Raw Materials</h3><p>This was the most time-consuming step. I collected all the scattered security development standards and incident cases, placing them uniformly in the raw&#x2F;sources&#x2F; directory. To preserve the original state, I didn’t modify the content or unify the formats - PDF, Word, PPT, Markdown, and other formats can all go directly into the raw layer; the model can handle them all.</p>
+<p>Specifically, I collected:</p>
+<ul>
+<li>Over a dozen security development standard documents: covering input validation, SQL injection prevention, XSS prevention, CSRF prevention, sensitive data protection, log security, etc.</li>
+<li>Nearly ten security incident post-mortem reports: including SQL injection vulnerabilities, unauthorized access, sensitive information leaks, session hijacking, and other real cases</li>
+<li>Several security architecture documents: covering zero-trust architecture, secure coding guidelines, penetration testing processes, etc.</li>
+</ul>
+<p>The quality of these materials varied greatly. Some were well-formatted with clear headings and lists; others were rough notes, even screenshots. But that’s fine - the beauty of llm-wiki is that it can handle this kind of “dirty data”.</p>
+<h3 id="Step-3-Let-the-LLM-Generate-the-Wiki-Layer"><a href="#Step-3-Let-the-LLM-Generate-the-Wiki-Layer" class="headerlink" title="Step 3: Let the LLM Generate the Wiki Layer"></a>Step 3: Let the LLM Generate the Wiki Layer</h3><p>With CLAUDE.md and raw materials ready, I could let the LLM start working. I used Claude here, mainly because its context window is large enough to process more content at once.</p>
+<p>The process works like this:</p>
+<ol>
+<li>Use CLAUDE.md as the system prompt</li>
+<li>Tell the LLM: “Please process all materials in the raw&#x2F;sources&#x2F; directory according to the CLAUDE.md specification and generate the wiki layer”</li>
+<li>The LLM reads each raw file sequentially, extracts key information, and generates corresponding Wiki pages</li>
+</ol>
+<p>This process isn’t complete in one go. The LLM’s initial Wiki has issues:</p>
+<ul>
+<li>Cross-references are insufficient</li>
+<li>Some concepts aren’t extracted into standalone pages</li>
+<li>Logical relationships between pages aren’t clear enough</li>
+</ul>
+<p>So multiple iterations are needed. I review the generated Wiki, point out issues, and let the LLM fix them. For example:<br>“This incident case mentions ‘improper connection pool configuration’, but why isn’t there a corresponding concept page? Please create a [[connection-pool-best-practices]] page and reference it in the incident case.”</p>
+<p>After 5-6 iterations, the Wiki layer gradually took shape.</p>
+<h3 id="Step-4-Generate-Final-Specification-Documents"><a href="#Step-4-Generate-Final-Specification-Documents" class="headerlink" title="Step 4: Generate Final Specification Documents"></a>Step 4: Generate Final Specification Documents</h3><p>With the Wiki layer ready, I could generate the final specification documents. I asked the LLM to generate a developer-facing, directly readable specification document based on the Wiki layer.</p>
+<p>Here’s a design decision: the final document goes in the output&#x2F; directory, not modifying the original materials. This maintains the clarity of the three-layer architecture:</p>
+<ul>
+<li>raw&#x2F;: original materials, unmodifiable</li>
+<li>wiki&#x2F;: structured Wiki, maintained by LLM</li>
+<li>output&#x2F;: final output, for human reading</li>
+</ul>
+<p>The generated specification documents have several characteristics:</p>
+<ol>
+<li>Each standard entry includes “why” - not just “do this”, but also “why do this”</li>
+<li>Related incident cases are linked as “negative examples” alongside</li>
+<li>Cross-references exist, for example “database connection pool configuration” links to the “connection pool best practices” concept page</li>
+</ol>
+<h2 id="Actual-Results"><a href="#Actual-Results" class="headerlink" title="Actual Results"></a>Actual Results</h2><h3 id="Reading-Experience"><a href="#Reading-Experience" class="headerlink" title="Reading Experience"></a>Reading Experience</h3><p>The final specification documents can be opened directly in Obsidian. Being in Markdown format, they support:</p>
+<ul>
+<li>Code block syntax highlighting</li>
+<li>Internal link navigation (click to jump to related concepts or incident cases)</li>
+<li>Tag filtering (e.g., filter all #security-related standards)</li>
+</ul>
+<p>More importantly, each security standard is linked to real incident cases. For example, next to the “SQL Injection Prevention” standard, there’s a link to the [[sql-injection-vulnerability-incident]] case, which details how the vulnerability occurred, what impact it had, and how it was fixed. This way developers not only know “what to do” but also see “what happens if you don’t do it”.</p>
+<p>Compared to the previous scattered documents, the reading experience improved by orders of magnitude.</p>
+<h3 id="LLM-Q-A"><a href="#LLM-Q-A" class="headerlink" title="LLM Q&amp;A"></a>LLM Q&amp;A</h3><p>Even more powerful is the LLM’s Q&amp;A capability. Because of the Wiki layer, the LLM’s answers are very accurate. For example, when I ask:<br>“What should I watch out for when doing batch database updates?”</p>
+<p>The LLM will:</p>
+<ol>
+<li>First find the [[batch-operation-security]] concept page in the Wiki</li>
+<li>Combine it with the [[sql-injection-batch-incident]] incident case</li>
+<li>Give specific recommendations: must use parameterized queries, no string concatenation for SQL, batch operations need transaction control, large batches should be paginated, etc.</li>
+<li>Also explain why: because if something goes wrong with batch operations, the impact is N times that of single operations</li>
+</ol>
+<p>Another example: “How should I handle user file uploads securely?”</p>
+<p>The LLM will:</p>
+<ol>
+<li>Find the [[file-upload-security]] concept page</li>
+<li>Combine it with the [[malicious-file-upload-incident]] incident case</li>
+<li>Give specific recommendations: file type whitelist validation, file content detection, rename storage, limit file size, isolated storage, etc.</li>
+</ol>
+<p>This is much more reliable than letting the LLM “search” for answers in a dozen raw documents.</p>
+<h3 id="Continuous-Updates"><a href="#Continuous-Updates" class="headerlink" title="Continuous Updates"></a>Continuous Updates</h3><p>What satisfied me most is the update mechanism. When new standard documents or incident reports arrive, I just need to:</p>
+<ol>
+<li>Place the new file in the raw&#x2F;sources&#x2F; directory</li>
+<li>Tell the LLM: “There are new materials to ingest”</li>
+<li>The LLM automatically updates the Wiki layer and specification documents</li>
+</ol>
+<p>For example, last week we had a new security incident: an XSS vulnerability due to unfiltered user input. After I placed the incident report in the raw directory, the LLM automatically:</p>
+<ol>
+<li>Created the [[xss-user-input-incident]] incident case page</li>
+<li>Updated the [[input-validation-security]] concept page with XSS-related notes</li>
+<li>Added relevant entries to the “Input Validation Standards” section of the specification document</li>
+</ol>
+<h2 id="Problems-Encountered-and-Solutions"><a href="#Problems-Encountered-and-Solutions" class="headerlink" title="Problems Encountered and Solutions"></a>Problems Encountered and Solutions</h2><h3 id="Problem-1-Unstable-Wiki-Quality-from-LLM"><a href="#Problem-1-Unstable-Wiki-Quality-from-LLM" class="headerlink" title="Problem 1: Unstable Wiki Quality from LLM"></a>Problem 1: Unstable Wiki Quality from LLM</h3><p>At first, the LLM-generated Wiki quality varied greatly. Sometimes it extracted key information well, sometimes it missed important content.</p>
+<p><strong>Solution</strong>: I refined the Wiki page specification in CLAUDE.md. For example, I required each page to have:</p>
+<ul>
+<li>Summary line: one sentence describing the core content</li>
+<li>Tags line: mark topics with #tags</li>
+<li>Clear page type (concept&#x2F;entity&#x2F;source&#x2F;comparison)</li>
+</ul>
+<p>For security incident cases, I also required: vulnerability type, attack vector, impact scope, fix solution, prevention measures. This gave the LLM clearer guidance, and generation quality became much more stable.</p>
+<h3 id="Problem-2-Cross-References-Frequently-Break"><a href="#Problem-2-Cross-References-Frequently-Break" class="headerlink" title="Problem 2: Cross-References Frequently Break"></a>Problem 2: Cross-References Frequently Break</h3><p>The core value of Wiki lies in cross-references, but the LLM often creates one-way links or links to non-existent pages.</p>
+<p><strong>Solution</strong>: I strengthened cross-reference rules in CLAUDE.md:</p>
+<ol>
+<li>Must be bidirectional: if page A references [[B]], then page B must also reference [[A]]</li>
+<li>The related field in frontmatter must match the [[wiki-links]] in the body</li>
+<li>Can only reference existing pages; must create before referencing</li>
+</ol>
+<p>I also added Lint checks to regularly check for broken links and orphan pages.</p>
+<h3 id="Problem-3-Low-Efficiency-Processing-Unstructured-Materials"><a href="#Problem-3-Low-Efficiency-Processing-Unstructured-Materials" class="headerlink" title="Problem 3: Low Efficiency Processing Unstructured Materials"></a>Problem 3: Low Efficiency Processing Unstructured Materials</h3><p>Some raw materials are poor quality, like screenshots, handwritten notes, or even Slack chat exports. The LLM processes these materials inefficiently.</p>
+<p><strong>Solution</strong>: For these materials, I first manually organize them into structured Markdown, then hand them to the LLM. Although this increases upfront workload, it ensures final quality.</p>
+<h2 id="Lessons-Learned"><a href="#Lessons-Learned" class="headerlink" title="Lessons Learned"></a>Lessons Learned</h2><ol>
+<li><p><strong>Don’t aim for perfection in one shot</strong>. llm-wiki is an iterative process. The first version of the Wiki won’t be perfect, but it can be improved through continuous iteration.</p>
+</li>
+<li><p><strong>Keep optimizing CLAUDE.md</strong>. As you use it, you’ll discover missing rules in CLAUDE.md. For example, I later added structural requirements like “security incident cases must include: vulnerability type, attack vector, impact scope, fix solution, prevention measures.”</p>
+</li>
+<li><p><strong>Keep the three-layer architecture pure</strong>. raw&#x2F; is raw&#x2F;, don’t modify it; wiki&#x2F; is maintained by LLM; output&#x2F; is for humans. Mixing them together will only get messier.</p>
+</li>
+<li><p><strong>Do regular health checks</strong>. I run Lint weekly to check for broken links, orphan pages, one-way links, etc. Fix problems as soon as they’re found.</p>
+</li>
+<li><p><strong>Accept imperfection</strong>. The LLM-generated Wiki won’t be 100% accurate; there will be omissions and errors. But compared to completely manual maintenance, it’s already much better.</p>
+</li>
+</ol>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Using llm-wiki to manage security development standards essentially transforms “document management” into “knowledge engineering”. Raw documents are “raw materials”, Wiki is “semi-finished products”, and specification documents are “finished products”. The LLM serves as both “compiler” and “maintainer” in this process.</p>
+<p>The greatest value of this approach is <strong>sustainability</strong>. Traditional document management eventually gets abandoned because maintenance costs are too high. llm-wiki shifts maintenance costs to the LLM, and humans only need to:</p>
+<ol>
+<li>Provide raw materials (this can’t be avoided)</li>
+<li>Review and correct the LLM’s work (much easier than writing from scratch)</li>
+<li>Use the final output (enjoy the results)</li>
+</ol>
+<p>If you’re also struggling with managing security development standards, give this approach a try. You don’t need to copy my implementation exactly; the key is understanding the core concept of “Wiki middleware layer”. As for which tools to use or how to organize directories, you can adjust according to your actual situation.</p>
+<p>After all, tools exist to serve people, don’t they?</p>
+<p>Source: <a href="http://lichuanyang.top/posts/88001/">http://lichuanyang.top/posts/88001/</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU5MjQ5NjE1OQ==&scene=124#wechat_redirect">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/en/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/en/tags/llm/" rel="tag"># llm</a>
+              <a href="/en/tags/knowledge-management/" rel="tag"># knowledge-management</a>
+              <a href="/en/tags/security-standards/" rel="tag"># security-standards</a>
+              <a href="/en/tags/wiki/" rel="tag"># wiki</a>
+              <a href="/en/tags/practice/" rel="tag"># practice</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/en/posts/40400/" rel="prev" title="a easy way to build multi-languages blog with hexo">
+                  <i class="fa fa-angle-left"></i> a easy way to build multi-languages blog with hexo
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2012 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">quicksand</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/lcy362" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/en/js/comments.js"></script><script src="/en/js/utils.js"></script><script src="/en/js/motion.js"></script><script src="/en/js/next-boot.js"></script><script src="/en/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/en/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI","app_key":"lW7mfN411Vpjo3x9S5zdOTlE","server_url":"https://ay7gn9nn.api.lncldglobal.com","security":false}</script>
+  <script src="/en/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>

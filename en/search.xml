@@ -32,6 +32,147 @@
       </tags>
   </entry>
   <entry>
+    <title>Using LLM to Manage Security Development Standards - An llm-wiki Practice</title>
+    <url>/en/posts/16495/</url>
+    <content><![CDATA[<p>When I was organizing our team’s security development standards recently, I encountered an old problem: security documentation keeps piling up, but when you actually need it, you can’t find it. Every time a new team member joins, they have to dig through various documents to piece together the complete security standards. Every time we have a security incident, the lessons learned are scattered everywhere, and we end up rediscovering the same issues next time.</p>
+<p>I’ve tried managing this with Confluence, Notion, even Git repository READMEs, but none worked well. It wasn’t until I saw Karpathy’s llm-wiki concept that I thought this might be a breakthrough approach.</p>
+<span id="more"></span>
+
+<h2 id="What-is-Karpathy’s-llm-wiki"><a href="#What-is-Karpathy’s-llm-wiki" class="headerlink" title="What is Karpathy’s llm-wiki?"></a>What is Karpathy’s llm-wiki?</h2><p>Karpathy proposed an idea in his <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Gist</a>: let LLMs maintain a Wiki middleware layer. His exact words were “the wiki is a persistent, compounding artifact” - this Wiki layer acts like a compiler, compiling raw documents into structured data. This way, when the LLM answers questions, it doesn’t need to search through raw documents from scratch; it can directly query the Wiki.</p>
+<p>I think this approach is brilliant. Traditional document management is about “storing” and “finding”, while llm-wiki is about “compiling” and “querying”. Raw documents might be messy, duplicated, or even contradictory, but the Wiki layer is clean, structured, and cross-referenced.</p>
+<p>For example: our team has over a dozen security development standard documents, covering everything from input validation to penetration testing, plus nearly ten security incident post-mortem reports. These documents come in different formats - some in Word, some in Markdown, some are even just Slack chat exports. If we let the LLM process these raw materials directly, efficiency would be very low. But if we first “compile” them into a Wiki, the results are completely different.</p>
+<h2 id="My-Implementation-Process"><a href="#My-Implementation-Process" class="headerlink" title="My Implementation Process"></a>My Implementation Process</h2><h3 id="Step-1-Generate-CLAUDE-md"><a href="#Step-1-Generate-CLAUDE-md" class="headerlink" title="Step 1: Generate CLAUDE.md"></a>Step 1: Generate CLAUDE.md</h3><p>I first gave Claude Karpathy’s Gist link and asked it to generate a CLAUDE.md file based on this concept. This file serves as an “operation manual” for the LLM, telling it how to maintain the Wiki.</p>
+<p>The generated CLAUDE.md contained several key sections:</p>
+<ul>
+<li>Three-layer architecture explanation (raw → wiki → output)</li>
+<li>Wiki page specification (frontmatter format, cross-reference rules)</li>
+<li>Ingestion workflow (how to process new materials)</li>
+<li>Query workflow (how to answer user questions)</li>
+<li>Lint checks (how to maintain Wiki health)</li>
+</ul>
+<p>In practice, I found the model’s output was basically usable without much fine-tuning. I also had the AI generate the output layer for final specification documents. This completed the three-layer architecture: raw for original materials, wiki for structured Wiki, output for final output.</p>
+<h3 id="Step-2-Collect-and-Organize-Raw-Materials"><a href="#Step-2-Collect-and-Organize-Raw-Materials" class="headerlink" title="Step 2: Collect and Organize Raw Materials"></a>Step 2: Collect and Organize Raw Materials</h3><p>This was the most time-consuming step. I collected all the scattered security development standards and incident cases, placing them uniformly in the raw&#x2F;sources&#x2F; directory. To preserve the original state, I didn’t modify the content or unify the formats - PDF, Word, PPT, Markdown, and other formats can all go directly into the raw layer; the model can handle them all.</p>
+<p>Specifically, I collected:</p>
+<ul>
+<li>Over a dozen security development standard documents: covering input validation, SQL injection prevention, XSS prevention, CSRF prevention, sensitive data protection, log security, etc.</li>
+<li>Nearly ten security incident post-mortem reports: including SQL injection vulnerabilities, unauthorized access, sensitive information leaks, session hijacking, and other real cases</li>
+<li>Several security architecture documents: covering zero-trust architecture, secure coding guidelines, penetration testing processes, etc.</li>
+</ul>
+<p>The quality of these materials varied greatly. Some were well-formatted with clear headings and lists; others were rough notes, even screenshots. But that’s fine - the beauty of llm-wiki is that it can handle this kind of “dirty data”.</p>
+<h3 id="Step-3-Let-the-LLM-Generate-the-Wiki-Layer"><a href="#Step-3-Let-the-LLM-Generate-the-Wiki-Layer" class="headerlink" title="Step 3: Let the LLM Generate the Wiki Layer"></a>Step 3: Let the LLM Generate the Wiki Layer</h3><p>With CLAUDE.md and raw materials ready, I could let the LLM start working. I used Claude here, mainly because its context window is large enough to process more content at once.</p>
+<p>The process works like this:</p>
+<ol>
+<li>Use CLAUDE.md as the system prompt</li>
+<li>Tell the LLM: “Please process all materials in the raw&#x2F;sources&#x2F; directory according to the CLAUDE.md specification and generate the wiki layer”</li>
+<li>The LLM reads each raw file sequentially, extracts key information, and generates corresponding Wiki pages</li>
+</ol>
+<p>This process isn’t complete in one go. The LLM’s initial Wiki has issues:</p>
+<ul>
+<li>Cross-references are insufficient</li>
+<li>Some concepts aren’t extracted into standalone pages</li>
+<li>Logical relationships between pages aren’t clear enough</li>
+</ul>
+<p>So multiple iterations are needed. I review the generated Wiki, point out issues, and let the LLM fix them. For example:<br>“This incident case mentions ‘improper connection pool configuration’, but why isn’t there a corresponding concept page? Please create a [[connection-pool-best-practices]] page and reference it in the incident case.”</p>
+<p>After 5-6 iterations, the Wiki layer gradually took shape.</p>
+<h3 id="Step-4-Generate-Final-Specification-Documents"><a href="#Step-4-Generate-Final-Specification-Documents" class="headerlink" title="Step 4: Generate Final Specification Documents"></a>Step 4: Generate Final Specification Documents</h3><p>With the Wiki layer ready, I could generate the final specification documents. I asked the LLM to generate a developer-facing, directly readable specification document based on the Wiki layer.</p>
+<p>Here’s a design decision: the final document goes in the output&#x2F; directory, not modifying the original materials. This maintains the clarity of the three-layer architecture:</p>
+<ul>
+<li>raw&#x2F;: original materials, unmodifiable</li>
+<li>wiki&#x2F;: structured Wiki, maintained by LLM</li>
+<li>output&#x2F;: final output, for human reading</li>
+</ul>
+<p>The generated specification documents have several characteristics:</p>
+<ol>
+<li>Each standard entry includes “why” - not just “do this”, but also “why do this”</li>
+<li>Related incident cases are linked as “negative examples” alongside</li>
+<li>Cross-references exist, for example “database connection pool configuration” links to the “connection pool best practices” concept page</li>
+</ol>
+<h2 id="Actual-Results"><a href="#Actual-Results" class="headerlink" title="Actual Results"></a>Actual Results</h2><h3 id="Reading-Experience"><a href="#Reading-Experience" class="headerlink" title="Reading Experience"></a>Reading Experience</h3><p>The final specification documents can be opened directly in Obsidian. Being in Markdown format, they support:</p>
+<ul>
+<li>Code block syntax highlighting</li>
+<li>Internal link navigation (click to jump to related concepts or incident cases)</li>
+<li>Tag filtering (e.g., filter all #security-related standards)</li>
+</ul>
+<p>More importantly, each security standard is linked to real incident cases. For example, next to the “SQL Injection Prevention” standard, there’s a link to the [[sql-injection-vulnerability-incident]] case, which details how the vulnerability occurred, what impact it had, and how it was fixed. This way developers not only know “what to do” but also see “what happens if you don’t do it”.</p>
+<p>Compared to the previous scattered documents, the reading experience improved by orders of magnitude.</p>
+<h3 id="LLM-Q-A"><a href="#LLM-Q-A" class="headerlink" title="LLM Q&amp;A"></a>LLM Q&amp;A</h3><p>Even more powerful is the LLM’s Q&amp;A capability. Because of the Wiki layer, the LLM’s answers are very accurate. For example, when I ask:<br>“What should I watch out for when doing batch database updates?”</p>
+<p>The LLM will:</p>
+<ol>
+<li>First find the [[batch-operation-security]] concept page in the Wiki</li>
+<li>Combine it with the [[sql-injection-batch-incident]] incident case</li>
+<li>Give specific recommendations: must use parameterized queries, no string concatenation for SQL, batch operations need transaction control, large batches should be paginated, etc.</li>
+<li>Also explain why: because if something goes wrong with batch operations, the impact is N times that of single operations</li>
+</ol>
+<p>Another example: “How should I handle user file uploads securely?”</p>
+<p>The LLM will:</p>
+<ol>
+<li>Find the [[file-upload-security]] concept page</li>
+<li>Combine it with the [[malicious-file-upload-incident]] incident case</li>
+<li>Give specific recommendations: file type whitelist validation, file content detection, rename storage, limit file size, isolated storage, etc.</li>
+</ol>
+<p>This is much more reliable than letting the LLM “search” for answers in a dozen raw documents.</p>
+<h3 id="Continuous-Updates"><a href="#Continuous-Updates" class="headerlink" title="Continuous Updates"></a>Continuous Updates</h3><p>What satisfied me most is the update mechanism. When new standard documents or incident reports arrive, I just need to:</p>
+<ol>
+<li>Place the new file in the raw&#x2F;sources&#x2F; directory</li>
+<li>Tell the LLM: “There are new materials to ingest”</li>
+<li>The LLM automatically updates the Wiki layer and specification documents</li>
+</ol>
+<p>For example, last week we had a new security incident: an XSS vulnerability due to unfiltered user input. After I placed the incident report in the raw directory, the LLM automatically:</p>
+<ol>
+<li>Created the [[xss-user-input-incident]] incident case page</li>
+<li>Updated the [[input-validation-security]] concept page with XSS-related notes</li>
+<li>Added relevant entries to the “Input Validation Standards” section of the specification document</li>
+</ol>
+<h2 id="Problems-Encountered-and-Solutions"><a href="#Problems-Encountered-and-Solutions" class="headerlink" title="Problems Encountered and Solutions"></a>Problems Encountered and Solutions</h2><h3 id="Problem-1-Unstable-Wiki-Quality-from-LLM"><a href="#Problem-1-Unstable-Wiki-Quality-from-LLM" class="headerlink" title="Problem 1: Unstable Wiki Quality from LLM"></a>Problem 1: Unstable Wiki Quality from LLM</h3><p>At first, the LLM-generated Wiki quality varied greatly. Sometimes it extracted key information well, sometimes it missed important content.</p>
+<p><strong>Solution</strong>: I refined the Wiki page specification in CLAUDE.md. For example, I required each page to have:</p>
+<ul>
+<li>Summary line: one sentence describing the core content</li>
+<li>Tags line: mark topics with #tags</li>
+<li>Clear page type (concept&#x2F;entity&#x2F;source&#x2F;comparison)</li>
+</ul>
+<p>For security incident cases, I also required: vulnerability type, attack vector, impact scope, fix solution, prevention measures. This gave the LLM clearer guidance, and generation quality became much more stable.</p>
+<h3 id="Problem-2-Cross-References-Frequently-Break"><a href="#Problem-2-Cross-References-Frequently-Break" class="headerlink" title="Problem 2: Cross-References Frequently Break"></a>Problem 2: Cross-References Frequently Break</h3><p>The core value of Wiki lies in cross-references, but the LLM often creates one-way links or links to non-existent pages.</p>
+<p><strong>Solution</strong>: I strengthened cross-reference rules in CLAUDE.md:</p>
+<ol>
+<li>Must be bidirectional: if page A references [[B]], then page B must also reference [[A]]</li>
+<li>The related field in frontmatter must match the [[wiki-links]] in the body</li>
+<li>Can only reference existing pages; must create before referencing</li>
+</ol>
+<p>I also added Lint checks to regularly check for broken links and orphan pages.</p>
+<h3 id="Problem-3-Low-Efficiency-Processing-Unstructured-Materials"><a href="#Problem-3-Low-Efficiency-Processing-Unstructured-Materials" class="headerlink" title="Problem 3: Low Efficiency Processing Unstructured Materials"></a>Problem 3: Low Efficiency Processing Unstructured Materials</h3><p>Some raw materials are poor quality, like screenshots, handwritten notes, or even Slack chat exports. The LLM processes these materials inefficiently.</p>
+<p><strong>Solution</strong>: For these materials, I first manually organize them into structured Markdown, then hand them to the LLM. Although this increases upfront workload, it ensures final quality.</p>
+<h2 id="Lessons-Learned"><a href="#Lessons-Learned" class="headerlink" title="Lessons Learned"></a>Lessons Learned</h2><ol>
+<li><p><strong>Don’t aim for perfection in one shot</strong>. llm-wiki is an iterative process. The first version of the Wiki won’t be perfect, but it can be improved through continuous iteration.</p>
+</li>
+<li><p><strong>Keep optimizing CLAUDE.md</strong>. As you use it, you’ll discover missing rules in CLAUDE.md. For example, I later added structural requirements like “security incident cases must include: vulnerability type, attack vector, impact scope, fix solution, prevention measures.”</p>
+</li>
+<li><p><strong>Keep the three-layer architecture pure</strong>. raw&#x2F; is raw&#x2F;, don’t modify it; wiki&#x2F; is maintained by LLM; output&#x2F; is for humans. Mixing them together will only get messier.</p>
+</li>
+<li><p><strong>Do regular health checks</strong>. I run Lint weekly to check for broken links, orphan pages, one-way links, etc. Fix problems as soon as they’re found.</p>
+</li>
+<li><p><strong>Accept imperfection</strong>. The LLM-generated Wiki won’t be 100% accurate; there will be omissions and errors. But compared to completely manual maintenance, it’s already much better.</p>
+</li>
+</ol>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Using llm-wiki to manage security development standards essentially transforms “document management” into “knowledge engineering”. Raw documents are “raw materials”, Wiki is “semi-finished products”, and specification documents are “finished products”. The LLM serves as both “compiler” and “maintainer” in this process.</p>
+<p>The greatest value of this approach is <strong>sustainability</strong>. Traditional document management eventually gets abandoned because maintenance costs are too high. llm-wiki shifts maintenance costs to the LLM, and humans only need to:</p>
+<ol>
+<li>Provide raw materials (this can’t be avoided)</li>
+<li>Review and correct the LLM’s work (much easier than writing from scratch)</li>
+<li>Use the final output (enjoy the results)</li>
+</ol>
+<p>If you’re also struggling with managing security development standards, give this approach a try. You don’t need to copy my implementation exactly; the key is understanding the core concept of “Wiki middleware layer”. As for which tools to use or how to organize directories, you can adjust according to your actual situation.</p>
+<p>After all, tools exist to serve people, don’t they?</p>
+<p>Source: <a href="http://lichuanyang.top/posts/88001/">http://lichuanyang.top/posts/88001/</a></p>
+]]></content>
+      <tags>
+        <tag>llm</tag>
+        <tag>knowledge-management</tag>
+        <tag>security-standards</tag>
+        <tag>wiki</tag>
+        <tag>practice</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Practical experience using kubernetes in java projects with low learning costs</title>
     <url>/en/posts/40964/</url>
     <content><![CDATA[<p>Compared with large manufacturers, many start-up companies have a very important disadvantage that their infrastructure is imperfect and they do not have a variety of complete tools. Therefore, I plan to sort out how to build a development process with a good experience based on the capabilities provided by the open source community with as little operation and maintenance and development costs as possible.</p>
