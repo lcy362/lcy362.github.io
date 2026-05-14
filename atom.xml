@@ -3,11 +3,11 @@
   <title>Mobility</title>
   
   <subtitle>聚沙成塔</subtitle>
-  <link href="http://lichuanyang.top/atom.xml" rel="self"/>
+  <link href="https://lichuanyang.top/atom.xml" rel="self"/>
   
-  <link href="http://lichuanyang.top/"/>
+  <link href="https://lichuanyang.top/"/>
   <updated>2026-05-11T11:37:49.590Z</updated>
-  <id>http://lichuanyang.top/</id>
+  <id>https://lichuanyang.top/</id>
   
   <author>
     <name>流沙</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Vercel封禁163邮箱后，我是怎么恢复博客的</title>
-    <link href="http://lichuanyang.top/posts/39648/"/>
-    <id>http://lichuanyang.top/posts/39648/</id>
+    <link href="https://lichuanyang.top/posts/39648/"/>
+    <id>https://lichuanyang.top/posts/39648/</id>
     <published>2026-05-11T11:30:00.000Z</published>
     <updated>2026-05-11T11:37:49.590Z</updated>
     
@@ -31,20 +31,20 @@
     
     
     
-    <category term="Vercel" scheme="http://lichuanyang.top/tags/Vercel/"/>
+    <category term="Vercel" scheme="https://lichuanyang.top/tags/Vercel/"/>
     
-    <category term="博客" scheme="http://lichuanyang.top/tags/%E5%8D%9A%E5%AE%A2/"/>
+    <category term="博客" scheme="https://lichuanyang.top/tags/%E5%8D%9A%E5%AE%A2/"/>
     
-    <category term="运维" scheme="http://lichuanyang.top/tags/%E8%BF%90%E7%BB%B4/"/>
+    <category term="运维" scheme="https://lichuanyang.top/tags/%E8%BF%90%E7%BB%B4/"/>
     
-    <category term="独立博客" scheme="http://lichuanyang.top/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/"/>
+    <category term="独立博客" scheme="https://lichuanyang.top/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/"/>
     
   </entry>
   
   <entry>
     <title>用LLM管理安全开发规范：一次llm-wiki实践</title>
-    <link href="http://lichuanyang.top/posts/88001/"/>
-    <id>http://lichuanyang.top/posts/88001/</id>
+    <link href="https://lichuanyang.top/posts/88001/"/>
+    <id>https://lichuanyang.top/posts/88001/</id>
     <published>2026-05-11T07:38:16.000Z</published>
     <updated>2026-05-11T08:16:43.464Z</updated>
     
@@ -57,22 +57,22 @@
     
     
     
-    <category term="llm" scheme="http://lichuanyang.top/tags/llm/"/>
+    <category term="llm" scheme="https://lichuanyang.top/tags/llm/"/>
     
-    <category term="知识管理" scheme="http://lichuanyang.top/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/"/>
+    <category term="知识管理" scheme="https://lichuanyang.top/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/"/>
     
-    <category term="安全规范" scheme="http://lichuanyang.top/tags/%E5%AE%89%E5%85%A8%E8%A7%84%E8%8C%83/"/>
+    <category term="安全规范" scheme="https://lichuanyang.top/tags/%E5%AE%89%E5%85%A8%E8%A7%84%E8%8C%83/"/>
     
-    <category term="wiki" scheme="http://lichuanyang.top/tags/wiki/"/>
+    <category term="wiki" scheme="https://lichuanyang.top/tags/wiki/"/>
     
-    <category term="实践" scheme="http://lichuanyang.top/tags/%E5%AE%9E%E8%B7%B5/"/>
+    <category term="实践" scheme="https://lichuanyang.top/tags/%E5%AE%9E%E8%B7%B5/"/>
     
   </entry>
   
   <entry>
     <title>Vaadin框架教程：Java工程师的前端开发秘籍</title>
-    <link href="http://lichuanyang.top/posts/43947/"/>
-    <id>http://lichuanyang.top/posts/43947/</id>
+    <link href="https://lichuanyang.top/posts/43947/"/>
+    <id>https://lichuanyang.top/posts/43947/</id>
     <published>2024-03-06T11:36:22.000Z</published>
     <updated>2024-03-06T12:01:12.075Z</updated>
     
@@ -84,20 +84,20 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
-    <category term="vaadin" scheme="http://lichuanyang.top/tags/vaadin/"/>
+    <category term="vaadin" scheme="https://lichuanyang.top/tags/vaadin/"/>
     
-    <category term="springboot" scheme="http://lichuanyang.top/tags/springboot/"/>
+    <category term="springboot" scheme="https://lichuanyang.top/tags/springboot/"/>
     
-    <category term="前端开发" scheme="http://lichuanyang.top/tags/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/"/>
+    <category term="前端开发" scheme="https://lichuanyang.top/tags/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/"/>
     
   </entry>
   
   <entry>
     <title>hexo多语言方案总结及最佳实践</title>
-    <link href="http://lichuanyang.top/posts/40400/"/>
-    <id>http://lichuanyang.top/posts/40400/</id>
+    <link href="https://lichuanyang.top/posts/40400/"/>
+    <id>https://lichuanyang.top/posts/40400/</id>
     <published>2024-01-22T10:12:31.000Z</published>
     <updated>2024-01-22T12:05:06.336Z</updated>
     
@@ -109,20 +109,20 @@
     
     
     
-    <category term="hexo" scheme="http://lichuanyang.top/tags/hexo/"/>
+    <category term="hexo" scheme="https://lichuanyang.top/tags/hexo/"/>
     
-    <category term="个人博客" scheme="http://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
+    <category term="个人博客" scheme="https://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
     
-    <category term="i18n" scheme="http://lichuanyang.top/tags/i18n/"/>
+    <category term="i18n" scheme="https://lichuanyang.top/tags/i18n/"/>
     
-    <category term="多语言" scheme="http://lichuanyang.top/tags/%E5%A4%9A%E8%AF%AD%E8%A8%80/"/>
+    <category term="多语言" scheme="https://lichuanyang.top/tags/%E5%A4%9A%E8%AF%AD%E8%A8%80/"/>
     
   </entry>
   
   <entry>
     <title>知乎增强工具-评论时间精确到秒</title>
-    <link href="http://lichuanyang.top/posts/44912/"/>
-    <id>http://lichuanyang.top/posts/44912/</id>
+    <link href="https://lichuanyang.top/posts/44912/"/>
+    <id>https://lichuanyang.top/posts/44912/</id>
     <published>2023-12-22T09:24:18.000Z</published>
     <updated>2023-12-22T10:13:08.615Z</updated>
     
@@ -134,18 +134,18 @@
     
     
     
-    <category term="知乎" scheme="http://lichuanyang.top/tags/%E7%9F%A5%E4%B9%8E/"/>
+    <category term="知乎" scheme="https://lichuanyang.top/tags/%E7%9F%A5%E4%B9%8E/"/>
     
-    <category term="油猴" scheme="http://lichuanyang.top/tags/%E6%B2%B9%E7%8C%B4/"/>
+    <category term="油猴" scheme="https://lichuanyang.top/tags/%E6%B2%B9%E7%8C%B4/"/>
     
-    <category term="Tampermonkey" scheme="http://lichuanyang.top/tags/Tampermonkey/"/>
+    <category term="Tampermonkey" scheme="https://lichuanyang.top/tags/Tampermonkey/"/>
     
   </entry>
   
   <entry>
     <title>kubernetes是什么-实用向教程</title>
-    <link href="http://lichuanyang.top/posts/55227/"/>
-    <id>http://lichuanyang.top/posts/55227/</id>
+    <link href="https://lichuanyang.top/posts/55227/"/>
+    <id>https://lichuanyang.top/posts/55227/</id>
     <published>2023-01-28T11:06:17.000Z</published>
     <updated>2023-01-28T11:15:05.290Z</updated>
     
@@ -157,14 +157,14 @@
     
     
     
-    <category term="kubernetes" scheme="http://lichuanyang.top/tags/kubernetes/"/>
+    <category term="kubernetes" scheme="https://lichuanyang.top/tags/kubernetes/"/>
     
   </entry>
   
   <entry>
     <title>怎么更科学的用知乎摸鱼</title>
-    <link href="http://lichuanyang.top/posts/23393/"/>
-    <id>http://lichuanyang.top/posts/23393/</id>
+    <link href="https://lichuanyang.top/posts/23393/"/>
+    <id>https://lichuanyang.top/posts/23393/</id>
     <published>2022-12-28T10:29:01.000Z</published>
     <updated>2024-01-17T10:13:08.019Z</updated>
     
@@ -176,18 +176,18 @@
     
     
     
-    <category term="知乎" scheme="http://lichuanyang.top/tags/%E7%9F%A5%E4%B9%8E/"/>
+    <category term="知乎" scheme="https://lichuanyang.top/tags/%E7%9F%A5%E4%B9%8E/"/>
     
-    <category term="油猴" scheme="http://lichuanyang.top/tags/%E6%B2%B9%E7%8C%B4/"/>
+    <category term="油猴" scheme="https://lichuanyang.top/tags/%E6%B2%B9%E7%8C%B4/"/>
     
-    <category term="Tampermonkey" scheme="http://lichuanyang.top/tags/Tampermonkey/"/>
+    <category term="Tampermonkey" scheme="https://lichuanyang.top/tags/Tampermonkey/"/>
     
   </entry>
   
   <entry>
     <title>读书笔记《系统之美》,如何面对现实中的复杂问题</title>
-    <link href="http://lichuanyang.top/posts/53791/"/>
-    <id>http://lichuanyang.top/posts/53791/</id>
+    <link href="https://lichuanyang.top/posts/53791/"/>
+    <id>https://lichuanyang.top/posts/53791/</id>
     <published>2022-05-16T10:34:01.000Z</published>
     <updated>2023-01-28T10:53:05.905Z</updated>
     
@@ -199,20 +199,20 @@
     
     
     
-    <category term="个人成长" scheme="http://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
+    <category term="个人成长" scheme="https://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
     
-    <category term="读书感悟" scheme="http://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E6%84%9F%E6%82%9F/"/>
+    <category term="读书感悟" scheme="https://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E6%84%9F%E6%82%9F/"/>
     
-    <category term="系统之美" scheme="http://lichuanyang.top/tags/%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%BE%8E/"/>
+    <category term="系统之美" scheme="https://lichuanyang.top/tags/%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%BE%8E/"/>
     
-    <category term="逻辑思维" scheme="http://lichuanyang.top/tags/%E9%80%BB%E8%BE%91%E6%80%9D%E7%BB%B4/"/>
+    <category term="逻辑思维" scheme="https://lichuanyang.top/tags/%E9%80%BB%E8%BE%91%E6%80%9D%E7%BB%B4/"/>
     
   </entry>
   
   <entry>
     <title>分布式系统设计中的通用方法</title>
-    <link href="http://lichuanyang.top/posts/45718/"/>
-    <id>http://lichuanyang.top/posts/45718/</id>
+    <link href="https://lichuanyang.top/posts/45718/"/>
+    <id>https://lichuanyang.top/posts/45718/</id>
     <published>2022-04-13T12:13:24.000Z</published>
     <updated>2023-01-28T10:53:05.902Z</updated>
     
@@ -224,16 +224,16 @@
     
     
     
-    <category term="分布式系统" scheme="http://lichuanyang.top/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/"/>
+    <category term="分布式系统" scheme="https://lichuanyang.top/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/"/>
     
-    <category term="分布式系统设计" scheme="http://lichuanyang.top/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"/>
+    <category term="分布式系统设计" scheme="https://lichuanyang.top/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"/>
     
   </entry>
   
   <entry>
     <title>高并发解决方案很难吗？轻松聊清楚高并发设计</title>
-    <link href="http://lichuanyang.top/posts/11970/"/>
-    <id>http://lichuanyang.top/posts/11970/</id>
+    <link href="https://lichuanyang.top/posts/11970/"/>
+    <id>https://lichuanyang.top/posts/11970/</id>
     <published>2022-03-29T10:40:46.000Z</published>
     <updated>2023-01-28T10:53:05.905Z</updated>
     
@@ -245,18 +245,18 @@
     
     
     
-    <category term="高并发" scheme="http://lichuanyang.top/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/"/>
+    <category term="高并发" scheme="https://lichuanyang.top/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/"/>
     
-    <category term="高并发解决方案" scheme="http://lichuanyang.top/tags/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
+    <category term="高并发解决方案" scheme="https://lichuanyang.top/tags/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
     
-    <category term="高并发设计" scheme="http://lichuanyang.top/tags/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%AE%BE%E8%AE%A1/"/>
+    <category term="高并发设计" scheme="https://lichuanyang.top/tags/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%AE%BE%E8%AE%A1/"/>
     
   </entry>
   
   <entry>
     <title>SSP,DSP,RTB,ADX都是什么? 讲讲互联网广告的概念与发展</title>
-    <link href="http://lichuanyang.top/posts/27934/"/>
-    <id>http://lichuanyang.top/posts/27934/</id>
+    <link href="https://lichuanyang.top/posts/27934/"/>
+    <id>https://lichuanyang.top/posts/27934/</id>
     <published>2022-03-07T08:28:58.000Z</published>
     <updated>2023-01-28T10:53:05.896Z</updated>
     
@@ -268,18 +268,18 @@
     
     
     
-    <category term="计算广告" scheme="http://lichuanyang.top/tags/%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A/"/>
+    <category term="计算广告" scheme="https://lichuanyang.top/tags/%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A/"/>
     
-    <category term="互联网广告" scheme="http://lichuanyang.top/tags/%E4%BA%92%E8%81%94%E7%BD%91%E5%B9%BF%E5%91%8A/"/>
+    <category term="互联网广告" scheme="https://lichuanyang.top/tags/%E4%BA%92%E8%81%94%E7%BD%91%E5%B9%BF%E5%91%8A/"/>
     
-    <category term="RTB" scheme="http://lichuanyang.top/tags/RTB/"/>
+    <category term="RTB" scheme="https://lichuanyang.top/tags/RTB/"/>
     
   </entry>
   
   <entry>
     <title>从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID</title>
-    <link href="http://lichuanyang.top/posts/7774/"/>
-    <id>http://lichuanyang.top/posts/7774/</id>
+    <link href="https://lichuanyang.top/posts/7774/"/>
+    <id>https://lichuanyang.top/posts/7774/</id>
     <published>2022-02-07T08:40:02.000Z</published>
     <updated>2023-01-28T10:53:05.902Z</updated>
     
@@ -291,20 +291,20 @@
     
     
     
-    <category term="数据库事务" scheme="http://lichuanyang.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1/"/>
+    <category term="数据库事务" scheme="https://lichuanyang.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1/"/>
     
-    <category term="数据库" scheme="http://lichuanyang.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    <category term="数据库" scheme="https://lichuanyang.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
-    <category term="ACID" scheme="http://lichuanyang.top/tags/ACID/"/>
+    <category term="ACID" scheme="https://lichuanyang.top/tags/ACID/"/>
     
-    <category term="事务隔离级别" scheme="http://lichuanyang.top/tags/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/"/>
+    <category term="事务隔离级别" scheme="https://lichuanyang.top/tags/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/"/>
     
   </entry>
   
   <entry>
     <title>java项目低学习成本使用kubernetes的实践经验</title>
-    <link href="http://lichuanyang.top/posts/40964/"/>
-    <id>http://lichuanyang.top/posts/40964/</id>
+    <link href="https://lichuanyang.top/posts/40964/"/>
+    <id>https://lichuanyang.top/posts/40964/</id>
     <published>2022-01-26T07:19:32.000Z</published>
     <updated>2023-01-28T10:53:05.902Z</updated>
     
@@ -316,16 +316,16 @@
     
     
     
-    <category term="kubernetes" scheme="http://lichuanyang.top/tags/kubernetes/"/>
+    <category term="持续集成" scheme="https://lichuanyang.top/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"/>
     
-    <category term="持续集成" scheme="http://lichuanyang.top/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"/>
+    <category term="kubernetes" scheme="https://lichuanyang.top/tags/kubernetes/"/>
     
   </entry>
   
   <entry>
     <title>剧变中的2021-一个中年工程师的年终总结</title>
-    <link href="http://lichuanyang.top/posts/2345/"/>
-    <id>http://lichuanyang.top/posts/2345/</id>
+    <link href="https://lichuanyang.top/posts/2345/"/>
+    <id>https://lichuanyang.top/posts/2345/</id>
     <published>2022-01-04T13:49:57.000Z</published>
     <updated>2023-01-28T10:53:05.902Z</updated>
     
@@ -337,14 +337,14 @@
     
     
     
-    <category term="感悟" scheme="http://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
+    <category term="感悟" scheme="https://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
     
   </entry>
   
   <entry>
     <title>kubernetes环境下做金丝雀发布的一种思路</title>
-    <link href="http://lichuanyang.top/posts/30764/"/>
-    <id>http://lichuanyang.top/posts/30764/</id>
+    <link href="https://lichuanyang.top/posts/30764/"/>
+    <id>https://lichuanyang.top/posts/30764/</id>
     <published>2021-12-23T10:55:20.000Z</published>
     <updated>2023-01-28T10:53:05.898Z</updated>
     
@@ -356,18 +356,18 @@
     
     
     
-    <category term="云原生" scheme="http://lichuanyang.top/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/"/>
+    <category term="云原生" scheme="https://lichuanyang.top/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/"/>
     
-    <category term="持续集成" scheme="http://lichuanyang.top/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"/>
+    <category term="持续集成" scheme="https://lichuanyang.top/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"/>
     
-    <category term="金丝雀" scheme="http://lichuanyang.top/tags/%E9%87%91%E4%B8%9D%E9%9B%80/"/>
+    <category term="金丝雀" scheme="https://lichuanyang.top/tags/%E9%87%91%E4%B8%9D%E9%9B%80/"/>
     
   </entry>
   
   <entry>
     <title>prometheus教程： 一篇文章讲懂prometheus</title>
-    <link href="http://lichuanyang.top/posts/28288/"/>
-    <id>http://lichuanyang.top/posts/28288/</id>
+    <link href="https://lichuanyang.top/posts/28288/"/>
+    <id>https://lichuanyang.top/posts/28288/</id>
     <published>2021-11-10T11:54:05.000Z</published>
     <updated>2023-01-28T10:53:05.901Z</updated>
     
@@ -379,22 +379,22 @@
     
     
     
-    <category term="监控" scheme="http://lichuanyang.top/tags/%E7%9B%91%E6%8E%A7/"/>
+    <category term="监控" scheme="https://lichuanyang.top/tags/%E7%9B%91%E6%8E%A7/"/>
     
-    <category term="云原生" scheme="http://lichuanyang.top/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/"/>
+    <category term="云原生" scheme="https://lichuanyang.top/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/"/>
     
-    <category term="prometheus" scheme="http://lichuanyang.top/tags/prometheus/"/>
+    <category term="prometheus" scheme="https://lichuanyang.top/tags/prometheus/"/>
     
-    <category term="grafana" scheme="http://lichuanyang.top/tags/grafana/"/>
+    <category term="grafana" scheme="https://lichuanyang.top/tags/grafana/"/>
     
-    <category term="prometheus教程" scheme="http://lichuanyang.top/tags/prometheus%E6%95%99%E7%A8%8B/"/>
+    <category term="prometheus教程" scheme="https://lichuanyang.top/tags/prometheus%E6%95%99%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>实现一个简单的java版本高性能获取ip地址所属国家工具</title>
-    <link href="http://lichuanyang.top/posts/36780/"/>
-    <id>http://lichuanyang.top/posts/36780/</id>
+    <link href="https://lichuanyang.top/posts/36780/"/>
+    <id>https://lichuanyang.top/posts/36780/</id>
     <published>2021-10-12T11:25:15.000Z</published>
     <updated>2023-01-28T10:53:05.903Z</updated>
     
@@ -406,18 +406,18 @@
     
     
     
-    <category term="开源项目" scheme="http://lichuanyang.top/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
+    <category term="开源项目" scheme="https://lichuanyang.top/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
     
   </entry>
   
   <entry>
     <title>iterm2配置ssh书签, 实现记住密码和自动登录</title>
-    <link href="http://lichuanyang.top/posts/20763/"/>
-    <id>http://lichuanyang.top/posts/20763/</id>
+    <link href="https://lichuanyang.top/posts/20763/"/>
+    <id>https://lichuanyang.top/posts/20763/</id>
     <published>2021-10-08T08:45:42.000Z</published>
     <updated>2023-01-28T10:53:05.901Z</updated>
     
-    <content type="html"><![CDATA[<p>如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。</p><span id="more"></span><p>iterm2 （<a href="https://iterm2.com/">https://iterm2.com/</a>)  是mac下使用非常广泛的一款终端替代产品，提供了很多强大的功能。要实现ssh书签，实现免密码登录、自动登录的效果，关键点是其中的三个特性：profile, trigger 和 password manager.</p><p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <a href="mailto:&#x72;&#111;&#111;&#x74;&#64;&#x31;&#x2e;&#49;&#x2e;&#49;&#x2e;&#49;">&#x72;&#111;&#111;&#x74;&#64;&#x31;&#x2e;&#49;&#x2e;&#49;&#x2e;&#49;</a>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p><p>trigger也是profile的一个特性，入口在profile配置页的advanced标签下，它的作用就是利用关键词触发一个动作，我们现在要做的就是用password这个关键词触发打开 password manager。 操作很简单，就是增加一个trigger, regular expression 填入 password,  action选择 open password manager, 注意勾选instant和enabled两个选项。</p><p>最后一个要配置的是password manager, password manager 就是一个密码管理器，是item2中会默认安装的一款插件，入口在工具栏 window 标签下。打开password manager, 将需要保存的密码都录入进去就可以了。</p><p>这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。</p><p>原文地址: <a href="http://lichuanyang.top/posts/20763/">http://lichuanyang.top/posts/20763/</a></p>]]></content>
+    <content type="html"><![CDATA[<p>如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。</p><span id="more"></span><p>iterm2 （<a href="https://iterm2.com/">https://iterm2.com/</a>)  是mac下使用非常广泛的一款终端替代产品，提供了很多强大的功能。要实现ssh书签，实现免密码登录、自动登录的效果，关键点是其中的三个特性：profile, trigger 和 password manager.</p><p>profile顾名思义就是一套配置，像我们正常打开iterm2时，其实就是打开了default profile.  配置profile的入口就在工具栏 profiles 选项下，可以增加或编辑现有profile.  我们将需要的profile的general标签下的 commond 模块修改为 Command,  内容填入 ssh命令， 比如 ssh <a href="mailto:&#114;&#111;&#111;&#116;&#64;&#x31;&#46;&#x31;&#x2e;&#49;&#x2e;&#49;">&#114;&#111;&#111;&#116;&#64;&#x31;&#46;&#x31;&#x2e;&#49;&#x2e;&#49;</a>, 就可以在打开profile时自动执行ssh命令。 profile中其他的文本、颜色等配置都不重要，可以按需填写。</p><p>trigger也是profile的一个特性，入口在profile配置页的advanced标签下，它的作用就是利用关键词触发一个动作，我们现在要做的就是用password这个关键词触发打开 password manager。 操作很简单，就是增加一个trigger, regular expression 填入 password,  action选择 open password manager, 注意勾选instant和enabled两个选项。</p><p>最后一个要配置的是password manager, password manager 就是一个密码管理器，是item2中会默认安装的一款插件，入口在工具栏 window 标签下。打开password manager, 将需要保存的密码都录入进去就可以了。</p><p>这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。</p><p>原文地址: <a href="http://lichuanyang.top/posts/20763/">http://lichuanyang.top/posts/20763/</a></p>]]></content>
     
     
     <summary type="html">&lt;p&gt;如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。&lt;/p&gt;</summary>
@@ -425,18 +425,18 @@
     
     
     
-    <category term="iterm2" scheme="http://lichuanyang.top/tags/iterm2/"/>
+    <category term="iterm2" scheme="https://lichuanyang.top/tags/iterm2/"/>
     
-    <category term="ssh自动登录" scheme="http://lichuanyang.top/tags/ssh%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95/"/>
+    <category term="ssh自动登录" scheme="https://lichuanyang.top/tags/ssh%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95/"/>
     
-    <category term="ssh免密码登录" scheme="http://lichuanyang.top/tags/ssh%E5%85%8D%E5%AF%86%E7%A0%81%E7%99%BB%E5%BD%95/"/>
+    <category term="ssh免密码登录" scheme="https://lichuanyang.top/tags/ssh%E5%85%8D%E5%AF%86%E7%A0%81%E7%99%BB%E5%BD%95/"/>
     
   </entry>
   
   <entry>
     <title>怎样做一个好的技术分享</title>
-    <link href="http://lichuanyang.top/posts/54216/"/>
-    <id>http://lichuanyang.top/posts/54216/</id>
+    <link href="https://lichuanyang.top/posts/54216/"/>
+    <id>https://lichuanyang.top/posts/54216/</id>
     <published>2021-08-31T06:27:43.000Z</published>
     <updated>2023-01-28T10:53:05.903Z</updated>
     
@@ -449,16 +449,16 @@
     
     
     
-    <category term="技术分享" scheme="http://lichuanyang.top/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/"/>
+    <category term="技术分享" scheme="https://lichuanyang.top/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/"/>
     
-    <category term="技术分享选题" scheme="http://lichuanyang.top/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E9%80%89%E9%A2%98/"/>
+    <category term="技术分享选题" scheme="https://lichuanyang.top/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E9%80%89%E9%A2%98/"/>
     
   </entry>
   
   <entry>
     <title>云原生究竟是什么</title>
-    <link href="http://lichuanyang.top/posts/42843/"/>
-    <id>http://lichuanyang.top/posts/42843/</id>
+    <link href="https://lichuanyang.top/posts/42843/"/>
+    <id>https://lichuanyang.top/posts/42843/</id>
     <published>2021-06-09T11:54:37.000Z</published>
     <updated>2023-01-28T10:53:05.901Z</updated>
     
@@ -470,16 +470,16 @@
     
     
     
-    <category term="微服务" scheme="http://lichuanyang.top/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    <category term="微服务" scheme="https://lichuanyang.top/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
     
-    <category term="云原生架构" scheme="http://lichuanyang.top/tags/%E4%BA%91%E5%8E%9F%E7%94%9F%E6%9E%B6%E6%9E%84/"/>
+    <category term="云原生架构" scheme="https://lichuanyang.top/tags/%E4%BA%91%E5%8E%9F%E7%94%9F%E6%9E%B6%E6%9E%84/"/>
     
   </entry>
   
   <entry>
     <title>读书笔记 稻盛和夫《干法》-思考应该怎样去工作</title>
-    <link href="http://lichuanyang.top/posts/3513/"/>
-    <id>http://lichuanyang.top/posts/3513/</id>
+    <link href="https://lichuanyang.top/posts/3513/"/>
+    <id>https://lichuanyang.top/posts/3513/</id>
     <published>2021-05-15T09:29:34.000Z</published>
     <updated>2023-01-28T10:53:05.904Z</updated>
     
@@ -491,16 +491,16 @@
     
     
     
-    <category term="个人成长" scheme="http://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
+    <category term="个人成长" scheme="https://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
     
-    <category term="读书笔记" scheme="http://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <category term="读书笔记" scheme="https://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
   <entry>
     <title>review的个人价值</title>
-    <link href="http://lichuanyang.top/posts/57205/"/>
-    <id>http://lichuanyang.top/posts/57205/</id>
+    <link href="https://lichuanyang.top/posts/57205/"/>
+    <id>https://lichuanyang.top/posts/57205/</id>
     <published>2021-04-27T10:07:11.000Z</published>
     <updated>2023-01-28T10:53:05.900Z</updated>
     
@@ -512,14 +512,14 @@
     
     
     
-    <category term="开发规范" scheme="http://lichuanyang.top/tags/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/"/>
+    <category term="开发规范" scheme="https://lichuanyang.top/tags/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/"/>
     
   </entry>
   
   <entry>
     <title>户口?大厂?高薪?生活?聊聊应届程序员的职业选择</title>
-    <link href="http://lichuanyang.top/posts/34931/"/>
-    <id>http://lichuanyang.top/posts/34931/</id>
+    <link href="https://lichuanyang.top/posts/34931/"/>
+    <id>https://lichuanyang.top/posts/34931/</id>
     <published>2021-03-30T10:36:15.000Z</published>
     <updated>2023-01-28T10:53:05.903Z</updated>
     
@@ -531,14 +531,14 @@
     
     
     
-    <category term="职业发展" scheme="http://lichuanyang.top/tags/%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/"/>
+    <category term="职业发展" scheme="https://lichuanyang.top/tags/%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/"/>
     
   </entry>
   
   <entry>
     <title>RPC接口将所有输入输出封装成类是合理设计吗</title>
-    <link href="http://lichuanyang.top/posts/20888/"/>
-    <id>http://lichuanyang.top/posts/20888/</id>
+    <link href="https://lichuanyang.top/posts/20888/"/>
+    <id>https://lichuanyang.top/posts/20888/</id>
     <published>2021-03-16T10:34:56.000Z</published>
     <updated>2023-01-28T10:53:05.896Z</updated>
     
@@ -559,14 +559,14 @@
     
     
     
-    <category term="设计模式" scheme="http://lichuanyang.top/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    <category term="设计模式" scheme="https://lichuanyang.top/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     
   </entry>
   
   <entry>
     <title>程序员做业务开发的价值</title>
-    <link href="http://lichuanyang.top/posts/40071/"/>
-    <id>http://lichuanyang.top/posts/40071/</id>
+    <link href="https://lichuanyang.top/posts/40071/"/>
+    <id>https://lichuanyang.top/posts/40071/</id>
     <published>2021-03-12T11:27:36.000Z</published>
     <updated>2023-01-28T10:53:05.901Z</updated>
     
@@ -578,14 +578,14 @@
     
     
     
-    <category term="感悟" scheme="http://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
+    <category term="感悟" scheme="https://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
     
   </entry>
   
   <entry>
     <title>设计模式的原则，设计模式究竟是什么</title>
-    <link href="http://lichuanyang.top/posts/58527/"/>
-    <id>http://lichuanyang.top/posts/58527/</id>
+    <link href="https://lichuanyang.top/posts/58527/"/>
+    <id>https://lichuanyang.top/posts/58527/</id>
     <published>2021-03-04T11:26:30.000Z</published>
     <updated>2023-01-28T10:53:05.904Z</updated>
     
@@ -597,14 +597,14 @@
     
     
     
-    <category term="设计模式" scheme="http://lichuanyang.top/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    <category term="设计模式" scheme="https://lichuanyang.top/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     
   </entry>
   
   <entry>
     <title>我提升开发效率的经验</title>
-    <link href="http://lichuanyang.top/posts/3423/"/>
-    <id>http://lichuanyang.top/posts/3423/</id>
+    <link href="https://lichuanyang.top/posts/3423/"/>
+    <id>https://lichuanyang.top/posts/3423/</id>
     <published>2021-02-01T09:38:11.000Z</published>
     <updated>2023-01-28T10:53:05.903Z</updated>
     
@@ -616,14 +616,14 @@
     
     
     
-    <category term="感悟" scheme="http://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
+    <category term="感悟" scheme="https://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
     
   </entry>
   
   <entry>
     <title>通过合理的设计降低软件开发复杂度</title>
-    <link href="http://lichuanyang.top/posts/33852/"/>
-    <id>http://lichuanyang.top/posts/33852/</id>
+    <link href="https://lichuanyang.top/posts/33852/"/>
+    <id>https://lichuanyang.top/posts/33852/</id>
     <published>2021-01-04T10:12:34.000Z</published>
     <updated>2023-01-28T10:53:05.905Z</updated>
     
@@ -635,18 +635,18 @@
     
     
     
-    <category term="设计模式" scheme="http://lichuanyang.top/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    <category term="设计模式" scheme="https://lichuanyang.top/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     
-    <category term="感悟" scheme="http://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
+    <category term="感悟" scheme="https://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
     
-    <category term="软件工程" scheme="http://lichuanyang.top/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/"/>
+    <category term="软件工程" scheme="https://lichuanyang.top/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>信息传播过程中的衰减</title>
-    <link href="http://lichuanyang.top/posts/54296/"/>
-    <id>http://lichuanyang.top/posts/54296/</id>
+    <link href="https://lichuanyang.top/posts/54296/"/>
+    <id>https://lichuanyang.top/posts/54296/</id>
     <published>2020-12-29T03:28:44.000Z</published>
     <updated>2023-01-28T10:53:05.902Z</updated>
     
@@ -658,14 +658,14 @@
     
     
     
-    <category term="感悟" scheme="http://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
+    <category term="感悟" scheme="https://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
     
   </entry>
   
   <entry>
     <title>看房小记-2020北京学区</title>
-    <link href="http://lichuanyang.top/posts/5236/"/>
-    <id>http://lichuanyang.top/posts/5236/</id>
+    <link href="https://lichuanyang.top/posts/5236/"/>
+    <id>https://lichuanyang.top/posts/5236/</id>
     <published>2020-12-12T09:12:40.000Z</published>
     <updated>2023-01-28T10:53:05.903Z</updated>
     
@@ -677,16 +677,16 @@
     
     
     
-    <category term="感悟" scheme="http://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
+    <category term="感悟" scheme="https://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
     
-    <category term="记录" scheme="http://lichuanyang.top/tags/%E8%AE%B0%E5%BD%95/"/>
+    <category term="记录" scheme="https://lichuanyang.top/tags/%E8%AE%B0%E5%BD%95/"/>
     
   </entry>
   
   <entry>
     <title>读书感悟：文明、现代化、价值投资与中国</title>
-    <link href="http://lichuanyang.top/posts/44866/"/>
-    <id>http://lichuanyang.top/posts/44866/</id>
+    <link href="https://lichuanyang.top/posts/44866/"/>
+    <id>https://lichuanyang.top/posts/44866/</id>
     <published>2020-12-12T07:24:34.000Z</published>
     <updated>2023-01-28T10:53:05.904Z</updated>
     
@@ -697,21 +697,21 @@
     
     
     
-    <category term="读书笔记" scheme="http://lichuanyang.top/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <category term="读书笔记" scheme="https://lichuanyang.top/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="个人成长" scheme="http://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
+    <category term="个人成长" scheme="https://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
     
-    <category term="投资" scheme="http://lichuanyang.top/tags/%E6%8A%95%E8%B5%84/"/>
+    <category term="读书感悟" scheme="https://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E6%84%9F%E6%82%9F/"/>
     
-    <category term="读书感悟" scheme="http://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E6%84%9F%E6%82%9F/"/>
+    <category term="投资" scheme="https://lichuanyang.top/tags/%E6%8A%95%E8%B5%84/"/>
     
   </entry>
   
   <entry>
     <title>读书笔记-我曾走在崩溃的边缘</title>
-    <link href="http://lichuanyang.top/posts/6471/"/>
-    <id>http://lichuanyang.top/posts/6471/</id>
+    <link href="https://lichuanyang.top/posts/6471/"/>
+    <id>https://lichuanyang.top/posts/6471/</id>
     <published>2020-10-31T02:35:22.000Z</published>
     <updated>2023-01-28T10:53:05.905Z</updated>
     
@@ -722,21 +722,21 @@
     
     
     
-    <category term="读书笔记" scheme="http://lichuanyang.top/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <category term="读书笔记" scheme="https://lichuanyang.top/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="个人成长" scheme="http://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
+    <category term="个人成长" scheme="https://lichuanyang.top/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
     
-    <category term="读书感悟" scheme="http://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E6%84%9F%E6%82%9F/"/>
+    <category term="教育" scheme="https://lichuanyang.top/tags/%E6%95%99%E8%82%B2/"/>
     
-    <category term="教育" scheme="http://lichuanyang.top/tags/%E6%95%99%E8%82%B2/"/>
+    <category term="读书感悟" scheme="https://lichuanyang.top/tags/%E8%AF%BB%E4%B9%A6%E6%84%9F%E6%82%9F/"/>
     
   </entry>
   
   <entry>
     <title>[翻译][关于分布式架构和系统设计]分布式系统的模式-综述</title>
-    <link href="http://lichuanyang.top/posts/3914/"/>
-    <id>http://lichuanyang.top/posts/3914/</id>
+    <link href="https://lichuanyang.top/posts/3914/"/>
+    <id>https://lichuanyang.top/posts/3914/</id>
     <published>2020-08-10T12:33:49.000Z</published>
     <updated>2023-01-28T10:53:05.903Z</updated>
     
@@ -748,19 +748,19 @@
     
     
     
-    <category term="分布式系统模式系列" scheme="http://lichuanyang.top/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97/"/>
+    <category term="分布式系统模式系列" scheme="https://lichuanyang.top/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97/"/>
     
     
-    <category term="分布式系统" scheme="http://lichuanyang.top/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/"/>
+    <category term="分布式系统" scheme="https://lichuanyang.top/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/"/>
     
-    <category term="分布式系统设计" scheme="http://lichuanyang.top/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"/>
+    <category term="分布式系统设计" scheme="https://lichuanyang.top/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"/>
     
   </entry>
   
   <entry>
     <title>redis的对象</title>
-    <link href="http://lichuanyang.top/posts/25564/"/>
-    <id>http://lichuanyang.top/posts/25564/</id>
+    <link href="https://lichuanyang.top/posts/25564/"/>
+    <id>https://lichuanyang.top/posts/25564/</id>
     <published>2020-08-08T07:05:48.000Z</published>
     <updated>2023-01-28T10:53:05.899Z</updated>
     
@@ -771,17 +771,17 @@
     
     
     
-    <category term="redis系列" scheme="http://lichuanyang.top/categories/redis%E7%B3%BB%E5%88%97/"/>
+    <category term="redis系列" scheme="https://lichuanyang.top/categories/redis%E7%B3%BB%E5%88%97/"/>
     
     
-    <category term="redis" scheme="http://lichuanyang.top/tags/redis/"/>
+    <category term="redis" scheme="https://lichuanyang.top/tags/redis/"/>
     
   </entry>
   
   <entry>
     <title>redis里的数据结构</title>
-    <link href="http://lichuanyang.top/posts/22179/"/>
-    <id>http://lichuanyang.top/posts/22179/</id>
+    <link href="https://lichuanyang.top/posts/22179/"/>
+    <id>https://lichuanyang.top/posts/22179/</id>
     <published>2020-07-11T08:47:30.000Z</published>
     <updated>2023-01-28T10:53:05.899Z</updated>
     
@@ -793,19 +793,19 @@
     
     
     
-    <category term="redis系列" scheme="http://lichuanyang.top/categories/redis%E7%B3%BB%E5%88%97/"/>
+    <category term="redis系列" scheme="https://lichuanyang.top/categories/redis%E7%B3%BB%E5%88%97/"/>
     
     
-    <category term="redis" scheme="http://lichuanyang.top/tags/redis/"/>
+    <category term="redis" scheme="https://lichuanyang.top/tags/redis/"/>
     
-    <category term="数据结构，skiplist" scheme="http://lichuanyang.top/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%8Cskiplist/"/>
+    <category term="数据结构，skiplist" scheme="https://lichuanyang.top/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%8Cskiplist/"/>
     
   </entry>
   
   <entry>
     <title>设计模式备忘录</title>
-    <link href="http://lichuanyang.top/posts/21897/"/>
-    <id>http://lichuanyang.top/posts/21897/</id>
+    <link href="https://lichuanyang.top/posts/21897/"/>
+    <id>https://lichuanyang.top/posts/21897/</id>
     <published>2020-04-08T10:06:51.000Z</published>
     <updated>2023-01-28T10:53:05.904Z</updated>
     
@@ -817,14 +817,14 @@
     
     
     
-    <category term="设计模式" scheme="http://lichuanyang.top/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    <category term="设计模式" scheme="https://lichuanyang.top/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     
   </entry>
   
   <entry>
     <title>聊聊程序员的职业生涯，我对程序员这个职业的理解</title>
-    <link href="http://lichuanyang.top/posts/27398/"/>
-    <id>http://lichuanyang.top/posts/27398/</id>
+    <link href="https://lichuanyang.top/posts/27398/"/>
+    <id>https://lichuanyang.top/posts/27398/</id>
     <published>2020-03-18T09:21:18.000Z</published>
     <updated>2023-01-28T10:53:05.903Z</updated>
     
@@ -836,14 +836,14 @@
     
     
     
-    <category term="感悟" scheme="http://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
+    <category term="感悟" scheme="https://lichuanyang.top/tags/%E6%84%9F%E6%82%9F/"/>
     
   </entry>
   
   <entry>
     <title>通过mysql批量操作不生效问题聊聊java里mysql的batch</title>
-    <link href="http://lichuanyang.top/posts/63688/"/>
-    <id>http://lichuanyang.top/posts/63688/</id>
+    <link href="https://lichuanyang.top/posts/63688/"/>
+    <id>https://lichuanyang.top/posts/63688/</id>
     <published>2020-03-13T09:54:38.000Z</published>
     <updated>2023-01-28T10:53:05.904Z</updated>
     
@@ -855,18 +855,18 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
-    <category term="mysql" scheme="http://lichuanyang.top/tags/mysql/"/>
+    <category term="mysql" scheme="https://lichuanyang.top/tags/mysql/"/>
     
-    <category term="batch不生效" scheme="http://lichuanyang.top/tags/batch%E4%B8%8D%E7%94%9F%E6%95%88/"/>
+    <category term="batch不生效" scheme="https://lichuanyang.top/tags/batch%E4%B8%8D%E7%94%9F%E6%95%88/"/>
     
   </entry>
   
   <entry>
     <title>【实践经验】单元测试怎么写</title>
-    <link href="http://lichuanyang.top/posts/695/"/>
-    <id>http://lichuanyang.top/posts/695/</id>
+    <link href="https://lichuanyang.top/posts/695/"/>
+    <id>https://lichuanyang.top/posts/695/</id>
     <published>2019-09-26T12:54:36.000Z</published>
     <updated>2023-01-28T10:53:05.902Z</updated>
     
@@ -878,18 +878,18 @@
     
     
     
-    <category term="开发规范" scheme="http://lichuanyang.top/tags/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/"/>
+    <category term="开发规范" scheme="https://lichuanyang.top/tags/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/"/>
     
-    <category term="单元测试" scheme="http://lichuanyang.top/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/"/>
+    <category term="单元测试" scheme="https://lichuanyang.top/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/"/>
     
-    <category term="单元测试怎么写" scheme="http://lichuanyang.top/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%86%99/"/>
+    <category term="单元测试怎么写" scheme="https://lichuanyang.top/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%86%99/"/>
     
   </entry>
   
   <entry>
     <title>关于rocketmq的readQueue和writeQueue</title>
-    <link href="http://lichuanyang.top/posts/32580/"/>
-    <id>http://lichuanyang.top/posts/32580/</id>
+    <link href="https://lichuanyang.top/posts/32580/"/>
+    <id>https://lichuanyang.top/posts/32580/</id>
     <published>2019-05-18T07:23:02.000Z</published>
     <updated>2023-01-28T10:53:05.902Z</updated>
     
@@ -901,16 +901,16 @@
     
     
     
-    <category term="rocketMq" scheme="http://lichuanyang.top/tags/rocketMq/"/>
+    <category term="rocketMq" scheme="https://lichuanyang.top/tags/rocketMq/"/>
     
-    <category term="消息队列" scheme="http://lichuanyang.top/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
+    <category term="消息队列" scheme="https://lichuanyang.top/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
     
   </entry>
   
   <entry>
     <title>数据分析的利器-clickhouse介绍</title>
-    <link href="http://lichuanyang.top/posts/48312/"/>
-    <id>http://lichuanyang.top/posts/48312/</id>
+    <link href="https://lichuanyang.top/posts/48312/"/>
+    <id>https://lichuanyang.top/posts/48312/</id>
     <published>2018-11-14T13:59:31.000Z</published>
     <updated>2023-01-28T10:53:05.897Z</updated>
     
@@ -922,18 +922,18 @@
     
     
     
-    <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    <category term="大数据" scheme="https://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
     
-    <category term="clickhouse" scheme="http://lichuanyang.top/tags/clickhouse/"/>
+    <category term="clickhouse" scheme="https://lichuanyang.top/tags/clickhouse/"/>
     
-    <category term="clickhouse介绍" scheme="http://lichuanyang.top/tags/clickhouse%E4%BB%8B%E7%BB%8D/"/>
+    <category term="clickhouse介绍" scheme="https://lichuanyang.top/tags/clickhouse%E4%BB%8B%E7%BB%8D/"/>
     
   </entry>
   
   <entry>
     <title>通过位运算转换大小写</title>
-    <link href="http://lichuanyang.top/posts/9193/"/>
-    <id>http://lichuanyang.top/posts/9193/</id>
+    <link href="https://lichuanyang.top/posts/9193/"/>
+    <id>https://lichuanyang.top/posts/9193/</id>
     <published>2018-11-14T13:58:47.000Z</published>
     <updated>2023-01-28T10:53:05.905Z</updated>
     
@@ -945,14 +945,14 @@
     
     
     
-    <category term="位运算" scheme="http://lichuanyang.top/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/"/>
+    <category term="位运算" scheme="https://lichuanyang.top/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/"/>
     
   </entry>
   
   <entry>
     <title>activemq多线程消费的不同处理方式</title>
-    <link href="http://lichuanyang.top/posts/20459/"/>
-    <id>http://lichuanyang.top/posts/20459/</id>
+    <link href="https://lichuanyang.top/posts/20459/"/>
+    <id>https://lichuanyang.top/posts/20459/</id>
     <published>2018-09-16T01:58:11.000Z</published>
     <updated>2023-01-28T10:53:05.896Z</updated>
     
@@ -964,17 +964,17 @@
     
     
     
-    <category term="activemq系列文章" scheme="http://lichuanyang.top/categories/activemq%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/"/>
+    <category term="activemq系列文章" scheme="https://lichuanyang.top/categories/activemq%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/"/>
     
     
-    <category term="activemq" scheme="http://lichuanyang.top/tags/activemq/"/>
+    <category term="activemq" scheme="https://lichuanyang.top/tags/activemq/"/>
     
   </entry>
   
   <entry>
     <title>高并发下作余额扣减的一些经验</title>
-    <link href="http://lichuanyang.top/posts/56940/"/>
-    <id>http://lichuanyang.top/posts/56940/</id>
+    <link href="https://lichuanyang.top/posts/56940/"/>
+    <id>https://lichuanyang.top/posts/56940/</id>
     <published>2018-08-25T03:10:28.000Z</published>
     <updated>2023-01-28T10:53:05.905Z</updated>
     
@@ -986,14 +986,14 @@
     
     
     
-    <category term="设计" scheme="http://lichuanyang.top/tags/%E8%AE%BE%E8%AE%A1/"/>
+    <category term="设计" scheme="https://lichuanyang.top/tags/%E8%AE%BE%E8%AE%A1/"/>
     
   </entry>
   
   <entry>
     <title>java细节:三目运算符和自动拆箱</title>
-    <link href="http://lichuanyang.top/posts/53072/"/>
-    <id>http://lichuanyang.top/posts/53072/</id>
+    <link href="https://lichuanyang.top/posts/53072/"/>
+    <id>https://lichuanyang.top/posts/53072/</id>
     <published>2018-05-10T13:22:36.000Z</published>
     <updated>2023-01-28T10:53:05.898Z</updated>
     
@@ -1005,14 +1005,14 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
   </entry>
   
   <entry>
     <title>设计一个开源的北京地铁路线规划小工具 java版本</title>
-    <link href="http://lichuanyang.top/posts/13793/"/>
-    <id>http://lichuanyang.top/posts/13793/</id>
+    <link href="https://lichuanyang.top/posts/13793/"/>
+    <id>https://lichuanyang.top/posts/13793/</id>
     <published>2018-03-23T06:33:52.000Z</published>
     <updated>2023-01-28T10:53:05.904Z</updated>
     
@@ -1024,16 +1024,16 @@
     
     
     
-    <category term="开源项目" scheme="http://lichuanyang.top/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
+    <category term="开源项目" scheme="https://lichuanyang.top/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
     
-    <category term="工具" scheme="http://lichuanyang.top/tags/%E5%B7%A5%E5%85%B7/"/>
+    <category term="工具" scheme="https://lichuanyang.top/tags/%E5%B7%A5%E5%85%B7/"/>
     
   </entry>
   
   <entry>
     <title>redis cluster的数据迁移</title>
-    <link href="http://lichuanyang.top/posts/37583/"/>
-    <id>http://lichuanyang.top/posts/37583/</id>
+    <link href="https://lichuanyang.top/posts/37583/"/>
+    <id>https://lichuanyang.top/posts/37583/</id>
     <published>2018-02-24T10:34:19.000Z</published>
     <updated>2023-01-28T10:53:05.899Z</updated>
     
@@ -1044,19 +1044,19 @@
     
     
     
-    <category term="redis系列" scheme="http://lichuanyang.top/categories/redis%E7%B3%BB%E5%88%97/"/>
+    <category term="redis系列" scheme="https://lichuanyang.top/categories/redis%E7%B3%BB%E5%88%97/"/>
     
     
-    <category term="redis" scheme="http://lichuanyang.top/tags/redis/"/>
+    <category term="redis" scheme="https://lichuanyang.top/tags/redis/"/>
     
-    <category term="redis-cluster" scheme="http://lichuanyang.top/tags/redis-cluster/"/>
+    <category term="redis-cluster" scheme="https://lichuanyang.top/tags/redis-cluster/"/>
     
   </entry>
   
   <entry>
     <title>jstorm源码解析之循环任务AsyncLoopThread</title>
-    <link href="http://lichuanyang.top/posts/31761/"/>
-    <id>http://lichuanyang.top/posts/31761/</id>
+    <link href="https://lichuanyang.top/posts/31761/"/>
+    <id>https://lichuanyang.top/posts/31761/</id>
     <published>2018-02-08T08:17:37.000Z</published>
     <updated>2023-01-28T10:53:05.898Z</updated>
     
@@ -1067,17 +1067,17 @@
     
     
     
-    <category term="jstorm源码解析" scheme="http://lichuanyang.top/categories/jstorm%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+    <category term="jstorm源码解析" scheme="https://lichuanyang.top/categories/jstorm%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
     
     
-    <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
+    <category term="jstorm" scheme="https://lichuanyang.top/tags/jstorm/"/>
     
   </entry>
   
   <entry>
     <title>activemq特性之持久化</title>
-    <link href="http://lichuanyang.top/posts/31044/"/>
-    <id>http://lichuanyang.top/posts/31044/</id>
+    <link href="https://lichuanyang.top/posts/31044/"/>
+    <id>https://lichuanyang.top/posts/31044/</id>
     <published>2018-02-02T10:56:49.000Z</published>
     <updated>2023-01-28T10:53:05.897Z</updated>
     
@@ -1089,17 +1089,17 @@
     
     
     
-    <category term="activemq系列文章" scheme="http://lichuanyang.top/categories/activemq%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/"/>
+    <category term="activemq系列文章" scheme="https://lichuanyang.top/categories/activemq%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/"/>
     
     
-    <category term="activemq" scheme="http://lichuanyang.top/tags/activemq/"/>
+    <category term="activemq" scheme="https://lichuanyang.top/tags/activemq/"/>
     
   </entry>
   
   <entry>
     <title>activemq的安装及基本使用</title>
-    <link href="http://lichuanyang.top/posts/48216/"/>
-    <id>http://lichuanyang.top/posts/48216/</id>
+    <link href="https://lichuanyang.top/posts/48216/"/>
+    <id>https://lichuanyang.top/posts/48216/</id>
     <published>2018-01-30T00:46:07.000Z</published>
     <updated>2023-01-28T10:53:05.897Z</updated>
     
@@ -1116,17 +1116,17 @@
     
     
     
-    <category term="activemq系列文章" scheme="http://lichuanyang.top/categories/activemq%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/"/>
+    <category term="activemq系列文章" scheme="https://lichuanyang.top/categories/activemq%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/"/>
     
     
-    <category term="activemq" scheme="http://lichuanyang.top/tags/activemq/"/>
+    <category term="activemq" scheme="https://lichuanyang.top/tags/activemq/"/>
     
   </entry>
   
   <entry>
     <title>activemq系列-概述</title>
-    <link href="http://lichuanyang.top/posts/12035/"/>
-    <id>http://lichuanyang.top/posts/12035/</id>
+    <link href="https://lichuanyang.top/posts/12035/"/>
+    <id>https://lichuanyang.top/posts/12035/</id>
     <published>2018-01-22T10:33:02.000Z</published>
     <updated>2023-01-28T10:53:05.897Z</updated>
     
@@ -1144,17 +1144,17 @@
     
     
     
-    <category term="activemq系列文章" scheme="http://lichuanyang.top/categories/activemq%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/"/>
+    <category term="activemq系列文章" scheme="https://lichuanyang.top/categories/activemq%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/"/>
     
     
-    <category term="activemq" scheme="http://lichuanyang.top/tags/activemq/"/>
+    <category term="activemq" scheme="https://lichuanyang.top/tags/activemq/"/>
     
   </entry>
   
   <entry>
     <title>hexo教程：博客系统搭建及部署到github</title>
-    <link href="http://lichuanyang.top/posts/19890/"/>
-    <id>http://lichuanyang.top/posts/19890/</id>
+    <link href="https://lichuanyang.top/posts/19890/"/>
+    <id>https://lichuanyang.top/posts/19890/</id>
     <published>2018-01-19T10:56:07.000Z</published>
     <updated>2023-01-28T10:53:05.897Z</updated>
     
@@ -1172,16 +1172,16 @@
     
     
     
-    <category term="hexo" scheme="http://lichuanyang.top/tags/hexo/"/>
+    <category term="hexo" scheme="https://lichuanyang.top/tags/hexo/"/>
     
-    <category term="博客搭建" scheme="http://lichuanyang.top/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
+    <category term="博客搭建" scheme="https://lichuanyang.top/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
     
   </entry>
   
   <entry>
     <title>jstorm的监控metrics数据输出到第三方存储介质</title>
-    <link href="http://lichuanyang.top/posts/13749/"/>
-    <id>http://lichuanyang.top/posts/13749/</id>
+    <link href="https://lichuanyang.top/posts/13749/"/>
+    <id>https://lichuanyang.top/posts/13749/</id>
     <published>2017-09-06T12:18:00.000Z</published>
     <updated>2023-01-28T10:53:05.898Z</updated>
     
@@ -1199,18 +1199,18 @@
     
     
     
-    <category term="监控" scheme="http://lichuanyang.top/tags/%E7%9B%91%E6%8E%A7/"/>
+    <category term="监控" scheme="https://lichuanyang.top/tags/%E7%9B%91%E6%8E%A7/"/>
     
-    <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
+    <category term="storm" scheme="https://lichuanyang.top/tags/storm/"/>
     
-    <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
+    <category term="jstorm" scheme="https://lichuanyang.top/tags/jstorm/"/>
     
   </entry>
   
   <entry>
     <title>camel系列之camel debugger的使用</title>
-    <link href="http://lichuanyang.top/posts/1120/"/>
-    <id>http://lichuanyang.top/posts/1120/</id>
+    <link href="https://lichuanyang.top/posts/1120/"/>
+    <id>https://lichuanyang.top/posts/1120/</id>
     <published>2017-08-03T11:56:00.000Z</published>
     <updated>2023-01-28T10:53:05.897Z</updated>
     
@@ -1228,14 +1228,14 @@
     
     
     
-    <category term="camel" scheme="http://lichuanyang.top/tags/camel/"/>
+    <category term="camel" scheme="https://lichuanyang.top/tags/camel/"/>
     
   </entry>
   
   <entry>
     <title>jstorm源码解析之bolt异常处理</title>
-    <link href="http://lichuanyang.top/posts/15594/"/>
-    <id>http://lichuanyang.top/posts/15594/</id>
+    <link href="https://lichuanyang.top/posts/15594/"/>
+    <id>https://lichuanyang.top/posts/15594/</id>
     <published>2017-08-03T11:29:00.000Z</published>
     <updated>2023-01-28T10:53:05.898Z</updated>
     
@@ -1246,19 +1246,19 @@
     
     
     
-    <category term="jstorm源码解析" scheme="http://lichuanyang.top/categories/jstorm%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+    <category term="jstorm源码解析" scheme="https://lichuanyang.top/categories/jstorm%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
     
     
-    <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
+    <category term="jstorm" scheme="https://lichuanyang.top/tags/jstorm/"/>
     
-    <category term="源码阅读" scheme="http://lichuanyang.top/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/"/>
+    <category term="源码阅读" scheme="https://lichuanyang.top/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/"/>
     
   </entry>
   
   <entry>
     <title>log4j动态添加appender</title>
-    <link href="http://lichuanyang.top/posts/42764/"/>
-    <id>http://lichuanyang.top/posts/42764/</id>
+    <link href="https://lichuanyang.top/posts/42764/"/>
+    <id>https://lichuanyang.top/posts/42764/</id>
     <published>2017-06-30T11:30:00.000Z</published>
     <updated>2023-01-28T10:53:05.899Z</updated>
     
@@ -1276,14 +1276,14 @@
     
     
     
-    <category term="日志" scheme="http://lichuanyang.top/tags/%E6%97%A5%E5%BF%97/"/>
+    <category term="日志" scheme="https://lichuanyang.top/tags/%E6%97%A5%E5%BF%97/"/>
     
   </entry>
   
   <entry>
     <title>【翻译】java里编写基准测试的一些经验</title>
-    <link href="http://lichuanyang.top/posts/4987/"/>
-    <id>http://lichuanyang.top/posts/4987/</id>
+    <link href="https://lichuanyang.top/posts/4987/"/>
+    <id>https://lichuanyang.top/posts/4987/</id>
     <published>2017-06-05T12:39:00.000Z</published>
     <updated>2023-01-28T10:53:05.900Z</updated>
     
@@ -1301,16 +1301,16 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
-    <category term="测试" scheme="http://lichuanyang.top/tags/%E6%B5%8B%E8%AF%95/"/>
+    <category term="测试" scheme="https://lichuanyang.top/tags/%E6%B5%8B%E8%AF%95/"/>
     
   </entry>
   
   <entry>
     <title>java线程池：获取运行线程数并控制线程启动速度</title>
-    <link href="http://lichuanyang.top/posts/5707/"/>
-    <id>http://lichuanyang.top/posts/5707/</id>
+    <link href="https://lichuanyang.top/posts/5707/"/>
+    <id>https://lichuanyang.top/posts/5707/</id>
     <published>2017-05-26T12:36:00.000Z</published>
     <updated>2023-01-28T10:53:05.898Z</updated>
     
@@ -1328,16 +1328,16 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
-    <category term="多线程" scheme="http://lichuanyang.top/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    <category term="多线程" scheme="https://lichuanyang.top/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>maven里的mirror和repository: 配置多repository</title>
-    <link href="http://lichuanyang.top/posts/32793/"/>
-    <id>http://lichuanyang.top/posts/32793/</id>
+    <link href="https://lichuanyang.top/posts/32793/"/>
+    <id>https://lichuanyang.top/posts/32793/</id>
     <published>2017-05-19T11:40:00.000Z</published>
     <updated>2023-01-28T10:53:05.899Z</updated>
     
@@ -1355,14 +1355,14 @@
     
     
     
-    <category term="maven" scheme="http://lichuanyang.top/tags/maven/"/>
+    <category term="maven" scheme="https://lichuanyang.top/tags/maven/"/>
     
   </entry>
   
   <entry>
     <title>使用maven shade plugin 打可执行Jar包</title>
-    <link href="http://lichuanyang.top/posts/3945/"/>
-    <id>http://lichuanyang.top/posts/3945/</id>
+    <link href="https://lichuanyang.top/posts/3945/"/>
+    <id>https://lichuanyang.top/posts/3945/</id>
     <published>2017-05-14T01:32:00.000Z</published>
     <updated>2023-01-28T10:53:05.901Z</updated>
     
@@ -1380,16 +1380,16 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
-    <category term="maven" scheme="http://lichuanyang.top/tags/maven/"/>
+    <category term="maven" scheme="https://lichuanyang.top/tags/maven/"/>
     
   </entry>
   
   <entry>
     <title>activemq plugin开发指南及示例</title>
-    <link href="http://lichuanyang.top/posts/61645/"/>
-    <id>http://lichuanyang.top/posts/61645/</id>
+    <link href="https://lichuanyang.top/posts/61645/"/>
+    <id>https://lichuanyang.top/posts/61645/</id>
     <published>2017-05-05T08:58:00.000Z</published>
     <updated>2023-01-28T10:53:05.896Z</updated>
     
@@ -1407,14 +1407,14 @@
     
     
     
-    <category term="activemq" scheme="http://lichuanyang.top/tags/activemq/"/>
+    <category term="activemq" scheme="https://lichuanyang.top/tags/activemq/"/>
     
   </entry>
   
   <entry>
     <title>通过加入classpath的形式实现命令行运行java程序时引入第三方jar包</title>
-    <link href="http://lichuanyang.top/posts/65262/"/>
-    <id>http://lichuanyang.top/posts/65262/</id>
+    <link href="https://lichuanyang.top/posts/65262/"/>
+    <id>https://lichuanyang.top/posts/65262/</id>
     <published>2017-05-03T10:42:00.000Z</published>
     <updated>2023-01-28T10:53:05.905Z</updated>
     
@@ -1434,14 +1434,14 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
   </entry>
   
   <entry>
     <title>解决fatjar的 “java.lang.SecurityException: Invalid signature file digest for Manifest main attributes” 问题</title>
-    <link href="http://lichuanyang.top/posts/2478/"/>
-    <id>http://lichuanyang.top/posts/2478/</id>
+    <link href="https://lichuanyang.top/posts/2478/"/>
+    <id>https://lichuanyang.top/posts/2478/</id>
     <published>2017-04-27T06:16:00.000Z</published>
     <updated>2023-01-28T10:53:05.904Z</updated>
     
@@ -1460,14 +1460,14 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
   </entry>
   
   <entry>
     <title>通过实际操作理解redis cluster原理</title>
-    <link href="http://lichuanyang.top/posts/9329/"/>
-    <id>http://lichuanyang.top/posts/9329/</id>
+    <link href="https://lichuanyang.top/posts/9329/"/>
+    <id>https://lichuanyang.top/posts/9329/</id>
     <published>2017-04-14T12:02:00.000Z</published>
     <updated>2023-01-28T10:53:05.905Z</updated>
     
@@ -1485,19 +1485,19 @@
     
     
     
-    <category term="redis系列" scheme="http://lichuanyang.top/categories/redis%E7%B3%BB%E5%88%97/"/>
+    <category term="redis系列" scheme="https://lichuanyang.top/categories/redis%E7%B3%BB%E5%88%97/"/>
     
     
-    <category term="redis" scheme="http://lichuanyang.top/tags/redis/"/>
+    <category term="redis" scheme="https://lichuanyang.top/tags/redis/"/>
     
-    <category term="redis-cluster" scheme="http://lichuanyang.top/tags/redis-cluster/"/>
+    <category term="redis-cluster" scheme="https://lichuanyang.top/tags/redis-cluster/"/>
     
   </entry>
   
   <entry>
     <title>一种实现在hbase中存储set的思路</title>
-    <link href="http://lichuanyang.top/posts/46290/"/>
-    <id>http://lichuanyang.top/posts/46290/</id>
+    <link href="https://lichuanyang.top/posts/46290/"/>
+    <id>https://lichuanyang.top/posts/46290/</id>
     <published>2017-04-10T12:42:00.000Z</published>
     <updated>2023-01-28T10:53:05.900Z</updated>
     
@@ -1515,14 +1515,14 @@
     
     
     
-    <category term="hbase" scheme="http://lichuanyang.top/tags/hbase/"/>
+    <category term="hbase" scheme="https://lichuanyang.top/tags/hbase/"/>
     
   </entry>
   
   <entry>
     <title>log4j2.xml配置示例及与log4j的区别</title>
-    <link href="http://lichuanyang.top/posts/41673/"/>
-    <id>http://lichuanyang.top/posts/41673/</id>
+    <link href="https://lichuanyang.top/posts/41673/"/>
+    <id>https://lichuanyang.top/posts/41673/</id>
     <published>2017-04-10T12:23:00.000Z</published>
     <updated>2023-01-28T10:53:05.899Z</updated>
     
@@ -1540,14 +1540,14 @@
     
     
     
-    <category term="日志" scheme="http://lichuanyang.top/tags/%E6%97%A5%E5%BF%97/"/>
+    <category term="日志" scheme="https://lichuanyang.top/tags/%E6%97%A5%E5%BF%97/"/>
     
   </entry>
   
   <entry>
     <title>不实现equals方法的情况下比较java list</title>
-    <link href="http://lichuanyang.top/posts/28720/"/>
-    <id>http://lichuanyang.top/posts/28720/</id>
+    <link href="https://lichuanyang.top/posts/28720/"/>
+    <id>https://lichuanyang.top/posts/28720/</id>
     <published>2017-04-10T11:57:00.000Z</published>
     <updated>2023-01-28T10:53:05.901Z</updated>
     
@@ -1565,14 +1565,14 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
   </entry>
   
   <entry>
     <title>使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据</title>
-    <link href="http://lichuanyang.top/posts/63756/"/>
-    <id>http://lichuanyang.top/posts/63756/</id>
+    <link href="https://lichuanyang.top/posts/63756/"/>
+    <id>https://lichuanyang.top/posts/63756/</id>
     <published>2017-04-06T09:54:00.000Z</published>
     <updated>2023-01-28T10:53:05.901Z</updated>
     
@@ -1590,16 +1590,16 @@
     
     
     
-    <category term="redis" scheme="http://lichuanyang.top/tags/redis/"/>
+    <category term="redis" scheme="https://lichuanyang.top/tags/redis/"/>
     
-    <category term="lua" scheme="http://lichuanyang.top/tags/lua/"/>
+    <category term="lua" scheme="https://lichuanyang.top/tags/lua/"/>
     
   </entry>
   
   <entry>
     <title>vitualbox虚拟机安装centos 7 及ssh访问、自启动等配置</title>
-    <link href="http://lichuanyang.top/posts/62625/"/>
-    <id>http://lichuanyang.top/posts/62625/</id>
+    <link href="https://lichuanyang.top/posts/62625/"/>
+    <id>https://lichuanyang.top/posts/62625/</id>
     <published>2017-04-02T04:45:00.000Z</published>
     <updated>2023-01-28T10:53:05.900Z</updated>
     
@@ -1618,14 +1618,14 @@
     
     
     
-    <category term="开发环境" scheme="http://lichuanyang.top/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
+    <category term="开发环境" scheme="https://lichuanyang.top/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
     
   </entry>
   
   <entry>
     <title>在java独立进程(standalone app)中嵌入hawtio监控</title>
-    <link href="http://lichuanyang.top/posts/11299/"/>
-    <id>http://lichuanyang.top/posts/11299/</id>
+    <link href="https://lichuanyang.top/posts/11299/"/>
+    <id>https://lichuanyang.top/posts/11299/</id>
     <published>2017-04-01T11:42:00.000Z</published>
     <updated>2023-01-28T10:53:05.902Z</updated>
     
@@ -1644,18 +1644,18 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
-    <category term="监控" scheme="http://lichuanyang.top/tags/%E7%9B%91%E6%8E%A7/"/>
+    <category term="监控" scheme="https://lichuanyang.top/tags/%E7%9B%91%E6%8E%A7/"/>
     
-    <category term="hawtio" scheme="http://lichuanyang.top/tags/hawtio/"/>
+    <category term="hawtio" scheme="https://lichuanyang.top/tags/hawtio/"/>
     
   </entry>
   
   <entry>
     <title>java日志系统简介: 从tomcat大量打印debug日志说起</title>
-    <link href="http://lichuanyang.top/posts/4433/"/>
-    <id>http://lichuanyang.top/posts/4433/</id>
+    <link href="https://lichuanyang.top/posts/4433/"/>
+    <id>https://lichuanyang.top/posts/4433/</id>
     <published>2017-03-31T11:47:00.000Z</published>
     <updated>2023-01-28T10:53:05.898Z</updated>
     
@@ -1673,16 +1673,16 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
-    <category term="日志" scheme="http://lichuanyang.top/tags/%E6%97%A5%E5%BF%97/"/>
+    <category term="日志" scheme="https://lichuanyang.top/tags/%E6%97%A5%E5%BF%97/"/>
     
   </entry>
   
   <entry>
     <title>Java kryo/protobuf/protostuff序列化 or Json 性能对比</title>
-    <link href="http://lichuanyang.top/posts/57802/"/>
-    <id>http://lichuanyang.top/posts/57802/</id>
+    <link href="https://lichuanyang.top/posts/57802/"/>
+    <id>https://lichuanyang.top/posts/57802/</id>
     <published>2017-03-02T10:10:00.000Z</published>
     <updated>2023-01-28T10:53:05.896Z</updated>
     
@@ -1704,20 +1704,20 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
-    <category term="序列化， kryo" scheme="http://lichuanyang.top/tags/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%8C-kryo/"/>
+    <category term="序列化， kryo" scheme="https://lichuanyang.top/tags/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%8C-kryo/"/>
     
-    <category term="protobuf" scheme="http://lichuanyang.top/tags/protobuf/"/>
+    <category term="protobuf" scheme="https://lichuanyang.top/tags/protobuf/"/>
     
-    <category term="json" scheme="http://lichuanyang.top/tags/json/"/>
+    <category term="json" scheme="https://lichuanyang.top/tags/json/"/>
     
   </entry>
   
   <entry>
     <title>java分布式锁入门实战</title>
-    <link href="http://lichuanyang.top/posts/48104/"/>
-    <id>http://lichuanyang.top/posts/48104/</id>
+    <link href="https://lichuanyang.top/posts/48104/"/>
+    <id>https://lichuanyang.top/posts/48104/</id>
     <published>2017-02-20T11:21:00.000Z</published>
     <updated>2023-01-28T10:53:05.897Z</updated>
     
@@ -1737,20 +1737,20 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
-    <category term="redis" scheme="http://lichuanyang.top/tags/redis/"/>
+    <category term="redis" scheme="https://lichuanyang.top/tags/redis/"/>
     
-    <category term="zookeeper" scheme="http://lichuanyang.top/tags/zookeeper/"/>
+    <category term="zookeeper" scheme="https://lichuanyang.top/tags/zookeeper/"/>
     
-    <category term="分布式" scheme="http://lichuanyang.top/tags/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    <category term="分布式" scheme="https://lichuanyang.top/tags/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
     
   </entry>
   
   <entry>
     <title>leetcode第三题: 输出不包含重复字母的最长子串</title>
-    <link href="http://lichuanyang.top/posts/43423/"/>
-    <id>http://lichuanyang.top/posts/43423/</id>
+    <link href="https://lichuanyang.top/posts/43423/"/>
+    <id>https://lichuanyang.top/posts/43423/</id>
     <published>2017-02-15T12:34:00.000Z</published>
     <updated>2023-01-28T10:53:05.899Z</updated>
     
@@ -1768,16 +1768,16 @@
     
     
     
-    <category term="算法" scheme="http://lichuanyang.top/tags/%E7%AE%97%E6%B3%95/"/>
+    <category term="算法" scheme="https://lichuanyang.top/tags/%E7%AE%97%E6%B3%95/"/>
     
-    <category term="leetcode" scheme="http://lichuanyang.top/tags/leetcode/"/>
+    <category term="leetcode" scheme="https://lichuanyang.top/tags/leetcode/"/>
     
   </entry>
   
   <entry>
     <title>java多线程实现三个字母顺序输出</title>
-    <link href="http://lichuanyang.top/posts/60353/"/>
-    <id>http://lichuanyang.top/posts/60353/</id>
+    <link href="https://lichuanyang.top/posts/60353/"/>
+    <id>https://lichuanyang.top/posts/60353/</id>
     <published>2017-01-25T08:59:00.000Z</published>
     <updated>2023-01-28T10:53:05.898Z</updated>
     
@@ -1796,16 +1796,16 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
-    <category term="多线程" scheme="http://lichuanyang.top/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    <category term="多线程" scheme="https://lichuanyang.top/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>一次kafka空间激增排查：kafka的数据压缩、批量发送等</title>
-    <link href="http://lichuanyang.top/posts/40931/"/>
-    <id>http://lichuanyang.top/posts/40931/</id>
+    <link href="https://lichuanyang.top/posts/40931/"/>
+    <id>https://lichuanyang.top/posts/40931/</id>
     <published>2016-12-29T09:21:00.000Z</published>
     <updated>2023-01-28T10:53:05.900Z</updated>
     
@@ -1823,16 +1823,16 @@
     
     
     
-    <category term="kafka" scheme="http://lichuanyang.top/tags/kafka/"/>
+    <category term="kafka" scheme="https://lichuanyang.top/tags/kafka/"/>
     
-    <category term="成长" scheme="http://lichuanyang.top/tags/%E6%88%90%E9%95%BF/"/>
+    <category term="成长" scheme="https://lichuanyang.top/tags/%E6%88%90%E9%95%BF/"/>
     
   </entry>
   
   <entry>
     <title>java里128有何魔力？ 聊聊Integer的缓存</title>
-    <link href="http://lichuanyang.top/posts/64970/"/>
-    <id>http://lichuanyang.top/posts/64970/</id>
+    <link href="https://lichuanyang.top/posts/64970/"/>
+    <id>https://lichuanyang.top/posts/64970/</id>
     <published>2016-12-02T11:45:00.000Z</published>
     <updated>2023-01-28T10:53:05.903Z</updated>
     
@@ -1852,18 +1852,18 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
-    <category term="java integer" scheme="http://lichuanyang.top/tags/java-integer/"/>
+    <category term="java integer" scheme="https://lichuanyang.top/tags/java-integer/"/>
     
-    <category term="javaInteger缓存" scheme="http://lichuanyang.top/tags/javaInteger%E7%BC%93%E5%AD%98/"/>
+    <category term="javaInteger缓存" scheme="https://lichuanyang.top/tags/javaInteger%E7%BC%93%E5%AD%98/"/>
     
   </entry>
   
   <entry>
     <title>storm/jstorm生态与周边工具,storm连接activemq,kafka,hdfs等</title>
-    <link href="http://lichuanyang.top/posts/22103/"/>
-    <id>http://lichuanyang.top/posts/22103/</id>
+    <link href="https://lichuanyang.top/posts/22103/"/>
+    <id>https://lichuanyang.top/posts/22103/</id>
     <published>2016-11-16T12:16:00.000Z</published>
     <updated>2023-01-28T10:53:05.900Z</updated>
     
@@ -1882,20 +1882,20 @@
     
     
     
-    <category term="activemq" scheme="http://lichuanyang.top/tags/activemq/"/>
+    <category term="activemq" scheme="https://lichuanyang.top/tags/activemq/"/>
     
-    <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
+    <category term="storm" scheme="https://lichuanyang.top/tags/storm/"/>
     
-    <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
+    <category term="jstorm" scheme="https://lichuanyang.top/tags/jstorm/"/>
     
-    <category term="kafka" scheme="http://lichuanyang.top/tags/kafka/"/>
+    <category term="kafka" scheme="https://lichuanyang.top/tags/kafka/"/>
     
   </entry>
   
   <entry>
     <title>jstorm UI 介绍</title>
-    <link href="http://lichuanyang.top/posts/31996/"/>
-    <id>http://lichuanyang.top/posts/31996/</id>
+    <link href="https://lichuanyang.top/posts/31996/"/>
+    <id>https://lichuanyang.top/posts/31996/</id>
     <published>2016-11-16T11:58:00.000Z</published>
     <updated>2023-01-28T10:53:05.898Z</updated>
     
@@ -1913,16 +1913,16 @@
     
     
     
-    <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
+    <category term="storm" scheme="https://lichuanyang.top/tags/storm/"/>
     
-    <category term="jstorm" scheme="http://lichuanyang.top/tags/jstorm/"/>
+    <category term="jstorm" scheme="https://lichuanyang.top/tags/jstorm/"/>
     
   </entry>
   
   <entry>
     <title>五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别</title>
-    <link href="http://lichuanyang.top/posts/27021/"/>
-    <id>http://lichuanyang.top/posts/27021/</id>
+    <link href="https://lichuanyang.top/posts/27021/"/>
+    <id>https://lichuanyang.top/posts/27021/</id>
     <published>2016-11-16T10:21:00.000Z</published>
     <updated>2023-01-28T10:53:05.901Z</updated>
     
@@ -1940,14 +1940,14 @@
     
     
     
-    <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
+    <category term="storm" scheme="https://lichuanyang.top/tags/storm/"/>
     
   </entry>
   
   <entry>
     <title>activemq web console的权限配置</title>
-    <link href="http://lichuanyang.top/posts/32479/"/>
-    <id>http://lichuanyang.top/posts/32479/</id>
+    <link href="https://lichuanyang.top/posts/32479/"/>
+    <id>https://lichuanyang.top/posts/32479/</id>
     <published>2016-01-05T10:09:00.000Z</published>
     <updated>2023-01-28T10:53:05.896Z</updated>
     
@@ -1965,16 +1965,16 @@
     
     
     
-    <category term="activemq" scheme="http://lichuanyang.top/tags/activemq/"/>
+    <category term="activemq" scheme="https://lichuanyang.top/tags/activemq/"/>
     
-    <category term="监控" scheme="http://lichuanyang.top/tags/%E7%9B%91%E6%8E%A7/"/>
+    <category term="监控" scheme="https://lichuanyang.top/tags/%E7%9B%91%E6%8E%A7/"/>
     
   </entry>
   
   <entry>
     <title>storm ui 中一些关键属性的含义</title>
-    <link href="http://lichuanyang.top/posts/62259/"/>
-    <id>http://lichuanyang.top/posts/62259/</id>
+    <link href="https://lichuanyang.top/posts/62259/"/>
+    <id>https://lichuanyang.top/posts/62259/</id>
     <published>2015-11-06T13:44:00.000Z</published>
     <updated>2023-01-28T10:53:05.900Z</updated>
     
@@ -1992,14 +1992,14 @@
     
     
     
-    <category term="storm" scheme="http://lichuanyang.top/tags/storm/"/>
+    <category term="storm" scheme="https://lichuanyang.top/tags/storm/"/>
     
   </entry>
   
   <entry>
     <title>activemq 5.6 连接池的内存泄露问题</title>
-    <link href="http://lichuanyang.top/posts/13925/"/>
-    <id>http://lichuanyang.top/posts/13925/</id>
+    <link href="https://lichuanyang.top/posts/13925/"/>
+    <id>https://lichuanyang.top/posts/13925/</id>
     <published>2015-08-08T13:16:00.000Z</published>
     <updated>2023-01-28T10:53:05.896Z</updated>
     
@@ -2017,14 +2017,14 @@
     
     
     
-    <category term="activemq" scheme="http://lichuanyang.top/tags/activemq/"/>
+    <category term="activemq" scheme="https://lichuanyang.top/tags/activemq/"/>
     
   </entry>
   
   <entry>
     <title>关于apache camel的消息转发效率</title>
-    <link href="http://lichuanyang.top/posts/17762/"/>
-    <id>http://lichuanyang.top/posts/17762/</id>
+    <link href="https://lichuanyang.top/posts/17762/"/>
+    <id>https://lichuanyang.top/posts/17762/</id>
     <published>2015-08-08T12:55:00.000Z</published>
     <updated>2023-01-28T10:53:05.902Z</updated>
     
@@ -2042,16 +2042,16 @@
     
     
     
-    <category term="java" scheme="http://lichuanyang.top/tags/java/"/>
+    <category term="java" scheme="https://lichuanyang.top/tags/java/"/>
     
-    <category term="camel" scheme="http://lichuanyang.top/tags/camel/"/>
+    <category term="camel" scheme="https://lichuanyang.top/tags/camel/"/>
     
   </entry>
   
   <entry>
     <title>一篇不错的lda模型入门文档</title>
-    <link href="http://lichuanyang.top/posts/63299/"/>
-    <id>http://lichuanyang.top/posts/63299/</id>
+    <link href="https://lichuanyang.top/posts/63299/"/>
+    <id>https://lichuanyang.top/posts/63299/</id>
     <published>2012-12-02T07:20:00.000Z</published>
     <updated>2023-01-28T10:53:05.901Z</updated>
     
@@ -2069,16 +2069,16 @@
     
     
     
-    <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    <category term="大数据" scheme="https://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
     
-    <category term="LDA" scheme="http://lichuanyang.top/tags/LDA/"/>
+    <category term="LDA" scheme="https://lichuanyang.top/tags/LDA/"/>
     
   </entry>
   
   <entry>
     <title>wordcount代码</title>
-    <link href="http://lichuanyang.top/posts/25187/"/>
-    <id>http://lichuanyang.top/posts/25187/</id>
+    <link href="https://lichuanyang.top/posts/25187/"/>
+    <id>https://lichuanyang.top/posts/25187/</id>
     <published>2012-10-28T10:42:00.000Z</published>
     <updated>2023-01-28T10:53:05.900Z</updated>
     
@@ -2096,16 +2096,16 @@
     
     
     
-    <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    <category term="hadoop" scheme="https://lichuanyang.top/tags/hadoop/"/>
     
-    <category term="hadoop" scheme="http://lichuanyang.top/tags/hadoop/"/>
+    <category term="大数据" scheme="https://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
     
   </entry>
   
   <entry>
     <title>hadoop基本的学习资料</title>
-    <link href="http://lichuanyang.top/posts/35575/"/>
-    <id>http://lichuanyang.top/posts/35575/</id>
+    <link href="https://lichuanyang.top/posts/35575/"/>
+    <id>https://lichuanyang.top/posts/35575/</id>
     <published>2012-10-28T10:05:00.000Z</published>
     <updated>2023-01-28T10:53:05.897Z</updated>
     
@@ -2123,9 +2123,9 @@
     
     
     
-    <category term="大数据" scheme="http://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    <category term="hadoop" scheme="https://lichuanyang.top/tags/hadoop/"/>
     
-    <category term="hadoop" scheme="http://lichuanyang.top/tags/hadoop/"/>
+    <category term="大数据" scheme="https://lichuanyang.top/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
     
   </entry>
   
