@@ -11,7 +11,6 @@
     "hexo-baidu-url-submit": "0.0.6",
     "hexo-deployer-git": "^4.0.0",
     "hexo-generator-archive": "^2.0.0",
-    "hexo-generator-baidu-sitemap": "^0.1.9",
     "hexo-generator-category": "^2.0.0",
     "hexo-generator-feed": "^4.0.0",
     "hexo-generator-i18n": "^0.0.10",
