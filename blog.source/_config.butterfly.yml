@@ -1064,6 +1064,28 @@ inject:
   head:
     # - <link rel="stylesheet" href="/xxx.css">
   bottom:
+
+    <script>
+    // 文章页一言显示
+    if (document.getElementById('post-info')) {
+      const hitokotoDiv = document.createElement('div');
+      hitokotoDiv.id = 'post-hitokoto';
+      hitokotoDiv.style.cssText = 'text-align:center;font-size:0.9rem;color:#999;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem;';
+      const postTitle = document.querySelector('.post-title');
+      if (postTitle) {
+        postTitle.parentNode.insertBefore(hitokotoDiv, postTitle.nextSibling);
+      }
+      fetch('https://v1.hitokoto.cn/')
+        .then(response => response.json())
+        .then(data => {
+          hitokotoDiv.innerHTML = data.hitokoto + ' —— ' + data.from;
+        })
+        .catch(err => {
+          console.log('一言加载失败');
+        });
+    }
+    </script>
+
     # - <script src="xxxx"></script>
 
 # CDN Settings
