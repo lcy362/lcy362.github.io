@@ -575,11 +575,11 @@ gitalk:
 # Valine
 # https://valine.js.org
 valine:
-  appId:
-  appKey:
-  avatar: monsterid
+  appId: aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI
+  appKey: lW7mfN411Vpjo3x9S5zdOTlE
+  avatar: mm
   # This configuration is suitable for domestic custom domain name users, overseas version will be automatically detected (no need to manually fill in)
-  serverURLs:
+  serverURLs: https://ay7gn9nn.api.lncldglobal.com
   bg:
   # Use Valine visitor count as the page view count
   visitor: false
@@ -1015,7 +1015,7 @@ instantpage: false
 # Lazyload
 # https://github.com/verlok/vanilla-lazyload
 lazyload:
-  enable: false
+  enable: true
   # Use browser's native lazyload instead of vanilla-lazyload
   native: false
   # Specify the field to use lazyload (site or post)
