@@ -685,9 +685,12 @@ crisp:
 
 # https://tongji.baidu.com/web/welcome/login
 baidu_analytics:
+  id: ffb948eb504670b10474a889e9409047
 
 # https://analytics.google.com/analytics/web/
 google_analytics:
+  id: UA-45390505-1
+  old: false
 
 # https://www.cloudflare.com/zh-tw/web-analytics/
 cloudflare_analytics:
@@ -743,10 +746,12 @@ ad:
 # --------------------------------------
 
 site_verification:
-  # - name: google-site-verification
-  #   content: xxxxxx
-  # - name: baidu-site-verification
-  #   content: xxxxxxx
+  - name: google-site-verification
+    content: AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU
+  - name: bing-site-verification
+    content: FEC1AF1D401268A4208AF51DC0275AAA
+  - name: baidu-site-verification
+    content: code-T8LautTf5f
 
 # --------------------------------------
 # Beautify / Effect
