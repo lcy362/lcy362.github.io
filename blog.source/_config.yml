@@ -80,7 +80,7 @@ pagination_dir: page
 #  - hexo-generator-robotstxt
 
 ## Themes: https://hexo.io/themes/
-theme: next
+theme: butterfly
 feed:
   type: atom
   path: atom.xml
