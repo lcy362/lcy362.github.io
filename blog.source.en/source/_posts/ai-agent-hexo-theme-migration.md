@@ -1,5 +1,5 @@
 ---
-title: Automating Hexo Theme Migration with AI Agent: From Next to Butterfly
+title: 'Automating Hexo Theme Migration with AI Agent: From Next to Butterfly'
 tags:
   - AI
   - AI Agent
@@ -9,6 +9,7 @@ tags:
   - LLM
   - developer-tools
   - prompt-engineering
+abbrlink: 27861
 date: 2026-05-28 22:00:00
 ---
 
