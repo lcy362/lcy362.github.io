@@ -725,10 +725,10 @@ google_tag_manager:
 
 # Google Adsense
 google_adsense:
-  enable: false
+  enable: true
   auto_ads: true
   js: https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js
-  client:
+  client: ca-pub-7310841175510611
   enable_page_level_ads: true
 
 # Insert ads manually
