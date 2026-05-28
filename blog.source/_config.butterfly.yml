@@ -1109,6 +1109,7 @@ CDN:
     # fancybox_css:
     # fireworks:
     fontawesome: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css
+    typed: https://cdn.jsdelivr.net/npm/typed.js@3.0.0/dist/typed.umd.js
     # gitalk:
     # gitalk_css:
     # giscus:
