@@ -23,7 +23,7 @@ menu:
   Categories: /categories/ || fas fa-th
   Archives: /archives/ || fas fa-archive
   Sitemap: /sitemap.xml || fas fa-sitemap
-  English: /en || fas fa-language
+  English: / || fas fa-language
 
 # --------------------------------------
 # Code Blocks Settings
@@ -50,7 +50,7 @@ code_blocks:
 social:
   fab fa-github: https://github.com/lcy362 || Github || '#24292e'
   fab fa-stack-overflow: https://stackoverflow.com/users/3448633 || StackOverflow || '#f48024'
-  知乎: https://www.zhihu.com/people/hobermallow || 知乎
+  fa-zhihu: https://www.zhihu.com/people/hobermallow || Zhihu || '#0084ff'
 
 # --------------------------------------
 # Image Settings
@@ -473,7 +473,7 @@ math:
 search:
   # Choose: algolia_search / local_search / docsearch
   # leave it empty if you don't need search
-  use:
+  use: local_search
   placeholder:
 
   # Algolia Search
