@@ -1,5 +1,6 @@
 ---
 title: vitualbox虚拟机安装centos 7 及ssh访问、自启动等配置
+description: "VirtualBox 安装 CentOS 7 的完整教程，包括 SSH 访问配置和虚拟机自启动设置。"
 tags:
   - 开发环境
 abbrlink: 62625

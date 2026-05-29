@@ -1,5 +1,6 @@
 ---
 title: 数据分析的利器-clickhouse介绍
+description: "ClickHouse 实时分析数据库入门介绍，从 Yandex 的业务需求出发讲解 ClickHouse 的设计背景和核心特性。"
 abbrlink: 48312
 date: 2018-11-14 21:59:31
 tags:   

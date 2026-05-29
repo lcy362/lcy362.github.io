@@ -2,6 +2,7 @@
 title: >-
   解决fatjar的 “java.lang.SecurityException: Invalid signature file digest for
   Manifest main attributes” 问题
+description: "解决 Fat Jar 合并时因签名校验导致的 SecurityException，理解 META-INF 签名机制及排除签名文件的方法。"
 tags:
   - java
 abbrlink: 2478

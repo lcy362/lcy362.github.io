@@ -1,5 +1,6 @@
 ---
 title: 一次kafka空间激增排查：kafka的数据压缩、批量发送等
+description: "一次 Kafka 磁盘空间激增问题的排查过程，深入理解 Kafka 数据压缩机制和批量发送策略。"
 tags:
   - kafka
   - 成长

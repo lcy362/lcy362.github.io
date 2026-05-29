@@ -1,5 +1,6 @@
 ---
 title: 不实现equals方法的情况下比较java list
+description: "在不修改第三方类的 equals 方法前提下，利用 Apache Commons 的工具方法比较两个 List 的值。"
 tags:
   - java
 abbrlink: 28720

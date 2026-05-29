@@ -1,5 +1,6 @@
 ---
 title: log4j动态添加appender
+description: "通过代码动态修改 Log4j 配置的实战示例，以 KafkaAppender 为例演示运行时添加 appender。"
 tags:
   - 日志
 abbrlink: 42764

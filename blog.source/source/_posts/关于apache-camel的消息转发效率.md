@@ -1,5 +1,6 @@
 ---
 title: 关于apache camel的消息转发效率
+description: "分析 Apache Camel 消息转发的工作原理和效率瓶颈，为大数据量场景下的性能优化提供思路。"
 tags:
   - java
   - camel

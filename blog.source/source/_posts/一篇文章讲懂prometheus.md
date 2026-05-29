@@ -1,5 +1,6 @@
 ---
 title: prometheus教程： 一篇文章讲懂prometheus
+description: "Prometheus 监控系统教程，从设计理念出发讲清楚它如何用简单设计支撑复杂功能。"
 tags:
   - 云原生
   - 监控

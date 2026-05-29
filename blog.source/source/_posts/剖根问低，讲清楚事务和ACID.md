@@ -1,5 +1,6 @@
 ---
 title: 从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID
+description: "从 redo log、undo log 到隔离级别，刨根问底讲清楚数据库事务和 ACID 的完整机制。"
 tags:
   - 数据库事务
   - 数据库

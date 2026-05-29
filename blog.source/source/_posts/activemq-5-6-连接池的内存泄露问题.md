@@ -1,5 +1,6 @@
 ---
 title: activemq 5.6 连接池的内存泄露问题
+description: "记录 ActiveMQ 5.6 连接池存在的严重内存泄露问题，通过 jmap 监控定位 ReentrantLock 和 PooledConnection 的异常增长。"
 tags:
   - activemq
 abbrlink: 13925

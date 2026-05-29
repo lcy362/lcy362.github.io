@@ -1,5 +1,6 @@
 ---
 title: 'java细节:三目运算符和自动拆箱'
+description: "通过 FindBugs 发现的问题，深入分析 Java 三目运算符中的自动拆箱陷阱和装箱开销。"
 tags: java
 abbrlink: 53072
 date: 2018-05-10 21:22:36

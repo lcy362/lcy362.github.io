@@ -1,5 +1,6 @@
 ---
 title: redis的对象
+description: "Redis 对象系统源码解析，介绍字符串、列表、哈希、集合、有序集合等对象的底层实现方式。"
 tags:
   - redis
 categories: redis系列

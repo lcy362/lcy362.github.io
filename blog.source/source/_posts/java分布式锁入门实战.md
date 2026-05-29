@@ -1,5 +1,6 @@
 ---
 title: java分布式锁入门实战
+description: "Java 分布式锁的实战入门，介绍基于 Zookeeper 和 Redis 的分布式锁实现方式，只讲使用不讲原理。"
 tags:
   - java
   - redis

@@ -1,5 +1,6 @@
 ---
 title: activemq web console的权限配置
+description: "介绍 ActiveMQ Web Console 基于 Jetty 的权限管理配置方法，实现不同用户角色的访问控制。"
 tags:
   - activemq
   - 监控

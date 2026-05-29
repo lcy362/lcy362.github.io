@@ -1,5 +1,6 @@
 ---
 title: 一种实现在hbase中存储set的思路
+description: "在 HBase 中实现 Set 数据结构的存储方案，解决 HBase 原生不支持集合类型的限制。"
 tags:
   - hbase
 abbrlink: 46290

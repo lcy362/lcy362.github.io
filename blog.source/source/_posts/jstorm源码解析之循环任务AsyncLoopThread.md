@@ -1,5 +1,6 @@
 ---
 title: jstorm源码解析之循环任务AsyncLoopThread
+description: "JStorm 自定义循环任务工具 AsyncLoopThread 的源码解析，了解 supervisor/nimbus 心跳等功能的底层实现。"
 tags: jstorm
 categories: jstorm源码解析
 abbrlink: 31761

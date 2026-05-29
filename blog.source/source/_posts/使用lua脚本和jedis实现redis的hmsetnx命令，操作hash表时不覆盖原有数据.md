@@ -1,5 +1,6 @@
 ---
 title: 使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据
+description: "用 Lua 脚本和 Jedis 实现 Redis 缺失的 hmsetnx 命令，在批量操作 Hash 时不覆盖已有数据。"
 tags:
   - redis
   - lua

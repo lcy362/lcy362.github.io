@@ -1,5 +1,6 @@
 ---
 title: java多线程实现三个字母顺序输出
+description: "通过多线程顺序输出 ABC 的经典例子，加深对 Java wait/notify 机制的理解，展示锁策略的设计思路。"
 tags:
   - java
   - 多线程

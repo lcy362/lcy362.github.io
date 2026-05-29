@@ -1,5 +1,6 @@
 ---
 title: 'java里128有何魔力？ 聊聊Integer的缓存'
+description: "揭秘 Java Integer 类在 128 这个魔力数字背后的缓存机制，理解自动装箱的底层原理。"
 tags:
   - java
   - java integer

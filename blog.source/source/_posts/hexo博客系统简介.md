@@ -1,5 +1,6 @@
 ---
 title: hexo教程：博客系统搭建及部署到github
+description: "Hexo 博客系统入门教程，从安装初始化到部署 GitHub Pages，适合后端程序员快速搭建个人博客。"
 tags:
   - hexo
   - 博客搭建

@@ -1,5 +1,6 @@
 ---
 title: jstorm UI 介绍
+description: "JStorm UI 功能详解，包括 Cluster Summary、Topology Summary 等监控项的说明和二次开发指南。"
 tags:
   - storm
   - jstorm

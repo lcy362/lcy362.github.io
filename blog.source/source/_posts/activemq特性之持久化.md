@@ -1,5 +1,6 @@
 ---
 title: activemq特性之持久化
+description: "深入介绍 ActiveMQ 的三种持久化方式（JDBC、KahaDB、LevelDB），重点讲解官方推荐的 KahaDB 持久化机制。"
 tags: activemq
 categories: activemq系列文章
 abbrlink: 31044

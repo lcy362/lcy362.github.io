@@ -1,5 +1,6 @@
 ---
 title: redis里的数据结构
+description: "Redis 底层数据结构详解，包括 SDS、ziplist、quicklist、dict、skiplist 等核心数据结构的设计与优化。"
 tags:
   - redis
   - 数据结构，skiplist

@@ -1,5 +1,6 @@
 ---
 title: 【翻译】java里编写基准测试的一些经验
+description: "翻译文章：Java 基准测试编写经验，介绍 JMH 使用方法和常见的基准测试陷阱。"
 tags:
   - java
   - 测试

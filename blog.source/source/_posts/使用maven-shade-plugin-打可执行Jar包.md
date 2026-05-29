@@ -1,5 +1,6 @@
 ---
 title: 使用maven shade plugin 打可执行Jar包
+description: "使用 Maven Shade Plugin 打可执行 Fat Jar，替代 Eclipse 的 Export 功能，指定 Main 方法一键运行。"
 tags:
   - java
   - maven

@@ -1,5 +1,6 @@
 ---
 title: 关于rocketmq的readQueue和writeQueue
+description: "解释 RocketMQ 中 MessageQueue 为什么要拆分成 readQueue 和 writeQueue 的设计原因。"
 tags:
   - rocketMq
   - 消息队列

@@ -21,6 +21,9 @@ url: https://lichuanyang.top/
 root: /
 permalink: posts/:abbrlink/
 permalink_defaults:
+pretty_urls:
+  trailing_index: false
+  trailing_html: false
 
 # Directory
 source_dir: source

@@ -1,5 +1,6 @@
 ---
 title: wordcount代码
+description: "Hadoop WordCount 经典示例代码及运行过程说明，大数据入门必读。"
 tags:
   - hadoop
   - 大数据

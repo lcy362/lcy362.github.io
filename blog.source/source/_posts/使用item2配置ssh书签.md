@@ -1,5 +1,6 @@
 ---
 title: iterm2配置ssh书签, 实现记住密码和自动登录
+description: "通过 iTerm2 配置 SSH 书签，实现记住密码和自动登录，告别反复输入 IP 和密码的痛苦。"
 tags: 
   - iterm2
   - ssh自动登录

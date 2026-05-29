@@ -1,5 +1,6 @@
 ---
 title: 通过加入classpath的形式实现命令行运行java程序时引入第三方jar包
+description: "通过 Shell 脚本设置 CLASSPATH，实现命令行运行 Java 程序时引入第三方依赖。"
 tags:
   - java
 abbrlink: 65262

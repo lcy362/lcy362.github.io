@@ -1,5 +1,6 @@
 ---
 title: review的个人价值
+description: "从个人成长角度分析 code review 的价值，不仅是发现 bug，更是团队知识共享和代码质量提升的关键手段。"
 tags: 开发规范
 abbrlink: 57205
 date: 2021-04-27 18:07:11

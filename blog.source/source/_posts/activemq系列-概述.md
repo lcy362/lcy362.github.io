@@ -1,5 +1,6 @@
 ---
 title: activemq系列-概述
+description: "ActiveMQ 消息中间件系列开篇，介绍消息中间件的核心作用（解耦和平峰）以及 JMS 协议的基本概念。"
 tags: activemq
 categories: activemq系列文章
 abbrlink: 12035

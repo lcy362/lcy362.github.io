@@ -1,5 +1,6 @@
 ---
 title: activemq的安装及基本使用
+description: "ActiveMQ 的安装部署、核心配置文件说明，以及基本 API 使用教程，适合入门学习。"
 tags: activemq
 categories: activemq系列文章
 abbrlink: 48216

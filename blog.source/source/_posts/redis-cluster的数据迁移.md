@@ -1,5 +1,6 @@
 ---
 title: redis cluster的数据迁移
+description: "Redis Cluster 数据迁移的详细过程，包括 slot 转移机制和迁移过程中集群可用性分析。"
 tags: [redis, redis-cluster]
 categories: redis系列
 abbrlink: 37583

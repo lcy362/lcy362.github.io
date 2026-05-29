@@ -1,5 +1,6 @@
 ---
 title: 'leetcode第三题: 输出不包含重复字母的最长子串'
+description: "LeetCode 第三题详解：滑动窗口法求解不含重复字符的最长子串长度。"
 tags:
   - 算法
   - leetcode

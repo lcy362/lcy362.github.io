@@ -1,5 +1,6 @@
 ---
 title: Vercel封禁163邮箱后，我是怎么恢复博客的
+description: "Vercel 封禁 163 邮箱导致博客部署失败的亲身经历，以及从发现问题到迁移恢复的完整解决方案。"
 tags:
   - Vercel
   - 博客

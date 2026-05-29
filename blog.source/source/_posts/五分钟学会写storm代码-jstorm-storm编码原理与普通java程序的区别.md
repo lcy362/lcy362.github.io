@@ -1,5 +1,6 @@
 ---
 title: '五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别'
+description: "Storm/JStorm 编程快速入门，重点说明 topology 运行时与传统 Java 程序在初始化上的关键区别。"
 tags:
   - storm
 abbrlink: 27021
