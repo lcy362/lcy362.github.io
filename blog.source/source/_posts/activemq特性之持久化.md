@@ -1,12 +1,19 @@
 ---
 title: activemq特性之持久化
 description: "深入介绍 ActiveMQ 的三种持久化方式（JDBC、KahaDB、LevelDB），重点讲解官方推荐的 KahaDB 持久化机制。"
-tags: activemq
-categories: activemq系列文章
+keywords:
+  - ActiveMQ
+  - 持久化
+  - KahaDB
+  - JDBC
+  - LevelDB
+tags:
+  - activemq
+categories:
+  - activemq系列文章
 abbrlink: 31044
 date: 2018-02-02 18:56:49
 ---
-
 ## 介绍
 数据的持久化是很多系统都会涉及到的一个问题，尤其是redis,activemq这些数据主要是存储在内存中的。既然存在内存中，就会面临宕机时数据丢失的风险。这一问题的解决方案就是通过某种方式将数据落到磁盘上，也就是所谓的持久化。
 
@@ -67,3 +74,4 @@ log4j.logger.org.apache.activemq.store.kahadb.MessageDatabase=TRACE, kahadb
 这样做的原因还是和存储空间有关，kahadb写文件时是按消息顺序依次写入的，删文件时则要等到这个文件内的所有消息被消费完毕。也就是说，即使这个文件里只有一条消息没被消费掉，也需要占用完整的空间。如果本身队列特别多，恰好有一个队列消费没跟上，可能它本身占用空间非常小，但是会占用大量磁盘空间无法释放。给每个队列分别配置的话就可以大大缓解这一情况。
 
 原文地址：https://lcy362.github.io/posts/31044/
+---

@@ -1,14 +1,20 @@
 ---
 title: jstorm源码解析之bolt异常处理
 description: "从源码角度分析 JStorm bolt 中未捕获异常导致 worker 进程退出的机制，揭示背后的完整设计。"
+keywords:
+  - JStorm
+  - bolt
+  - 异常处理
+  - 源码分析
+  - worker
 tags:
   - jstorm
   - 源码阅读
 abbrlink: 15594
 date: 2017-08-03 19:29:00
-categories: jstorm源码解析
+categories:
+  - jstorm源码解析
 ---
-
 ## 问题
 用过storm或者jstorm的都知道，如果在bolt代码中发生了没被catch住的异常，所在worker进程会退出。本文就从源码角度分析一下具体设计，其实并不是“有异常然后进程崩了”这么简单。
 <!-- more -->
@@ -73,4 +79,4 @@ _bolt.execute(input, _collector) 就是执行我们自己编写的bolt里的excu
 
 从另一方面来说，如果像FailedException一样处理其他所有异常，由于异常之后可以看到有数据fail,也并不会掩盖问题。
 
-所以说，这一块的处理逻辑，个人感觉还是需要斟酌一下。
+所以说，这一块的处理逻辑，个人感觉还是需要斟酌一下。---

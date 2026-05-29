@@ -1,13 +1,19 @@
 ---
 title: 一篇不错的lda模型入门文档
 description: "LDA（Latent Dirichlet Allocation）主题模型入门学习笔记，帮助理解 LDA 的基本概念和应用场景。"
+keywords:
+  - LDA
+  - 主题模型
+  - 自然语言处理
+  - 机器学习
+categories:
+  - 技术杂谈
 tags:
   - LDA
   - 大数据
 abbrlink: 63299
 date: 2012-12-02 15:20:00
 ---
-
 转自[http://leyew.blog.51cto.com/5043877/860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0](http://leyew.blog.51cto.com/5043877/860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0)
 
 前几天开始学习lda,走了不少弯路，对lda仍然是一头雾水。看了这篇文档以后总算明白lda是干啥的了
@@ -89,3 +95,4 @@ _argmax[j]p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)_
 #### 参考资料
 
 【1】[Introduction to Latent Dirichlet Allocation](http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/)：国外博客，很不错的入门文章
+---

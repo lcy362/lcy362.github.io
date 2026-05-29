@@ -1,13 +1,20 @@
 ---
 title: hexo教程：博客系统搭建及部署到github
 description: "Hexo 博客系统入门教程，从安装初始化到部署 GitHub Pages，适合后端程序员快速搭建个人博客。"
+keywords:
+  - Hexo
+  - 博客搭建
+  - GitHub Pages
+  - Node.js
+  - 教程
+categories:
+  - 技术杂谈
 tags:
   - hexo
   - 博客搭建
 abbrlink: 19890
 date: 2018-01-19 18:56:07
 ---
-
 原文地址： https://lcy362.github.io/posts/19890/
 
 Hexo是一款开源的博客系统。对于一个后端程序员来说，不想折腾前端的东西，但是csdn,博客园之类的用起来还是不太方便，自己搭博客又麻烦，做出来还丑。偶然间看到了hexo,这个对后端程序员来说可以说是非常友好了。所以也写篇文章记录一下hexo安装,一些关键配置，以及部署到github的过程。
@@ -43,3 +50,4 @@ hexo提供了多个从其他博客迁移数据的插件，rss,blogger等等都�
 
 弄完之后，就是大家现在看到的样子了。
 
+---

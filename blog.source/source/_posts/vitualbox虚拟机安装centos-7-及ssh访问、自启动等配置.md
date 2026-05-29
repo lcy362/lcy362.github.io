@@ -1,12 +1,19 @@
 ---
 title: vitualbox虚拟机安装centos 7 及ssh访问、自启动等配置
 description: "VirtualBox 安装 CentOS 7 的完整教程，包括 SSH 访问配置和虚拟机自启动设置。"
+keywords:
+  - VirtualBox
+  - CentOS
+  - SSH
+  - 虚拟机
+  - Linux
+categories:
+  - 技术杂谈
 tags:
   - 开发环境
 abbrlink: 62625
 date: 2017-04-02 12:45:00
 ---
-
 为了方便，最近用vitualbox搭了一个centos7的虚拟机，整个过程比较简单，在这里记录一下。
 ## 下载vitualbox
 直接去官网（https://www.virtualbox.org/wiki/Downloads）下载即可
@@ -70,3 +77,4 @@ chmod +x /etc/rc.d/rc.local
 保存，就完成自启动服务的配置了。
 
 之后，我们可以通过vitualbox的无界面方式启动，然后在xshell中自由操作。
+---

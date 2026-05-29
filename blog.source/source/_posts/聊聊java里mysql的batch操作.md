@@ -1,6 +1,14 @@
 ---
 title: 通过mysql批量操作不生效问题聊聊java里mysql的batch
 description: "分析 Java 中 MySQL 批量操作不生效的常见原因，排查 batch 性能异常的完整思路。"
+keywords:
+  - Java
+  - MySQL
+  - batch
+  - 批量操作
+  - JDBC
+categories:
+  - 数据库
 tags:
   - java
   - mysql
@@ -8,7 +16,6 @@ tags:
 abbrlink: 63688
 date: 2020-03-13 17:54:38
 ---
-
 众所周知，对于mysql，使用批量操作，可以大幅度提升大数据量下操作的性能。不过，在java中使用mysql时，有些细节务必注意，否则就会导致batch操作不生效，也就享受不到批量操作的性能了。
 
 <!-- more -->
@@ -63,3 +70,4 @@ insert into () set x=x,y=y
 这种语法本身不属于sql标准，是mysql的“方言”，也是没有批量操作的形式的。因此，如果把sql写成这种形式，就不然没法执行真正的批量操作了。
 
 原文地址: http://lichuanyang.top/posts/63688/
+---

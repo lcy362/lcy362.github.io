@@ -1,12 +1,18 @@
 ---
 title: storm ui 中一些关键属性的含义
 description: "Storm UI 中关键监控指标的含义解读，帮助运维人员快速定位 topology 性能瓶颈。"
+keywords:
+  - Storm
+  - UI
+  - 监控指标
+  - 性能调优
+categories:
+  - 大数据
 tags:
   - storm
 abbrlink: 62259
 date: 2015-11-06 21:44:00
 ---
-
 <span style="font-family: FangSong_GB2312; font-size: 14px;">Storm UI对于排查storm使用过程中遇到的问题会很有帮助，但是有些属性的含义不是很明确，虽然都是很简单的概念，如果不知道的话也会很难受。</span>
 
 <span style="font-family: FangSong_GB2312; font-size: 14px;">先说一点，鼠标只到UI上的标题栏时，是可以看到这一属性的具体属性的，几篇google rank很高的文章，其实就是把这个信息整理了下来。</span>
@@ -25,3 +31,4 @@ date: 2015-11-06 21:44:00
 </span></span></span></span></span></div>
 
 &nbsp;
+---

@@ -1,13 +1,20 @@
 ---
 title: '五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别'
 description: "Storm/JStorm 编程快速入门，重点说明 topology 运行时与传统 Java 程序在初始化上的关键区别。"
+keywords:
+  - Storm
+  - JStorm
+  - topology
+  - spout
+  - bolt
+  - 入门
+categories:
+  - 大数据
 tags:
   - storm
 abbrlink: 27021
 date: 2016-11-16 18:21:00
 ---
-
-
 ### 运行机制
 
 topology里spout/bolt的整体结构不再细讲，主要说说storm/jstorm topology运行时与传统java程序可能存在的区别。其实区别非常少，主要也体现在初始化上，本文的目的在于帮助开发人员在无需了解storm内核原理的情况下，排查topology程序可能出现的问题。
@@ -34,3 +41,4 @@ bolt 的主体结构包含prepare, excute, cleanup 三部分。
 
 storm默认使用kyro序列化，需要类有无参构造函数。如果无法增加无参构造函数，设置topology.fall.back.on.java.serialization: true使用java自带的序列化。
 
+---

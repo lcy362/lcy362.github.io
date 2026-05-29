@@ -1,6 +1,14 @@
 ---
 title: prometheus教程： 一篇文章讲懂prometheus
 description: "Prometheus 监控系统教程，从设计理念出发讲清楚它如何用简单设计支撑复杂功能。"
+keywords:
+  - Prometheus
+  - 监控系统
+  - 云原生
+  - 时序数据库
+  - 教程
+categories:
+  - 云原生
 tags:
   - 云原生
   - 监控
@@ -10,7 +18,6 @@ tags:
 abbrlink: 28288
 date: 2021-11-10 19:54:05
 ---
-
 作为云原生体系下的“默认”监控系统，prometheus正在获得越来越广泛的关注。今天，我们就写一篇教程，讲一下prometheus的设计理念，看看它是如何用非常简单的设计支撑起如此复杂的功能的。
 
 <!-- more -->
@@ -22,17 +29,13 @@ date: 2021-11-10 19:54:05
 - 怎样能实现各种复杂的报表
 - ...
 
-
-
 带着这些问题，我们就来看看prometheus是怎么设计的。
 
-# 历史
+## 历史
 
 让我们先从历史说起，prometheus最早由SoundCloud开发，后来捐赠到开源社区。在2016年假如CNCF, 即云原生计算基金会。Prometheus是CNCF的第二个项目，仅次于kubernets。 因此，可想而知，promethous在整个云原生体系中有多么重要的作用。Prometheus也逐渐成了云原生下监控系统的事实标准。
 
-
-
-# 核心设计理念
+## 核心设计理念
 
 对于一个监控系统来说，核心要解决的问题其实就三个：
 
@@ -52,8 +55,6 @@ Metric有唯一的名称标识，也可以设置多个label, 可以用于过滤�
 <metric name>{<label name>=<label value>, ...}
 ```
 
-
-
 这样，对于任何业务，我们都可以将监控数据设计成统一的metric格式。这样对于promethous来说，方案可以足够简单，只用处理这一种数据格式就可以。而同时又足以方便的应对千变万化的业务场景。
 
 Prometheus提供了 counter, gauge, histogram, summary 四种核心的metric, 不过其区别仅体现在client端和promQL中。截至目前(2021.11)， 不同的metric 类型在 prometheus server 这一侧并不会有什么区别，
@@ -64,8 +65,6 @@ Prometheus server会定时从要监控的服务暴露出的http接口上抓取�
 
 相对推模型，拉模型会有一些好处，比如更容易监测某一个节点是否正常；更容易本地调试等。当然，对于一个监控系统来说，采用推还是拉，其实并不是一个主要问题。
 
-
-
 Prometheus的数据是典型的时序数据，prometheus本身会将数据存储在本地磁盘上。要注意的是，本地存储不可复制，无法构建集群，如果本地磁盘或节点出现故障，存储将无法扩展和迁移。因此一般只能把本地存储视为近期数据的短暂滑动窗口。
 
 而关于持久化存储的问题，prometheus实际上并没有试图解决。它的做法是定义出标准的读写接口，从而可以将数据存储到任意一个第三方存储上。
@@ -74,13 +73,11 @@ Prometheus的数据是典型的时序数据，prometheus本身会将数据存储
 
 Prometheus定义了功能强大的promQL, 可以满足各种复杂的查询场景，具体可参考 https://prometheus.io/docs/prometheus/latest/querying/basics/
 
-
-
-# 周边生态
+## 周边生态
 
 一个开源项目的发展，当然离不开周边生态的发展。而prometheus目前已经有了很完善的生态，在java, go, python等主流的开发语言下，都有完善的client包可以使用； 像spring中，可以很容易的为多种组件增加打点，这一点，在下边的实战环节我们会细讲；在kubernetes中，可以轻易的配置自动去各个节点抓取prometheus数据；借助grafana等工具，也可以配置出多种多样的报表。
 
-# 实战
+## 实战
 
 教程的接下来一部分，我们会以springboot项目为例，来看一看prometheus的实际效果。
 
@@ -179,5 +176,6 @@ tomcat_connections_current_connections{application="ads-programad",name="http-ni
 
 这样，无论这个springboot项目如何部署，无论是用java原生的部署，还是用docker部署，还是部署在kubernetes上，都可以非常容易的获取各个监控metrics数据。
 
-
 原文地址: http://lichuanyang.top/posts/28288/
+
+---

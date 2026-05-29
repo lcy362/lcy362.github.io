@@ -1,12 +1,19 @@
 ---
 title: activemq的安装及基本使用
 description: "ActiveMQ 的安装部署、核心配置文件说明，以及基本 API 使用教程，适合入门学习。"
-tags: activemq
-categories: activemq系列文章
+keywords:
+  - ActiveMQ
+  - 安装
+  - JMS
+  - 消息中间件
+  - 入门
+tags:
+  - activemq
+categories:
+  - activemq系列文章
 abbrlink: 48216
 date: 2018-01-30 08:46:07
 ---
-
 ## 安装
 从[官网](http://activemq.apache.org/download.html)下载最新版本，解压，其他的前期准备只需要安装jdk。 从activemq 5.14开始，只支持jdk8。
 
@@ -71,8 +78,6 @@ public void produce() throws JMSException {
             }
         });
 
-
-
         Session session2 = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue2 = session2.createQueue("TEST");
         MessageConsumer consumer2 = session2.createConsumer(queue2);
@@ -93,8 +98,6 @@ public void produce() throws JMSException {
                 e.printStackTrace();
             }
         });
-
-
 
         try {
             TimeUnit.MINUTES.sleep(100);
@@ -131,3 +134,4 @@ public void brower() throws Exception{
 ```
 
 原文地址： https://lcy362.github.io/posts/48216/
+---

@@ -1,12 +1,21 @@
 ---
 title: redis cluster的数据迁移
 description: "Redis Cluster 数据迁移的详细过程，包括 slot 转移机制和迁移过程中集群可用性分析。"
-tags: [redis, redis-cluster]
-categories: redis系列
+keywords:
+  - Redis
+  - Cluster
+  - 数据迁移
+  - slot
+  - 集群
+  - 高可用
+tags:
+  - redis
+  - redis-cluster
+categories:
+  - redis系列
 abbrlink: 37583
 date: 2018-02-24 18:34:19
 ---
-
 在之前的一篇文章[通过实际操作理解redis cluster原理](https://lcy362.github.io/posts/9329/)中，我们简单介绍过redis cluster的设计原理。redis cluster中的数据是根据一定规则分配到16384个slot中，这些slot又根据配置对应到不同的节点上。我们知道，在集群稳定运行后，仍然可以以slot为单位转移数据，不过对于具体的转移过程，包括转移过程中集群的可用性等问题，一直不是太确定，所以这次详细了解了一下。
 <!-- more -->
 
@@ -69,3 +78,4 @@ redis官方文档中提供的数据迁移办法是借助redis-trib脚本，其�
 操作出现异常时，会分别判断MovedException和AskException,然后作相应处理。
 
 原文地址：https://lcy362.github.io/posts/37583/
+---

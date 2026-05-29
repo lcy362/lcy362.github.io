@@ -1,6 +1,14 @@
 ---
 title: java项目低学习成本使用kubernetes的实践经验
 description: "创业公司低成本使用 Kubernetes 的实践经验，从项目创建到部署监控的全流程开源方案。"
+keywords:
+  - Kubernetes
+  - 创业公司
+  - Java
+  - DevOps
+  - CI/CD
+categories:
+  - 云原生
 tags:
   - 持续集成
   - kubernetes
@@ -72,3 +80,4 @@ date: 2022-01-26 15:19:32
 总结一下, 对于运维来说，只需要维护一些诸如gitlab, kuboard, prometheus, grafana, loki之类的基础设施，而且基本都是一些维护较简单的工具。在此基础上，我们辅助以合理的流程和技巧，就能实现一个非常好的开发体验。
 
 原文地址: http://lichuanyang.top/posts/40964/
+---

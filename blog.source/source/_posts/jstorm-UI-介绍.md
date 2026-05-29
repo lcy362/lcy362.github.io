@@ -1,15 +1,21 @@
 ---
 title: jstorm UI 介绍
 description: "JStorm UI 功能详解，包括 Cluster Summary、Topology Summary 等监控项的说明和二次开发指南。"
+keywords:
+  - JStorm
+  - Storm
+  - UI
+  - 监控
+  - Topology
+categories:
+  - 大数据
 tags:
   - storm
   - jstorm
 abbrlink: 31996
 date: 2016-11-16 19:58:00
 ---
-
-
-# UI说明
+## UI说明
 
 jstorm的UI相对于storm提供了更为丰富的监控项。UI本身是在tomcat中运行的一个war包，进行二次开发也相对容易。
 
@@ -57,3 +63,4 @@ deser, ser: 序列化/反序列化耗时，一般无需关注. storm中每一个
 
 error: 鼠标悬浮在E上，可以查看具体的报错信息。**主要寻找带异常堆栈的数据<strong>， 一些诸如is dead, no response之类的信息无需关注。**</strong>
 
+---

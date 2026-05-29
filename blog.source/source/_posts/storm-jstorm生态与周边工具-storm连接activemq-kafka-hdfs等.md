@@ -1,6 +1,15 @@
 ---
 title: 'storm/jstorm生态与周边工具,storm连接activemq,kafka,hdfs等'
 description: "Storm/JStorm 生态工具全景，介绍如何连接 ActiveMQ、Kafka、HDFS 等外部系统构建完整数据管道。"
+keywords:
+  - Storm
+  - JStorm
+  - Kafka
+  - ActiveMQ
+  - HDFS
+  - 数据管道
+categories:
+  - 大数据
 tags:
   - storm
   - jstorm
@@ -9,10 +18,9 @@ tags:
 abbrlink: 22103
 date: 2016-11-16 20:16:00
 ---
-
 storm的周边生态非常丰富，与kafka,activemq,hdfs,hbase等的交互都有现成的工具包可以使用。大部分工具，包括今天介绍的这几个，在jstorm中也可以完全正常的使用。
 
-# storm-jms
+## storm-jms
 实现了与activemq等jms实现的交互。
 
 这里主要介绍JmsSpout。由于storm中发送队列数据与普通java程序没有任何区别，专门封装一个bolt显得有些多此一举。
@@ -20,7 +28,6 @@ storm的周边生态非常丰富，与kafka,activemq,hdfs,hbase等的交互都�
 https://github.com/ptgoetz/storm-jms
 
 包中自带了使用spring方式加载队列配置。
-
 
 ## 使用示例
 ```java
@@ -134,7 +141,7 @@ JmsProvider类是JmsSpout中用于建立到队列的连接所用的类。
 
 如果有特殊需求，也可以自己实现JmsProvider中的两个接口，用于获取连接ConnectionFactory和队列Destination
 
-# storm-kafka
+## storm-kafka
 https://github.com/apache/storm/tree/master/external/storm-kafka
 
 从kafka中获取数据。
@@ -160,7 +167,7 @@ https://github.com/apache/storm/tree/master/external/storm-kafka
         builder.setBolt....
 ```
 
-# storm-hdfs
+## storm-hdfs
     HdfsBolt支持向hdfs写入数据
 ## 使用示例
 ```java
@@ -209,3 +216,4 @@ FileFolderByDateNameFormat实现目前常用的存储路径。
 ## 源码参考
 除了storm-hdfs本身源码以外，可以参考https://github.com/lcy362/StormTrooper 查看FileFolderByDateNameFormat和DailyRotationPolicy的实现。
 
+---

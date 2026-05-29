@@ -1,6 +1,14 @@
 ---
 title: 从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID
 description: "从 redo log、undo log 到隔离级别，刨根问底讲清楚数据库事务和 ACID 的完整机制。"
+keywords:
+  - 数据库事务
+  - ACID
+  - redo log
+  - undo log
+  - 隔离级别
+categories:
+  - 数据库
 tags:
   - 数据库事务
   - 数据库
@@ -62,3 +70,4 @@ date: 2022-02-07 16:40:02
 经过上面对于事务几个特性的介绍，相信大家已经对本地事务有了非常深刻的认识。如有问题，欢迎留言讨论。下一篇文章，我会继续讲一下分布式事务的相关知识，如果感兴趣，可以关注我的个人博客、知乎或者公众号追更~
 
 原文地址: http://lichuanyang.top/posts/7774/
+---

@@ -1,12 +1,18 @@
 ---
 title: activemq plugin开发指南及示例
 description: "ActiveMQ 插件(plugin)开发的完整指南，介绍如何通过插件机制方便地添加自定义功能，比直接修改源码更安全高效。"
+keywords:
+  - ActiveMQ
+  - plugin
+  - 插件开发
+  - JMS
+categories:
+  - 消息队列
 tags:
   - activemq
 abbrlink: 61645
 date: 2017-05-05 16:58:00
 ---
-
 activemq提供了一种插件(plugin)开发的机制(http://activemq.apache.org/developing-plugins.html), 可以方便的添加各种自定义功能。其效果类似于直接去修改activemq的源码，无论从方便性还是风险程度上，使用plugin都要比去修改源码要好很多。通过这种方式，理论上我们可以实现几乎所有能想到的功能。
 
 ## 开发指南
@@ -68,3 +74,4 @@ Actviemq plugin的开发非常方便，只需要实现两个类。
 里边提供了两个非常简单的插件示例。FoxBrokerPlugin会在收发消息时记录生产者、消费者的ip; LimitQueueSizePlugin则可以控制队列大小，队列中积压1000条消息以后新的消息就会被丢弃，在测试环境下会比较有用。
 
 此外，activemq自己也提供了几个常用的插件，包括LoggingBrokerPlugin， StatisticsBrokerPlugin, 等， 也可以参考他们的实现。
+---

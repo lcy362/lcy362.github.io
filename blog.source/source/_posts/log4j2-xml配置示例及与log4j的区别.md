@@ -1,12 +1,18 @@
 ---
 title: log4j2.xml配置示例及与log4j的区别
 description: "Log4j2 XML 配置实战，对比 Log4j 的主要变化：新节点命名、属性配置方式和归档压缩支持。"
+keywords:
+  - Log4j2
+  - XML配置
+  - 日志框架
+  - 归档压缩
+categories:
+  - Java
 tags:
   - 日志
 abbrlink: 41673
 date: 2017-04-10 20:23:00
 ---
-
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration status="warn">
@@ -56,3 +62,4 @@ xml各节点的名称也采用了新设计，名称直接就是有用信息，�
 此外，log4j2归档时支持压缩，在RollingFile节点的filePattern属性里将文件名后缀写成gz,zip等压缩格式，log4j2会自动选择相应压缩算法进行压缩。
 
 现在发现的就这些，引入这个xml配置，再引用log4j-core， log4j-api包，就可以使用log4j2了。此外，如果有需要，可以用log4j-slf4j-impl，log4j-jcl，log4j-1.2-api分别实现对slf4j, jcl,log4j的兼容。
+---

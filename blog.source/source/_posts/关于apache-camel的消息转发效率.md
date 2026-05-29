@@ -1,13 +1,20 @@
 ---
 title: 关于apache camel的消息转发效率
 description: "分析 Apache Camel 消息转发的工作原理和效率瓶颈，为大数据量场景下的性能优化提供思路。"
+keywords:
+  - Apache
+  - Camel
+  - 消息转发
+  - 性能
+  - ActiveMQ
+categories:
+  - 消息队列
 tags:
   - java
   - camel
 abbrlink: 17762
 date: 2015-08-08 20:55:00
 ---
-
 <span style="font-family: Arial,Helvetica,sans-serif; background-color: #ffffff;">公司使用activemq和camel做消息的分发，之前数据量不是很大，所以一直没怎么考虑效率问题，对camel的工作原理研究也不深。单是最近随着业务量的增加，camel的效率逐渐成了瓶颈，所以根据日志大概了解了camel的工作原理。虽然camel是被嵌入到activemq中，但在工作过程中，camel和activemq其实还是相对独立的。我们在camel中会配置一个到activemq的连接.</span>
 
 <pre name="code" class="html">http://camel.apache.org/activemq.html
@@ -59,3 +66,4 @@ date: 2015-08-08 20:55:00
 <pre></pre>
 
 &nbsp;
+---
