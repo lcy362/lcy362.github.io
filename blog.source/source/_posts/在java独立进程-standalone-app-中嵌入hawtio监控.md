@@ -1,5 +1,6 @@
 ---
 title: 在java独立进程(standalone app)中嵌入hawtio监控
+description: "在 Java 独立应用中嵌入 Hawtio 监控系统的完整指南，实现应用内直接查看 JMX 等监控数据。"
 tags:
   - java
   - hawtio

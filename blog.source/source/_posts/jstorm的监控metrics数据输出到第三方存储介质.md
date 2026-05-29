@@ -1,5 +1,6 @@
 ---
 title: jstorm的监控metrics数据输出到第三方存储介质
+description: "将 JStorm 监控 metrics 数据输出到第三方存储介质的方案，方便历史数据查询和分析。"
 tags:
   - storm
   - jstorm

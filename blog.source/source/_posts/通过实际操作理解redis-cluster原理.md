@@ -1,5 +1,6 @@
 ---
 title: 通过实际操作理解redis cluster原理
+description: "通过实际操作理解 Redis Cluster 的数据分片机制、16384 个哈希槽的设计和节点路由原理。"
 tags:
   - redis
   - redis-cluster

@@ -1,5 +1,6 @@
 ---
 title: activemq plugin开发指南及示例
+description: "ActiveMQ 插件(plugin)开发的完整指南，介绍如何通过插件机制方便地添加自定义功能，比直接修改源码更安全高效。"
 tags:
   - activemq
 abbrlink: 61645

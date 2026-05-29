@@ -1,5 +1,6 @@
 ---
 title: 实现一个简单的java版本高性能获取ip地址所属国家工具
+description: "用 Java 实现高性能 IP 地址归属国家查询工具，基于 IP2Location 数据源，支持定时更新。"
 tags: 开源项目
 abbrlink: 36780
 date: 2021-10-12 19:25:15

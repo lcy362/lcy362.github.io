@@ -1,5 +1,6 @@
 ---
 title: kubernetes是什么-实用向教程
+description: "从开发人员视角介绍 Kubernetes 是什么，不关注部署和架构，专注于如何利用 K8s 特性提升开发效率。"
 tags: kubernetes
 abbrlink: 55227
 date: 2023-01-28 19:06:17

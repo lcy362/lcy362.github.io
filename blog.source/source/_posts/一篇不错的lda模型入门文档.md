@@ -1,5 +1,6 @@
 ---
 title: 一篇不错的lda模型入门文档
+description: "LDA（Latent Dirichlet Allocation）主题模型入门学习笔记，帮助理解 LDA 的基本概念和应用场景。"
 tags:
   - LDA
   - 大数据

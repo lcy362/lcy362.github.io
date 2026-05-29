@@ -1,5 +1,6 @@
 ---
 title: activemq多线程消费的不同处理方式
+description: "对比 ActiveMQ 消费端实现多线程的三种方式（多 connection、多 session、多 consumer），分析它们在性能上的差异。"
 tags: activemq
 categories: activemq系列文章
 abbrlink: 20459

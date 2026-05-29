@@ -1,5 +1,6 @@
 ---
 title: java项目低学习成本使用kubernetes的实践经验
+description: "创业公司低成本使用 Kubernetes 的实践经验，从项目创建到部署监控的全流程开源方案。"
 tags:
   - 持续集成
   - kubernetes

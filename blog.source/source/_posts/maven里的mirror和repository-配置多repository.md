@@ -1,5 +1,6 @@
 ---
 title: 'maven里的mirror和repository: 配置多repository'
+description: "厘清 Maven 中 mirror 和 repository 的区别，介绍配置多仓库和镜像代理的正确方式。"
 tags:
   - maven
 abbrlink: 32793

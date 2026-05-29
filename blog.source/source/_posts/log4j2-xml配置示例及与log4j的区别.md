@@ -1,5 +1,6 @@
 ---
 title: log4j2.xml配置示例及与log4j的区别
+description: "Log4j2 XML 配置实战，对比 Log4j 的主要变化：新节点命名、属性配置方式和归档压缩支持。"
 tags:
   - 日志
 abbrlink: 41673

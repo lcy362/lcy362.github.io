@@ -1,5 +1,6 @@
 ---
 title: camel系列之camel debugger的使用
+description: "Apache Camel 调试工具 debugger 的使用指南，帮助在 Camel 高度封装的数据路由框架中高效排查问题。"
 tags:
   - camel
 abbrlink: 1120

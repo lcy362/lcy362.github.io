@@ -1,5 +1,6 @@
 ---
 title: kubernetes环境下做金丝雀发布的一种思路
+description: "在 Kubernetes 环境下实现金丝雀发布的简单思路，通过逐步引流新版本来降低发布风险。"
 tags:
   - 云原生
   - 持续集成

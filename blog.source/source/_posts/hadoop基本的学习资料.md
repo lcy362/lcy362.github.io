@@ -1,5 +1,6 @@
 ---
 title: hadoop基本的学习资料
+description: "Hadoop 学习资料整理，包含 WordCount 运行过程详解、HDFS 命令介绍等入门资源汇总。"
 tags:
   - hadoop
   - 大数据

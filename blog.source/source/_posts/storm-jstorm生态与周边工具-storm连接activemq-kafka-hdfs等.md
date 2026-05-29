@@ -1,5 +1,6 @@
 ---
 title: 'storm/jstorm生态与周边工具,storm连接activemq,kafka,hdfs等'
+description: "Storm/JStorm 生态工具全景，介绍如何连接 ActiveMQ、Kafka、HDFS 等外部系统构建完整数据管道。"
 tags:
   - storm
   - jstorm

@@ -1,5 +1,6 @@
 ---
 title: jstorm源码解析之bolt异常处理
+description: "从源码角度分析 JStorm bolt 中未捕获异常导致 worker 进程退出的机制，揭示背后的完整设计。"
 tags:
   - jstorm
   - 源码阅读

@@ -1,5 +1,6 @@
 ---
 title: Java kryo/protobuf/protostuff序列化 or Json 性能对比
+description: "对比 Java 主流序列化方案（kryo、protobuf、protostuff、fastjson）的时间性能和空间性能，通过实测数据帮你选择最合适的序列化工具。"
 tags:
   - java
   - 序列化， kryo

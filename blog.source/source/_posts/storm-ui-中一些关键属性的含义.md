@@ -1,5 +1,6 @@
 ---
 title: storm ui 中一些关键属性的含义
+description: "Storm UI 中关键监控指标的含义解读，帮助运维人员快速定位 topology 性能瓶颈。"
 tags:
   - storm
 abbrlink: 62259

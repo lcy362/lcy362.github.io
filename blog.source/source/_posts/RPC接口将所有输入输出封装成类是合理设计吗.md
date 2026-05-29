@@ -1,5 +1,6 @@
 ---
 title: RPC接口将所有输入输出封装成类是合理设计吗
+description: "深入分析 RPC 接口设计中将输入输出封装成 request/response 类的做法，探讨何时应该封装、何时过度设计。"
 tags: 设计模式
 abbrlink: 20888
 date: 2021-03-16 18:34:56

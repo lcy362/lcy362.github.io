@@ -1,5 +1,6 @@
 ---
 title: 'java日志系统简介: 从tomcat大量打印debug日志说起'
+description: "从 Tomcat debug 日志问题切入，介绍 Java 两大日志体系（log4j 和 slf4j+logback）的架构和互操作。"
 tags:
   - java
   - 日志

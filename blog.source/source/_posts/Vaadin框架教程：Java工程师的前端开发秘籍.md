@@ -1,5 +1,6 @@
 ---
 title: Vaadin框架教程：Java工程师的前端开发秘籍
+description: "介绍 Vaadin 框架如何让后端工程师无需深入前端生态就能高效开发 Web 界面，解决后端开发前端的痛点。"
 tags:
   - vaadin
   - java

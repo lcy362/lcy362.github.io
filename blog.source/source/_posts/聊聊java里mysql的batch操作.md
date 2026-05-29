@@ -1,5 +1,6 @@
 ---
 title: 通过mysql批量操作不生效问题聊聊java里mysql的batch
+description: "分析 Java 中 MySQL 批量操作不生效的常见原因，排查 batch 性能异常的完整思路。"
 tags:
   - java
   - mysql
