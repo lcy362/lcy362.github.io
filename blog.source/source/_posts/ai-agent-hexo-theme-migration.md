@@ -170,4 +170,4 @@ AI Agent 不是来取代开发者的，而是来增强我们的能力。它把�
 
 *本文由 AI Agent 辅助撰写，记录了一次真实的主题迁移实践。*
 
-原文地址：https://lichuanyang.top/posts/ai-agent-hexo-theme-migration/
+原文地址：https://lichuanyang.top/posts/48979/
