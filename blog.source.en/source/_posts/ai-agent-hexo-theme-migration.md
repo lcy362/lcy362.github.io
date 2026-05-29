@@ -171,4 +171,4 @@ If you have similar "grunt work," try letting an AI Agent help. You'll find that
 
 *This article was written with AI Agent assistance, documenting a real theme migration practice.*
 
-Source: https://lichuanyang.top/posts/ai-agent-hexo-theme-migration/
+Source: https://lichuanyang.top/en/posts/27861/
