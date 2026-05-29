@@ -1,12 +1,18 @@
 ---
 title: activemq多线程消费的不同处理方式
 description: "对比 ActiveMQ 消费端实现多线程的三种方式（多 connection、多 session、多 consumer），分析它们在性能上的差异。"
-tags: activemq
-categories: activemq系列文章
+keywords:
+  - ActiveMQ
+  - 多线程消费
+  - 消息队列
+  - 性能优化
+tags:
+  - activemq
+categories:
+  - activemq系列文章
 abbrlink: 20459
 date: 2018-09-16 09:58:11
 ---
-
 之前在[另一篇文章](https://lcy362.github.io/posts/48216/)里介绍过使用activemq时，client端的基本语法。
 
 值得注意的是消费者，
@@ -33,8 +39,6 @@ date: 2018-09-16 09:58:11
             }
         });
 
-
-
         Session session2 = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue2 = session2.createQueue("TEST");
         MessageConsumer consumer2 = session2.createConsumer(queue2);
@@ -56,8 +60,6 @@ date: 2018-09-16 09:58:11
             }
         });
 
-
-
         try {
             TimeUnit.MINUTES.sleep(100);
         } catch (InterruptedException e) {
@@ -74,6 +76,5 @@ date: 2018-09-16 09:58:11
 
 总的来说，大部分情况下，我们可以定义多session来实现activemq的并行消费。在流量较大时，可以考虑开多个connection。而多个consumer, 目前没有想出有什么场景能用到。
 
-
-
 原文链接：https://lcy362.github.io/posts/20459/
+---

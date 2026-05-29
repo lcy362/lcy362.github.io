@@ -1,13 +1,20 @@
 ---
 title: 使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据
 description: "用 Lua 脚本和 Jedis 实现 Redis 缺失的 hmsetnx 命令，在批量操作 Hash 时不覆盖已有数据。"
+keywords:
+  - Redis
+  - Lua脚本
+  - Jedis
+  - hmsetnx
+  - Hash
+categories:
+  - 数据库
 tags:
   - redis
   - lua
 abbrlink: 63756
 date: 2017-04-06 17:54:00
 ---
-
 redis中set系列命令(包括set,hset等等)，基本上都包括两个版本，纯粹的set和setnx, setnx即set not exist, 也就是只有Key不存在时才会执行set, 而不会覆盖原有的值。
 
 但是hmset这个命令，包括redis本身，jedis都没有提供nx版本的支持。当然，hset这个命令是有对应的hsetnx版本的，hmset意思就是multi hset,一次可以操作多个key, 从而减小网络开销。
@@ -42,3 +49,4 @@ Object eval(final byte[] script, final List<byte[]> keys, final List<byte[]> arg
 keys中只放一个元素，就是hash表本身的key, 然后把键值对按照一个key,一个value的顺序依次放到args里。
 
 当然，也可以用evalsha命令避免每次操作都要传输脚本本身，这里就不细说了。
+---

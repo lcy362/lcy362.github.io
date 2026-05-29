@@ -1,9 +1,17 @@
 ---
 title: 数据分析的利器-clickhouse介绍
 description: "ClickHouse 实时分析数据库入门介绍，从 Yandex 的业务需求出发讲解 ClickHouse 的设计背景和核心特性。"
+keywords:
+  - ClickHouse
+  - OLAP
+  - 数据分析
+  - Yandex
+  - 列式数据库
+categories:
+  - 数据库
 abbrlink: 48312
 date: 2018-11-14 21:59:31
-tags:   
+tags:
   - 大数据
   - clickhouse
   - clickhouse介绍
@@ -24,7 +32,6 @@ Clickhouse是极其适合OLAP（联机分析处理）问题的一个数据库。
 针对这类问题，用到的最核心的思路就是列式存储。目前常用的数据库，像MySQL等，都是行式存储。而列式存储，简单的说就是把同一列的数据存储在一起，像下图这样。
 
 ![列式存储说明](/img/clickhouse/column.png)
-
 
 相对行存储， 列存储查询时只会读取涉及到的列，减少io开销；任何一列都可以作为索引；但是数据写入会相对麻烦一些。对比前面我们介绍的OLAP问题的特点，可以看到，列式存储是及其适合这种在线数据分析的。
 
@@ -76,3 +83,4 @@ clickHouse是基于zookeeper的主主复制。写入任何可用的副本后，�
 此外，相对其他列存储数据库，clickhouse对sql语法的支持非常好，包括group by, order by, in, join等常用sql语句都支持。
 
 原文地址：https://lcy362.github.io/posts/48312/
+---

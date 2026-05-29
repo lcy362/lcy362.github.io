@@ -1,6 +1,13 @@
 ---
 title: 关于rocketmq的readQueue和writeQueue
 description: "解释 RocketMQ 中 MessageQueue 为什么要拆分成 readQueue 和 writeQueue 的设计原因。"
+keywords:
+  - RocketMQ
+  - MessageQueue
+  - readQueue
+  - writeQueue
+categories:
+  - 消息队列
 tags:
   - rocketMq
   - 消息队列
@@ -21,3 +28,5 @@ rocketMq中有很特殊的一点是分了writeQueue和readQueue。其实，在�
 大家可以考虑一下如果没有这样的机制应该如何去设计扩容或者缩容的流程，其实，无论如何都会造成一些消息无法被及时处理。说明这种设计是非常巧妙的。
 
 原文地址: http://lichuanyang.top/posts/32580/
+
+---

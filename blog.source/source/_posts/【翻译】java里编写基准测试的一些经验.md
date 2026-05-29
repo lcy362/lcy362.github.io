@@ -1,13 +1,20 @@
 ---
 title: 【翻译】java里编写基准测试的一些经验
 description: "翻译文章：Java 基准测试编写经验，介绍 JMH 使用方法和常见的基准测试陷阱。"
+keywords:
+  - Java
+  - 基准测试
+  - JMH
+  - 性能测试
+  - 翻译
+categories:
+  - Java
 tags:
   - java
   - 测试
 abbrlink: 4987
 date: 2017-06-05 20:39:00
 ---
-
 有时候我们需要写一些简单的性能测试代码，恰好在stackoverflow上看到一篇经验之谈，https://stackoverflow.com/questions/504103/how-do-i-write-a-correct-micro-benchmark-in-java， 怎样写基准测试来尽量屏蔽掉环境的影响。
 
 翻译出来贴在这儿：
@@ -33,3 +40,4 @@ date: 2017-06-05 20:39:00
 规则7：减少测量中的噪音。在一台安静的机器上运行基准测试，并运行几次，抛弃异常值。使用-Xbatch将编译器与应用程序串行化，并考虑设置 -XX：CICompilerCount = 1以防止编译器与其自身并行运行。
 
 规则8：使用一些库用来做基准测试，因为它可能更有效率。比如JMH，Caliper，UCSD Benchmarks for Java等。
+---

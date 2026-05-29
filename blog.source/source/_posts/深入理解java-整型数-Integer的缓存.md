@@ -1,6 +1,13 @@
 ---
 title: 'java里128有何魔力？ 聊聊Integer的缓存'
 description: "揭秘 Java Integer 类在 128 这个魔力数字背后的缓存机制，理解自动装箱的底层原理。"
+keywords:
+  - Java
+  - Integer缓存
+  - 自动装箱
+  - valueOf
+categories:
+  - Java
 tags:
   - java
   - java integer
@@ -8,8 +15,6 @@ tags:
 abbrlink: 64970
 date: 2016-12-02 19:45:00
 ---
-
-
 Integer类实质上也是一个普通的java类，即使值相同，也是不同的对象。 
 
 例如
@@ -36,3 +41,4 @@ Integer类实质上也是一个普通的java类，即使值相同，也是不同
 
 这时输出就变成false了
 
+---

@@ -1,13 +1,20 @@
 ---
 title: hadoop基本的学习资料
 description: "Hadoop 学习资料整理，包含 WordCount 运行过程详解、HDFS 命令介绍等入门资源汇总。"
+keywords:
+  - Hadoop
+  - HDFS
+  - MapReduce
+  - 大数据
+  - 学习资料
+categories:
+  - 大数据
 tags:
   - hadoop
   - 大数据
 abbrlink: 35575
 date: 2012-10-28 18:05:00
 ---
-
 [http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html](http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html)&nbsp;wordcount运行过程详解
 
 [http://www.cnblogs.com/gpcuster/archive/2010/06/04/1751538.html](http://www.cnblogs.com/gpcuster/archive/2010/06/04/1751538.html)&nbsp;hdfs命令介绍
@@ -19,3 +26,4 @@ date: 2012-10-28 18:05:00
 &nbsp;
 
 [http://hadoop.apache.org/docs/r0.20.2/api/index.html](http://hadoop.apache.org/docs/r0.20.2/api/index.html)&nbsp;hadoop0.20.2 api
+---

@@ -1,13 +1,20 @@
 ---
 title: java线程池：获取运行线程数并控制线程启动速度
 description: "解决线程池中任务提交速度远快于执行速度导致内存爆满的问题，介绍在提交前检查运行线程数的方法。"
+keywords:
+  - Java
+  - 线程池
+  - 内存优化
+  - 任务提交
+  - 并发
+categories:
+  - Java
 tags:
   - java
   - 多线程
 abbrlink: 5707
 date: 2017-05-26 20:36:00
 ---
-
 在java里， 我们可以使用Executors.newFixedThreadPool 来创建线程池， 然后就可以不停的创建新任务，并用线程池来执行了。
 
 在提交任务时，如果线程池已经被占满，任务会进到一个队列里等待执行。
@@ -28,3 +35,4 @@ date: 2017-05-26 20:36:00
 
          executor.execute
 ```
+---

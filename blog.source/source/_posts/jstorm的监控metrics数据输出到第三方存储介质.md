@@ -1,6 +1,14 @@
 ---
 title: jstorm的监控metrics数据输出到第三方存储介质
 description: "将 JStorm 监控 metrics 数据输出到第三方存储介质的方案，方便历史数据查询和分析。"
+keywords:
+  - JStorm
+  - 监控
+  - metrics
+  - 数据存储
+  - 运维
+categories:
+  - 大数据
 tags:
   - storm
   - jstorm
@@ -8,7 +16,6 @@ tags:
 abbrlink: 13749
 date: 2017-09-06 20:18:00
 ---
-
 Jstorm的UI中提供了大量非常详细的监控参数，对于我们排查问题帮助非常大，关于UI，可以参考我之前的另一篇文章： https://lcy362.github.io/posts/31996/ 。 不过，UI这种方式用起来有时可能会不太方便，比如需要查历史数据的时候。所以我们希望将监控数据输出到别的存储介质中，方便后续查询、分析。
 
 由于jstorm的监控相比于apache-storm进行了完全的重写，所以网上查到的storm的监控输出方式并不适用于jstorm. 而jstorm除了官方文档以外实在缺少资料，官方文档又太简略，给的只是一些线索性的东西，具体还要结合这些线索去翻阅源码。所以我整理了一个jstorm监控数据输出的例子。
@@ -45,3 +52,4 @@ jstorm的metric数据存在rocksdb里，这里取的数据实质上是用jstorm�
 在这个例子里，我只是用打日志的方式，将部分数据输出。具体用的时候，可以根据需求使用hbase, redis,mysql等存储介质。
 
 具体代码可以查看 https://github.com/lcy362/StormTrooper/blob/master/src/main/java/com/trooper/storm/monitor/MetricUploaderTest.java
+---

@@ -1,6 +1,14 @@
 ---
 title: java分布式锁入门实战
 description: "Java 分布式锁的实战入门，介绍基于 Zookeeper 和 Redis 的分布式锁实现方式，只讲使用不讲原理。"
+keywords:
+  - Java
+  - 分布式锁
+  - Zookeeper
+  - Redis
+  - 实战
+categories:
+  - Java
 tags:
   - java
   - redis
@@ -9,8 +17,6 @@ tags:
 abbrlink: 48104
 date: 2017-02-20 19:21:00
 ---
-
-
 这篇文章只讲使用，不讲原理，简单粗暴。
 
 分布式锁，顾名思义，就是分布式的锁，应用于一些分布式系统中。例如，有一个服务部在数太机器上，然后有可能操作数据库中的同一条记录。这时，就需要分布式锁。
@@ -50,3 +56,4 @@ redis锁的原理就是占用锁时新建一个key, 锁释放时key删除。
 
 代码示例可以参考[https://github.com/lcy362/Scenes/blob/master/src/main/java/com/mallow/concurrent/redislock/ValuelockExample.java](https://github.com/lcy362/Scenes/blob/master/src/main/java/com/mallow/concurrent/redislock/ValuelockExample.java)
 
+---

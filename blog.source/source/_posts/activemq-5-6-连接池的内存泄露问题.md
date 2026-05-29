@@ -1,12 +1,19 @@
 ---
 title: activemq 5.6 连接池的内存泄露问题
 description: "记录 ActiveMQ 5.6 连接池存在的严重内存泄露问题，通过 jmap 监控定位 ReentrantLock 和 PooledConnection 的异常增长。"
+keywords:
+  - ActiveMQ
+  - 连接池
+  - 内存泄露
+  - ReentrantLock
+  - bug
+categories:
+  - 消息队列
 tags:
   - activemq
 abbrlink: 13925
 date: 2015-08-08 21:16:00
 ---
-
 最近在使用activemq 的连接池时，发现它存在很严重的内存泄露问题。
 
 通过jmap监控，可以看到java.util.concurrent.locks.ReentrantLock,&nbsp;org.apache.activemq.pool.PooledConnection这两个类占用的空间非常大，而且增长速度也很快。
@@ -43,3 +50,4 @@ date: 2015-08-08 21:16:00
                 &lt;property name="configuration" ref="jmsConfig"/&gt;</pre>
 
 &nbsp;
+---

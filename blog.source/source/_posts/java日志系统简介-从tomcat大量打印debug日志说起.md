@@ -1,13 +1,20 @@
 ---
 title: 'java日志系统简介: 从tomcat大量打印debug日志说起'
 description: "从 Tomcat debug 日志问题切入，介绍 Java 两大日志体系（log4j 和 slf4j+logback）的架构和互操作。"
+keywords:
+  - Java日志
+  - log4j
+  - slf4j
+  - logback
+  - Tomcat
+categories:
+  - Java
 tags:
   - java
   - 日志
 abbrlink: 4433
 date: 2017-03-31 19:47:00
 ---
-
 目前，java下应用最广泛的日志系统主要就是两个系列: log4j和slf4j+logback 。
 
 其中,slf4j只包含日志的接口，logback只包括日志的具体实现，两者加起来才是一个完整的日志系统。Log4j则同时包含了日志接口和实现。
@@ -29,3 +36,4 @@ date: 2017-03-31 19:47:00
 	1\. 找几行不符合自己日志配置的具体日志，翻阅对应代码，看看是哪个日志接口打的
 	2\. 查jar包，看看这套日志框架有哪些具体实现
         3\. 把多的jar包去掉
+---

@@ -1,8 +1,15 @@
 ---
 title: jstorm源码解析之循环任务AsyncLoopThread
 description: "JStorm 自定义循环任务工具 AsyncLoopThread 的源码解析，了解 supervisor/nimbus 心跳等功能的底层实现。"
-tags: jstorm
-categories: jstorm源码解析
+keywords:
+  - JStorm
+  - AsyncLoopThread
+  - 源码分析
+  - 循环任务
+tags:
+  - jstorm
+categories:
+  - jstorm源码解析
 abbrlink: 31761
 date: 2018-02-08 16:17:37
 ---
@@ -21,7 +28,6 @@ public class TestThread extends RunnableCallback {
     public void run() {
         System.out.println("thread runs " + new Date());
     }
-
 
     @Override
     public Object getResult() {
@@ -126,3 +132,4 @@ public static void main(String args[]) {
 这个代码也很简单，就是循环的去执行RunnableCallback的run方法，期间会有shutdown,needQuit(),异常几种情况导致任务中断，或者直接杀掉进程。其中,needQuit()方法里会根据前边说的getResult控制任务执行速度。
 
 原文地址：https://lcy362.github.io/posts/31761
+---

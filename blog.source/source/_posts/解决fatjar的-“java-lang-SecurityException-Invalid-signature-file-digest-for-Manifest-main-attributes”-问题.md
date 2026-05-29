@@ -7,8 +7,15 @@ tags:
   - java
 abbrlink: 2478
 date: 2017-04-27 14:16:00
+keywords:
+  - Fat
+  - Jar
+  - SecurityException
+  - 签名
+  - META-INF
+categories:
+  - Java
 ---
-
 最近试图运行一个fatjar的时候报错：
 ```
 Exception in thread "main" java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
@@ -67,4 +74,4 @@ Exception in thread "main" java.lang.SecurityException: Invalid signature file d
                     </execution>
                 </executions>
             </plugin>
-```
+```---

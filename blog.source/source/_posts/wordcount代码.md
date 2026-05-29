@@ -1,13 +1,19 @@
 ---
 title: wordcount代码
 description: "Hadoop WordCount 经典示例代码及运行过程说明，大数据入门必读。"
+keywords:
+  - Hadoop
+  - WordCount
+  - MapReduce
+  - 入门示例
+categories:
+  - 大数据
 tags:
   - hadoop
   - 大数据
 abbrlink: 25187
 date: 2012-10-28 18:42:00
 ---
-
 参考[http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html](http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html)
 
 &nbsp;
@@ -155,3 +161,4 @@ setPartitionerClass和setNumReduceTasks：设置Partitioner，默认为HashParti
 setOutputFormat：设置任务的输出格式，默认为TextOutputFormat
 
 &nbsp;
+---

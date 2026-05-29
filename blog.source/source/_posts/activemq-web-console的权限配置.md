@@ -1,13 +1,19 @@
 ---
 title: activemq web console的权限配置
 description: "介绍 ActiveMQ Web Console 基于 Jetty 的权限管理配置方法，实现不同用户角色的访问控制。"
+keywords:
+  - ActiveMQ
+  - Web Console
+  - Jetty
+  - 权限管理
+categories:
+  - 消息队列
 tags:
   - activemq
   - 监控
 abbrlink: 32479
 date: 2016-01-05 18:09:00
 ---
-
 <div>activemq的web console是基于jetty实现，其权限管理也是基于jetty. 根据需求，可以给不同的用户赋予不同的权限。jetty的权限管理还算灵活，虽然配起来比较麻烦，可以分别设定某个角色（role）下的用户是否有对某个页面的访问权限。</div>
 <div>下面简要介绍一下配置方法，只需要修改/conf 下的&nbsp;jetty.xml，&nbsp;jetty-realm.properties</div>
 <div>1.&nbsp;jetty-realm.properties</div>
@@ -100,3 +106,4 @@ date: 2016-01-05 18:09:00
 <div>这样，就实现了activemq web console用户的权限配置。</div>
 
 &nbsp;
+---

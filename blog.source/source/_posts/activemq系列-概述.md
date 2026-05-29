@@ -1,12 +1,19 @@
 ---
 title: activemq系列-概述
 description: "ActiveMQ 消息中间件系列开篇，介绍消息中间件的核心作用（解耦和平峰）以及 JMS 协议的基本概念。"
-tags: activemq
-categories: activemq系列文章
+keywords:
+  - ActiveMQ
+  - 消息中间件
+  - JMS
+  - 解耦
+  - 削峰
+tags:
+  - activemq
+categories:
+  - activemq系列文章
 abbrlink: 12035
 date: 2018-01-22 18:33:02
 ---
-
 Activemq是一种消息中间件(MOM)，基于JMS协议实现。介绍activemq就不得不介绍消息中间件和jms.
 
 消息中间件是分布式系统十分常见的组件，提供了以比较灵活的方式集成不同应用程序的一种机制，应用程序彼此不直接通信，而是与作为中介的消息中间件进行通信。
@@ -37,3 +44,4 @@ JMS对消息结构、连接、会话、生产者、消费者等都做了规定�
 Activemq就是对JMS1.1的一种具体实现。在后续文章里，我们会对activemq的安装使用以及各种特性进行全面的介绍。
 
 原文地址： https://lcy362.github.io/posts/12035/
+---

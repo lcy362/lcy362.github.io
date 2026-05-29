@@ -1,6 +1,14 @@
 ---
 title: hexo多语言方案总结及最佳实践
 description: "总结 Hexo 多语言方案的两种思路：文章维度切换语言和独立站点维护，对比各方案的优劣和最佳实践。"
+keywords:
+  - Hexo
+  - 多语言
+  - i18n
+  - 国际化
+  - 博客
+categories:
+  - 技术杂谈
 tags:
   - 个人博客
   - hexo
@@ -51,3 +59,4 @@ date: 2024-01-22 18:12:31
    
 
 原文地址: http://lichuanyang.top/posts/40400/
+---

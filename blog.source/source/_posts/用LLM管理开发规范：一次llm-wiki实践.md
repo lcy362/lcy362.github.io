@@ -1,6 +1,15 @@
 ---
+abbrlink: 64
 title: 用LLM管理安全开发规范：一次llm-wiki实践
 description: "用 LLM 管理团队安全开发规范的实践，基于 Karpathy 的 llm-wiki 思路解决规范文档散落的问题。"
+keywords:
+  - LLM
+  - 开发规范
+  - 知识管理
+  - llm-wiki
+  - AI
+categories:
+  - 技术杂谈
 date: 2026-05-11 15:38:16
 tags:
   - llm
@@ -8,9 +17,7 @@ tags:
   - 安全规范
   - wiki
   - 实践
-abbrlink: 88001
 ---
-
 最近在整理团队的安全开发规范时，遇到了一个老问题：安全规范文档越积越多，但真正用的时候却找不到。每次新人入职，都要翻遍各种文档才能拼凑出完整的安全规范；每次出安全故障，事后总结的经验也散落在各处，下次遇到类似问题还得重新排查。
 
 我试过用Confluence、Notion、甚至Git仓库的README来管理，但效果都不理想。直到看到了Karpathy提的llm-wiki思路，才觉得这可能是个突破口。
@@ -139,6 +146,7 @@ LLM会：
 - Summary行：一句话描述核心内容
 - Tags行：用#标签标记主题
 - 明确的页面类型（concept/entity/source/comparison）
+---
 
 对于安全故障案例，还要求包含：漏洞类型、攻击向量、影响范围、修复方案、预防措施。这样LLM就有更清晰的指导，生成质量稳定了很多。
 
@@ -184,4 +192,4 @@ Wiki的核心价值在于交叉引用，但LLM经常创建单向链接，或者�
 
 毕竟，工具是为人服务的，不是吗？
 
-原文地址: http://lichuanyang.top/posts/88001/
+原文地址: http://lichuanyang.top/posts/88001/---

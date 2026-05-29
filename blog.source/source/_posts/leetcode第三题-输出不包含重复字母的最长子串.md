@@ -1,14 +1,20 @@
 ---
 title: 'leetcode第三题: 输出不包含重复字母的最长子串'
 description: "LeetCode 第三题详解：滑动窗口法求解不含重复字符的最长子串长度。"
+keywords:
+  - LeetCode
+  - 滑动窗口
+  - 最长子串
+  - 算法
+  - 字符串
+categories:
+  - 算法
 tags:
   - 算法
   - leetcode
 abbrlink: 43423
 date: 2017-02-15 20:34:00
 ---
-
-
 ## 题目
 
 Given a string, find the length of the longest substring without repeating characters.
@@ -83,3 +89,4 @@ Given &ldquo;pwwkew&rdquo;, the answer is &ldquo;wke&rdquo;, with the length of 
             System.out.println(l.lengthOfLongestSubstring(<span class="hljs-string">"abba"</span>));
         }
 
+---

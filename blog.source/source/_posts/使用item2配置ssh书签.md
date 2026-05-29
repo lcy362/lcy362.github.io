@@ -1,14 +1,21 @@
 ---
 title: iterm2配置ssh书签, 实现记住密码和自动登录
 description: "通过 iTerm2 配置 SSH 书签，实现记住密码和自动登录，告别反复输入 IP 和密码的痛苦。"
-tags: 
+keywords:
+  - iTerm2
+  - SSH
+  - 自动登录
+  - Mac
+  - 终端
+categories:
+  - 技术杂谈
+tags:
   - iterm2
   - ssh自动登录
   - ssh免密码登录
 abbrlink: 20763
 date: 2021-10-08 16:45:42
 ---
-
 如果你像我一样，需要经常性的访问不同的远程服务器，记录服务器的ip和输入密码就是一件非常痛苦的事情。好在，通过在item2中做一些配置，可以很好的解决这个痛点。最终实现的效果，就是类似配置了一些ssh书签，能够在iterm2中记住ssh密码, 实现免密码登录和自动登录的效果。
 
 <!-- more -->
@@ -24,3 +31,4 @@ trigger也是profile的一个特性，入口在profile配置页的advanced标签
 这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。
 
 原文地址: http://lichuanyang.top/posts/20763/
+---

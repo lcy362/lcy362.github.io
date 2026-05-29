@@ -1,6 +1,13 @@
 ---
 title: 在java独立进程(standalone app)中嵌入hawtio监控
 description: "在 Java 独立应用中嵌入 Hawtio 监控系统的完整指南，实现应用内直接查看 JMX 等监控数据。"
+keywords:
+  - Hawtio
+  - JMX
+  - Java监控
+  - 嵌入式
+categories:
+  - Java
 tags:
   - java
   - hawtio
@@ -8,7 +15,6 @@ tags:
 abbrlink: 11299
 date: 2017-04-01 19:42:00
 ---
-
 hawtio(hawt.io)是一个开源的监控系统，它提供了多种启动方式，可以运行单独的jar包、war包，然后远程连接其他应用进行监控，也可以将它直接嵌到我们自己的应用中。
 
 本文会介绍在一个单独的java进程(java standalone application)中嵌入hawtio，对应官方文档（http://hawt.io/getstarted/index.html）的 "Using hawtio inside a stand alone Java application",不过这一节文档问题是比较多的，如果你只看这段，会遇到各种问题。
@@ -56,3 +62,4 @@ hawtio(hawt.io)是一个开源的监控系统，它提供了多种启动方式�
 新版本的hawtio默认是要密码的，如果想简单，可以配置一条jvm参数： -Dhawtio.authenticationEnabled=false， 关掉权限验证。
 
 示例代码可以在github (https://github.com/lcy362/CamelDemo/blob/master/src/main/java/com/mallow/demo/camel/MainWithHawtio.java) 上看，可以直接下载运行，不过需要在本地启动一个activemq. 这里的例子是一个使用hawtio监控apache-camel的简单例子，启动后，在hawtio页面上栏可以直接看到camel的标签，使用非常方便。
+---

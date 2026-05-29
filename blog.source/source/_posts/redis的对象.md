@@ -1,13 +1,20 @@
 ---
 title: redis的对象
 description: "Redis 对象系统源码解析，介绍字符串、列表、哈希、集合、有序集合等对象的底层实现方式。"
+keywords:
+  - Redis
+  - 对象系统
+  - 字符串
+  - 哈希
+  - 有序集合
+  - 数据结构
 tags:
   - redis
-categories: redis系列
+categories:
+  - redis系列
 abbrlink: 25564
 date: 2020-08-08 15:05:48
 ---
-
 [在上一篇文章中](https://lichuanyang.top/posts/22179/)，介绍了redis的底层定义的一些数据结构。接下来，在本文中，我们就结合redis提供的对象，看看这些数据结构是如何使用的。
 
 <!-- more -->
@@ -82,3 +89,4 @@ Geo的底层基于zset实现。其核心处理在于通过GeoHash算法将二维
 
 原文地址： https://lichuanyang.top/posts/25564/
 
+---

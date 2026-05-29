@@ -1,6 +1,16 @@
 ---
 title: 用 AI Agent 完成 Hexo 主题迁移：从 Next 到 Butterfly 的全自动化实践
 description: "用 AI Agent 全自动完成 Hexo 主题从 Next 到 Butterfly 的迁移，1000+ 行配置文件的自动映射与验证。"
+keywords:
+  - AI
+  - Agent
+  - Hexo
+  - 主题迁移
+  - Butterfly
+  - Next
+  - 自动化
+categories:
+  - 技术杂谈
 tags:
   - AI
   - AI Agent
@@ -12,7 +22,6 @@ tags:
 abbrlink: 48979
 date: 2026-05-28 22:00:00
 ---
-
 ## 背景：一个繁琐到让人崩溃的任务
 
 最近想给自己的 Hexo 博客换个主题。用了好几年的 Next 主题，虽然经典，但想换个更现代的风格。
