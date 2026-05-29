@@ -688,9 +688,7 @@ baidu_analytics:
   id: ffb948eb504670b10474a889e9409047
 
 # https://analytics.google.com/analytics/web/
-google_analytics:
-  id: UA-45390505-1
-  old: false
+google_analytics: G-ZDNT54GK4Y
 
 # https://www.cloudflare.com/zh-tw/web-analytics/
 cloudflare_analytics:
