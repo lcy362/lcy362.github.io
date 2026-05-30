@@ -1,0 +1,215 @@
+# 博客项目
+
+基于 Hexo 的中英文双语技术博客，部署在 Vercel 上。
+
+- **地址**：https://lichuanyang.top/
+- **英文站**：https://lichuanyang.top/en/
+- **仓库**：`git@github.com:lcy362/lcy362.github.io.git`
+
+## 快速开始
+
+### 环境要求
+
+- Node.js 18+
+- npm
+
+### 本地预览
+
+```bash
+cd ~/blogs
+./deploy.sh          # 构建双站并启动本地预览
+# 访问 http://localhost:4000
+# 英文站访问 http://localhost:4000/en/
+```
+
+### 部署到生产
+
+```bash
+cd ~/blogs
+./deploy.sh -d       # 构建 + 推送到 GitHub → Vercel 自动部署
+```
+
+---
+
+## 新增文章流程
+
+### 场景一：只新增中文文章
+
+```bash
+# 1. 创建文章
+cd ~/blogs/blog.source
+hexo new "文章标题"
+
+# 2. 编辑文章
+vim source/_posts/文章标题.md
+
+# 3. 本地预览
+hexo server
+
+# 4. 构建验证
+hexo generate
+```
+
+### 场景二：翻译已有中文文章为英文
+
+假设中文文章为 `blog.source/source/_posts/我的文章.md`：
+
+```bash
+# 1. 先构建中文站，让插件生成 abbrlink
+cd ~/blogs/blog.source
+hexo generate
+
+# 2. 获取中文文章的 abbrlink
+grep "^abbrlink:" source/_posts/我的文章.md
+# 输出示例：abbrlink: 12345
+
+# 3. 创建英文文章
+cd ~/blogs/blog.source.en
+hexo new "My Article Title"
+
+# 4. 编辑英文文章，并在 front-matter 中添加 abbrlink
+vim source/_posts/my-article-title.md
+```
+
+英文文章的 front-matter 应包含：
+
+```yaml
+---
+title: My Article Title
+abbrlink: 12345          # ← 与中文文章相同的值
+date: 2026-05-30 10:00:00
+categories: [Tech]
+tags: [tag1, tag2]
+---
+```
+
+### 场景三：同时新增中英文文章
+
+```bash
+# 1. 创建并编辑中文文章
+cd ~/blogs/blog.source
+hexo new "新文章标题"
+vim source/_posts/新文章标题.md
+
+# 2. 构建生成 abbrlink
+hexo generate
+grep "^abbrlink:" source/_posts/新文章标题.md
+# 记下 abbrlink 值，例如：67890
+
+# 3. 创建并编辑英文文章（带相同的 abbrlink）
+cd ~/blogs/blog.source.en
+hexo new "New Article Title"
+vim source/_posts/new-article-title.md
+# 在 front-matter 中添加：abbrlink: 67890
+```
+
+---
+
+## abbrlink 规则
+
+abbrlink 是文章的永久标识符，用于生成稳定的 URL（如 `/posts/12345/`）。
+
+### 核心原则
+
+1. **不要手动生成**：`hexo-abbrlink` 插件会在 `hexo generate` 时自动生成
+2. **中英文必须一致**：同一内容的中英文文章必须使用相同的 abbrlink
+3. **一旦发布不要修改**：修改 abbrlink 会导致旧链接失效
+
+### 如何同步 abbrlink
+
+在英文文章的 front-matter 中手动添加 `abbrlink` 字段，值为对应中文文章的 abbrlink：
+
+```yaml
+# 英文文章 front-matter
+---
+title: English Title
+abbrlink: 12345    # ← 从中文文章复制过来
+---
+```
+
+### 验证一致性
+
+```bash
+# 检查某篇文章的 abbrlink
+grep "^abbrlink:" blog.source/source/_posts/中文文章.md
+grep "^abbrlink:" blog.source.en/source/_posts/english-article.md
+# 两个值应该相同
+```
+
+---
+
+## 部署流程详解
+
+```bash
+./deploy.sh [选项]
+```
+
+| 选项 | 说明 |
+|------|------|
+| 无参数 | 构建双站 + 本地预览 |
+| `-d` | 构建 + 推送到 GitHub（触发 Vercel 部署） |
+| `-c` | 清理缓存后重新构建 |
+| `-c -d` | 清理 + 构建 + 部署 |
+
+### 部署原理
+
+1. `blog.source/`（中文站）和 `blog.source.en/`（英文站）是两个独立的 Hexo 实例
+2. 构建时，英文站输出到 `blog.source.en/public/`
+3. 脚本将英文站的输出复制到 `blog.source/public/en/`
+4. 最终只推送 `blog.source/public/` 到 GitHub
+5. Vercel 检测到 GitHub 更新后自动部署
+
+### 为什么不直接推送到 Vercel？
+
+因为需要将两个独立的 Hexo 站点合并成一个统一的目录结构。GitHub 只是作为 Vercel 的部署触发源。
+
+---
+
+## 目录结构
+
+```
+~/blogs/
+├── deploy.sh                  # 部署脚本
+├── AGENTS.md                  # AI Agent 上下文（详细技术文档）
+├── README.md                  # 本文件（人类可读）
+│
+├── blog.source/               # 中文站（主站）
+│   ├── _config.yml            # Hexo 配置
+│   ├── _config.butterfly.yml  # 主题配置
+│   ├── source/_posts/         # 中文文章
+│   └── source/img/            # 图片资源
+│
+└── blog.source.en/            # 英文站
+    ├── _config.yml            # Hexo 配置（root: /en/）
+    ├── _config.butterfly.yml  # 主题配置
+    └── source/_posts/         # 英文文章
+```
+
+---
+
+## 常见问题
+
+### Q: 英文站样式丢失怎么办？
+
+检查 `blog.source.en/_config.yml` 中的 `root` 是否为 `/en/`。绝对不能改成 `/`。
+
+### Q: 构建报错 YAML 解析失败？
+
+检查 `_config.butterfly.yml` 的缩进，必须用空格不能用 Tab。
+
+### Q: 新文章没有 abbrlink？
+
+确保运行了 `hexo generate`。abbrlink 只在构建时生成，不会在 `hexo new` 时生成。
+
+### Q: 如何预览英文站？
+
+本地预览时访问 `http://localhost:4000/en/`。英文站内容已合并到中文站的 `public/en/` 目录下。
+
+---
+
+## 技术栈
+
+- **框架**：Hexo 8.1.2
+- **主题**：Butterfly 5.5.4
+- **部署**：Vercel（通过 GitHub 触发）
+- **域名**：lichuanyang.top
