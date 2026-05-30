@@ -34,5 +34,5 @@ date: 2021-04-27 18:07:11
 
 本文到这里就要结束了，不知道大家能否通过本文建立起对为什么要做评审、怎么做评审的认知。大家可以通过 公众号( Mobility ), [个人网站](https://lichuanyang.top/) 等和我交流。
 
-原文地址: https://lcy362.github.io/posts/57205
+原文地址: https://lichuanyang.top/posts/57205
 ---

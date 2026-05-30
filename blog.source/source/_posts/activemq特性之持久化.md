@@ -73,5 +73,5 @@ log4j.logger.org.apache.activemq.store.kahadb.MessageDatabase=TRACE, kahadb
 ```
 这样做的原因还是和存储空间有关，kahadb写文件时是按消息顺序依次写入的，删文件时则要等到这个文件内的所有消息被消费完毕。也就是说，即使这个文件里只有一条消息没被消费掉，也需要占用完整的空间。如果本身队列特别多，恰好有一个队列消费没跟上，可能它本身占用空间非常小，但是会占用大量磁盘空间无法释放。给每个队列分别配置的话就可以大大缓解这一情况。
 
-原文地址：https://lcy362.github.io/posts/31044/
+原文地址：https://lichuanyang.top/posts/31044/
 ---

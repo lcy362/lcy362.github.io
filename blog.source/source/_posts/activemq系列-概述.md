@@ -43,5 +43,5 @@ JMS对消息结构、连接、会话、生产者、消费者等都做了规定�
 
 Activemq就是对JMS1.1的一种具体实现。在后续文章里，我们会对activemq的安装使用以及各种特性进行全面的介绍。
 
-原文地址： https://lcy362.github.io/posts/12035/
+原文地址： https://lichuanyang.top/posts/12035/
 ---

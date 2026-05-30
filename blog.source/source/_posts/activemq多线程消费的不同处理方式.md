@@ -13,7 +13,7 @@ categories:
 abbrlink: 20459
 date: 2018-09-16 09:58:11
 ---
-之前在[另一篇文章](https://lcy362.github.io/posts/48216/)里介绍过使用activemq时，client端的基本语法。
+之前在[另一篇文章](https://lichuanyang.top/posts/48216/)里介绍过使用activemq时，client端的基本语法。
 
 值得注意的是消费者，
 <!-- more -->
@@ -76,5 +76,5 @@ date: 2018-09-16 09:58:11
 
 总的来说，大部分情况下，我们可以定义多session来实现activemq的并行消费。在流量较大时，可以考虑开多个connection。而多个consumer, 目前没有想出有什么场景能用到。
 
-原文链接：https://lcy362.github.io/posts/20459/
+原文链接：https://lichuanyang.top/posts/20459/
 ---
