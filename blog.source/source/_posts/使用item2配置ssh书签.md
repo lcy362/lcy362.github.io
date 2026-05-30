@@ -30,5 +30,5 @@ trigger也是profile的一个特性，入口在profile配置页的advanced标签
 
 这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。
 
-原文地址: http://lichuanyang.top/posts/20763/
+原文地址: https://lichuanyang.top/posts/20763/
 ---

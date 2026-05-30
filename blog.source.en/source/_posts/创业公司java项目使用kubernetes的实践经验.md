@@ -71,4 +71,4 @@ Regarding the role and implementation of canary deployment, you can refer to my 
 
 To sum up, for operation and maintenance, you only need to maintain some infrastructure such as gitlab, kuboard, prometheus, grafana, loki, etc., and they are basically tools that are relatively simple to maintain. On this basis, with the help of reasonable processes and techniques, we can achieve a very good development experience.
 
-Original address: http://lichuanyang.top/en/posts/40964/
+Original address: https://lichuanyang.top/en/posts/40964/

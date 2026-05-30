@@ -49,6 +49,6 @@ ip地址库的数据可以从http://download.ip2location.com/lite/ 获取。可�
 
 项目源码在https://github.com/lcy362/ip-country， 如果觉得还不错，麻烦给一个star (*^▽^*)。
 
-原文地址: http://lichuanyang.top/posts/36780/
+原文地址: https://lichuanyang.top/posts/36780/
 
 ---

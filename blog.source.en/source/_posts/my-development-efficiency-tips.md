@@ -73,7 +73,7 @@ Besides the above, there's actually another category: the deliberate slacking of
 
 If you have thoughts, feel free to exchange ideas in the comments section or on the public account (Mobility).
 
-Original article: http://lichuanyang.top/posts/3423/
+Original article: https://lichuanyang.top/posts/3423/
 
 ---
 

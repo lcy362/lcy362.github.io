@@ -79,5 +79,5 @@ date: 2022-01-26 15:19:32
 
 总结一下, 对于运维来说，只需要维护一些诸如gitlab, kuboard, prometheus, grafana, loki之类的基础设施，而且基本都是一些维护较简单的工具。在此基础上，我们辅助以合理的流程和技巧，就能实现一个非常好的开发体验。
 
-原文地址: http://lichuanyang.top/posts/40964/
+原文地址: https://lichuanyang.top/posts/40964/
 ---

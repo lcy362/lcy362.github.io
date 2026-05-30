@@ -69,5 +69,5 @@ insert into () set x=x,y=y
 
 这种语法本身不属于sql标准，是mysql的“方言”，也是没有批量操作的形式的。因此，如果把sql写成这种形式，就不然没法执行真正的批量操作了。
 
-原文地址: http://lichuanyang.top/posts/63688/
+原文地址: https://lichuanyang.top/posts/63688/
 ---

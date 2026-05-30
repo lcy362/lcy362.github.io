@@ -192,4 +192,4 @@ Wiki的核心价值在于交叉引用，但LLM经常创建单向链接，或者�
 
 毕竟，工具是为人服务的，不是吗？
 
-原文地址: http://lichuanyang.top/posts/88001/---
+原文地址: https://lichuanyang.top/posts/88001/---

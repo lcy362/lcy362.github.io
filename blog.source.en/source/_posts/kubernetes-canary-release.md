@@ -106,7 +106,7 @@ This achieves the effect we described.
 
 Of course, this approach only implements a very simple canary release process and cannot perform more granular routing, such as gray releases based on user information. For the same user, one request might go to the canary while the next goes to the production environment. If more fine-grained gray release rules are needed, consider using tools like Spring Cloud, Istio, etc.
 
-Original article: http://lichuanyang.top/posts/30764/
+Original article: https://lichuanyang.top/posts/30764/
 
 ---
 Source: https://lichuanyang.top/en/posts/30764/

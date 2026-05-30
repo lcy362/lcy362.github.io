@@ -133,7 +133,7 @@ Distributed systems are a vast topic. The set of patterns covered here is just a
 - Storage
 - Processing
 
-Original article: http://lichuanyang.top/posts/3914/
+Original article: https://lichuanyang.top/posts/3914/
 
 ---
 

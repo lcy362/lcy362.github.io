@@ -176,7 +176,7 @@ Beyond that, monitoring for other components is also easy to add, such as thread
 
 This way, regardless of how the Spring Boot project is deployed — whether using native Java deployment, Docker deployment, or deployment on Kubernetes — it's very easy to obtain all the monitoring metrics data.
 
-Original article: http://lichuanyang.top/posts/28288/
+Original article: https://lichuanyang.top/posts/28288/
 
 ---
 

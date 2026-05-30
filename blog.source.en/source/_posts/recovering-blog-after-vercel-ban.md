@@ -88,7 +88,7 @@ This incident of Vercel banning 163 email serves as a wake-up call for everyone 
 
 If you've also encountered the issue of Vercel 163 email being banned or Vercel account login failure, I hope this article helps. The core recovery approach is: register a new account with a different email, redeploy the project, and rebind the domain. The operations aren't complicated, but the prerequisite is that you need to remember your deployment pipeline.
 
-Original article: http://lichuanyang.top/posts/39648/
+Original article: https://lichuanyang.top/posts/39648/
 
 ---
 
