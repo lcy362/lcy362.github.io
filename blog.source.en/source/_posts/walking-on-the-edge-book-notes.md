@@ -1,5 +1,5 @@
 ---
-title: Book Notes: I Walked on the Edge of Breakdown
+title: "Book Notes: I Walked on the Edge of Breakdown"
 description: "Book notes on Yu Minhong's 'I Walked on the Edge of Breakdown', reviewing New Oriental's entrepreneurial journey and key decisions from founding to growth."
 keywords:
   - Yu Minhong

@@ -1,5 +1,5 @@
 ---
-title: Prometheus Tutorial: Everything You Need to Know
+title: "Prometheus Tutorial: Everything You Need to Know"
 description: "A Prometheus monitoring system tutorial that explains how its simple design supports complex functionality, starting from its design philosophy."
 keywords:
   - Prometheus

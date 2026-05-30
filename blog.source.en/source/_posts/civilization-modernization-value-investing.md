@@ -1,5 +1,5 @@
 ---
-title: Book Reflections: Civilization, Modernization, Value Investing, and China
+title: "Book Reflections: Civilization, Modernization, Value Investing, and China"
 description: "Reflections on Lu Li's 'Civilization, Modernization, Value Investing, and China' — a systematic cognitive upgrade from civilization development to value investing."
 keywords:
   - Lu Li

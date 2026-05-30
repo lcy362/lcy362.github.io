@@ -1,5 +1,5 @@
 ---
-title: Vaadin Framework Tutorial: A Frontend Development Guide for Java Engineers
+title: "Vaadin Framework Tutorial: A Frontend Development Guide for Java Engineers"
 description: "Introduction to how the Vaadin framework enables backend engineers to efficiently develop web interfaces without diving deep into the frontend ecosystem, solving the pain points of backend developers writing frontend code."
 keywords:
   - Vaadin

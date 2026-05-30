@@ -1,5 +1,5 @@
 ---
-title: Java Serialization Performance Comparison: kryo/protobuf/protostuff vs Json
+title: "Java Serialization Performance Comparison: kryo/protobuf/protostuff vs Json"
 description: "Comparing the time and space performance of mainstream Java serialization solutions (kryo, protobuf, protostuff, fastjson) with real benchmark data to help you choose the most suitable serialization tool."
 keywords:
   - Java serialization

@@ -1,5 +1,5 @@
 ---
-title: Troubleshooting MySQL Batch Operations in Java: Why Batches Sometimes Don't Work
+title: "Troubleshooting MySQL Batch Operations in Java: Why Batches Sometimes Don't Work"
 description: "Analysis of common reasons why MySQL batch operations fail in Java, along with a complete debugging approach for batch performance issues."
 keywords:
   - java
