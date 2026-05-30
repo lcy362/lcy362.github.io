@@ -133,8 +133,8 @@ filter_optimize:
   enable: true
   remove_comments: false
   css:
-    bundle: true
-    delivery: true
+    bundle: false
+    delivery: false
     inlines:
     excludes:
   js:
