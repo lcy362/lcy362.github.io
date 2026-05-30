@@ -13,7 +13,7 @@ tags:
   - vercel
   - blog
   - devops
-  - independent blog
+  - independent-blog
 abbrlink: 39648
 date: 2026-05-11 19:30:00
 ---

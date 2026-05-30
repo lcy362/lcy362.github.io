@@ -12,9 +12,9 @@ categories:
 abbrlink: 48312
 date: 2018-11-14 21:59:31
 tags:
-  - big data
+  - big-data
   - clickhouse
-  - clickhouse introduction
+  - clickhouse-introduction
 ---
 
 ClickHouse is an open-source database for real-time data analytics developed by Yandex, initially used in multiple data analytics projects internally at Yandex. To introduce ClickHouse, we first need to introduce Yandex. ClickHouse's emergence is closely related to Yandex's business needs. Yandex is Russia's largest search engine, with many data analytics projects. The largest of these by data volume is Yandex.Metrica, a website analytics service similar to Baidu Analytics, with data volume second only to Google Analytics. Since ClickHouse was open-sourced, many companies both domestically and internationally have begun using it in their production systems. Therefore, I'm writing this ClickHouse tutorial to provide a basic introduction.

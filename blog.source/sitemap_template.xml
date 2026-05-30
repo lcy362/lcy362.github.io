@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{{ config.url | uriencode }}</loc>
+    <lastmod>{{ sNow | formatDate }}</lastmod>
+  </url>
+
   {% for post in posts %}
   <url>
     <loc>{{ post.permalink | uriencode }}</loc>
@@ -11,4 +16,3 @@
   </url>
   {% endfor %}
 </urlset>
-

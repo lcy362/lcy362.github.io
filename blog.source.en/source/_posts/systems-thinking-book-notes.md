@@ -9,10 +9,10 @@ keywords:
 categories:
   - Tech Miscellany
 tags:
-  - systems thinking
-  - book reflections
-  - personal growth
-  - logical thinking
+  - systems-thinking
+  - book-reflections
+  - personal-growth
+  - logical-thinking
 abbrlink: 53791
 date: 2022-05-16 18:34:01
 ---

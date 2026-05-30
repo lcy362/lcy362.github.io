@@ -10,7 +10,7 @@ keywords:
   - dict
 tags:
   - redis
-  - data structures
+  - data-structures
   - skiplist
 categories:
   - Redis Series

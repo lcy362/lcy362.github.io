@@ -10,11 +10,11 @@ keywords:
 categories:
   - Cloud Native
 tags:
-  - cloud native
+  - cloud-native
   - monitoring
   - prometheus
   - grafana
-  - prometheus tutorial
+  - prometheus-tutorial
 abbrlink: 28288
 date: 2021-11-10 19:54:05
 ---

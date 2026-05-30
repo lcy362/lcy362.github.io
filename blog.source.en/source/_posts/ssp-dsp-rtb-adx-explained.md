@@ -14,8 +14,8 @@ categories:
 date: 2022-03-07 16:28:58
 abbrlink: 27934
 tags:
-  - computational advertising
-  - internet advertising
+  - computational-advertising
+  - internet-advertising
   - rtb
 ---
 

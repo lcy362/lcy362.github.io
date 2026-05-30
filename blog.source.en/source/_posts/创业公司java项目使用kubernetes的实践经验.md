@@ -1,7 +1,7 @@
 ---
 title: Practical experience using kubernetes in java projects with low learning costs
 tags:
-  - continuous integration
+  - continuous-integration
   - kubernetes
 abbrlink: 40964
 date: 2022-01-26 15:19:32

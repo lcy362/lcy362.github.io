@@ -8,8 +8,8 @@ keywords:
   - book notes
 tags:
   - education
-  - personal growth
-  - book reflections
+  - personal-growth
+  - book-reflections
 categories:
   - Book Notes
 abbrlink: 6471

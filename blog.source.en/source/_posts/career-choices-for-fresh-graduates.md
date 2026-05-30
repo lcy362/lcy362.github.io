@@ -10,7 +10,7 @@ keywords:
 categories:
   - Tech Talk
 tags:
-  - career development
+  - career-development
 abbrlink: 34931
 date: 2021-03-30 18:36:15
 ---

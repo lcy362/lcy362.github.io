@@ -10,7 +10,7 @@ categories:
   - Big Data
 tags:
   - hadoop
-  - big data
+  - big-data
 abbrlink: 25187
 date: 2012-10-28 18:42:00
 ---

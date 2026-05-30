@@ -11,7 +11,7 @@ categories:
   - Tech Talk
 tags:
   - hexo
-  - blog setup
+  - blog-setup
 abbrlink: 19890
 date: 2018-01-19 18:56:07
 ---

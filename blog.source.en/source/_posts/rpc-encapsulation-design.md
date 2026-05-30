@@ -10,7 +10,7 @@ keywords:
 categories:
   - Architecture Design
 tags:
-  - design pattern
+  - design-pattern
 abbrlink: 20888
 date: 2021-03-16 18:34:56
 ---

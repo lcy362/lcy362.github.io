@@ -10,7 +10,7 @@ categories:
   - Message Queue
 tags:
   - rocketmq
-  - message queue
+  - message-queue
 abbrlink: 32580
 date: 2019-05-18 15:23:02
 ---
