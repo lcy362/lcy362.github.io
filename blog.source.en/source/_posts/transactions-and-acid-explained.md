@@ -10,10 +10,10 @@ keywords:
 categories:
   - Database
 tags:
-  - database transactions
+  - database-transactions
   - database
   - acid
-  - transaction isolation levels
+  - transaction-isolation-levels
 abbrlink: 7774
 date: 2022-02-07 16:40:02
 ---

@@ -9,9 +9,9 @@ keywords:
 categories:
   - Tech Talk
 tags:
-  - unit testing
-  - development standards
-  - unit testing best practices
+  - unit-testing
+  - development-standards
+  - unit-testing best practices
 abbrlink: 695
 date: 2019-09-26 20:54:36
 ---

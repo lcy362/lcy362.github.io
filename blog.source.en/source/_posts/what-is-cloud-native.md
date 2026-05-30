@@ -11,7 +11,7 @@ categories:
   - Cloud Native
 tags:
   - microservices
-  - cloud native architecture
+  - cloud-native-architecture
 abbrlink: 42843
 date: 2021-06-09 19:54:37
 ---

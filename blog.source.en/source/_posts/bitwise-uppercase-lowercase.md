@@ -2,14 +2,14 @@
 title: "Converting Between Uppercase and Lowercase Using Bitwise Operations"
 description: "Leveraging bitwise operations to elegantly convert between uppercase and lowercase letters, with a deep dive into the binary characteristics of ASCII codes."
 keywords:
-  - bitwise operations
+  - bitwise-operations
   - ascii
   - case conversion
   - algorithm
 categories:
   - Java
 tags:
-  - bitwise operations
+  - bitwise-operations
 abbrlink: 9193
 date: 2018-11-14 21:58:47
 ---

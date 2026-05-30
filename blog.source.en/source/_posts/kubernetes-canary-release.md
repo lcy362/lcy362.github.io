@@ -10,8 +10,8 @@ keywords:
 categories:
   - Cloud Native
 tags:
-  - cloud native
-  - continuous integration
+  - cloud-native
+  - continuous-integration
   - canary
 abbrlink: 30764
 date: 2021-12-23 18:55:20

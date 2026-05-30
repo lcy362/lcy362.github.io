@@ -10,7 +10,7 @@ categories:
   - Tech Miscellany
 tags:
   - lda
-  - big data
+  - big-data
 abbrlink: 63299
 date: 2012-12-02 15:20:00
 ---

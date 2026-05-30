@@ -11,8 +11,8 @@ categories:
   - Tech Talk
 tags:
   - iterm2
-  - ssh auto login
-  - ssh passwordless login
+  - ssh-auto-login
+  - ssh-passwordless-login
 abbrlink: 20763
 date: 2021-10-08 16:45:42
 ---

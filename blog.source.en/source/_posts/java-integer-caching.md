@@ -10,8 +10,8 @@ categories:
   - Java
 tags:
   - java
-  - java integer
-  - java integer caching
+  - java-integer
+  - java-integer caching
 abbrlink: 64970
 date: 2016-12-02 19:45:00
 ---

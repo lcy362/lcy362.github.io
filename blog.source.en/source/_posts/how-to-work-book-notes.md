@@ -9,8 +9,8 @@ keywords:
 categories:
   - Tech Miscellany
 tags:
-  - personal growth
-  - book notes
+  - personal-growth
+  - book-notes
 abbrlink: 3513
 date: 2021-05-15 17:29:34
 ---

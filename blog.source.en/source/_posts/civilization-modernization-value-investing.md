@@ -9,8 +9,8 @@ keywords:
   - book reflections
 tags:
   - investing
-  - personal growth
-  - book reflections
+  - personal-growth
+  - book-reflections
 categories:
   - Book Notes
 abbrlink: 44866
