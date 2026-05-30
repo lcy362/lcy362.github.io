@@ -2,14 +2,14 @@
 title: "[Translation] [On Distributed Architecture and System Design] Patterns of Distributed Systems - Overview"
 description: "Translation of Martin Fowler's article, summarizing common patterns of distributed systems in enterprise architectures, covering consensus, replication, partitioning and other core topics."
 keywords:
-  - distributed systems
-  - design patterns
+  - distributed-systems
+  - design-patterns
   - martin fowler
   - consensus
   - replication
 tags:
-  - distributed systems
-  - distributed system design
+  - distributed-systems
+  - distributed-system-design
 categories:
   - Distributed Systems Patterns Series
 abbrlink: 3914

@@ -288,8 +288,38 @@ grep "hreflang" public/posts/64/index.html
 **⚠️ 新增文章注意事项**：
 - 英文文章的分类必须使用上表中的标准形式
 - 不要使用小写或连字符形式（如 `tech-talk`、`java`）
+- **Tag 也必须使用连字符形式**（如 `design-patterns`，不要写 `design patterns`）
 
-### 3. 已知的非标准实现
+**Tag 标准化示例**：
+
+| 错误写法 | 正确写法 |
+|----------|----------|
+| `design patterns` | `design-patterns` |
+| `distributed systems` | `distributed-systems` |
+| `open source project` | `open-source-project` |
+
+### 3. 英文站 sitemap 模板（2026-05-30）
+
+**目的**：英文站使用自定义 sitemap 模板，包含文章、标签和分类页面。
+
+**文件位置**：`blog.source.en/sitemap_template.xml`
+
+**修改内容**：
+- 命名空间从 `http://` 修正为 `https://`（与中文站保持一致）
+- 模板包含文章、标签、分类三类 URL（比中文站更完整）
+
+**⚠️ 升级注意事项**：
+- 中文站使用 Hexo 默认 sitemap 生成（仅包含文章）
+- 英文站使用自定义模板（包含文章+标签+分类）
+- 如果需要让中文站也包含标签和分类，可复制英文站模板并调整
+
+**验证方法**：
+```bash
+cd ~/blogs/blog.source.en
+hexo generate
+head -3 public/sitemap.xml  # 检查命名空间是否为 https
+grep -o '<loc>[^<]*</loc>' public/sitemap.xml | sort | uniq -d  # 检查是否有重复
+```
 
 | 项目 | 实现方式 | 风险 |
 |------|----------|------|

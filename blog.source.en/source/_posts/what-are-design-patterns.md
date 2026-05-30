@@ -2,14 +2,14 @@
 title: "What Exactly Are Design Patterns? A Deep Dive into Their Principles"
 description: "Starting from the four fundamental characteristics of object-oriented programming, this article helps programmers truly understand the essence of design patterns and the right mindset for learning them."
 keywords:
-  - design patterns
+  - design-patterns
   - object-oriented
   - solid
   - programming philosophy
 categories:
   - Architecture Design
 tags:
-  - design patterns
+  - design-patterns
 abbrlink: 58527
 date: 2021-03-04 19:26:30
 ---
