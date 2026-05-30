@@ -1,5 +1,5 @@
 ---
-title: Investigating a Kafka Disk Usage Spike: Data Compression, Batch Sending, and More
+title: "Investigating a Kafka Disk Usage Spike: Data Compression, Batch Sending, and More"
 description: "An investigation into a Kafka disk space usage spike, diving into Kafka's data compression mechanism and batch sending strategies."
 keywords:
   - Kafka

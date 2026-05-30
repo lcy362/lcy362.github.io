@@ -1,5 +1,5 @@
 ---
-title: From Redo Log and Undo Log to Isolation Levels: A Deep Dive into Database Transactions and ACID
+title: "From Redo Log and Undo Log to Isolation Levels: A Deep Dive into Database Transactions and ACID"
 description: "A comprehensive exploration of database transactions and ACID properties, covering redo log, undo log, and isolation levels."
 keywords:
   - database transactions

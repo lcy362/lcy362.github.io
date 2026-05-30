@@ -1,5 +1,5 @@
 ---
-title: JStorm Source Code Analysis: Bolt Exception Handling
+title: "JStorm Source Code Analysis: Bolt Exception Handling"
 description: "An analysis from source code perspective of the mechanism where uncaught exceptions in JStorm bolts cause worker process termination, revealing the complete design behind it."
 keywords:
   - JStorm

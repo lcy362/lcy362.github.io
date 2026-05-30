@@ -1,5 +1,5 @@
 ---
-title: Book Notes: Thinking in Systems - How to Face Complex Problems in Reality
+title: "Book Notes: Thinking in Systems - How to Face Complex Problems in Reality"
 description: "Book notes on 'Thinking in Systems', learning systematic thinking methods for facing complex problems and building the right mental frameworks."
 keywords:
   - systems thinking

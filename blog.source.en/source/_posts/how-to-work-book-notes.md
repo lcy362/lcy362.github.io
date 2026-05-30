@@ -1,5 +1,5 @@
 ---
-title: Book Notes: Kazuo Inamori's "Amoeba Management" — Reflecting on How We Should Work
+title: "Book Notes: Kazuo Inamori's 'Amoeba Management' — Reflecting on How We Should Work"
 description: "Book notes on Kazuo Inamori's 'Amoeba Management', reflecting on work attitudes and methods, exploring how to achieve personal value enhancement through work."
 keywords:
   - Kazuo Inamori
