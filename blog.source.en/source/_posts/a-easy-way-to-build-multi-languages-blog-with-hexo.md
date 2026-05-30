@@ -37,4 +37,4 @@ At the end of the command, use hexo s to start locally, use hexo d to publish it
 
 In this way, we now have a multi-language site which is quite easy to use. After that, write Chinese content in the Chinese directory, write English content in the English directory, and finally execute the above command.
 
-Original address： http://lichuanyang.top/en/posts/40400/
+Original address： https://lichuanyang.top/en/posts/40400/

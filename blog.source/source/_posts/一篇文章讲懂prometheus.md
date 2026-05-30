@@ -176,6 +176,6 @@ tomcat_connections_current_connections{application="ads-programad",name="http-ni
 
 这样，无论这个springboot项目如何部署，无论是用java原生的部署，还是用docker部署，还是部署在kubernetes上，都可以非常容易的获取各个监控metrics数据。
 
-原文地址: http://lichuanyang.top/posts/28288/
+原文地址: https://lichuanyang.top/posts/28288/
 
 ---

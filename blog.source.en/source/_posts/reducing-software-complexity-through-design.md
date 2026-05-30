@@ -74,7 +74,7 @@ Second, naming should have contextual consistency. For example, for a programmer
 
 Actually, that covers everything. Does it feel simpler than you expected? The truth is, as long as you do module splitting well and put each piece of code in the right place it belongs, development isn't that complex.
 
-Original article: http://lichuanyang.top/posts/33852/
+Original article: https://lichuanyang.top/posts/33852/
 
 ---
 

@@ -298,27 +298,77 @@ grep "hreflang" public/posts/64/index.html
 | `distributed systems` | `distributed-systems` |
 | `open source project` | `open-source-project` |
 
-### 3. 英文站 sitemap 模板（2026-05-30）
+### 3. 自定义 sitemap 模板（2026-05-30，更新 2026-05-30）
 
-**目的**：英文站使用自定义 sitemap 模板，包含文章、标签和分类页面。
+**目的**：两个站点都使用自定义 sitemap 模板，包含文章、标签和分类页面。
 
-**文件位置**：`blog.source.en/sitemap_template.xml`
+**文件位置**：
+- `blog.source/sitemap_template.xml`
+- `blog.source.en/sitemap_template.xml`（相同内容）
 
 **修改内容**：
-- 命名空间从 `http://` 修正为 `https://`（与中文站保持一致）
-- 模板包含文章、标签、分类三类 URL（比中文站更完整）
+- 命名空间使用 `https://`
+- 模板包含文章、标签、分类三类 URL
 
 **⚠️ 升级注意事项**：
-- 中文站使用 Hexo 默认 sitemap 生成（仅包含文章）
-- 英文站使用自定义模板（包含文章+标签+分类）
-- 如果需要让中文站也包含标签和分类，可复制英文站模板并调整
+- 两个站点共用相同的模板，通过 `config.url` 自动适配不同语言的 URL
+- 如果需要修改 sitemap 格式，两个站点都要同步修改
+
+**验证方法**：
+```bash
+cd ~/blogs/blog.source
+hexo generate
+head -3 public/sitemap.xml  # 检查命名空间是否为 https
+grep -c '<url>' public/sitemap.xml  # 应包含文章+标签+分类
+```
+
+### 4. 结构化数据增强（2026-05-30）
+
+**目的**：为文章页添加 BreadcrumbList 结构化数据和 author.sameAs 社交链接。
+
+**新增文件**：
+- `blog.source/scripts/structured-data.js` — 增强文章页的 JSON-LD 结构化数据
+- `blog.source.en/scripts/structured-data.js` — 同上（英文站）
+
+**功能**：
+1. 为每篇文章添加 BreadcrumbList schema（首页 → 分类 → 文章）
+2. 为 BlogPosting schema 的 author 添加 sameAs 属性（GitHub、StackOverflow、知乎）
+
+**验证方法**：
+```bash
+cd ~/blogs/blog.source
+hexo generate
+grep 'BreadcrumbList' public/posts/64/index.html  # 应看到面包屑数据
+grep 'sameAs' public/posts/64/index.html  # 应看到社交链接
+```
+
+### 5. 英文站分类 URL 小写化（2026-05-30）
+
+**目的**：解决英文站分类页面 404 问题（macOS 大小写不敏感导致的部署不一致）。
+
+**问题根因**：
+- macOS 文件系统大小写不敏感，git 无法正确追踪仅大小写不同的目录重命名
+- 部署仓库中保留了旧的小写目录（如 `/categories/java/`），新构建生成混合大小写（如 `/categories/Java/`）
+- 在大小写敏感的 Vercel/Linux 环境中，混合大小写 URL 返回 404
+
+**新增文件**：
+- `blog.source.en/scripts/category-slug-fix.js` — 自定义分类生成器 + sitemap/HTML 链接修复
+
+**功能**：
+1. 覆盖默认分类生成器，强制所有分类 URL 使用小写（如 `/categories/java/`）
+2. 修复分类索引页的链接指向小写 URL
+3. 修复 sitemap 中的分类 URL 为小写
+
+**⚠️ 新增文章注意事项**：
+- 英文文章的分类名称仍使用 PascalCase（如 `Java`、`Tech Talk`），显示名称不变
+- URL 会自动转为小写（如 `/categories/java/`、`/categories/tech-talk/`）
 
 **验证方法**：
 ```bash
 cd ~/blogs/blog.source.en
 hexo generate
-head -3 public/sitemap.xml  # 检查命名空间是否为 https
-grep -o '<loc>[^<]*</loc>' public/sitemap.xml | sort | uniq -d  # 检查是否有重复
+ls public/categories/  # 应全部小写
+grep 'categories' public/sitemap.xml | head -5  # 应全部小写
 ```
 
 | 项目 | 实现方式 | 风险 |

@@ -183,4 +183,4 @@ If you're also struggling with managing security development standards, give thi
 
 After all, tools exist to serve people, don't they?
 
-Source: http://lichuanyang.top/en/posts/16495/
+Source: https://lichuanyang.top/en/posts/16495/

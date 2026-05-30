@@ -72,7 +72,7 @@ The talk materials must be sent out in advance to give the audience a chance to 
 
 During the talk, pay attention to pacing — don't speak too fast.
 
-Original article: http://lichuanyang.top/posts/54216/
+Original article: https://lichuanyang.top/posts/54216/
 
 ---
 

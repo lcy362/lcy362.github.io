@@ -95,5 +95,5 @@ cluster_size:1
 ```
 所有slot已经分配出去，Cluster stat也变成了ok. 这样一个cluster就算搭建完毕了。
 
-原文地址：http://lichuanyang.top/posts/9329/
+原文地址：https://lichuanyang.top/posts/9329/
 ---

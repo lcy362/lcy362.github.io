@@ -56,7 +56,7 @@ social:
 # Image Settings
 # --------------------------------------
 
-favicon: /images/favicon-16x16-next.png
+favicon: /img/favicon.ico
 
 avatar:
   img: /img/butterfly-icon.png

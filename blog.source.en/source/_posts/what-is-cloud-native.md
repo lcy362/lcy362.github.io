@@ -62,7 +62,7 @@ We've covered a lot of theory above. So what are the concrete implementation pat
 
 I am Liu Sha. I hope this article can help everyone better understand what exactly cloud native is. Actually, cloud native is simple to describe — it's about adopting various approaches to better utilize cloud resources. But when explained in detail, it's a very comprehensive system covering everything from development to operations. Welcome to follow my WeChat public account (Mobility), or visit my [personal website](https://lichuanyang.top/). I will gradually expand on all aspects of cloud native in future articles.
 
-Original article: http://lichuanyang.top/posts/42843/
+Original article: https://lichuanyang.top/posts/42843/
 
 ---
 
