@@ -18,7 +18,7 @@ i18n:
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://lichuanyang.top/en
-root: 
+root: /en/
 permalink: posts/:abbrlink/
 permalink_defaults:
 pretty_urls:
@@ -130,11 +130,11 @@ path: baidu_urls.txt ## 文本文档的地址， 新链接会保存在此文本�
 
 # hexo-filter-optimize
 filter_optimize:
-  enable: true
+  enable: false
   remove_comments: false
   css:
     bundle: true
-    delivery: true
+    delivery: false
     inlines:
     excludes:
   js:
