@@ -8,7 +8,7 @@ keywords:
   - batch operations
   - jdbc
 categories:
-  - database
+  - Database
 tags:
   - java
   - mysql

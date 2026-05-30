@@ -7,7 +7,7 @@ keywords:
   - work attitude
   - book notes
 categories:
-  - tech miscellany
+  - Tech Miscellany
 tags:
   - personal growth
   - book notes

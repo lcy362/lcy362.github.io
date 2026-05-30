@@ -8,7 +8,7 @@ keywords:
   - algorithm
   - string
 categories:
-  - algorithm
+  - Algorithm
 tags:
   - algorithm
   - leetcode

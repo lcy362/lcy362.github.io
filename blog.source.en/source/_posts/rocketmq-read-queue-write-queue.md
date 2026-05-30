@@ -7,7 +7,7 @@ keywords:
   - readQueue
   - writeQueue
 categories:
-  - message queue
+  - Message Queue
 tags:
   - rocketmq
   - message queue

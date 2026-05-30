@@ -7,7 +7,7 @@ keywords:
   - programmer
   - 2021
 categories:
-  - tech talk
+  - Tech Talk
 tags:
   - reflections
 abbrlink: 2345

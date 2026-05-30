@@ -8,7 +8,7 @@ keywords:
   - hmsetnx
   - Hash
 categories:
-  - database
+  - Database
 tags:
   - redis
   - lua

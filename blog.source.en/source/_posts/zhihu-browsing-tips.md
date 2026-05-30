@@ -7,7 +7,7 @@ keywords:
   - Chrome extension
   - browsing at work
 categories:
-  - tech-talks
+  - Tech Talk
 tags:
   - zhihu
   - tampermonkey

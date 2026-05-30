@@ -7,7 +7,7 @@ keywords:
   - time display
   - Chrome
 categories:
-  - tech-talks
+  - Tech Talk
 tags:
   - zhihu
   - tampermonkey

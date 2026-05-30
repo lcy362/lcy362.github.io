@@ -7,7 +7,7 @@ keywords:
   - solid
   - programming philosophy
 categories:
-  - architecture design
+  - Architecture Design
 tags:
   - design patterns
 abbrlink: 58527

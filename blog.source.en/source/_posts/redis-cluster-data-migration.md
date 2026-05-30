@@ -12,7 +12,7 @@ tags:
   - redis
   - redis-cluster
 categories:
-  - redis series
+  - Redis Series
 abbrlink: 37583
 date: 2018-02-24 18:34:19
 ---

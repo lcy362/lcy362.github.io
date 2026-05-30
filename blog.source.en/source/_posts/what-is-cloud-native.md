@@ -8,7 +8,7 @@ keywords:
   - containerization
   - DevOps
 categories:
-  - cloud native
+  - Cloud Native
 tags:
   - microservices
   - cloud native architecture

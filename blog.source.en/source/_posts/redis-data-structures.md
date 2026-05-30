@@ -13,7 +13,7 @@ tags:
   - data structures
   - skiplist
 categories:
-  - redis series
+  - Redis Series
 abbrlink: 22179
 date: 2020-07-11 16:47:30
 ---

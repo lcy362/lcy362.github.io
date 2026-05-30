@@ -11,7 +11,7 @@ tags:
   - distributed systems
   - distributed system design
 categories:
-  - distributed systems patterns series
+  - Distributed Systems Patterns Series
 abbrlink: 3914
 date: 2020-08-10 20:33:49
 ---

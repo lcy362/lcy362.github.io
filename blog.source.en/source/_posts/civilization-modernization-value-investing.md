@@ -12,7 +12,7 @@ tags:
   - personal growth
   - book reflections
 categories:
-  - book notes
+  - Book Notes
 abbrlink: 44866
 date: 2020-12-12 15:24:34
 ---

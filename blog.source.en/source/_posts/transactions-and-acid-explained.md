@@ -8,7 +8,7 @@ keywords:
   - undo log
   - isolation levels
 categories:
-  - database
+  - Database
 tags:
   - database transactions
   - database

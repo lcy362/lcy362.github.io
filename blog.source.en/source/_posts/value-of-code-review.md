@@ -8,7 +8,7 @@ keywords:
   - team collaboration
   - personal growth
 categories:
-  - tech-talks
+  - Tech Talk
 tags:
   - development-practices
 abbrlink: 57205

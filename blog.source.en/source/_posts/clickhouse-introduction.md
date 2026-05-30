@@ -8,7 +8,7 @@ keywords:
   - Yandex
   - columnar database
 categories:
-  - databases
+  - Database
 abbrlink: 48312
 date: 2018-11-14 21:59:31
 tags:

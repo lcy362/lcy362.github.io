@@ -8,7 +8,7 @@ keywords:
   - time series database
   - tutorial
 categories:
-  - cloud native
+  - Cloud Native
 tags:
   - cloud native
   - monitoring

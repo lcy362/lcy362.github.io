@@ -8,7 +8,7 @@ keywords:
   - cloud native
   - getting started
 categories:
-  - cloud native
+  - Cloud Native
 tags:
   - kubernetes
 abbrlink: 55227

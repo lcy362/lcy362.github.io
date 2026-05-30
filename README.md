@@ -136,6 +136,17 @@ grep "^abbrlink:" blog.source.en/source/_posts/english-article.md
 # 两个值应该相同
 ```
 
+### ⚠️ 更新 hreflang 映射
+
+**新增或修改文章后，必须运行以下命令更新 hreflang 映射**：
+
+```bash
+cd ~/blogs
+./scripts/update_hreflang_map.sh
+```
+
+此脚本会扫描所有中英文文章，更新 `hreflang_map.json`，确保搜索引擎能正确关联多语言版本。
+
 ---
 
 ## 部署流程详解

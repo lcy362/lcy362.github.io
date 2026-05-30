@@ -8,7 +8,7 @@ keywords:
   - Node.js
   - tutorial
 categories:
-  - tech talk
+  - Tech Talk
 tags:
   - hexo
   - blog setup

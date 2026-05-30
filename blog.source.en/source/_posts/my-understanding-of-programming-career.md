@@ -7,7 +7,7 @@ keywords:
   - capability model
   - cognitive upgrade
 categories:
-  - tech talk
+  - Tech Talk
 tags:
   - reflections
 abbrlink: 27398

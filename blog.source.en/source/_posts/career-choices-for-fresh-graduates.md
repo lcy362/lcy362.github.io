@@ -8,7 +8,7 @@ keywords:
   - state-owned enterprise
   - programmer
 categories:
-  - tech talk
+  - Tech Talk
 tags:
   - career development
 abbrlink: 34931

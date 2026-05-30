@@ -8,7 +8,7 @@ keywords:
   - performance testing
   - translation
 categories:
-  - java
+  - Java
 tags:
   - java
   - testing

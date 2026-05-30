@@ -7,7 +7,7 @@ keywords:
   - mapreduce
   - introductory example
 categories:
-  - big data
+  - Big Data
 tags:
   - hadoop
   - big data
