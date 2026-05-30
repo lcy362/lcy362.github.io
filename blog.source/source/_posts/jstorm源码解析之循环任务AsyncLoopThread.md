@@ -131,5 +131,5 @@ public static void main(String args[]) {
 ```
 这个代码也很简单，就是循环的去执行RunnableCallback的run方法，期间会有shutdown,needQuit(),异常几种情况导致任务中断，或者直接杀掉进程。其中,needQuit()方法里会根据前边说的getResult控制任务执行速度。
 
-原文地址：https://lcy362.github.io/posts/31761
+原文地址：https://lichuanyang.top/posts/31761
 ---

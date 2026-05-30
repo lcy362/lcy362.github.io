@@ -82,5 +82,5 @@ clickHouse是基于zookeeper的主主复制。写入任何可用的副本后，�
 
 此外，相对其他列存储数据库，clickhouse对sql语法的支持非常好，包括group by, order by, in, join等常用sql语句都支持。
 
-原文地址：https://lcy362.github.io/posts/48312/
+原文地址：https://lichuanyang.top/posts/48312/
 ---
