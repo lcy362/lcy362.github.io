@@ -2,14 +2,14 @@
 title: "Design Patterns Cheatsheet"
 description: "A quick reference guide for design patterns, describing the core concepts, typical scenarios, and key English terminology for all 23 patterns in concise language."
 keywords:
-  - design patterns
+  - design-patterns
   - 23 patterns
   - object-oriented
   - cheatsheet
 categories:
   - Architecture Design
 tags:
-  - design patterns
+  - design-patterns
 abbrlink: 21897
 date: 2020-04-08 18:06:51
 ---
