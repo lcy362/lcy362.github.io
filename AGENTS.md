@@ -1,215 +1,267 @@
-# AGENTS.md — Blog Project Context
+# AGENTS.md — 博客项目上下文
 
-## Overview
+## 项目概述
 
-This is a **Hexo** static blog with a dual-language setup (Chinese + English), deployed to **Vercel** at `https://lichuanyang.top/`. The English site lives under `/en/`.
+这是一个基于 **Hexo** 的静态博客，采用中英文双语架构，部署在 **Vercel** 上，访问地址：`https://lichuanyang.top/`。英文站点位于 `/en/` 路径下。
 
-- **Framework**: Hexo 8.1.2
-- **Theme**: Butterfly 5.5.4 (installed via npm, not git submodule)
-- **Domain**: `lichuanyang.top` (Vercel, CNAME in source)
-- **Repo**: `git@github.com:lcy362/lcy362.github.io.git` (master branch)
+- **框架**：Hexo 8.1.2
+- **主题**：Butterfly 5.5.4（通过 npm 安装，非 git submodule）
+- **域名**：`lichuanyang.top`（Vercel 托管，CNAME 配置在 source 中）
+- **仓库**：`git@github.com:lcy362/lcy362.github.io.git`（master 分支）
 
-## Project Structure
+## 项目结构
 
 ```
 ~/blogs/
-├── deploy.sh                  # Unified build & deploy script
-├── blog.source/               # Chinese site (primary)
-│   ├── _config.yml            # Hexo config
-│   ├── _config.butterfly.yml  # Theme config (1100+ lines)
-│   ├── package.json           # Dependencies
-│   ├── source/_posts/         # Markdown posts (88 articles)
-│   ├── source/{img,upload}/   # Static assets
-│   ├── themes/                # Old themes (landscape, next, yilia) — unused
-│   ├── public/                # Build output (git-ignored)
-│   └── node_modules/          # Dependencies (git-ignored)
+├── deploy.sh                  # 统一构建部署脚本
+├── AGENTS.md                  # AI Agent 上下文文档
+├── README.md                  # 人类可读的使用说明
+├── blog.source/               # 中文站点（主站）
+│   ├── _config.yml            # Hexo 配置
+│   ├── _config.butterfly.yml  # 主题配置（1100+ 行）
+│   ├── package.json           # 依赖
+│   ├── source/_posts/         # Markdown 文章（88 篇）
+│   ├── source/{img,upload}/   # 静态资源
+│   ├── themes/                # 旧主题（landscape, next, yilia）— 已弃用
+│   ├── public/                # 构建输出（git 忽略）
+│   └── node_modules/          # 依赖（git 忽略）
 │
-└── blog.source.en/            # English site (independent Hexo instance)
-    ├── _config.yml            # Hexo config (different url/root/language)
-    ├── _config.butterfly.yml  # Theme config (menu links differ)
-    ├── package.json           # Same deps + hexo-generator-i18n
-    ├── source/_posts/         # English posts (4 articles)
-    └── ...                    # Same structure as CN
+└── blog.source.en/            # 英文站点（独立 Hexo 实例）
+    ├── _config.yml            # Hexo 配置（url/root/language 不同）
+    ├── _config.butterfly.yml  # 主题配置（菜单链接不同）
+    ├── package.json           # 相同依赖 + hexo-generator-i18n
+    ├── source/_posts/         # 英文文章（84 篇）
+    └── ...                    # 结构同中文站点
 ```
 
-## Key Configuration Differences (CN vs EN)
+## 关键配置差异（中文 vs 英文）
 
-| Setting | CN (`blog.source`) | EN (`blog.source.en`) |
+| 配置项 | 中文（`blog.source`） | 英文（`blog.source.en`） |
 |---|---|---|
 | `url` | `https://lichuanyang.top/` | `https://lichuanyang.top/en` |
 | `root` | `/` | `/en/` |
 | `language` | `zh-CN` | `en` |
 | `filter_optimize.enable` | `true` | `false` |
-| `filter_optimize.css.bundle` | `false` | `true` (irrelevant, plugin disabled) |
-| Extra plugin | — | `hexo-generator-i18n` |
-| Menu "English"/"中文" | `English: /en` | `中文: https://lichuanyang.top/` |
+| `filter_optimize.css.bundle` | `false` | `true`（无关紧要，插件已禁用） |
+| 额外插件 | — | `hexo-generator-i18n` |
+| 菜单「English」/「中文」 | `English: /en` | `中文: https://lichuanyang.top/` |
 
-## Deploy Script (`deploy.sh`)
+## 部署脚本（`deploy.sh`）
 
-Located at `~/blogs/deploy.sh`. Usage:
+位于 `~/blogs/deploy.sh`，用法：
 
 ```bash
-./deploy.sh              # Build both sites + local preview (hexo server)
-./deploy.sh -d           # Build + deploy to GitHub (triggers Vercel)
-./deploy.sh -c -d        # Clean build + deploy
-./deploy.sh -c           # Clean build + local preview
+./deploy.sh              # 构建双站 + 本地预览（hexo server）
+./deploy.sh -d           # 构建 + 部署到 GitHub（触发 Vercel 自动部署）
+./deploy.sh -c -d        # 清理后构建 + 部署
+./deploy.sh -c           # 清理后构建 + 本地预览
 ```
 
-### What the script does (4 steps):
+### 脚本执行流程（4 步）：
 
-1. **Build CN site**: `cd blog.source && hexo generate`
-2. **Build EN site**: `cd blog.source.en && hexo generate`
-3. **Merge**: `cp -r blog.source.en/public/. blog.source/public/en/`
-4. **Deploy/serve**: `hexo deploy` (git push to master) or `hexo server`
+1. **构建中文站**：`cd blog.source && hexo generate`
+2. **构建英文站**：`cd blog.source.en && hexo generate`
+3. **合并**：`cp -r blog.source.en/public/. blog.source/public/en/`
+4. **部署/预览**：`hexo deploy`（git push 到 master）或 `hexo server`
 
-### Critical: the merge step
+### 关键：合并步骤
 
-EN site's `public/` contents are copied into CN's `public/en/`. This works because:
-- EN's `root: /en/` makes HTML reference `/en/css/index.css`, `/en/js/main.js`, etc.
-- EN's build puts files at `public/css/index.css`, `public/js/main.js` (root-relative)
-- After copy into `CN/public/en/`, paths align: `CN/public/en/css/index.css` matches `/en/css/index.css`
+英文站的 `public/` 内容会被复制到中文站的 `public/en/` 目录下。之所以可行：
+- 英文站的 `root: /en/` 使 HTML 引用 `/en/css/index.css`、`/en/js/main.js` 等路径
+- 英文站构建时将文件输出到 `public/css/index.css`、`public/js/main.js`（相对于 root）
+- 复制到 `CN/public/en/` 后，路径对齐：`CN/public/en/css/index.css` 对应 `/en/css/index.css`
 
-**Do NOT change EN's `root` to `/`** — it will break CSS/JS paths. See "Pitfalls" below.
+**⚠️ 绝对不要将英文站的 `root` 改为 `/`** — 这会导致 CSS/JS 路径全部 404。详见「踩坑记录」。
 
-## Theme Configuration (`_config.butterfly.yml`)
+## 主题配置（`_config.butterfly.yml`）
 
-Key settings in the ~1100-line Butterfly config:
+Butterfly 主题配置文件约 1100 行，关键设置：
 
-- **Menu**: Defined in `menu:` section, format: `Label: /path || icon-class`
-- **Dark mode**: Enabled with toggle button (`darkmode.enable: true`)
-- **Preloader**: Pace progress bar (`preloader.source: 2`)
-- **Search**: Local search (`search.use: local_search`)
-- **Comments**: Valine (LeanCloud)
-- **Analytics**: Baidu + Google Analytics
-- **Ads**: Google AdSense enabled
-- **Font Awesome**: 6.7.2 via cdnjs CDN
-- **Canvas effects**: `canvas_nest` enabled (blue lines, no mobile)
-- **Post copyright**: CC BY-NC-SA 4.0
-- **TOC**: Enabled for posts, disabled for pages
+- **菜单**：`menu:` 部分定义，格式：`标签: /路径 || 图标类名`
+- **暗黑模式**：启用并显示切换按钮（`darkmode.enable: true`）
+- **预加载**：Pace 进度条（`preloader.source: 2`）
+- **搜索**：本地搜索（`search.use: local_search`）
+- **评论**：Valine（LeanCloud）
+- **统计**：百度统计 + Google Analytics
+- **广告**：Google AdSense 已启用
+- **Font Awesome**：6.7.2，通过 cdnjs CDN 加载
+- **Canvas 特效**：`canvas_nest` 启用（蓝色线条，移动端禁用）
+- **文章版权**：CC BY-NC-SA 4.0
+- **目录（TOC）**：文章页启用，页面禁用
 
-## Hexo Plugins
+## Hexo 插件
 
-Both sites share the same core plugins. Key ones:
+两个站点共享核心插件：
 
-| Plugin | Purpose |
+| 插件 | 用途 |
 |---|---|
-| `hexo-theme-butterfly` | Theme (v5.5.4 via npm) |
-| `hexo-filter-optimize` | CSS/JS bundling (CN only, CSS bundle disabled) |
-| `hexo-abbrlink` | Deterministic post URLs (`posts/:abbrlink/`) |
-| `hexo-generator-searchdb` | Local search index |
-| `hexo-renderer-nunjucks` | Template engine (Butterfly requires this) |
-| `hexo-renderer-stylus` | CSS preprocessor |
-| `hexo-deployer-git` | Git-based deployment |
-| `hexo-baidu-url-submit` | Auto-submit URLs to Baidu |
-| `hexo-wordcount` | Word count / reading time |
-| `hexo-generator-feed` | Atom/RSS feed |
-| `hexo-filter-nofollow` | Add `rel="nofollow"` to external links |
+| `hexo-theme-butterfly` | 主题（v5.5.4，通过 npm 安装） |
+| `hexo-filter-optimize` | CSS/JS 打包（仅中文站，CSS bundle 已禁用） |
+| `hexo-abbrlink` | 生成确定性文章 URL（`posts/:abbrlink/`） |
+| `hexo-generator-searchdb` | 本地搜索索引 |
+| `hexo-renderer-nunjucks` | 模板引擎（Butterfly 必需） |
+| `hexo-renderer-stylus` | CSS 预处理器 |
+| `hexo-deployer-git` | 基于 Git 的部署 |
+| `hexo-baidu-url-submit` | 自动向百度提交 URL |
+| `hexo-wordcount` | 字数统计 / 阅读时间 |
+| `hexo-generator-feed` | Atom/RSS 订阅源 |
+| `hexo-filter-nofollow` | 为外部链接添加 `rel="nofollow"` |
 
-## Writing Posts
+## 文章写作
 
-Posts go in `source/_posts/` as `.md` files. Front-matter format:
+文章以 `.md` 文件形式存放在 `source/_posts/` 目录下。Front-matter 格式：
 
 ```yaml
 ---
-title: Post Title
+title: 文章标题
 date: 2026-05-28 22:00:00
 categories: [技术杂谈]
 tags: [hexo, blog]
 ---
 ```
 
-- **abbrlink**: Do NOT set manually. The `hexo-abbrlink` plugin auto-generates a numeric abbrlink at build time. The permalink format is `posts/:abbrlink/`.
-- **Images**: Place in `source/img/` or `source/upload/`, reference with `/img/filename.png`.
-- **Skip rendering**: Files matching `['*.html', demo/**, test/*, ip/**]` in `skip_render` config.
+### abbrlink 规则（重要！）
 
-## Pitfalls
+- **不要手动生成 abbrlink**。`hexo-abbrlink` 插件会在构建时自动生成数字格式的 abbrlink
+- 永久链接格式：`posts/:abbrlink/`
+- **中英文对应文章必须使用相同的 abbrlink**，以确保语言切换时 URL 正确对应
+- 如需手动同步 abbrlink（如翻译已有文章），在英文文章的 front-matter 中添加 `abbrlink: <中文文章的abbrlink值>`
+- 定期运行检查脚本验证一致性
 
-### 1. EN site root must be `/en/`, not `/`
+### 图片资源
 
-Setting `root: /` in EN config makes HTML reference `/css/index.css` (domain root), but the file is at `CN/public/en/css/index.css` after merge. Result: 404 for all assets.
+- 存放在 `source/img/` 或 `source/upload/`
+- 引用方式：`/img/filename.png`
 
-### 2. filter_optimize css.bundle is broken
+### 跳过渲染
 
-The `hexo-filter-optimize` plugin's `css.bundle: true` replaces all `<link>` tags with async JS (`loadCss()`), causing:
-- **FOUC** (flash of unstyled content) on every page load
-- **Navigation bar disappearing** on refresh
-- For EN site: `style.css` path mismatch → complete style loss
+`skip_render` 配置中匹配的文件不会被渲染：`['*.html', demo/**, test/*, ip/**]`
 
-The `delivery: false` config option does NOT prevent this — it only controls external CDN resources. To fix, set `css.bundle: false`.
+## 新增中英文文章流程
 
-### 3. filter_optimize + root mismatch (EN)
-
-When `filter_optimize` is enabled with a non-`/` root, it generates `style.css` at `public/en/style.css` while other content is at `public/`. This causes path inconsistency. Solution: disable `filter_optimize` entirely for the EN site.
-
-### 4. Butterfly theme is installed via npm
-
-The theme is `hexo-theme-butterfly` in `package.json`, NOT a git submodule in `themes/`. Old themes (landscape, next, yilia) exist in `themes/` but are unused. Do NOT try to configure them.
-
-### 5. YAML indentation is sensitive
-
-Butterfly config uses YAML. Indentation must be spaces (not tabs), and inconsistent indentation can silently break config parsing. Always verify with `hexo generate` after editing.
-
-### 6. Font Awesome version
-
-Butterfly defaults to FA 7.1.0 which doesn't exist on cdnjs. The config uses FA 6.7.2 loaded from `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css`. If upgrading Butterfly, verify the FA version.
-
-## Common Tasks
-
-### Add a new post (CN)
+### 1. 新增中文文章
 
 ```bash
 cd ~/blogs/blog.source
-hexo new "Post Title"
-# Edit source/_posts/post-title.md
-hexo generate  # Verify build
-hexo server    # Preview at localhost:4000
+hexo new "文章标题"
+# 编辑 source/_posts/文章标题.md
+hexo generate  # 构建验证
+hexo server    # 本地预览 localhost:4000
 ```
 
-### Add a new post (EN)
+### 2. 新增英文文章（翻译已有中文文章）
 
 ```bash
 cd ~/blogs/blog.source.en
-hexo new "Post Title"
-# Edit source/_posts/post-title.md
+hexo new "English Title"
+# 编辑 source/_posts/english-title.md
 ```
 
-### Full build & preview
+**关键步骤**：获取中文文章的 abbrlink 并同步到英文文章：
+
+```bash
+# 1. 先构建中文站，生成 abbrlink
+cd ~/blogs/blog.source && hexo generate
+
+# 2. 获取中文文章的 abbrlink
+grep -r "^abbrlink:" source/_posts/中文文章.md
+
+# 3. 在英文文章的 front-matter 中添加相同的 abbrlink
+# 文件：blog.source.en/source/_posts/english-title.md
+# 添加：abbrlink: <上面获取的值>
+```
+
+### 3. 同时新增中英文文章
+
+```bash
+# 1. 创建中文文章
+cd ~/blogs/blog.source
+hexo new "文章标题"
+# 编辑内容
+
+# 2. 构建以生成 abbrlink
+hexo generate
+
+# 3. 获取 abbrlink
+grep -r "^abbrlink:" source/_posts/文章标题.md
+
+# 4. 创建英文文章
+cd ~/blogs/blog.source.en
+hexo new "English Title"
+# 编辑内容，并在 front-matter 中添加 abbrlink: <上面的值>
+```
+
+### 4. 验证 abbrlink 一致性
 
 ```bash
 cd ~/blogs
-./deploy.sh -c        # Clean build both sites, preview at localhost:4000
+# 运行检查脚本（如果存在）
+# 或手动比对中英文文章的 abbrlink
 ```
 
-### Deploy to production
+## 部署到生产环境
 
 ```bash
 cd ~/blogs
-./deploy.sh -d        # Build + git push → Vercel auto-deploys
+./deploy.sh -d        # 构建 + git push → Vercel 自动部署
 ```
 
-### Edit theme config
+## 编辑主题配置
 
-- CN: `~/blogs/blog.source/_config.butterfly.yml`
-- EN: `~/blogs/blog.source.en/_config.butterfly.yml`
-- After editing: `hexo generate` to verify, check generated HTML in `public/`
+- 中文站：`~/blogs/blog.source/_config.butterfly.yml`
+- 英文站：`~/blogs/blog.source.en/_config.butterfly.yml`
+- 编辑后：运行 `hexo generate` 验证，检查 `public/` 中生成的 HTML
 
-### Edit site config
+## 编辑站点配置
 
-- CN: `~/blogs/blog.source/_config.yml`
-- EN: `~/blogs/blog.source.en/_config.yml`
+- 中文站：`~/blogs/blog.source/_config.yml`
+- 英文站：`~/blogs/blog.source.en/_config.yml`
 
 ## Git
 
-The entire `~/blogs/` directory is a single git repo. `node_modules/`, `public/`, and `db.json` are git-ignored. The `.deploy_git/` directories (used by `hexo-deployer-git`) are tracked.
+整个 `~/blogs/` 目录是一个 git 仓库。`node_modules/`、`public/` 和 `db.json` 被 git 忽略。`.deploy_git/` 目录（`hexo-deployer-git` 使用）被跟踪。
 
-## File References
+## 踩坑记录
 
-| Path | Description |
+### 1. 英文站 root 必须是 `/en/`，不能是 `/`
+
+在英文站配置中设置 `root: /` 会使 HTML 引用 `/css/index.css`（域名根路径），但文件在合并后位于 `CN/public/en/css/index.css`。结果：所有静态资源 404。
+
+### 2. filter_optimize 的 css.bundle 有问题
+
+`hexo-filter-optimize` 插件的 `css.bundle: true` 会将所有 `<link>` 标签替换为异步 JS（`loadCss()`），导致：
+- 每次加载页面都会出现 **FOUC**（无样式内容闪烁）
+- 刷新时**导航栏消失**
+- 英文站：`style.css` 路径不匹配 → 完全丢失样式
+
+`delivery: false` 配置项无法阻止此行为 — 它只控制外部 CDN 资源。解决方法：设置 `css.bundle: false`。
+
+### 3. filter_optimize + root 不匹配（英文站）
+
+当 `filter_optimize` 启用且 root 不是 `/` 时，它会在 `public/en/style.css` 生成样式文件，而其他内容在 `public/`。这导致路径不一致。解决方案：英文站完全禁用 `filter_optimize`。
+
+### 4. Butterfly 主题通过 npm 安装
+
+主题是 `package.json` 中的 `hexo-theme-butterfly`，不是 `themes/` 目录下的 git submodule。旧主题（landscape, next, yilia）存在于 `themes/` 但已弃用。不要尝试配置它们。
+
+### 5. YAML 缩进敏感
+
+Butterfly 配置使用 YAML 格式。缩进必须使用空格（不能用 Tab），不一致的缩进会导致配置解析静默失败。编辑后务必用 `hexo generate` 验证。
+
+### 6. Font Awesome 版本
+
+Butterfly 默认使用 FA 7.1.0，但该版本在 cdnjs 上不存在。配置中使用 FA 6.7.2，从 `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css` 加载。升级 Butterfly 时需验证 FA 版本。
+
+## 文件参考
+
+| 路径 | 说明 |
 |---|---|
-| `deploy.sh` | Build & deploy script |
-| `blog.source/_config.yml` | CN Hexo config |
-| `blog.source/_config.butterfly.yml` | CN theme config |
-| `blog.source.en/_config.yml` | EN Hexo config |
-| `blog.source.en/_config.butterfly.yml` | EN theme config |
-| `blog.source/source/_posts/` | CN posts (88 .md files) |
-| `blog.source.en/source/_posts/` | EN posts (4 .md files) |
+| `deploy.sh` | 构建部署脚本 |
+| `AGENTS.md` | AI Agent 上下文文档（本文件） |
+| `README.md` | 人类可读的使用说明 |
+| `blog.source/_config.yml` | 中文站 Hexo 配置 |
+| `blog.source/_config.butterfly.yml` | 中文站主题配置 |
+| `blog.source.en/_config.yml` | 英文站 Hexo 配置 |
+| `blog.source.en/_config.butterfly.yml` | 英文站主题配置 |
+| `blog.source/source/_posts/` | 中文文章（88 篇） |
+| `blog.source.en/source/_posts/` | 英文文章（84 篇） |
