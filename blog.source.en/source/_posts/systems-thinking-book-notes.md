@@ -7,7 +7,7 @@ keywords:
   - book notes
   - thinking methods
 categories:
-  - tech miscellany
+  - Tech Miscellany
 tags:
   - systems thinking
   - book reflections

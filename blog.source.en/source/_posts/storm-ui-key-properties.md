@@ -7,7 +7,7 @@ keywords:
   - monitoring metrics
   - performance tuning
 categories:
-  - big data
+  - Big Data
 tags:
   - storm
 abbrlink: 62259

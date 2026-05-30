@@ -7,7 +7,7 @@ keywords:
   - case conversion
   - algorithm
 categories:
-  - java
+  - Java
 tags:
   - bitwise operations
 abbrlink: 9193

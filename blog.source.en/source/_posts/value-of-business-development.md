@@ -7,7 +7,7 @@ keywords:
   - programmer growth
   - career development
 categories:
-  - tech talk
+  - Tech Talk
 tags:
   - reflections
 abbrlink: 40071

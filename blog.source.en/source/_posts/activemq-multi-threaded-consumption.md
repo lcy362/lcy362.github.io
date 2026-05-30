@@ -9,7 +9,7 @@ keywords:
 tags:
   - activemq
 categories:
-  - activemq series
+  - ActiveMQ Series
 abbrlink: 20459
 date: 2018-09-16 09:58:11
 ---

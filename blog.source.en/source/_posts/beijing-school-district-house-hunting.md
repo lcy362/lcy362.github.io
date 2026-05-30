@@ -7,7 +7,7 @@ keywords:
   - Xicheng
   - education
 categories:
-  - tech-talks
+  - Tech Talk
 tags:
   - reflections
   - journal

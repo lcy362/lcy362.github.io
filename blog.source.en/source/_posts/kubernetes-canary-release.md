@@ -8,7 +8,7 @@ keywords:
   - container
   - deployment
 categories:
-  - cloud native
+  - Cloud Native
 tags:
   - cloud native
   - continuous integration

@@ -7,7 +7,7 @@ keywords:
   - junit
   - code quality
 categories:
-  - tech talk
+  - Tech Talk
 tags:
   - unit testing
   - development standards

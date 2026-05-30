@@ -7,7 +7,7 @@ keywords:
   - Jetty
   - permission management
 categories:
-  - message queue
+  - Message Queue
 tags:
   - activemq
   - monitoring

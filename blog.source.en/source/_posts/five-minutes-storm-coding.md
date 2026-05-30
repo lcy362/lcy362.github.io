@@ -9,7 +9,7 @@ keywords:
   - bolt
   - getting started
 categories:
-  - big data
+  - Big Data
 tags:
   - storm
 abbrlink: 27021

@@ -8,7 +8,7 @@ keywords:
   - response
   - encapsulation
 categories:
-  - architecture design
+  - Architecture Design
 tags:
   - design pattern
 abbrlink: 20888

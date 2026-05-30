@@ -8,7 +8,7 @@ keywords:
   - decoupling
   - refactoring
 categories:
-  - architecture-design
+  - Architecture Design
 tags:
   - reflections
   - software-engineering

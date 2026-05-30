@@ -7,7 +7,7 @@ keywords:
   - plugin development
   - JMS
 categories:
-  - message queue
+  - Message Queue
 tags:
   - activemq
 abbrlink: 61645

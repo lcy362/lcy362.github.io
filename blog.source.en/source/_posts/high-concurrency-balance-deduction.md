@@ -7,7 +7,7 @@ keywords:
   - billing system
   - concurrency control
 categories:
-  - architecture design
+  - Architecture Design
 abbrlink: 56940
 date: 2018-08-25 11:10:28
 tags:

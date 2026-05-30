@@ -7,7 +7,7 @@ keywords:
   - natural language processing
   - machine learning
 categories:
-  - Technical Miscellany
+  - Tech Miscellany
 tags:
   - lda
   - big data

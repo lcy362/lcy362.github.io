@@ -11,7 +11,7 @@ keywords:
 tags:
   - redis
 categories:
-  - redis series
+  - Redis Series
 abbrlink: 25564
 date: 2020-08-08 15:05:48
 ---

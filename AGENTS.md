@@ -221,6 +221,82 @@ cd ~/blogs
 
 整个 `~/blogs/` 目录是一个 git 仓库。`node_modules/`、`public/` 和 `db.json` 被 git 忽略。`.deploy_git/` 目录（`hexo-deployer-git` 使用）被跟踪。
 
+## 自定义修改与扩展
+
+本节记录所有对默认 Hexo/Butterfly 行为的自定义修改，升级主题或框架时需要特别注意。
+
+### 1. hreflang 动态生成（2026-05-30）
+
+**目的**：为中英文文章生成正确的 hreflang 标签，帮助搜索引擎识别多语言版本对应关系。
+
+**新增文件**：
+- `blog.source/scripts/hreflang.js` — Hexo 脚本，在 HTML 渲染后动态注入 hreflang 标签
+- `blog.source/source/_data/hreflang_map.json` — 中英文文章 abbrlink 映射（84 对）
+- `blog.source.en/source/_data/hreflang_map.json` — 同上（副本）
+
+**修改文件**：
+- `blog.source/_config.butterfly.yml` — 移除 `inject.head` 中的静态 hreflang 注入
+- `blog.source.en/_config.butterfly.yml` — 同上
+
+**工作原理**：
+1. `hreflang.js` 使用 Hexo 的 `after_render:html` filter，在 HTML 生成后注入 hreflang
+2. 根据页面类型（首页/文章页）生成对应的 hreflang 标签
+3. 文章页通过 abbrlink 关联中英文版本
+
+**⚠️ 升级注意事项**：
+- 如果 Butterfly 主题升级后添加了自己的 hreflang 支持，可能会冲突
+- 如果 Hexo 升级后 filter API 变化，`scripts/hreflang.js` 可能需要适配
+- **新增文章后必须运行更新脚本**：
+  ```bash
+  cd ~/blogs
+  ./scripts/update_hreflang_map.sh
+  ```
+
+**验证方法**：
+```bash
+cd ~/blogs/blog.source
+hexo generate
+grep "hreflang" public/posts/64/index.html
+# 应该看到指向 /posts/64/ 和 /en/posts/64/ 的 hreflang
+```
+
+### 2. 英文站分类名称标准化（2026-05-30）
+
+**目的**：统一英文站文章的分类名称，消除大小写混乱导致的重复分类。
+
+**修改范围**：`blog.source.en/source/_posts/` 下 53 篇文章的 `categories` 字段
+
+**标准化映射**：
+
+| 原分类 | 标准化后 |
+|--------|----------|
+| `java`, `Java` | `Java` |
+| `tech talk`, `tech-talks`, `Tech Talk` | `Tech Talk` |
+| `big data`, `Big Data` | `Big Data` |
+| `message queue`, `Message Queue` | `Message Queue` |
+| `architecture design`, `architecture-design` | `Architecture Design` |
+| `tech miscellany`, `Technical Miscellany` | `Tech Miscellany` |
+| `cloud native` | `Cloud Native` |
+| `database`, `databases` | `Database` |
+| `activemq series` | `ActiveMQ Series` |
+| `redis series` | `Redis Series` |
+| `book notes` | `Book Notes` |
+| `jstorm source code analysis` | `JStorm Source Code Analysis` |
+| `distributed systems patterns series` | `Distributed Systems Patterns Series` |
+| `algorithm` | `Algorithm` |
+
+**⚠️ 新增文章注意事项**：
+- 英文文章的分类必须使用上表中的标准形式
+- 不要使用小写或连字符形式（如 `tech-talk`、`java`）
+
+### 3. 已知的非标准实现
+
+| 项目 | 实现方式 | 风险 |
+|------|----------|------|
+| Butterfly 主题 | 通过 npm 安装（`hexo-theme-butterfly`），非 git submodule | 低 — npm 升级即可 |
+| 英文站合并 | `deploy.sh` 将英文站 `public/` 复制到中文站 `public/en/` | 低 — 脚本稳定 |
+| hreflang 映射 | 手动维护 `hreflang_map.json` | 中 — 新增文章需手动更新 |
+
 ## 踩坑记录
 
 ### 1. 英文站 root 必须是 `/en/`，不能是 `/`

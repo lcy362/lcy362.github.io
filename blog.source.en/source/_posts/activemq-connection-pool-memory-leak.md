@@ -8,7 +8,7 @@ keywords:
   - ReentrantLock
   - bug
 categories:
-  - message queue
+  - Message Queue
 tags:
   - activemq
 abbrlink: 13925

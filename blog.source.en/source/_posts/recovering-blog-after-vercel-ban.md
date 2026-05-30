@@ -8,7 +8,7 @@ keywords:
   - Hexo
   - migration
 categories:
-  - tech talk
+  - Tech Talk
 tags:
   - vercel
   - blog

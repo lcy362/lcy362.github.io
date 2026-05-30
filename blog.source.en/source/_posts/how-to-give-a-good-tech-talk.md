@@ -7,7 +7,7 @@ keywords:
   - topic selection
   - team building
 categories:
-  - tech-talks
+  - Tech Talk
 tags:
   - tech-talks
   - tech-talk-topics

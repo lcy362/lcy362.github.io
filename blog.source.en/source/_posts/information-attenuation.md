@@ -6,7 +6,7 @@ keywords:
   - information distortion
   - cognitive bias
 categories:
-  - tech-talks
+  - Tech Talk
 tags:
   - reflections
 abbrlink: 54296

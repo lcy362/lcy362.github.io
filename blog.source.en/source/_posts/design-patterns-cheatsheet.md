@@ -7,7 +7,7 @@ keywords:
   - object-oriented
   - cheatsheet
 categories:
-  - architecture design
+  - Architecture Design
 tags:
   - design patterns
 abbrlink: 21897

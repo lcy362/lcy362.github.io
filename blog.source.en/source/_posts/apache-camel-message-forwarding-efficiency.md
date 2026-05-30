@@ -8,7 +8,7 @@ keywords:
   - performance
   - ActiveMQ
 categories:
-  - message queue
+  - Message Queue
 tags:
   - java
   - camel

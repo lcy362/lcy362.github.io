@@ -7,7 +7,7 @@ keywords:
   - time management
   - programmer
 categories:
-  - tech-talks
+  - Tech Talk
 tags:
   - reflections
 abbrlink: 3423
