@@ -1,0 +1,15 @@
+diff --git a/node_modules/hexo-theme-butterfly/layout/includes/head/structured_data.pug b/node_modules/hexo-theme-butterfly/layout/includes/head/structured_data.pug
+index a369c43..7b0e705 100644
+--- a/node_modules/hexo-theme-butterfly/layout/includes/head/structured_data.pug
++++ b/node_modules/hexo-theme-butterfly/layout/includes/head/structured_data.pug
+@@ -37,7 +37,9 @@ if theme.structured_data
+ 
+       const baseUrl = config.url;
+       const currentPath = url_for('/');
+-      const isRootOrSubdomain = currentPath.split('/').filter(Boolean).length === 0;
++      // Fix: support subdirectory deployment (e.g. root: /en/)
++      // Original check fails for '/en/' because ['en'].length === 1 !== 0
++      const isRootOrSubdomain = currentPath.split('/').filter(Boolean).length <= 1;
+ 
+       if (isRootOrSubdomain) {
+         const domain = new URL(config.url).hostname;
