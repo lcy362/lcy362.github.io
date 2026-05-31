@@ -291,9 +291,7 @@ aside:
       link: https://www.zhihu.com/people/hobermallow
   card_announcement:
     enable: true
-    content: |-
-      后端开发 | 架构设计 | AI实践
-      用代码拓展选择的边界
+    content: 后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界
   card_recent_post:
     enable: true
     # If set 0 will show all

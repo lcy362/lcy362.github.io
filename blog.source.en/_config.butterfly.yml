@@ -291,9 +291,7 @@ aside:
       link: https://www.zhihu.com/people/hobermallow
   card_announcement:
     enable: true
-    content: |-
-      Backend Dev | Architecture | AI Practice
-      Expanding choices through code
+    content: Backend Dev | Architecture | AI Practice<br>Expanding choices through code
   card_recent_post:
     enable: true
     # If set 0 will show all
