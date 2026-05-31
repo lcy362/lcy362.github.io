@@ -4,9 +4,9 @@
 
 # Site
 title: Mobility
-subtitle: The sand accumulates to form a pagoda
-description: Focus on server-side development, architecture design, personal growth, etc., covering various topics such as java, go, message queue, database, cloud native, etc.
-author: quicksand
+subtitle: "Sand accumulates into pagodas, making every step a choice"
+description: Backend development and architecture design blog covering Java, message queues, databases, cloud native, big data, AI/LLM practices and personal growth
+author: SandGrid
 language: en
 timezone:
 
@@ -17,7 +17,7 @@ i18n:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://lichuanyang.top/en
+url: https://lichuanyang.top/en/
 root: /en/
 permalink: posts/:abbrlink/
 permalink_defaults:
