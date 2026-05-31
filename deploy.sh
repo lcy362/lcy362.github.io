@@ -89,6 +89,7 @@ cd ..
 
 # 合并英文版到中文版
 echo -e "${GREEN}[3/4] 合并英文版到 public/en/...${NC}"
+rm -rf "$CN_DIR/public/en"
 mkdir -p "$CN_DIR/public/en"
 cp -r "$EN_DIR/public/." "$CN_DIR/public/en/"
 
@@ -100,6 +101,8 @@ if [ "$ACTION" = "serve" ]; then
     hexo server
 elif [ "$ACTION" = "deploy" ]; then
     echo -e "${YELLOW}发布到 GitHub...${NC}"
+    # 删除 .deploy_git 避免 macOS 大小写不敏感导致的问题
+    rm -rf .deploy_git
     hexo deploy
     echo -e "${GREEN}发布完成！${NC}"
 fi
