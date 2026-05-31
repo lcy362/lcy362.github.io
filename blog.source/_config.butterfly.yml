@@ -69,7 +69,7 @@ disable_top_img: false
 default_top_img:
 
 # The banner image of index page
-index_img:
+index_img: /img/hero-banner.png
 
 # The banner image of archive page
 archive_img:
@@ -283,7 +283,7 @@ aside:
     category: true
   card_author:
     enable: true
-    description: 聚沙成塔
+    description: Mobility | 增加人生的可选择性
     button:
       enable: true
       icon: fab fa-zhihu
@@ -760,19 +760,19 @@ site_verification:
 
 theme_color:
   enable: true
-  main: "#7c3aed"
-  paginator: "#06b6d4"
-  button_hover: "#06b6d4"
-  text_selection: "#06b6d4"
-  link_color: "#7c3aed"
+  main: "#d97706"
+  paginator: "#b45309"
+  button_hover: "#b45309"
+  text_selection: "#fbbf24"
+  link_color: "#d97706"
   meta_color: "#858585"
-  hr_color: "#7c3aed"
-  code_foreground: "#f47466"
+  hr_color: "#d97706"
+  code_foreground: "#dc2626"
   code_background: "rgba(27, 31, 35, .05)"
-  toc_color: "#06b6d4"
-  blockquote_padding_color: "#7c3aed"
-  blockquote_background_color: "#7c3aed"
-  scrollbar_color: "#7c3aed"
+  toc_color: "#b45309"
+  blockquote_padding_color: "#d97706"
+  blockquote_background_color: "rgba(217, 119, 6, .1)"
+  scrollbar_color: "#d97706"
   meta_theme_color_light: "ffffff"
   meta_theme_color_dark: "#0d0d0d"
 
@@ -872,7 +872,7 @@ canvas_fluttering_ribbon:
 canvas_nest:
   enable: true
   # Color of lines, default: '0,0,0'; RGB values: (R,G,B).(note: use ',' to separate.)
-  color: '0,0,255'
+  color: '217,119,6'
   # The opacity of line (0~1)
   opacity: 0.7
   # The z-index property of the background
@@ -1060,7 +1060,7 @@ css_prefix: true
 # Insert the code to head (before '</head>' tag) and the bottom (before '</body>' tag)
 inject:
   head:
-    - '<style>#card-info-btn{background-color:#0084ff!important;}#card-info-btn:hover{background-color:#0066cc!important;}</style>'
+    - '<style>#card-info-btn{background-color:#d97706!important;}#card-info-btn:hover{background-color:#b45309!important;}</style>'
     # hreflang 现在由 scripts/hreflang.js 动态生成，不再静态注入
   bottom:
     - '<script>if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#999;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script>'
