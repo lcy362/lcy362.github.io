@@ -147,6 +147,8 @@ cd ~/blogs
 
 此脚本会扫描所有中英文文章，更新 `hreflang_map.json`，确保搜索引擎能正确关联多语言版本。
 
+**注意**：hreflang 映射只覆盖文章页和已有分类。如果新增了分类，需要手动更新 `scripts/hreflang.js` 中的 `CATEGORY_MAP`。
+
 ---
 
 ## 部署流程详解
@@ -166,9 +168,10 @@ cd ~/blogs
 
 1. `blog.source/`（中文站）和 `blog.source.en/`（英文站）是两个独立的 Hexo 实例
 2. 构建时，英文站输出到 `blog.source.en/public/`
-3. 脚本将英文站的输出复制到 `blog.source/public/en/`
-4. 最终只推送 `blog.source/public/` 到 GitHub
-5. Vercel 检测到 GitHub 更新后自动部署
+3. 脚本将英文站的输出复制到 `blog.source/public/en/`（先清空旧目录）
+4. 删除 `.deploy_git` 后重新从 GitHub 克隆（避免 macOS 大小写问题）
+5. 最终只推送 `blog.source/public/` 到 GitHub
+6. Vercel 检测到 GitHub 更新后自动部署
 
 ### 为什么不直接推送到 Vercel？
 
@@ -215,6 +218,20 @@ cd ~/blogs
 ### Q: 如何预览英文站？
 
 本地预览时访问 `http://localhost:4000/en/`。英文站内容已合并到中文站的 `public/en/` 目录下。
+
+### Q: 英文站分类/标签页面 404？
+
+可能是 macOS 大小写不敏感导致的部署问题。解决方法：
+
+```bash
+# 1. 删除 .deploy_git 强制重新克隆
+rm -rf ~/blogs/blog.source/.deploy_git
+
+# 2. 重新部署
+./deploy.sh -d
+```
+
+详细原因见 AGENTS.md 的「踩坑记录 #7」。
 
 ---
 

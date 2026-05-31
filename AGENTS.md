@@ -61,8 +61,8 @@
 
 1. **构建中文站**：`cd blog.source && hexo generate`
 2. **构建英文站**：`cd blog.source.en && hexo generate`
-3. **合并**：`cp -r blog.source.en/public/. blog.source/public/en/`
-4. **部署/预览**：`hexo deploy`（git push 到 master）或 `hexo server`
+3. **合并**：先 `rm -rf blog.source/public/en`，再 `cp -r blog.source.en/public/. blog.source/public/en/`
+4. **部署/预览**：`rm -rf .deploy_git && hexo deploy`（部署时）或 `hexo server`（预览时）
 
 ### 关键：合并步骤
 
@@ -225,9 +225,9 @@ cd ~/blogs
 
 本节记录所有对默认 Hexo/Butterfly 行为的自定义修改，升级主题或框架时需要特别注意。
 
-### 1. hreflang 动态生成（2026-05-30）
+### 1. hreflang 动态生成（2026-05-30，更新 2026-05-31）
 
-**目的**：为中英文文章生成正确的 hreflang 标签，帮助搜索引擎识别多语言版本对应关系。
+**目的**：为中英文文章和分类页面生成正确的 hreflang 标签，帮助搜索引擎识别多语言版本对应关系。
 
 **新增文件**：
 - `blog.source/scripts/hreflang.js` — Hexo 脚本，在 HTML 渲染后动态注入 hreflang 标签
@@ -240,8 +240,32 @@ cd ~/blogs
 
 **工作原理**：
 1. `hreflang.js` 使用 Hexo 的 `after_render:html` filter，在 HTML 生成后注入 hreflang
-2. 根据页面类型（首页/文章页）生成对应的 hreflang 标签
-3. 文章页通过 abbrlink 关联中英文版本
+2. 根据页面类型生成对应的 hreflang 标签：
+   - **首页**：指向中英文首页
+   - **文章页**：通过 abbrlink 关联中英文版本
+   - **分类页**：通过内置映射表关联中英文分类（14 个分类）
+3. 分类页检测方式：`data.category` 存在或 `page.path` 以 `categories/` 开头
+
+**分类映射表**（硬编码在 `hreflang.js` 中）：
+
+| 中文分类 | 英文 slug |
+|----------|-----------|
+| 技术杂谈 | tech-talk |
+| Java | java |
+| 消息队列 | message-queue |
+| activemq系列文章 | activemq-series |
+| 数据库 | database |
+| 大数据 | big-data |
+| AI实践 | ai-practice |
+| jstorm源码解析 | jstorm-source-code-analysis |
+| 云原生 | cloud-native |
+| 算法 | algorithm |
+| redis系列 | redis-series |
+| 分布式系统模式系列 | distributed-systems-patterns-series |
+| 读书笔记 | book-notes |
+| 架构设计 | architecture-design |
+
+**⚠️ 新增分类时必须更新映射表**：在两个站点的 `scripts/hreflang.js` 中的 `CATEGORY_MAP` 添加新条目。
 
 **⚠️ 升级注意事项**：
 - 如果 Butterfly 主题升级后添加了自己的 hreflang 支持，可能会冲突
@@ -256,8 +280,10 @@ cd ~/blogs
 ```bash
 cd ~/blogs/blog.source
 hexo generate
+# 文章页
 grep "hreflang" public/posts/64/index.html
-# 应该看到指向 /posts/64/ 和 /en/posts/64/ 的 hreflang
+# 分类页
+grep "hreflang" public/categories/技术杂谈/index.html
 ```
 
 ### 2. 英文站分类名称标准化（2026-05-30）
@@ -298,21 +324,21 @@ grep "hreflang" public/posts/64/index.html
 | `distributed systems` | `distributed-systems` |
 | `open source project` | `open-source-project` |
 
-### 3. 自定义 sitemap 模板（2026-05-30，更新 2026-05-30）
+### 3. 自定义 sitemap 模板（2026-05-30，更新 2026-05-31）
 
 **目的**：两个站点都使用自定义 sitemap 模板，包含文章、标签和分类页面。
 
 **文件位置**：
 - `blog.source/sitemap_template.xml`
-- `blog.source.en/sitemap_template.xml`（相同内容）
+- `blog.source.en/sitemap_template.xml`（内容略有不同）
 
-**修改内容**：
-- 命名空间使用 `https://`
-- 模板包含文章、标签、分类三类 URL
+**关键差异**：
+- **英文站**的分类和标签 URL 使用 `| lower` 过滤器强制小写化，避免 404
+- **中文站**不使用 `| lower`（中文分类名不受大小写影响）
 
 **⚠️ 升级注意事项**：
-- 两个站点共用相同的模板，通过 `config.url` 自动适配不同语言的 URL
 - 如果需要修改 sitemap 格式，两个站点都要同步修改
+- 英文站的 `| lower` 过滤器依赖 Nunjucks 内置的 `lower` filter
 
 **验证方法**：
 ```bash
@@ -320,6 +346,11 @@ cd ~/blogs/blog.source
 hexo generate
 head -3 public/sitemap.xml  # 检查命名空间是否为 https
 grep -c '<url>' public/sitemap.xml  # 应包含文章+标签+分类
+
+cd ~/blogs/blog.source.en
+hexo generate
+# 检查分类 URL 是否小写
+grep 'categories' public/sitemap.xml | head -5
 ```
 
 ### 4. 结构化数据增强（2026-05-30）
@@ -342,40 +373,45 @@ grep 'BreadcrumbList' public/posts/64/index.html  # 应看到面包屑数据
 grep 'sameAs' public/posts/64/index.html  # 应看到社交链接
 ```
 
-### 5. 英文站分类 URL 小写化（2026-05-30）
+### 5. 英文站分类和标签 URL 小写化（2026-05-30，更新 2026-05-31）
 
-**目的**：解决英文站分类页面 404 问题（macOS 大小写不敏感导致的部署不一致）。
+**目的**：解决英文站分类和标签页面 404 问题（macOS 大小写不敏感导致的部署不一致）。
 
 **问题根因**：
 - macOS 文件系统大小写不敏感，git 无法正确追踪仅大小写不同的目录重命名
-- 部署仓库中保留了旧的小写目录（如 `/categories/java/`），新构建生成混合大小写（如 `/categories/Java/`）
+- Hexo 配置 `filename_case: 0` 保留原始大小写，导致标签如 `AI Agent` 生成为 `ai-Agent`
 - 在大小写敏感的 Vercel/Linux 环境中，混合大小写 URL 返回 404
 
 **新增文件**：
-- `blog.source.en/scripts/category-slug-fix.js` — 自定义分类生成器 + sitemap/HTML 链接修复
+- `blog.source.en/scripts/category-slug-fix.js` — 自定义分类/标签生成器 + HTML 链接修复
 
 **功能**：
-1. 覆盖默认分类生成器，强制所有分类 URL 使用小写（如 `/categories/java/`）
-2. 修复分类索引页的链接指向小写 URL
-3. 修复 sitemap 中的分类 URL 为小写
+1. 覆盖默认分类生成器，强制所有分类 URL 使用小写（如 `/categories/tech-talk/`）
+2. 覆盖默认标签生成器，强制所有标签 URL 使用小写（如 `/tags/ai-agent/`）
+3. 修复 HTML 页面中的分类/标签链接指向小写 URL
+4. 英文站 sitemap 模板使用 `| lower` 过滤器确保 sitemap URL 小写
 
 **⚠️ 新增文章注意事项**：
 - 英文文章的分类名称仍使用 PascalCase（如 `Java`、`Tech Talk`），显示名称不变
-- URL 会自动转为小写（如 `/categories/java/`、`/categories/tech-talk/`）
+- Tag 使用连字符形式（如 `design-patterns`），不要用空格
+- URL 会自动转为小写（如 `/categories/java/`、`/tags/ai-agent/`）
 
 **验证方法**：
 ```bash
 cd ~/blogs/blog.source.en
 hexo generate
 ls public/categories/  # 应全部小写
+ls public/tags/        # 应全部小写
 grep 'categories' public/sitemap.xml | head -5  # 应全部小写
 ```
 
 | 项目 | 实现方式 | 风险 |
 |------|----------|------|
 | Butterfly 主题 | 通过 npm 安装（`hexo-theme-butterfly`），非 git submodule | 低 — npm 升级即可 |
-| 英文站合并 | `deploy.sh` 将英文站 `public/` 复制到中文站 `public/en/` | 低 — 脚本稳定 |
-| hreflang 映射 | 手动维护 `hreflang_map.json` | 中 — 新增文章需手动更新 |
+| 英文站合并 | `deploy.sh` 先清空 `public/en/` 再复制 | 低 — 脚本稳定 |
+| hreflang 映射 | 手动维护 `hreflang_map.json` + 硬编码分类映射 | 中 — 新增文章/分类需手动更新 |
+| 分类/标签 URL 小写化 | `category-slug-fix.js` 覆盖生成器 | 低 — 仅英文站 |
+| `.deploy_git` 管理 | 每次部署前删除重新克隆 | 低 — 避免大小写问题 |
 
 ## 踩坑记录
 
@@ -408,6 +444,33 @@ Butterfly 配置使用 YAML 格式。缩进必须使用空格（不能用 Tab）
 
 Butterfly 默认使用 FA 7.1.0，但该版本在 cdnjs 上不存在。配置中使用 FA 6.7.2，从 `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css` 加载。升级 Butterfly 时需验证 FA 版本。
 
+### 7. `.deploy_git` 大小写不敏感导致部署问题
+
+**现象**：英文站构建产物中目录名是小写（如 `tags/ai-agent/`），但 GitHub 仓库中仍是大写（如 `tags/AI-Agent/`），导致线上 404。
+
+**根因**：
+- `hexo deploy` 从 GitHub 克隆 `.deploy_git`，不会清空重建
+- macOS 文件系统大小写不敏感，写入 `ai-agent/index.html` 会被写入已存在的 `AI-Agent/index.html`
+- Git 不追踪大小写变化（`core.ignorecase` 默认为 `true`）
+
+**解决方案**：`deploy.sh` 中在 `hexo deploy` 前删除 `.deploy_git`，强制重新克隆：
+```bash
+rm -rf .deploy_git
+hexo deploy
+```
+
+**⚠️ 如果遇到分类/标签页面 404，先检查此问题**：
+```bash
+# 检查 GitHub 仓库中的目录名
+curl -s "https://api.github.com/repos/lcy362/lcy362.github.io/contents/en/tags" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+for item in data:
+    if item['name'] != item['name'].lower():
+        print(f'大写目录: {item[\"name\"]}')
+"
+```
+
 ## 文件参考
 
 | 路径 | 说明 |
@@ -421,3 +484,8 @@ Butterfly 默认使用 FA 7.1.0，但该版本在 cdnjs 上不存在。配置中
 | `blog.source.en/_config.butterfly.yml` | 英文站主题配置 |
 | `blog.source/source/_posts/` | 中文文章（88 篇） |
 | `blog.source.en/source/_posts/` | 英文文章（84 篇） |
+| `blog.source/scripts/hreflang.js` | hreflang 标签注入脚本（含分类映射表） |
+| `blog.source/scripts/structured-data.js` | 结构化数据增强脚本 |
+| `blog.source.en/scripts/category-slug-fix.js` | 英文站分类/标签 URL 小写化 |
+| `blog.source/sitemap_template.xml` | 中文站 sitemap 模板 |
+| `blog.source.en/sitemap_template.xml` | 英文站 sitemap 模板（含 `| lower`） |

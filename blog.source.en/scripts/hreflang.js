@@ -4,8 +4,9 @@
  * 功能：
  * 1. 根据当前页面类型生成正确的 hreflang
  * 2. 文章页：指向对应语言版本的文章
- * 3. 首页/分类页/标签页：指向对应的语言版本
- * 4. 同时支持中文站和英文站
+ * 3. 首页：指向对应的语言版本
+ * 4. 分类页：通过映射表指向对应语言版本
+ * 5. 同时支持中文站和英文站
  */
 
 'use strict';
@@ -33,6 +34,41 @@ function findSlugByAbbrlink(map, abbrlink, lang) {
     return entry[lang];
   }
   return null;
+}
+
+// 中英文分类名称映射
+// key: 中文分类名, value: 英文分类 slug（小写+连字符）
+const CATEGORY_MAP = {
+  '技术杂谈': 'tech-talk',
+  'Java': 'java',
+  '消息队列': 'message-queue',
+  'activemq系列文章': 'activemq-series',
+  '数据库': 'database',
+  '大数据': 'big-data',
+  'AI实践': 'ai-practice',
+  'jstorm源码解析': 'jstorm-source-code-analysis',
+  '云原生': 'cloud-native',
+  '算法': 'algorithm',
+  'redis系列': 'redis-series',
+  '分布式系统模式系列': 'distributed-systems-patterns-series',
+  '读书笔记': 'book-notes',
+  '架构设计': 'architecture-design'
+};
+
+// 反向映射：英文 slug → 中文分类名
+const CATEGORY_MAP_REVERSE = {};
+for (const [cn, en] of Object.entries(CATEGORY_MAP)) {
+  CATEGORY_MAP_REVERSE[en] = cn;
+}
+
+// 根据分类名获取对应的英文 slug
+function getEnCategorySlug(cnName) {
+  return CATEGORY_MAP[cnName] || null;
+}
+
+// 根据英文 slug 获取对应的中文分类名
+function getCnCategoryName(enSlug) {
+  return CATEGORY_MAP_REVERSE[enSlug] || null;
 }
 
 // 注册 filter，在 HTML 生成后注入 hreflang
@@ -75,10 +111,39 @@ hexo.extend.filter.register('after_render:html', function(html, data) {
       hreflangTags += `<link rel="alternate" hreflang="en" href="${baseUrl}/en/about/"/>\n`;
       hreflangTags += `<link rel="alternate" hreflang="x-default" href="${baseUrl}/about/"/>\n`;
     }
-    // 其他页面可以继续添加
+    
+  } else if (data.category || (page.path && /^categories\//.test(page.path))) {
+    // 分类页面（通过 data.category 或 path 检测）
+    const categoryName = data.category || page.category || '';
+    const pagePath = page.path || data.path || '';
+    
+    if (isEnSite) {
+      // 英文站分类页：当前 slug 是小写形式（如 tech-talk）
+      const currentSlug = pagePath
+        .replace(/^categories\//, '')
+        .replace(/\/index\.html$/, '')
+        .replace(/\/$/, '');
+      
+      const cnName = getCnCategoryName(currentSlug);
+      if (cnName) {
+        const cnSlug = encodeURIComponent(cnName);
+        hreflangTags += `<link rel="alternate" hreflang="zh-CN" href="${baseUrl}/categories/${cnSlug}/"/>\n`;
+        hreflangTags += `<link rel="alternate" hreflang="en" href="${baseUrl}/en/categories/${currentSlug}/"/>\n`;
+        hreflangTags += `<link rel="alternate" hreflang="x-default" href="${baseUrl}/categories/${cnSlug}/"/>\n`;
+      }
+    } else {
+      // 中文站分类页：categoryName 是中文名（如 "技术杂谈"）
+      const enSlug = getEnCategorySlug(categoryName);
+      if (enSlug) {
+        const cnSlug = encodeURIComponent(categoryName);
+        hreflangTags += `<link rel="alternate" hreflang="zh-CN" href="${baseUrl}/categories/${cnSlug}/"/>\n`;
+        hreflangTags += `<link rel="alternate" hreflang="en" href="${baseUrl}/en/categories/${enSlug}/"/>\n`;
+        hreflangTags += `<link rel="alternate" hreflang="x-default" href="${baseUrl}/categories/${cnSlug}/"/>\n`;
+      }
+    }
     
   } else {
-    // 首页、分类页、标签页、归档页等
+    // 首页、标签页、归档页等
     const currentPath = (page.path || data.path || '').replace(/index\.html$/, '');
     
     // 首页
@@ -87,8 +152,7 @@ hexo.extend.filter.register('after_render:html', function(html, data) {
       hreflangTags += `<link rel="alternate" hreflang="en" href="${baseUrl}/en/"/>\n`;
       hreflangTags += `<link rel="alternate" hreflang="x-default" href="${baseUrl}/"/>\n`;
     }
-    // 分类页、标签页、归档页 - 这些通常没有英文对应，只添加自身语言
-    // 如果需要可以后续扩展
+    // 标签页、归档页 - 暂不添加 hreflang（标签数量多，映射复杂）
   }
 
   // 注入 hreflang 到 </head> 之前

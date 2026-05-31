@@ -18,14 +18,14 @@
 
   {% for tag in tags %}
   <url>
-    <loc>{{ tag.permalink | uriencode }}</loc>
+    <loc>{{ tag.permalink | lower | uriencode }}</loc>
     <lastmod>{{ sNow | formatDate }}</lastmod>
   </url>
   {% endfor %}
 
   {% for cat in categories %}
   <url>
-    <loc>{{ cat.permalink | uriencode }}</loc>
+    <loc>{{ cat.permalink | lower | uriencode }}</loc>
     <lastmod>{{ sNow | formatDate }}</lastmod>
   </url>
   {% endfor %}
