@@ -9,7 +9,7 @@ keywords:
   - llm-wiki
   - AI
 categories:
-  - 技术杂谈
+  - AI实践
 date: 2026-05-11 15:38:16
 tags:
   - llm

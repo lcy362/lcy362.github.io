@@ -10,7 +10,7 @@ keywords:
   - Next
   - 自动化
 categories:
-  - 技术杂谈
+  - AI实践
 tags:
   - AI
   - AI Agent
