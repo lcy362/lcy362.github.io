@@ -54,7 +54,8 @@ hexo.extend.generator.register('category', function(locals) {
 
 // Fix links in categories index page
 hexo.extend.filter.register('after_render:html', function(html, data) {
-  if (data.path === 'categories/index.html') {
+  // Fix category links in all HTML pages (index, post, page, etc.)
+  if (data.path && data.path.endsWith('.html')) {
     html = html.replace(/\/categories\/([A-Z][\w-]*)\//g, function(match, slug) {
       return '/categories/' + slug.toLowerCase() + '/';
     });
