@@ -1,5 +1,7 @@
 ---
 title: 'Automating Hexo Theme Migration with AI Agent: From Next to Butterfly'
+categories:
+  - AI Practice
 tags:
   - ai
   - ai Agent

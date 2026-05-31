@@ -1,5 +1,7 @@
 ---
 title: Using LLM to Manage Security Development Standards - An llm-wiki Practice
+categories:
+  - AI Practice
 tags:
   - llm
   - knowledge-management
