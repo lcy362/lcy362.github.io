@@ -24,7 +24,7 @@ hexo.extend.filter.register('after_render:html', function(html, data) {
         '@type': 'ListItem',
         'position': 1,
         'name': config.title || 'Home',
-        'item': config.url + (config.root || '/')
+        'item': config.url + '/'
       }
     ]
   };
@@ -68,6 +68,18 @@ hexo.extend.filter.register('after_render:html', function(html, data) {
     }
   );
   
+  // Normalize author.url in BlogPosting schema (ensure trailing slash)
+  html = html.replace(
+    /("url"\s*:\s*"(https:\/\/[^"]*?)(?:\/)?")/g,
+    function(match, full, url) {
+      if (url.indexOf("lichuanyang.top") !== -1 && !url.endsWith("/")) {
+        return '"url": "' + url + '/"';
+
+      }
+      return match;
+    }
+  );
+
   // Inject BreadcrumbList before </head>
   var breadcrumbScript = '<script type="application/ld+json">' + JSON.stringify(breadcrumb) + '</script>';
   html = html.replace('</head>', breadcrumbScript + '\n</head>');

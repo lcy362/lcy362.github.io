@@ -3,6 +3,7 @@ title: Practical experience using kubernetes in java projects with low learning 
 tags:
   - continuous-integration
   - kubernetes
+description: Practical experience using Kubernetes in startup Java projects with low infrastructure costs, covering CI/CD, deployment, and monitoring setup.
 abbrlink: 40964
 date: 2022-01-26 15:19:32
 lang: en

@@ -1,5 +1,5 @@
 ---
-title: a easy way to build multi-languages blog with hexo
+title: An Easy Way to Build a Multi-Language Blog with Hexo
 date: 2024-01-23 18:41:29
 tags:
  - hexo

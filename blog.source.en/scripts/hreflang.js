@@ -71,6 +71,66 @@ function getCnCategoryName(enSlug) {
   return CATEGORY_MAP_REVERSE[enSlug] || null;
 }
 
+// 中英文标签名称映射（仅映射两个站点共有的标签）
+// key: 中文标签名, value: 英文标签 slug（小写+连字符）
+const TAG_MAP = {
+  'ACID': 'acid',
+  'AI': 'ai',
+  'AI Agent': 'ai-agent',
+  'LDA': 'lda',
+  'LLM': 'llm',
+  'RTB': 'rtb',
+  'Tampermonkey': 'tampermonkey',
+  'Vercel': 'vercel',
+  'activemq': 'activemq',
+  'automation': 'automation',
+  'blog': 'blog',
+  'camel': 'camel',
+  'clickhouse': 'clickhouse',
+  'grafana': 'grafana',
+  'hadoop': 'hadoop',
+  'hawtio': 'hawtio',
+  'hbase': 'hbase',
+  'hexo': 'hexo',
+  'i18n': 'i18n',
+  'iterm2': 'iterm2',
+  'java': 'java',
+  'json': 'json',
+  'jstorm': 'jstorm',
+  'kafka': 'kafka',
+  'kubernetes': 'kubernetes',
+  'leetcode': 'leetcode',
+  'lua': 'lua',
+  'maven': 'maven',
+  'mysql': 'mysql',
+  'prometheus': 'prometheus',
+  'protobuf': 'protobuf',
+  'redis': 'redis',
+  'redis-cluster': 'redis-cluster',
+  'rocketMq': 'rocketmq',
+  'springboot': 'springboot',
+  'storm': 'storm',
+  'vaadin': 'vaadin',
+  'wiki': 'wiki',
+  'zookeeper': 'zookeeper'
+};
+
+// 反向映射：英文 slug → 中文标签名
+const TAG_MAP_REVERSE = {};
+for (const [cn, en] of Object.entries(TAG_MAP)) {
+  TAG_MAP_REVERSE[en] = cn;
+}
+
+// 根据中文标签名获取对应的英文 slug
+function getEnTagSlug(cnName) {
+  return TAG_MAP[cnName] || null;
+}
+
+// 根据英文 slug 获取对应的中文标签名
+function getCnTagName(enSlug) {
+  return TAG_MAP_REVERSE[enSlug] || null;
+}
+
 // 注册 filter，在 HTML 生成后注入 hreflang
 hexo.extend.filter.register('after_render:html', function(html, data) {
   const isEnSite = this.config.root === '/en/';
@@ -152,7 +212,34 @@ hexo.extend.filter.register('after_render:html', function(html, data) {
       hreflangTags += `<link rel="alternate" hreflang="en" href="${baseUrl}/en/"/>\n`;
       hreflangTags += `<link rel="alternate" hreflang="x-default" href="${baseUrl}/"/>\n`;
     }
-    // 标签页、归档页 - 暂不添加 hreflang（标签数量多，映射复杂）
+    // 标签页
+    if (/^tags\//.test(currentPath)) {
+      if (isEnSite) {
+        // 英文站标签页：当前 slug 是小写形式（如 ai-agent）
+        const currentSlug = currentPath
+          .replace(/^tags\//, '')
+          .replace(/\/index\.html$/, '')
+          .replace(/\/$/, '');
+        
+        const cnName = getCnTagName(currentSlug);
+        if (cnName) {
+          const cnSlug = encodeURIComponent(cnName);
+          hreflangTags += `<link rel="alternate" hreflang="zh-CN" href="${baseUrl}/tags/${cnSlug}/"/>\n`;
+          hreflangTags += `<link rel="alternate" hreflang="en" href="${baseUrl}/en/tags/${currentSlug}/"/>\n`;
+          hreflangTags += `<link rel="alternate" hreflang="x-default" href="${baseUrl}/tags/${cnSlug}/"/>\n`;
+        }
+      } else {
+        // 中文站标签页：需要从页面获取标签名
+        const tagName = page.tag || page.name || '';
+        const enSlug = getEnTagSlug(tagName);
+        if (enSlug) {
+          const cnSlug = encodeURIComponent(tagName);
+          hreflangTags += `<link rel="alternate" hreflang="zh-CN" href="${baseUrl}/tags/${cnSlug}/"/>\n`;
+          hreflangTags += `<link rel="alternate" hreflang="en" href="${baseUrl}/en/tags/${enSlug}/"/>\n`;
+          hreflangTags += `<link rel="alternate" hreflang="x-default" href="${baseUrl}/tags/${cnSlug}/"/>\n`;
+        }
+      }
+    }
   }
 
   // 注入 hreflang 到 </head> 之前
