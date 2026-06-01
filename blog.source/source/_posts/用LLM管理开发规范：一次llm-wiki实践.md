@@ -12,7 +12,7 @@ categories:
   - AI实践
 date: 2026-05-11 15:38:16
 tags:
-  - llm
+  - LLM
   - 知识管理
   - 安全规范
   - wiki

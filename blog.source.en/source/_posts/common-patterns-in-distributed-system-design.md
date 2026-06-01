@@ -3,6 +3,7 @@ title: 'Common Patterns in Distributed System Design'
 tags:
   - distributed-systems
   - distributed-system-design
+description: An exploration of common patterns in distributed system design, including sharding, replication, consistency models, and fault tolerance strategies.
 abbrlink: 45718
 date: 2022-04-13 20:13:24
 ---

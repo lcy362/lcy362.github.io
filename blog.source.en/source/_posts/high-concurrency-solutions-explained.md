@@ -4,6 +4,7 @@ tags:
   - high-concurrency
   - high-concurrency-solutions
   - high-concurrency-design
+description: A practical guide to high-concurrency design. Learn when concurrency is actually a problem and proven solutions like caching, queuing, and horizontal scaling.
 abbrlink: 11970
 date: 2022-03-29 18:40:46
 ---

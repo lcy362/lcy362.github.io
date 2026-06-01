@@ -8,6 +8,7 @@ tags:
   - security-standards
   - wiki
   - practice
+description: How to use LLM to manage team security development standards, based on Karpathy's llm-wiki approach to solve scattered documentation problems.
 abbrlink: 64
 date: 2026-05-11 15:38:16
 ---

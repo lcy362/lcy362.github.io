@@ -3,6 +3,7 @@ title: 'Understanding Redis Cluster Through Practice'
 tags:
   - redis
   - redis-cluster
+description: A hands-on guide to Redis Cluster architecture, covering data sharding, failover, and practical deployment tips for production environments.
 abbrlink: 9329
 date: 2017-04-14 20:02:00
 ---
