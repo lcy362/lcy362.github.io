@@ -3,185 +3,145 @@
     "cn": "读书笔记-系统之美-如何面对现实中的复杂问题",
     "en": "systems-thinking-book-notes"
   },
-  "54296": {
-    "cn": "信息传播过程中的衰减",
-    "en": "information-attenuation"
+  "27934": {
+    "cn": "SSP-DSP-RTB-ADX都是什么-讲讲互联网广告的概念与发展",
+    "en": "ssp-dsp-rtb-adx-explained"
   },
-  "46290": {
-    "cn": "一种实现在hbase中存储set的思路",
-    "en": "storing-set-in-hbase"
+  "17762": {
+    "cn": "关于apache-camel的消息转发效率",
+    "en": "apache-camel-message-forwarding-efficiency"
   },
-  "37583": {
-    "cn": "redis-cluster的数据迁移",
-    "en": "redis-cluster-data-migration"
+  "13793": {
+    "cn": "设计一个地铁路线规划小工具",
+    "en": "subway-route-planner"
   },
-  "25564": {
-    "cn": "redis的对象",
-    "en": "redis-objects"
-  },
-  "32479": {
-    "cn": "activemq-web-console的权限配置",
-    "en": "activemq-web-console-security"
-  },
-  "48979": {
-    "cn": "ai-agent-hexo-theme-migration",
-    "en": "ai-agent-hexo-theme-migration"
-  },
-  "36780": {
-    "cn": "实现一个简单的java版本高性能ip地址解析",
-    "en": "high-performance-ip-address-parser"
-  },
-  "3914": {
-    "cn": "翻译-分布式系统的模式",
-    "en": "distributed-systems-patterns"
-  },
-  "60353": {
-    "cn": "java多线程实现三个字母顺序输出",
-    "en": null
-  },
-  "43947": {
-    "cn": "Vaadin框架教程：Java工程师的前端开发秘籍",
-    "en": "vaadin-framework-tutorial"
-  },
-  "40400": {
-    "cn": "hexo多语言方案总结",
-    "en": "a-easy-way-to-build-multi-languages-blog-with-hexo"
-  },
-  "695": {
-    "cn": "单元测试实践经验",
-    "en": "unit-testing-best-practices"
-  },
-  "39648": {
-    "cn": "Vercel封禁163邮箱后，我是怎么恢复博客的",
-    "en": "recovering-blog-after-vercel-ban"
-  },
-  "64970": {
-    "cn": "深入理解java-整型数-Integer的缓存",
-    "en": "java-integer-caching"
-  },
-  "40964": {
-    "cn": "创业公司java项目使用kubernetes的实践经验",
-    "en": "创业公司java项目使用kubernetes的实践经验"
-  },
-  "55227": {
-    "cn": "kubernetes应用向介绍",
-    "en": "kubernetes-introduction"
-  },
-  "22179": {
-    "cn": "redis里的数据结构",
-    "en": "redis-data-structures"
-  },
-  "15594": {
-    "cn": "jstorm源码解析之bolt异常处理",
-    "en": "jstorm-bolt-exception-handling"
-  },
-  "4987": {
-    "cn": "【翻译】java里编写基准测试的一些经验",
-    "en": "java-benchmark-testing"
-  },
-  "64": {
-    "cn": "用LLM管理开发规范：一次llm-wiki实践",
-    "en": "using-llm-to-manage-security-development-standards"
-  },
-  "63688": {
-    "cn": "聊聊java里mysql的batch操作",
-    "en": "mysql-batch-operations-in-java"
-  },
-  "2478": {
-    "cn": "解决fatjar的-“java-lang-SecurityException-Invalid-signature-file-digest-for-Manifest-main-attributes”-问题",
-    "en": "fatjar-security-exception-fix"
-  },
-  "27021": {
-    "cn": "五分钟学会写storm代码-jstorm-storm编码原理与普通java程序的区别",
-    "en": "five-minutes-storm-coding"
-  },
-  "48312": {
-    "cn": "clickhouse原理入门",
-    "en": "clickhouse-introduction"
-  },
-  "62625": {
-    "cn": "vitualbox虚拟机安装centos-7-及ssh访问、自启动等配置",
-    "en": null
-  },
-  "20459": {
-    "cn": "activemq多线程消费的不同处理方式",
-    "en": "activemq-multi-threaded-consumption"
-  },
-  "58527": {
-    "cn": "聊一聊设计模式究竟是什么",
-    "en": "what-are-design-patterns"
+  "32793": {
+    "cn": "maven里的mirror和repository-配置多repository",
+    "en": "maven-mirror-repository"
   },
   "28720": {
     "cn": "不实现equals方法的情况下比较java-list",
     "en": "comparing-java-list-without-equals"
   },
-  "1120": {
-    "cn": "camel系列之camel-debugger的使用",
-    "en": "camel-debugger-guide"
+  "54296": {
+    "cn": "信息传播过程中的衰减",
+    "en": "information-attenuation"
   },
-  "7774": {
-    "cn": "剖根问低，讲清楚事务和ACID",
-    "en": "transactions-and-acid-explained"
+  "57205": {
+    "cn": "review的个人价值",
+    "en": "value-of-code-review"
   },
-  "31761": {
-    "cn": "jstorm源码解析之循环任务AsyncLoopThread",
-    "en": "jstorm-async-loop-thread"
+  "2345": {
+    "cn": "剧变中的2021-一个中年工程师的年终总结",
+    "en": "2021-year-end-review"
   },
-  "21897": {
-    "cn": "设计模式备忘录",
-    "en": "design-patterns-cheatsheet"
+  "6471": {
+    "cn": "读书笔记-我曾走在崩溃的边缘",
+    "en": "walking-on-the-edge-book-notes"
   },
-  "20763": {
-    "cn": "使用item2配置ssh书签",
-    "en": "item2-ssh-bookmarks"
-  },
-  "40931": {
-    "cn": "一次kafka空间激增排查：kafka的数据压缩、批量发送等",
-    "en": "kafka-disk-usage-spike-investigation"
-  },
-  "5707": {
-    "cn": "java线程池：获取运行线程数并控制线程启动速度",
-    "en": null
-  },
-  "13749": {
-    "cn": "jstorm的监控metrics数据输出到第三方存储介质",
-    "en": "jstorm-metrics-export"
-  },
-  "13925": {
-    "cn": "activemq-5-6-连接池的内存泄露问题",
-    "en": "activemq-connection-pool-memory-leak"
-  },
-  "5236": {
-    "cn": "看房小记-2020北京学区",
-    "en": "beijing-school-district-house-hunting"
-  },
-  "33852": {
-    "cn": "通过合理的设计降低软件开发复杂度",
-    "en": "reducing-software-complexity-through-design"
-  },
-  "27398": {
-    "cn": "我对程序员这个职业的理解",
-    "en": "my-understanding-of-programming-career"
-  },
-  "3945": {
-    "cn": "使用maven-shade-plugin-打可执行Jar包",
-    "en": "maven-shade-plugin-executable-jar"
-  },
-  "11970": {
-    "cn": "高并发解决方案很难吗？轻松聊清楚高并发设计",
-    "en": "high-concurrency-solutions-explained"
-  },
-  "28288": {
-    "cn": "一篇文章讲懂prometheus",
-    "en": "prometheus-explained"
+  "44912": {
+    "cn": "知乎增强工具-评论时间精确到秒",
+    "en": "zhihu-enhancement-tool"
   },
   "9193": {
     "cn": "通过位运算转换大小写",
     "en": "bitwise-uppercase-lowercase"
   },
-  "17762": {
-    "cn": "关于apache-camel的消息转发效率",
-    "en": "apache-camel-message-forwarding-efficiency"
+  "26060": {
+    "cn": "教你薅token-构建agent无关的AI工作流",
+    "en": "how-to-farm-tokens-building-agent-independent-ai-workflows"
+  },
+  "53072": {
+    "cn": "java细节-三目运算符和自动拆箱",
+    "en": "java-ternary-operator-autoboxing"
+  },
+  "3513": {
+    "cn": "读《干法》-思考应该怎样去工作",
+    "en": "how-to-work-book-notes"
+  },
+  "22103": {
+    "cn": "storm-jstorm生态与周边工具-storm连接activemq-kafka-hdfs等",
+    "en": "storm-jstorm-ecosystem"
+  },
+  "7774": {
+    "cn": "剖根问低，讲清楚事务和ACID",
+    "en": "transactions-and-acid-explained"
+  },
+  "19890": {
+    "cn": "hexo博客系统简介",
+    "en": "hexo-blog-introduction"
+  },
+  "37583": {
+    "cn": "redis-cluster的数据迁移",
+    "en": "redis-cluster-data-migration"
+  },
+  "40400": {
+    "cn": "hexo多语言方案总结",
+    "en": "a-easy-way-to-build-multi-languages-blog-with-hexo"
+  },
+  "39648": {
+    "cn": "Vercel封禁163邮箱后，我是怎么恢复博客的",
+    "en": "recovering-blog-after-vercel-ban"
+  },
+  "25187": {
+    "cn": "wordcount代码",
+    "en": "wordcount-code"
+  },
+  "63688": {
+    "cn": "聊聊java里mysql的batch操作",
+    "en": "mysql-batch-operations-in-java"
+  },
+  "56940": {
+    "cn": "高并发下作余额扣减的一些经验",
+    "en": "high-concurrency-balance-deduction"
+  },
+  "62259": {
+    "cn": "storm-ui-中一些关键属性的含义",
+    "en": "storm-ui-key-properties"
+  },
+  "22179": {
+    "cn": "redis里的数据结构",
+    "en": "redis-data-structures"
+  },
+  "36780": {
+    "cn": "实现一个简单的java版本高性能ip地址解析",
+    "en": "high-performance-ip-address-parser"
+  },
+  "32479": {
+    "cn": "activemq-web-console的权限配置",
+    "en": "activemq-web-console-security"
+  },
+  "5236": {
+    "cn": "看房小记-2020北京学区",
+    "en": "beijing-school-district-house-hunting"
+  },
+  "42764": {
+    "cn": "log4j动态添加appender",
+    "en": "log4j-dynamic-appender"
+  },
+  "25564": {
+    "cn": "redis的对象",
+    "en": "redis-objects"
+  },
+  "62625": {
+    "cn": "vitualbox虚拟机安装centos-7-及ssh访问、自启动等配置",
+    "en": null
+  },
+  "34931": {
+    "cn": "户口-大厂-高薪-生活-聊聊应届程序员的职业选择",
+    "en": "career-choices-for-fresh-graduates"
+  },
+  "28288": {
+    "cn": "一篇文章讲懂prometheus",
+    "en": "prometheus-explained"
+  },
+  "1120": {
+    "cn": "camel系列之camel-debugger的使用",
+    "en": "camel-debugger-guide"
+  },
+  "61645": {
+    "cn": "activemq-plugin开发指南及示例",
+    "en": "activemq-plugin-development-guide"
   },
   "31996": {
     "cn": "jstorm-UI-介绍",
@@ -191,153 +151,161 @@
     "cn": "leetcode第三题-输出不包含重复字母的最长子串",
     "en": "leetcode-longest-substring"
   },
-  "63756": {
-    "cn": "使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据",
-    "en": "redis-hmsetnx-with-lua-and-jedis"
+  "43947": {
+    "cn": "Vaadin框架教程：Java工程师的前端开发秘籍",
+    "en": "vaadin-framework-tutorial"
   },
-  "13793": {
-    "cn": "设计一个地铁路线规划小工具",
-    "en": "subway-route-planner"
-  },
-  "6471": {
-    "cn": "读书笔记-我曾走在崩溃的边缘",
-    "en": "walking-on-the-edge-book-notes"
-  },
-  "56940": {
-    "cn": "高并发下作余额扣减的一些经验",
-    "en": "high-concurrency-balance-deduction"
+  "33852": {
+    "cn": "通过合理的设计降低软件开发复杂度",
+    "en": "reducing-software-complexity-through-design"
   },
   "12035": {
     "cn": "activemq系列-概述",
     "en": "activemq-overview"
   },
-  "54216": {
-    "cn": "怎样做一个好的技术分享",
-    "en": "how-to-give-a-good-tech-talk"
-  },
-  "44866": {
-    "cn": "读书感悟：文明、现代化、价值投资与中国",
-    "en": "civilization-modernization-value-investing"
-  },
-  "11299": {
-    "cn": "在java独立进程-standalone-app-中嵌入hawtio监控",
-    "en": "embedded-hawtio-monitoring"
-  },
-  "63299": {
-    "cn": "一篇不错的lda模型入门文档",
-    "en": "lda-model-introduction"
-  },
-  "65262": {
-    "cn": "通过加入classpath的形式实现命令行运行java程序时引入第三方jar包",
-    "en": "java-classpath-command-line"
-  },
-  "27934": {
-    "cn": "SSP-DSP-RTB-ADX都是什么-讲讲互联网广告的概念与发展",
-    "en": "ssp-dsp-rtb-adx-explained"
-  },
-  "57205": {
-    "cn": "review的个人价值",
-    "en": "value-of-code-review"
-  },
-  "42764": {
-    "cn": "log4j动态添加appender",
-    "en": "log4j-dynamic-appender"
-  },
-  "40071": {
-    "cn": "业务开发的价值",
-    "en": "value-of-business-development"
-  },
-  "31044": {
-    "cn": "activemq特性之持久化",
-    "en": "activemq-persistence"
-  },
-  "19890": {
-    "cn": "hexo博客系统简介",
-    "en": "hexo-blog-introduction"
-  },
-  "25187": {
-    "cn": "wordcount代码",
-    "en": "wordcount-code"
-  },
-  "42843": {
-    "cn": "云原生究竟是什么",
-    "en": "what-is-cloud-native"
-  },
-  "32580": {
-    "cn": "关于rocketmq的readQueue和writeQueue",
-    "en": "rocketmq-read-queue-write-queue"
-  },
-  "62259": {
-    "cn": "storm-ui-中一些关键属性的含义",
-    "en": "storm-ui-key-properties"
-  },
   "4433": {
     "cn": "java日志系统简介-从tomcat大量打印debug日志说起",
     "en": null
   },
-  "53072": {
-    "cn": "java细节-三目运算符和自动拆箱",
-    "en": "java-ternary-operator-autoboxing"
+  "40964": {
+    "cn": "创业公司java项目使用kubernetes的实践经验",
+    "en": "创业公司java项目使用kubernetes的实践经验"
   },
-  "48216": {
-    "cn": "activemq的安装及基本使用",
-    "en": "activemq-installation-and-usage"
+  "3914": {
+    "cn": "翻译-分布式系统的模式",
+    "en": "distributed-systems-patterns"
   },
-  "3513": {
-    "cn": "读《干法》-思考应该怎样去工作",
-    "en": "how-to-work-book-notes"
+  "21897": {
+    "cn": "设计模式备忘录",
+    "en": "design-patterns-cheatsheet"
   },
-  "41673": {
-    "cn": "log4j2-xml配置示例及与log4j的区别",
-    "en": "log4j2-xml-configuration"
+  "58527": {
+    "cn": "聊一聊设计模式究竟是什么",
+    "en": "what-are-design-patterns"
+  },
+  "15594": {
+    "cn": "jstorm源码解析之bolt异常处理",
+    "en": "jstorm-bolt-exception-handling"
   },
   "23393": {
     "cn": "怎么更科学的用知乎摸鱼",
     "en": "zhihu-browsing-tips"
   },
-  "34931": {
-    "cn": "户口-大厂-高薪-生活-聊聊应届程序员的职业选择",
-    "en": "career-choices-for-fresh-graduates"
+  "4987": {
+    "cn": "【翻译】java里编写基准测试的一些经验",
+    "en": "java-benchmark-testing"
   },
-  "44912": {
-    "cn": "知乎增强工具-评论时间精确到秒",
-    "en": "zhihu-enhancement-tool"
+  "48312": {
+    "cn": "clickhouse原理入门",
+    "en": "clickhouse-introduction"
   },
-  "3423": {
-    "cn": "我提升开发效率的经验",
-    "en": "my-development-efficiency-tips"
-  },
-  "22103": {
-    "cn": "storm-jstorm生态与周边工具-storm连接activemq-kafka-hdfs等",
-    "en": "storm-jstorm-ecosystem"
-  },
-  "32793": {
-    "cn": "maven里的mirror和repository-配置多repository",
-    "en": "maven-mirror-repository"
-  },
-  "48104": {
-    "cn": "java分布式锁入门实战",
-    "en": "java-distributed-lock-practice"
+  "695": {
+    "cn": "单元测试实践经验",
+    "en": "unit-testing-best-practices"
   },
   "45718": {
     "cn": "分布式系统设计中的通用方法",
     "en": "common-patterns-in-distributed-system-design"
   },
+  "20763": {
+    "cn": "使用item2配置ssh书签",
+    "en": "item2-ssh-bookmarks"
+  },
+  "40071": {
+    "cn": "业务开发的价值",
+    "en": "value-of-business-development"
+  },
+  "60353": {
+    "cn": "java多线程实现三个字母顺序输出",
+    "en": null
+  },
+  "46290": {
+    "cn": "一种实现在hbase中存储set的思路",
+    "en": "storing-set-in-hbase"
+  },
   "57802": {
     "cn": "Java-kryo-protobuf-protostuff序列化-or-Json-性能对比",
     "en": "java-serialization-performance-comparison"
   },
-  "61645": {
-    "cn": "activemq-plugin开发指南及示例",
-    "en": "activemq-plugin-development-guide"
+  "63299": {
+    "cn": "一篇不错的lda模型入门文档",
+    "en": "lda-model-introduction"
   },
-  "30764": {
-    "cn": "kubernetes环境下做金丝雀发布的一种思路",
-    "en": "kubernetes-canary-release"
+  "63756": {
+    "cn": "使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据",
+    "en": "redis-hmsetnx-with-lua-and-jedis"
+  },
+  "5707": {
+    "cn": "java线程池：获取运行线程数并控制线程启动速度",
+    "en": null
+  },
+  "27398": {
+    "cn": "我对程序员这个职业的理解",
+    "en": "my-understanding-of-programming-career"
+  },
+  "42843": {
+    "cn": "云原生究竟是什么",
+    "en": "what-is-cloud-native"
+  },
+  "31044": {
+    "cn": "activemq特性之持久化",
+    "en": "activemq-persistence"
+  },
+  "48104": {
+    "cn": "java分布式锁入门实战",
+    "en": "java-distributed-lock-practice"
+  },
+  "32580": {
+    "cn": "关于rocketmq的readQueue和writeQueue",
+    "en": "rocketmq-read-queue-write-queue"
+  },
+  "48979": {
+    "cn": "ai-agent-hexo-theme-migration",
+    "en": "ai-agent-hexo-theme-migration"
+  },
+  "64": {
+    "cn": "用LLM管理开发规范：一次llm-wiki实践",
+    "en": "using-llm-to-manage-security-development-standards"
+  },
+  "41673": {
+    "cn": "log4j2-xml配置示例及与log4j的区别",
+    "en": "log4j2-xml-configuration"
+  },
+  "13749": {
+    "cn": "jstorm的监控metrics数据输出到第三方存储介质",
+    "en": "jstorm-metrics-export"
+  },
+  "44866": {
+    "cn": "读书感悟：文明、现代化、价值投资与中国",
+    "en": "civilization-modernization-value-investing"
+  },
+  "2478": {
+    "cn": "解决fatjar的-“java-lang-SecurityException-Invalid-signature-file-digest-for-Manifest-main-attributes”-问题",
+    "en": "fatjar-security-exception-fix"
   },
   "9329": {
     "cn": "通过实际操作理解redis-cluster原理",
     "en": "understanding-redis-cluster-through-practice"
+  },
+  "31761": {
+    "cn": "jstorm源码解析之循环任务AsyncLoopThread",
+    "en": "jstorm-async-loop-thread"
+  },
+  "55227": {
+    "cn": "kubernetes应用向介绍",
+    "en": "kubernetes-introduction"
+  },
+  "13925": {
+    "cn": "activemq-5-6-连接池的内存泄露问题",
+    "en": "activemq-connection-pool-memory-leak"
+  },
+  "48216": {
+    "cn": "activemq的安装及基本使用",
+    "en": "activemq-installation-and-usage"
+  },
+  "11299": {
+    "cn": "在java独立进程-standalone-app-中嵌入hawtio监控",
+    "en": "embedded-hawtio-monitoring"
   },
   "20888": {
     "cn": "RPC接口将所有输入输出封装成类是合理设计吗",
@@ -347,8 +315,44 @@
     "cn": "hadoop基本的学习资料",
     "en": "hadoop-learning-resources"
   },
-  "2345": {
-    "cn": "剧变中的2021-一个中年工程师的年终总结",
-    "en": "2021-year-end-review"
+  "3423": {
+    "cn": "我提升开发效率的经验",
+    "en": "my-development-efficiency-tips"
+  },
+  "3945": {
+    "cn": "使用maven-shade-plugin-打可执行Jar包",
+    "en": "maven-shade-plugin-executable-jar"
+  },
+  "27021": {
+    "cn": "五分钟学会写storm代码-jstorm-storm编码原理与普通java程序的区别",
+    "en": "five-minutes-storm-coding"
+  },
+  "40931": {
+    "cn": "一次kafka空间激增排查：kafka的数据压缩、批量发送等",
+    "en": "kafka-disk-usage-spike-investigation"
+  },
+  "11970": {
+    "cn": "高并发解决方案很难吗？轻松聊清楚高并发设计",
+    "en": "high-concurrency-solutions-explained"
+  },
+  "20459": {
+    "cn": "activemq多线程消费的不同处理方式",
+    "en": "activemq-multi-threaded-consumption"
+  },
+  "65262": {
+    "cn": "通过加入classpath的形式实现命令行运行java程序时引入第三方jar包",
+    "en": "java-classpath-command-line"
+  },
+  "64970": {
+    "cn": "深入理解java-整型数-Integer的缓存",
+    "en": "java-integer-caching"
+  },
+  "54216": {
+    "cn": "怎样做一个好的技术分享",
+    "en": "how-to-give-a-good-tech-talk"
+  },
+  "30764": {
+    "cn": "kubernetes环境下做金丝雀发布的一种思路",
+    "en": "kubernetes-canary-release"
   }
 }
