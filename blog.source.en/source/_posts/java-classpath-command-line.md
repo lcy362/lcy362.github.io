@@ -11,6 +11,7 @@ categories:
 tags:
   - java
 abbrlink: 65262
+cover: /img/65262.jpg
 date: 2017-05-03 18:42:00
 ---
 When running a Java program from the command line, how do you include third-party jar packages? There are actually many methods, most of which involve tinkering with the classloader.

@@ -12,12 +12,18 @@
 | Task 3-Batch3: 生成图片 #44-57 | ✅ 完成 (2026-06-08) | 14/14 篇 |
 | Task 3-Batch4: 生成图片 #58-71 | ✅ 完成 (2026-06-08) | 14/14 篇 |
 | Task 3-Batch5: 生成图片 #72-78 | ✅ 完成 (2026-06-08) | 7/7 篇 |
-| Task 3-剩余: 7 篇待生成 | ⬜ 待开始 | abbrlink: 13793, 53791, 9193, 65262, 33852, 56940, 11970 |
-| Task 4: 最终验证 + 图片压缩 | ⬜ 待开始 | |
+| Task 3-剩余: 最后 7 篇 | ✅ 完成 (2026-06-08) | abbrlink: 13793, 53791, 9193, 65262, 33852, 56940, 11970 |
+| 图片压缩优化 | ✅ 完成 (2026-06-08) | PNG→JPEG q=82 + 1200px 宽，总大小 202MB→7.8MB (节省 96%) |
+| Task 4: 最终验证 | ✅ 完成 (2026-06-08) | CN 90/90, EN 86/86, batch_results 85/85, 无缺失图片 |
 
-**已完成**: 83/90 中文 (92.2%) | 79/86 英文 (91.9%) | batch_results: 78/85
-**剩余**: 7 篇待生成（abbrlink: 13793, 53791, 9193, 65262, 33852, 56940, 11970）
-**当前任务**: 图片压缩优化
+## ✅ 全部完成
+
+**最终状态** (2026-06-08):
+- 中文站: 90/90 篇文章均已配置 cover (100%)
+- 英文站: 86/86 篇文章均已配置 cover (100%)
+- batch_results.json: 85/85 篇已完成
+- 图片统一压缩: JPEG q=82, 最大宽度 1200px, 平均 ~75KB/张
+- 文件命名: 全部统一为 `{abbrlink}.jpg`
 
 ## 批量生成脚本用法
 
@@ -79,7 +85,7 @@ curl -X POST "https://apihub.agnes-ai.com/v1/images/generations" \
   -H "Content-Type: application/json" \
   -d '{"model":"agnes-image-2.1-flash","prompt":"YOUR_PROMPT","size":"1792x1024"}'
 ```
-响应中包含图片 URL，下载后保存到 `blog.source/source/img/{abbrlink}.png`。
+响应中包含图片 URL，下载后保存到 `blog.source/source/img/{abbrlink}.jpg`。
 
 ## 执行步骤
 
@@ -148,10 +154,10 @@ done
 
 ## 图片命名规则
 
-- 新图片统一使用 `{abbrlink}.png` 格式（如 `57802.png`）
-- 尺寸：`1792x1024`（16:9 宽幅比例）
-- 中英文共用同一张图，路径为 `/img/{abbrlink}.png`
-- 注意：之前已生成的 16 张用的是 `.jpg` 后缀，保持一致即可
+- 新图片统一使用 `{abbrlink}.jpg` 格式（JPEG 压缩，如 `57802.jpg`）
+- 原始生成尺寸：`1792x1024`（16:9 宽幅比例），压缩后缩放到最大宽度 1200px
+- 中英文共用同一张图，路径为 `/img/{abbrlink}.jpg`
+- 已有 5 篇文章使用描述性图片名（如 `cloud-native-arch.jpg`），不在 85 篇批量范围内
 
 ## 文章 front-matter cover 配置方式
 
@@ -164,7 +170,7 @@ date: 2026-05-28 22:00:00
 categories: [技术杂谈]
 tags: [hexo, blog]
 abbrlink: 19890
-cover: /img/19890.png
+cover: /img/19890.jpg
 ---
 ```
 
