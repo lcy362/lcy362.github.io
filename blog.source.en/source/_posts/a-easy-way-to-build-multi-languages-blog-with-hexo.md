@@ -6,6 +6,7 @@ tags:
  - blog
  - i18n
 abbrlink: 40400
+cover: /img/hexo-multi-language.jpg
 ---
 The simplest way to use hexo to build a multilingual website is to directly build two independent sites and make a jump link to each other. 
 

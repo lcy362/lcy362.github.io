@@ -15,6 +15,7 @@ tags:
   - zookeeper
   - distributed
 abbrlink: 48104
+cover: /img/java-distributed-lock.jpg
 date: 2017-02-20 19:21:00
 ---
 This article covers usage only, no theory. Simple and straightforward.

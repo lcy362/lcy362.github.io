@@ -13,6 +13,7 @@ tags:
   - java
   - 多线程
 abbrlink: 60353
+cover: /img/java-multithread-a-b-c.jpg
 date: 2017-01-25 16:59:00
 ---
 主要还是通过一个例子加深一下对java多线程里wait,notify的理解，因此写了一个例子，三个线程分别输出A,B,C三个字母，控制这三个线程的执行顺序，从而实现ABCABCABC..这样的输出。

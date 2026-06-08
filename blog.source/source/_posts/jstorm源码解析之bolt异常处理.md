@@ -11,6 +11,7 @@ tags:
   - jstorm
   - 源码阅读
 abbrlink: 15594
+cover: /img/bolt-exception.png.jpg
 date: 2017-08-03 19:29:00
 categories:
   - jstorm源码解析

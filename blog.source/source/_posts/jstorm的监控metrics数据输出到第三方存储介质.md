@@ -14,6 +14,7 @@ tags:
   - jstorm
   - 监控
 abbrlink: 13749
+cover: /img/storm-metrics.png.jpg
 date: 2017-09-06 20:18:00
 ---
 Jstorm的UI中提供了大量非常详细的监控参数，对于我们排查问题帮助非常大，关于UI，可以参考我之前的另一篇文章： https://lichuanyang.top/posts/31996/ 。 不过，UI这种方式用起来有时可能会不太方便，比如需要查历史数据的时候。所以我们希望将监控数据输出到别的存储介质中，方便后续查询、分析。
