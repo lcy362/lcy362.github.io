@@ -1,4 +1,5 @@
 ---
+
 title: Practical experience using kubernetes in java projects with low learning costs
 tags:
   - continuous-integration
@@ -6,8 +7,13 @@ tags:
 description: Practical experience using Kubernetes in startup Java projects with low infrastructure costs, covering CI/CD, deployment, and monitoring setup.
 abbrlink: 40964
 date: 2022-01-26 15:19:32
+top_img: /img/k8s-kubernetes.jpg
+cover: /img/k8s-kubernetes.jpg
 lang: en
+
 ---
+
+
 Compared with large manufacturers, many start-up companies have a very important disadvantage that their infrastructure is imperfect and they do not have a variety of complete tools. Therefore, I plan to sort out how to build a development process with a good experience based on the capabilities provided by the open source community with as little operation and maintenance and development costs as possible.
 
 <!-- more -->

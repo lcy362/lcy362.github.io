@@ -1,4 +1,5 @@
 ---
+
 title: 'How to Farm Free Tokens: Building Agent-Independent AI Workflows'
 description: >-
   After tinkering with AI Agents, I realized they're mostly just shuffling documents and prompts around. Instead of paying for subscriptions, maintain your own project docs and use whichever platform has free tokens.
@@ -12,7 +13,12 @@ tags:
   - workflow
 abbrlink: 26060
 date: 2026-06-03 22:00:00
+top_img: /img/ai-agent-workflow.jpg
+cover: /img/ai-agent-workflow.jpg
+
 ---
+
+
 
 What's the biggest—or perhaps only—pain point of using AI right now? Probably the bill.
 

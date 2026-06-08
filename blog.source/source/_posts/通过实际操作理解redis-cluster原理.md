@@ -1,4 +1,6 @@
 ---
+
+
 title: 通过实际操作理解redis cluster原理
 description: "通过实际操作理解 Redis Cluster 的数据分片机制、16384 个哈希槽的设计和节点路由原理。"
 keywords:
@@ -14,7 +16,15 @@ categories:
   - redis系列
 abbrlink: 9329
 date: 2017-04-14 20:02:00
+top_img: /img/redis-cluster.jpg
+cover: /img/redis-cluster.jpg
+
+
 ---
+
+
+
+
 Redis 集群是redis官方提供的一种集群方案，从3.0开始提供稳定版，应用也已经比较广泛，也经受住了时间考验，个人感觉完全可以取代codis,tweemproxy等集群方案。
 
 ## cluster原理介绍
