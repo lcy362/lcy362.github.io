@@ -66,42 +66,62 @@
   },
   {
     "filename": "hadoop",
-    "path": "/img/hadoop.jpg"
+    "path": "/img/hadoop.jpg",
+    "abbrlink": "35575",
+    "status": "done"
   },
   {
     "filename": "hexo-blog-system",
-    "path": "/img/hexo-blog-system.jpg"
+    "path": "/img/hexo-blog-system.jpg",
+    "abbrlink": "19890",
+    "status": "done"
   },
   {
     "filename": "hexo-multi-language",
-    "path": "/img/hexo-multi-language.jpg"
+    "path": "/img/hexo-multi-language.jpg",
+    "abbrlink": "40400",
+    "status": "done"
   },
   {
     "filename": "java-distributed-lock",
-    "path": "/img/java-distributed-lock.jpg"
+    "path": "/img/java-distributed-lock.jpg",
+    "abbrlink": "48104",
+    "status": "done"
   },
   {
     "filename": "java-multithread-a-b-c",
-    "path": "/img/java-multithread-a-b-c.jpg"
+    "path": "/img/java-multithread-a-b-c.jpg",
+    "abbrlink": "60353",
+    "status": "done"
   },
   {
     "filename": "java-details-ternary.png",
-    "path": "/img/java-details-ternary.png.jpg"
+    "path": "/img/java-details-ternary.png.jpg",
+    "abbrlink": "53072",
+    "status": "done"
   },
   {
     "filename": "jstorm-ui.png",
-    "path": "/img/jstorm-ui.png.jpg"
+    "path": "/img/jstorm-ui.png.jpg",
+    "abbrlink": "31996",
+    "status": "done"
   },
   {
     "filename": "bolt-exception.png",
-    "path": "/img/bolt-exception.png.jpg"
+    "path": "/img/bolt-exception.png.jpg",
+    "abbrlink": "15594",
+    "status": "done"
   },
   {
     "filename": "async-loop.png",
-    "path": "/img/async-loop.png.jpg"
+    "path": "/img/async-loop.png.jpg",
+    "abbrlink": "31761",
+    "status": "done"
   },
   {
     "filename": "storm-metrics.png",
-    "path": "/img/storm-metrics.png.jpg"
+    "path": "/img/storm-metrics.png.jpg",
+    "abbrlink": "13749",
+    "status": "done"
   }
 ]

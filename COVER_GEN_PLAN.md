@@ -5,7 +5,8 @@
 | 阶段 | 状态 | 说明 |
 |------|------|------|
 | Task 1: 配置已有 16 张图片 | ✅ 完成 (2026-06-08) | 中英文文章均已配置 cover，已部署 |
-| Task 2: 编写批量生成脚本 | ⬜ 待开始 | |
+| Task 2: 编写批量生成脚本 | ✅ 完成 (2026-06-08) | `scripts/batch_generate_covers.py` 已就绪 |
+| Task 2 附加: 补配置 10 篇遗漏 | ✅ 完成 (2026-06-08) | 修复 batch_results.json 缺 abbrlink，补配 cover |
 | Task 3-Batch1: 生成图片 #16-29 | ⬜ 待开始 | |
 | Task 3-Batch2: 生成图片 #30-43 | ⬜ 待开始 | |
 | Task 3-Batch3: 生成图片 #44-57 | ⬜ 待开始 | |
@@ -13,8 +14,21 @@
 | Task 3-Batch5: 生成图片 #72-84 | ⬜ 待开始 | |
 | Task 4: 最终验证 | ⬜ 待开始 | |
 
-**已完成**: 21/85 篇（5 篇原有 cover + 16 篇 Task 1 配置）
-**剩余**: 64 篇需要生成新图片
+**已完成**: 25/85 篇（5 篇原有 cover + 16 篇 Task 1 + 10 篇 Task 2 补配，其中 6 篇重叠）
+**剩余**: 60 篇需要生成新图片
+
+## 批量生成脚本用法
+
+```bash
+# 生成下一批（默认 14 篇）
+python3 scripts/batch_generate_covers.py
+
+# 指定批次大小
+python3 scripts/batch_generate_covers.py --batch 10
+
+# 预览待处理（不生成）
+python3 scripts/batch_generate_covers.py --dry-run
+```
 
 ## Context
 

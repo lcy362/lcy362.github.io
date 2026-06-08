@@ -13,6 +13,7 @@ tags:
   - hexo
   - blog-setup
 abbrlink: 19890
+cover: /img/hexo-blog-system.jpg
 date: 2018-01-19 18:56:07
 ---
 

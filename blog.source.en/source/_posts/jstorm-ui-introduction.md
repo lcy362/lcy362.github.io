@@ -13,6 +13,7 @@ tags:
   - storm
   - jstorm
 abbrlink: 31996
+cover: /img/jstorm-ui.png.jpg
 date: 2016-11-16 19:58:00
 ---
 ## UI Overview
