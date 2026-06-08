@@ -12,7 +12,7 @@ tags:
   - java
   - maven
 abbrlink: 3945
-cover: /img/3945.png
+cover: /img/3945.jpg
 date: 2017-05-14 09:32:00
 ---
 Eclipse has a feature called "Export Runnable JAR File" that packages a project along with all its dependencies into a Fat JAR, with a specified Main class, so you can run the code directly using `java jar xxx.jar`.

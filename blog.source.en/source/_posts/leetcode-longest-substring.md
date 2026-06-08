@@ -13,7 +13,7 @@ tags:
   - algorithm
   - leetcode
 abbrlink: 43423
-cover: /img/43423.png
+cover: /img/43423.jpg
 date: 2017-02-15 20:34:00
 ---
 ## Problem

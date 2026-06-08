@@ -12,7 +12,7 @@ tags:
   - lda
   - big-data
 abbrlink: 63299
-cover: /img/63299.png
+cover: /img/63299.jpg
 date: 2012-12-02 15:20:00
 ---
 Reposted from [http://leyew.blog.51cto.com/5043877/860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0](http://leyew.blog.51cto.com/5043877/860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0)

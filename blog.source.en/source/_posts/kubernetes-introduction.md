@@ -12,7 +12,7 @@ categories:
 tags:
   - kubernetes
 abbrlink: 55227
-cover: /img/55227.png
+cover: /img/55227.jpg
 date: 2023-01-28 19:06:17
 ---
 

@@ -12,7 +12,7 @@ tags:
   - tech-talks
   - tech-talk-topics
 abbrlink: 54216
-cover: /img/54216.png
+cover: /img/54216.jpg
 date: 2021-08-31 14:27:43
 ---
 Tech talks exist in nearly every company. The effectiveness varies from person to person and team to team. In some teams, tech talks gradually become a useless time killer due to various reasons.

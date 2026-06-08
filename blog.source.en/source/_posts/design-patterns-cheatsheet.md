@@ -11,7 +11,7 @@ categories:
 tags:
   - design-patterns
 abbrlink: 21897
-cover: /img/21897.png
+cover: /img/21897.jpg
 date: 2020-04-08 18:06:51
 ---
 As everyone knows, design patterns are an extremely important discipline for programmers. However, because design patterns cover such a broad scope and involve many abstract concepts, they can be quite difficult to master. The best way to learn design patterns is to combine them with practical experience. Every time you work on a requirement — especially complex ones, or when you detect signs of smelly code — you can flip through the design patterns to see which ones might apply. Therefore, I've summarized this article using the most concise language to describe the main design patterns, possibly the key parts of their definitions, typical application scenarios, or just an English term. The goal is to help recall the purpose and application scenarios of each design pattern.

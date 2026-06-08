@@ -11,7 +11,7 @@ tags:
 categories:
   - JStorm Source Code Analysis
 abbrlink: 31761
-cover: /img/async-loop.png.jpg
+cover: /img/async-loop.jpg
 date: 2018-02-08 16:17:37
 ---
 ## Overview

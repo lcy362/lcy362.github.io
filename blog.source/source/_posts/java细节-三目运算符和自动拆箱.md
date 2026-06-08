@@ -12,7 +12,7 @@ categories:
 tags:
   - java
 abbrlink: 53072
-cover: /img/java-details-ternary.png.jpg
+cover: /img/java-details-ternary.jpg
 date: 2018-05-10 21:22:36
 ---
 ## 问题引入 

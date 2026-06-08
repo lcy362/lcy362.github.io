@@ -12,7 +12,7 @@ categories:
 tags:
   - hbase
 abbrlink: 46290
-cover: /img/46290.png
+cover: /img/46290.jpg
 date: 2017-04-10 20:42:00
 ---
 As we know, HBase stores data as binary key-value pairs, unlike Redis which provides built-in support for various data structures. So how can we store set-type data in HBase? One approach is to serialize the entire set as a single object and store it in HBase. However, this means that for any subsequent add, delete, update, or query operation, you must first retrieve the entire stored content, make the necessary modifications, and then overwrite the original value. This approach is clearly not ideal.

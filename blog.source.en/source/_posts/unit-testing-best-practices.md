@@ -13,7 +13,7 @@ tags:
   - development-standards
   - unit-testing best practices
 abbrlink: 695
-cover: /img/695.png
+cover: /img/695.jpg
 date: 2019-09-26 20:54:36
 ---
 A while ago, when I was trying to improve the unit tests for a project, I realized that I never had a particularly clear understanding of how to write unit tests. So I looked up some materials, and in the process discovered that everyone's perspectives are quite different. Every article I read updated my own understanding. This article combines others' viewpoints with my own practical experience to summarize what I currently believe to be correct. It probably won't be the most definitive answer, and I welcome everyone to leave comments and discuss.

@@ -13,7 +13,7 @@ tags:
 categories:
   - Distributed Systems Patterns Series
 abbrlink: 3914
-cover: /img/3914.png
+cover: /img/3914.jpg
 date: 2020-08-10 20:33:49
 ---
 

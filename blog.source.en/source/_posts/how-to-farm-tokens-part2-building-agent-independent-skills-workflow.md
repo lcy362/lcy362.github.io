@@ -11,7 +11,7 @@ tags:
   - workflow
   - cli
 abbrlink: 26061
-cover: /img/26061.png
+cover: /img/26061.jpg
 date: 2026-06-04 22:00:00
 ---
 

@@ -15,7 +15,7 @@ tags:
   - acid
   - transaction-isolation-levels
 abbrlink: 7774
-cover: /img/7774.png
+cover: /img/7774.jpg
 date: 2022-02-07 16:40:02
 ---
 Recently, I read Zhou Zhiming's book "Phoenix Architecture" and gained deeper insights into many aspects of technology. I plan to make some summaries. Today, I'll start with the section on transactions, combining content from the book with my own understanding, aiming to explain local transactions clearly and thoroughly. If there are any inaccuracies, I welcome corrections.

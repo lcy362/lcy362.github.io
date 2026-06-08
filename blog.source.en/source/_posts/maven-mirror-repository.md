@@ -12,7 +12,7 @@ categories:
 tags:
   - maven
 abbrlink: 32793
-cover: /img/32793.png
+cover: /img/32793.jpg
 date: 2017-05-19 19:40:00
 ---
 Mirror and repository in Maven are two easily confused concepts, as both are used to configure the addresses of remote Maven repositories. As the name suggests, a repository directly configures the site address, while a mirror acts as a site's mirror, proxying requests to one or several sites, achieving a complete replacement of repositories.
