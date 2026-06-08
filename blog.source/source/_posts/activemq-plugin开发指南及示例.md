@@ -11,6 +11,7 @@ categories:
 tags:
   - activemq
 abbrlink: 61645
+cover: /img/61645.jpg
 date: 2017-05-05 16:58:00
 ---
 activemq提供了一种插件(plugin)开发的机制(http://activemq.apache.org/developing-plugins.html), 可以方便的添加各种自定义功能。其效果类似于直接去修改activemq的源码，无论从方便性还是风险程度上，使用plugin都要比去修改源码要好很多。通过这种方式，理论上我们可以实现几乎所有能想到的功能。

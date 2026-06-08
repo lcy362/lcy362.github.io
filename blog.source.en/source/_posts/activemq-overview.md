@@ -12,6 +12,7 @@ tags:
 categories:
   - ActiveMQ Series
 abbrlink: 12035
+cover: /img/12035.jpg
 date: 2018-01-22 18:33:02
 ---
 ActiveMQ is a messaging middleware (MOM) based on the JMS protocol. When introducing ActiveMQ, we inevitably need to talk about messaging middleware and JMS.

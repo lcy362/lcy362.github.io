@@ -12,6 +12,7 @@ tags:
 categories:
   - activemq系列文章
 abbrlink: 12035
+cover: /img/12035.jpg
 date: 2018-01-22 18:33:02
 ---
 Activemq是一种消息中间件(MOM)，基于JMS协议实现。介绍activemq就不得不介绍消息中间件和jms.

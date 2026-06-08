@@ -13,6 +13,7 @@ categories:
   - Tech Talk
 date: 2022-03-07 16:28:58
 abbrlink: 27934
+cover: /img/27934.jpg
 tags:
   - computational-advertising
   - internet-advertising

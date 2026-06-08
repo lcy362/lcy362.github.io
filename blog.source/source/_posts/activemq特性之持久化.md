@@ -12,6 +12,7 @@ tags:
 categories:
   - activemq系列文章
 abbrlink: 31044
+cover: /img/31044.jpg
 date: 2018-02-02 18:56:49
 ---
 ## 介绍

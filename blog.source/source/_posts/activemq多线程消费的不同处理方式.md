@@ -11,6 +11,7 @@ tags:
 categories:
   - activemq系列文章
 abbrlink: 20459
+cover: /img/20459.jpg
 date: 2018-09-16 09:58:11
 ---
 之前在[另一篇文章](https://lichuanyang.top/posts/48216/)里介绍过使用activemq时，client端的基本语法。

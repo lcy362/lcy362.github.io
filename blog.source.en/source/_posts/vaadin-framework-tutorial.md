@@ -15,6 +15,7 @@ tags:
   - springboot
   - frontend-development
 abbrlink: 43947
+cover: /img/43947.jpg
 date: 2024-03-06 19:36:22
 ---
 The pain point of backend engineers developing frontend code is usually that it's too tedious — you often have to spend a long time looking things up for even the smallest task. Vaadin solves this pain point well by providing backend engineers with an easy-to-learn, convenient solution for writing frontend code. Today, let's take a look.

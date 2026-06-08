@@ -15,6 +15,7 @@ tags:
   - devops
   - independent-blog
 abbrlink: 39648
+cover: /img/39648.jpg
 date: 2026-05-11 19:30:00
 ---
 

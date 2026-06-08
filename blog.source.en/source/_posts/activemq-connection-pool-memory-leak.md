@@ -12,6 +12,7 @@ categories:
 tags:
   - activemq
 abbrlink: 13925
+cover: /img/13925.jpg
 date: 2015-08-08 21:16:00
 ---
 Recently, while using ActiveMQ's connection pool, I discovered a very serious memory leak issue.

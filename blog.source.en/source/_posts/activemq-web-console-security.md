@@ -12,6 +12,7 @@ tags:
   - activemq
   - monitoring
 abbrlink: 32479
+cover: /img/32479.jpg
 date: 2016-01-05 18:09:00
 ---
 ActiveMQ's web console is built on Jetty, and its permission management is also based on Jetty. Based on requirements, different permissions can be assigned to different users. Jetty's permission management is fairly flexible, though it can be a bit cumbersome to configure. You can specify whether a particular role (role) has access to a specific page.

@@ -12,6 +12,7 @@ categories:
 tags:
   - camel
 abbrlink: 1120
+cover: /img/1120.jpg
 date: 2017-08-03 19:56:00
 ---
 apache-camel 作为数据路由的利器，使用起来非常方便。不过与此同时，也有一个问题，就是由于封装的过于完善，隐藏了很多技术细节，所以一旦有问题，排查会比较困难。好在官方提供了一个debug工具，可以帮助我们正常的打断点、调试，http://camel.apache.org/debugger.html， 在本文中会对官方文档做一些补充。

@@ -11,6 +11,7 @@ tags:
 categories:
   - ActiveMQ Series
 abbrlink: 20459
+cover: /img/20459.jpg
 date: 2018-09-16 09:58:11
 ---
 In a [previous article](https://lichuanyang.top/posts/48216/), I introduced the basic syntax for using ActiveMQ on the client side.
