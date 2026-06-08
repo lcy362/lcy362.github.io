@@ -1,4 +1,5 @@
 ---
+
 title: "What Exactly is Cloud Native?"
 description: "Starting from the literal meaning of Cloud Native, systematically organizing the definition, core concepts, and technology ecosystem of cloud native."
 keywords:
@@ -14,7 +15,12 @@ tags:
   - cloud-native-architecture
 abbrlink: 42843
 date: 2021-06-09 19:54:37
+top_img: /img/cloud-native-arch.jpg
+cover: /img/cloud-native-arch.jpg
+
 ---
+
+
 
 In recent years, cloud native has become an increasingly popular concept across the open-source community. But what exactly is cloud native? Is it an architecture? A platform? What does it affect? System security? Development efficiency? So today, let's dig deep and sort out what cloud native really is.
 
@@ -64,6 +70,3 @@ I am Liu Sha. I hope this article can help everyone better understand what exact
 
 Original article: https://lichuanyang.top/posts/42843/
 
----
-
-Source: https://lichuanyang.top/en/posts/42843/

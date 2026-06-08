@@ -1,4 +1,5 @@
 ---
+
 title: 'Understanding Redis Cluster Through Practice'
 tags:
   - redis
@@ -6,7 +7,12 @@ tags:
 description: A hands-on guide to Redis Cluster architecture, covering data sharding, failover, and practical deployment tips for production environments.
 abbrlink: 9329
 date: 2017-04-14 20:02:00
+top_img: /img/redis-cluster.jpg
+cover: /img/redis-cluster.jpg
+
 ---
+
+
 
 Redis Cluster is an official clustering solution provided by Redis. It has been available as a stable release since version 3.0, is widely adopted, and has stood the test of time. Personally, I believe it can fully replace other clustering solutions like Codis and Twemproxy.
 

@@ -1,4 +1,6 @@
 ---
+
+
 title: 教你薅token：构建agent无关的AI工作流
 description: >-
   我折腾了一阵子AI Agent，发现它本质上就是把文档和prompt拼来拼去。与其花钱订阅，不如自己维护好项目文档，然后哪里免费token用哪里。
@@ -19,7 +21,15 @@ tags:
   - 工作流
 abbrlink: 26060
 date: 2026-06-03 22:00:00
+top_img: /img/ai-agent-workflow.jpg
+cover: /img/ai-agent-workflow.jpg
+
+
 ---
+
+
+
+
 
 目前大家使用AI的最大或者唯一痛点，是什么？可能就是账单了。
 

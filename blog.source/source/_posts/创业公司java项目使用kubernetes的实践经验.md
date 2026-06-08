@@ -1,4 +1,6 @@
 ---
+
+
 title: java项目低学习成本使用kubernetes的实践经验
 description: "创业公司低成本使用 Kubernetes 的实践经验，从项目创建到部署监控的全流程开源方案。"
 keywords:
@@ -14,7 +16,15 @@ tags:
   - kubernetes
 abbrlink: 40964
 date: 2022-01-26 15:19:32
+top_img: /img/k8s-kubernetes.jpg
+cover: /img/k8s-kubernetes.jpg
+
+
 ---
+
+
+
+
 很多创业公司相比于大厂，一个非常重要的劣势就是基础设施不完善，没有各种各样完善的工具。因此，我打算整理一下，基于开源社区提供的能力，如何用尽量小的运维和开发成本，去搭建出一套体验良好的开发流程。
 
 <!-- more -->

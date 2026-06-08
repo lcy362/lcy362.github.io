@@ -1,4 +1,5 @@
 ---
+
 title: "Book Notes: Kazuo Inamori's 'Amoeba Management' — Reflecting on How We Should Work"
 description: "Book notes on Kazuo Inamori's 'Amoeba Management', reflecting on work attitudes and methods, exploring how to achieve personal value enhancement through work."
 keywords:
@@ -13,7 +14,12 @@ tags:
   - book-notes
 abbrlink: 3513
 date: 2021-05-15 17:29:34
+top_img: /img/book-kantang.jpg
+cover: /img/book-kantang.jpg
+
 ---
+
+
 "Amoeba Management" is a classic book about work attitudes and work methods. In today's world of severe labor-capital conflicts and increasingly rigid class structures, it's difficult to fully practice the philosophy of the book's author, Kazuo Inamori. But this doesn't mean the book has no value. Working hard and enhancing one's own value has always been a spiritual pursuit hidden deep within the human heart. What we need to do is ensure that the returns from value enhancement go to ourselves.
 
 <!-- more -->
@@ -73,5 +79,3 @@ At the end of the book, the author provides a formula. For work, thinking and pa
 
 I am Liusha, thank you for reading this article. If you found it helpful, please give it a like and follow. If you have questions, you can also reach me on my [personal blog](https://lichuanyang.top/) or WeChat public account (Mobility).
 
----
-Source: https://lichuanyang.top/en/posts/3513/
