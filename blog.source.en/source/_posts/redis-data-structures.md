@@ -15,7 +15,7 @@ tags:
 categories:
   - Redis Series
 abbrlink: 22179
-cover: /img/22179.png
+cover: /img/22179.jpg
 date: 2020-07-11 16:47:30
 ---
 Redis, as a widely used in-memory database, has made many extreme optimizations at the code level to achieve better performance. An important part of this is the use of underlying data structures. Redis optimizes the usage of different structures based on data volume, data size, and other factors, thereby achieving better operational efficiency and memory usage. Redis's core data structures include Simple Dynamic Strings, linked lists, dictionaries, skip lists, integer sets, and compressed lists.

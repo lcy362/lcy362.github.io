@@ -12,7 +12,7 @@ categories:
 tags:
   - 开发环境
 abbrlink: 62625
-cover: /img/62625.png
+cover: /img/62625.jpg
 date: 2017-04-02 12:45:00
 ---
 为了方便，最近用vitualbox搭了一个centos7的虚拟机，整个过程比较简单，在这里记录一下。

@@ -16,7 +16,7 @@ tags:
   - grafana
   - prometheus-tutorial
 abbrlink: 28288
-cover: /img/28288.png
+cover: /img/28288.jpg
 date: 2021-11-10 19:54:05
 ---
 As the "default" monitoring system in the cloud-native ecosystem, Prometheus is gaining increasing attention. Today, we'll write a tutorial about Prometheus's design philosophy, examining how it uses very simple designs to support such complex functionality.

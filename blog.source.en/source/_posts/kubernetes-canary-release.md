@@ -14,7 +14,7 @@ tags:
   - continuous-integration
   - canary
 abbrlink: 30764
-cover: /img/30764.png
+cover: /img/30764.jpg
 date: 2021-12-23 18:55:20
 ---
 Canary release is actually a process well-suited for cloud-native environments, so I believe many people have the need to perform canary releases under Kubernetes. In this article, we introduce a very simple approach to canary release.

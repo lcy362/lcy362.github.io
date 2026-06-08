@@ -13,7 +13,7 @@ tags:
 categories:
   - redis系列
 abbrlink: 25564
-cover: /img/25564.png
+cover: /img/25564.jpg
 date: 2020-08-08 15:05:48
 ---
 [在上一篇文章中](https://lichuanyang.top/posts/22179/)，介绍了redis的底层定义的一些数据结构。接下来，在本文中，我们就结合redis提供的对象，看看这些数据结构是如何使用的。

@@ -16,7 +16,7 @@ tags:
   - grafana
   - prometheus教程
 abbrlink: 28288
-cover: /img/28288.png
+cover: /img/28288.jpg
 date: 2021-11-10 19:54:05
 ---
 作为云原生体系下的“默认”监控系统，prometheus正在获得越来越广泛的关注。今天，我们就写一篇教程，讲一下prometheus的设计理念，看看它是如何用非常简单的设计支撑起如此复杂的功能的。

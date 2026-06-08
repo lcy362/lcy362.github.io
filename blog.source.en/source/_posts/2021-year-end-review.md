@@ -11,7 +11,7 @@ categories:
 tags:
   - reflections
 abbrlink: 2345
-cover: /img/2345.png
+cover: /img/2345.jpg
 date: 2022-01-04 21:49:57
 ---
 

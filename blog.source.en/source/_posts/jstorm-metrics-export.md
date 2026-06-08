@@ -14,7 +14,7 @@ tags:
   - jstorm
   - monitoring
 abbrlink: 13749
-cover: /img/storm-metrics.png.jpg
+cover: /img/storm-metrics.jpg
 date: 2017-09-06 20:18:00
 ---
 JStorm's UI provides a large number of very detailed monitoring parameters, which are extremely helpful for troubleshooting. For information about the UI, you can refer to my previous article: https://lichuanyang.top/posts/31996/. However, using the UI can sometimes be inconvenient, for example when you need to query historical data. Therefore, we want to export monitoring data to other storage media for easier subsequent querying and analysis.

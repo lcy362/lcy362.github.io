@@ -11,7 +11,7 @@ categories:
 tags:
   - reflections
 abbrlink: 40071
-cover: /img/40071.png
+cover: /img/40071.jpg
 date: 2021-03-12 19:27:36
 ---
 

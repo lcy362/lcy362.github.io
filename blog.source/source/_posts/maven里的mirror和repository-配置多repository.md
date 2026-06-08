@@ -12,7 +12,7 @@ categories:
 tags:
   - maven
 abbrlink: 32793
-cover: /img/32793.png
+cover: /img/32793.jpg
 date: 2017-05-19 19:40:00
 ---
 maven里的mirror和repository是两个比较容易混淆的概念，它们的作用都是配置远程maven仓库的地址。顾名思义，repository就是直接配置站点地址，mirror则是作为站点的镜像，代理某个或某几个站点的请求，实现对repository的完全代替。

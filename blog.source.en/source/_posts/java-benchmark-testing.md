@@ -13,7 +13,7 @@ tags:
   - java
   - testing
 abbrlink: 4987
-cover: /img/4987.png
+cover: /img/4987.jpg
 date: 2017-06-05 20:39:00
 ---
 

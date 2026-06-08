@@ -13,7 +13,7 @@ categories:
 tags:
   - storm
 abbrlink: 27021
-cover: /img/27021.png
+cover: /img/27021.jpg
 date: 2016-11-16 18:21:00
 ---
 ### Runtime Mechanism

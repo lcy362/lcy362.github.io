@@ -13,7 +13,7 @@ tags:
   - redis
   - lua
 abbrlink: 63756
-cover: /img/63756.png
+cover: /img/63756.jpg
 date: 2017-04-06 17:54:00
 ---
 redis中set系列命令(包括set,hset等等)，基本上都包括两个版本，纯粹的set和setnx, setnx即set not exist, 也就是只有Key不存在时才会执行set, 而不会覆盖原有的值。

@@ -13,7 +13,7 @@ tags:
   - java-integer
   - java-integer caching
 abbrlink: 64970
-cover: /img/64970.png
+cover: /img/64970.jpg
 date: 2016-12-02 19:45:00
 ---
 The `Integer` class is essentially just an ordinary Java class — even if the values are the same, they are different objects.

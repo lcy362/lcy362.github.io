@@ -16,7 +16,7 @@ tags:
   - kafka
   - activemq
 abbrlink: 22103
-cover: /img/22103.png
+cover: /img/22103.jpg
 date: 2016-11-16 20:16:00
 ---
 storm的周边生态非常丰富，与kafka,activemq,hdfs,hbase等的交互都有现成的工具包可以使用。大部分工具，包括今天介绍的这几个，在jstorm中也可以完全正常的使用。

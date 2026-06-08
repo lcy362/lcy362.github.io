@@ -12,7 +12,7 @@ categories:
 tags:
   - career-development
 abbrlink: 34931
-cover: /img/34931.png
+cover: /img/34931.jpg
 date: 2021-03-30 18:36:15
 ---
 

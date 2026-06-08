@@ -11,7 +11,7 @@ categories:
 tags:
   - reflections
 abbrlink: 27398
-cover: /img/27398.png
+cover: /img/27398.jpg
 date: 2020-03-18 17:21:18
 ---
 

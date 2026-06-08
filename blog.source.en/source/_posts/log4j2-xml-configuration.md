@@ -11,7 +11,7 @@ categories:
 tags:
   - logging
 abbrlink: 41673
-cover: /img/41673.png
+cover: /img/41673.jpg
 date: 2017-04-10 20:23:00
 ---
 ```xml

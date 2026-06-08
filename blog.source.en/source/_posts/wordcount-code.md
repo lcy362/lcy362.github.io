@@ -12,7 +12,7 @@ tags:
   - hadoop
   - big-data
 abbrlink: 25187
-cover: /img/25187.png
+cover: /img/25187.jpg
 date: 2012-10-28 18:42:00
 ---
 

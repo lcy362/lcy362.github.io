@@ -1,6 +1,6 @@
 ---
 abbrlink: 64
-cover: /img/64.png
+cover: /img/64.jpg
 title: 用LLM管理安全开发规范：一次llm-wiki实践
 description: "用 LLM 管理团队安全开发规范的实践，基于 Karpathy 的 llm-wiki 思路解决规范文档散落的问题。"
 keywords:

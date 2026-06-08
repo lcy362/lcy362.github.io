@@ -11,7 +11,7 @@ categories:
 tags:
   - open-source-project
 abbrlink: 36780
-cover: /img/36780.png
+cover: /img/36780.jpg
 date: 2021-10-12 19:25:15
 ---
 A very simple and high-performance tool for determining the country of an IP address.

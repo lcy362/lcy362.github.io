@@ -13,7 +13,7 @@ tags:
 categories:
   - Book Notes
 abbrlink: 6471
-cover: /img/6471.png
+cover: /img/6471.jpg
 date: 2020-10-31 10:35:22
 ---
 The book I'm discussing today, "I Walked on the Edge of Breakdown: Yu Minhong's Personal Account of New Oriental's Entrepreneurial Development," is an autobiographical work by Mr. Yu Minhong, recounting his many experiences and psychological journey since founding New Oriental. Today, I'll summarize the content of this book and share my personal reflections.

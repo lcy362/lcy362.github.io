@@ -13,7 +13,7 @@ tags:
   - java integer
   - javaInteger缓存
 abbrlink: 64970
-cover: /img/64970.png
+cover: /img/64970.jpg
 date: 2016-12-02 19:45:00
 ---
 Integer类实质上也是一个普通的java类，即使值相同，也是不同的对象。 

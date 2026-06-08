@@ -6,7 +6,7 @@ description: "Solving the SecurityException caused by signature verification whe
 tags:
   - java
 abbrlink: 2478
-cover: /img/2478.png
+cover: /img/2478.jpg
 date: 2017-04-27 14:16:00
 keywords:
   - fat

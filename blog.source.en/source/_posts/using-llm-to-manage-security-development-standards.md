@@ -10,7 +10,7 @@ tags:
   - practice
 description: How to use LLM to manage team security development standards, based on Karpathy's llm-wiki approach to solve scattered documentation problems.
 abbrlink: 64
-cover: /img/64.png
+cover: /img/64.jpg
 date: 2026-05-11 15:38:16
 ---
 
