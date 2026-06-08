@@ -11,6 +11,7 @@ categories:
 tags:
   - java
 abbrlink: 65262
+cover: /img/65262.jpg
 date: 2017-05-03 18:42:00
 ---
 在命令行运行java程序时，如果想引入第三方jar包该怎么办呢。方法其实有很多，一般都是去折腾classloader.

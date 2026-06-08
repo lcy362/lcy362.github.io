@@ -14,6 +14,7 @@ tags:
   - personal-growth
   - logical-thinking
 abbrlink: 53791
+cover: /img/53791.jpg
 date: 2022-05-16 18:34:01
 ---
 The primary purpose of this book is to teach readers how to think more effectively when facing complex problems in reality. The book itself focuses on basic systems concepts, which are actually quite easy to understand. Additionally, the author provides numerous examples. When first reading this book, you might feel that the theory and practical examples are somewhat disconnected. But gradually you'll realize that this topic is indeed not easy to explain in a way that's easily accessible — it requires readers to put in more thought to gain substantive understanding. The examples provided by the author serve as excellent prompts for guiding readers to think. By following the author's thinking through these examples, we can better grasp the concepts and logic presented in the book.

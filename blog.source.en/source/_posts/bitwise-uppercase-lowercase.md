@@ -11,6 +11,7 @@ categories:
 tags:
   - bitwise-operations
 abbrlink: 9193
+cover: /img/9193.jpg
 date: 2018-11-14 21:58:47
 ---
 Bitwise operations are a widely used computation method in computer science. When used appropriately, they can greatly improve computational efficiency. Today, I'd like to introduce a clever application of bitwise operations: converting between uppercase and lowercase letters.

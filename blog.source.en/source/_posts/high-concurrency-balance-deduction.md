@@ -9,6 +9,7 @@ keywords:
 categories:
   - Architecture Design
 abbrlink: 56940
+cover: /img/56940.jpg
 date: 2018-08-25 11:10:28
 tags:
   - design

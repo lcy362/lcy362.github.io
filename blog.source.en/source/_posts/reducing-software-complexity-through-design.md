@@ -14,6 +14,7 @@ tags:
   - software-engineering
   - design-patterns
 abbrlink: 33852
+cover: /img/33852.jpg
 date: 2021-01-04 18:12:34
 ---
 For a programmer, the word most often mentioned in daily work is probably "complex" — this code is too complex, this logic is too complex. So, in this article, let's take a thorough look at where "complexity" actually comes from and how to avoid it.
