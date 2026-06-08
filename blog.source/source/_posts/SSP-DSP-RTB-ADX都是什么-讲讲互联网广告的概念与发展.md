@@ -13,6 +13,7 @@ categories:
   - 技术杂谈
 date: 2022-03-07 16:28:58
 abbrlink: 27934
+cover: /img/27934.jpg
 tags:
   - 计算广告
   - 互联网广告

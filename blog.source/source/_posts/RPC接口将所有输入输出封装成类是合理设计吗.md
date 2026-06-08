@@ -12,6 +12,7 @@ categories:
 tags:
   - 设计模式
 abbrlink: 20888
+cover: /img/20888.jpg
 date: 2021-03-16 18:34:56
 ---
 关于rpc接口的输入和输出，一直有一种观点是将输入和输出都包装成单个request和response类。本文，我们就分析一下这种方式是否是一个合理的设计。

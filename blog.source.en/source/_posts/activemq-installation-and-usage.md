@@ -12,6 +12,7 @@ tags:
 categories:
   - ActiveMQ Series
 abbrlink: 48216
+cover: /img/48216.jpg
 date: 2018-01-30 08:46:07
 ---
 ## Installation

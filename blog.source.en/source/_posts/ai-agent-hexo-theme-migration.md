@@ -12,6 +12,7 @@ tags:
   - developer-tools
   - prompt-engineering
 abbrlink: 48979
+cover: /img/48979.jpg
 date: 2026-05-28 22:00:00
 ---
 

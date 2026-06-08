@@ -12,6 +12,7 @@ categories:
 tags:
   - design-pattern
 abbrlink: 20888
+cover: /img/20888.jpg
 date: 2021-03-16 18:34:56
 ---
 Regarding the inputs and outputs of RPC interfaces, there has long been a school of thought that advocates wrapping all inputs and outputs into individual request and response classes. In this article, we will analyze whether this approach constitutes a sound design.

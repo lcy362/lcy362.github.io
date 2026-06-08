@@ -13,6 +13,7 @@ tags:
   - hadoop
   - big-data
 abbrlink: 35575
+cover: /img/hadoop.jpg
 date: 2012-10-28 18:05:00
 ---
 [http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html](http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html)&nbsp;WordCount execution process detailed explanation

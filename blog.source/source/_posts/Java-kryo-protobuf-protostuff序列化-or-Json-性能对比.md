@@ -16,6 +16,7 @@ tags:
   - protobuf
   - json
 abbrlink: 57802
+cover: /img/57802.jpg
 date: 2017-03-02 18:10:00
 ---
 <div class="markdown_views">

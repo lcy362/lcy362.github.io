@@ -10,6 +10,7 @@ keywords:
 categories:
   - Database
 abbrlink: 48312
+cover: /img/48312.jpg
 date: 2018-11-14 21:59:31
 tags:
   - big-data

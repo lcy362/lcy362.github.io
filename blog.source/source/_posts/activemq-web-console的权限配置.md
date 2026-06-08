@@ -12,6 +12,7 @@ tags:
   - activemq
   - 监控
 abbrlink: 32479
+cover: /img/32479.jpg
 date: 2016-01-05 18:09:00
 ---
 <div>activemq的web console是基于jetty实现，其权限管理也是基于jetty. 根据需求，可以给不同的用户赋予不同的权限。jetty的权限管理还算灵活，虽然配起来比较麻烦，可以分别设定某个角色（role）下的用户是否有对某个页面的访问权限。</div>

@@ -12,6 +12,7 @@ categories:
 tags:
   - camel
 abbrlink: 1120
+cover: /img/1120.jpg
 date: 2017-08-03 19:56:00
 ---
 Apache Camel is a powerful tool for data routing, very convenient to use. However, at the same time, there is a problem: because it's overly well-encapsulated, hiding many technical details, troubleshooting can be difficult when issues arise. Fortunately, the official team provides a debug tool that can help us set breakpoints and debug normally. http://camel.apache.org/debugger.html. This article will supplement the official documentation.

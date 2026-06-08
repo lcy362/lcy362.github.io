@@ -11,6 +11,7 @@ categories:
 tags:
   - activemq
 abbrlink: 61645
+cover: /img/61645.jpg
 date: 2017-05-05 16:58:00
 ---
 ActiveMQ provides a plugin development mechanism (http://activemq.apache.org/developing-plugins.html) that allows you to conveniently add various custom functionalities. The effect is similar to directly modifying ActiveMQ's source code, but using plugins is much better than modifying source code in terms of both convenience and risk. In theory, we can implement almost any functionality imaginable through this approach.
