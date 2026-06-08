@@ -14,6 +14,7 @@ tags:
 categories:
   - Redis Series
 abbrlink: 37583
+cover: /img/37583.png
 date: 2018-02-24 18:34:19
 ---
 

@@ -13,6 +13,7 @@ tags:
   - java
   - camel
 abbrlink: 17762
+cover: /img/17762.png
 date: 2015-08-08 20:55:00
 ---
 <span style="font-family: Arial,Helvetica,sans-serif; background-color: #ffffff;">The company uses ActiveMQ and Camel for message distribution. Previously, the data volume wasn't very large, so we never really considered efficiency issues, and the research into Camel's working principles wasn't deep. However, recently, as the business volume increased, Camel's efficiency has gradually become a bottleneck, so I got a general understanding of Camel's working principles based on logs. Although Camel is embedded into ActiveMQ, during the working process, Camel and ActiveMQ are actually relatively independent. We configure a connection to ActiveMQ in Camel.</span>

@@ -12,6 +12,7 @@ tags:
   - rocketMq
   - 消息队列
 abbrlink: 32580
+cover: /img/32580.png
 date: 2019-05-18 15:23:02
 ---
 解释一下rocketMq里的messageQueue为什么要拆分成writeQueue和readQueue.

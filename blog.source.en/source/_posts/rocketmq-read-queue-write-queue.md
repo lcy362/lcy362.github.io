@@ -12,6 +12,7 @@ tags:
   - rocketmq
   - message-queue
 abbrlink: 32580
+cover: /img/32580.png
 date: 2019-05-18 15:23:02
 ---
 Explaining why MessageQueue in RocketMQ is split into writeQueue and readQueue.

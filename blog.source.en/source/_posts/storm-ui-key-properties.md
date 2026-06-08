@@ -11,6 +11,7 @@ categories:
 tags:
   - storm
 abbrlink: 62259
+cover: /img/62259.png
 date: 2015-11-06 21:44:00
 ---
 Storm UI is very helpful for troubleshooting issues encountered during Storm usage, but some properties have unclear meanings. Although they are all simple concepts, not knowing them can be quite frustrating.

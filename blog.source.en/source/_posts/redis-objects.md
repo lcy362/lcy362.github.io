@@ -13,6 +13,7 @@ tags:
 categories:
   - Redis Series
 abbrlink: 25564
+cover: /img/25564.png
 date: 2020-08-08 15:05:48
 ---
 [In the previous article](https://lichuanyang.top/posts/22179/), we introduced the low-level data structures defined in Redis. Next, in this article, we will combine these with the objects provided by Redis to see how these data structures are used in practice.

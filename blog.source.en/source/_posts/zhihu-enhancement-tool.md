@@ -13,6 +13,7 @@ tags:
   - tampermonkey
   - chrome-extension
 abbrlink: 44912
+cover: /img/44912.png
 date: 2023-12-22 17:24:18
 ---
 A Tampermonkey tool for optimizing Zhihu's display.

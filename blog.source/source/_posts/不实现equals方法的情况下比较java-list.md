@@ -11,6 +11,7 @@ categories:
 tags:
   - java
 abbrlink: 28720
+cover: /img/28720.png
 date: 2017-04-10 19:57:00
 ---
 java里比较两个list的值是否一致，不考虑顺序，有多种方法，比如排序后直接用equals比较，相互之间执行两次containsAll等，这些办法都需要我们给list的元素类实现equals和hashcode方法。但是有一种特殊情况，如果我们并不方便去实习类的equals方法，例如是一个古老的第三方jar包，改代码会带来很多未知问题，这时候该怎么办呢。

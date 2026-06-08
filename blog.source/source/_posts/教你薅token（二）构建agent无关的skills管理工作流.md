@@ -18,6 +18,7 @@ tags:
   - 工作流
   - CLI
 abbrlink: 26061
+cover: /img/26061.png
 date: 2026-06-04 22:00:00
 ---
 

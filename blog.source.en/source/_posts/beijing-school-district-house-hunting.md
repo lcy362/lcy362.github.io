@@ -12,6 +12,7 @@ tags:
   - reflections
   - journal
 abbrlink: 5236
+cover: /img/5236.png
 date: 2020-12-12 17:12:40
 ---
 I started looking at houses around the National Day holiday this year, and made a decision by early last month. I didn't expect to settle so quickly — I'd say destiny just had its way. Looking back at the experience, I feel it's worth documenting, as it's one of the biggest decisions in life.

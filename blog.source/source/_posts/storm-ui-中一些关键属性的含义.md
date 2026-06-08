@@ -11,6 +11,7 @@ categories:
 tags:
   - storm
 abbrlink: 62259
+cover: /img/62259.png
 date: 2015-11-06 21:44:00
 ---
 <span style="font-family: FangSong_GB2312; font-size: 14px;">Storm UI对于排查storm使用过程中遇到的问题会很有帮助，但是有些属性的含义不是很明确，虽然都是很简单的概念，如果不知道的话也会很难受。</span>

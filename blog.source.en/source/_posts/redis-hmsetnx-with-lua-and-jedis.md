@@ -13,6 +13,7 @@ tags:
   - redis
   - lua
 abbrlink: 63756
+cover: /img/63756.png
 date: 2017-04-06 17:54:00
 ---
 The set family of commands in Redis (including set, hset, etc.) basically have two versions: pure set and setnx. Setnx means "set not exist", which only executes the set operation when the key does not exist, without overwriting the existing value.

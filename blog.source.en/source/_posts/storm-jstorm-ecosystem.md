@@ -16,6 +16,7 @@ tags:
   - kafka
   - activemq
 abbrlink: 22103
+cover: /img/22103.png
 date: 2016-11-16 20:16:00
 ---
 Storm has a very rich surrounding ecosystem. There are ready-made toolkits available for interacting with Kafka, ActiveMQ, HDFS, HBase, and others. Most of these tools, including those introduced today, can also be used normally in JStorm.

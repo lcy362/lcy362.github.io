@@ -11,6 +11,7 @@ categories:
 tags:
   - java
 abbrlink: 28720
+cover: /img/28720.png
 date: 2017-04-10 19:57:00
 ---
 In Java, there are several ways to compare whether two Lists have the same values regardless of order, such as sorting followed by using `equals`, or executing `containsAll` in both directions, etc. All of these methods require us to implement the `equals` and `hashCode` methods for the element classes in the list.
