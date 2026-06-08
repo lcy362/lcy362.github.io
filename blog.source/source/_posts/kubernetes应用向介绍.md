@@ -12,6 +12,7 @@ categories:
 tags:
   - kubernetes
 abbrlink: 55227
+cover: /img/55227.png
 date: 2023-01-28 19:06:17
 ---
 这篇教程不会关注 kubernetes 的部署、架构、实现方式等内部原理，而是完全从一个使用 kubernetes 的开发人员的视角去介绍kubernetes是什么，从而帮助了解如何更好的去利用 kubernetes 的特性。

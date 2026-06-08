@@ -13,6 +13,7 @@ tags:
   - hawtio
   - monitoring
 abbrlink: 11299
+cover: /img/11299.png
 date: 2017-04-01 19:42:00
 ---
 Hawtio (hawt.io) is an open-source monitoring system that provides multiple startup methods. It can run as a standalone JAR or WAR package and remotely connect to other applications for monitoring, or it can be directly embedded into our own applications.

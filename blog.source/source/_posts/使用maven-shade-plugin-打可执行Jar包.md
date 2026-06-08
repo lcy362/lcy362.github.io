@@ -12,6 +12,7 @@ tags:
   - java
   - maven
 abbrlink: 3945
+cover: /img/3945.png
 date: 2017-05-14 09:32:00
 ---
 eclipse里有一个功能叫做“打可执行(runnable) jar包”, 用这个功能可以把一个工程自身和所有依赖包打成一个fat jar，并且指定Main方法，这样直接使用java jar xxx.jar就可以运行代码了。

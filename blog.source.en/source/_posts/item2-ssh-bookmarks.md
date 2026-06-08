@@ -14,6 +14,7 @@ tags:
   - ssh-auto-login
   - ssh-passwordless-login
 abbrlink: 20763
+cover: /img/20763.png
 date: 2021-10-08 16:45:42
 ---
 If you're like me and frequently need to access different remote servers, recording server IPs and entering passwords can be very tedious. Fortunately, by making some configurations in iTerm2, this pain point can be well addressed. The final result is similar to configuring SSH bookmarks, enabling iTerm2 to remember SSH passwords and achieve passwordless and automatic login.

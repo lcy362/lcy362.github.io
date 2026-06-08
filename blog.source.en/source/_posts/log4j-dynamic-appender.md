@@ -11,6 +11,7 @@ categories:
 tags:
   - logging
 abbrlink: 42764
+cover: /img/42764.png
 date: 2017-06-30 19:30:00
 ---
 In addition to configuring Log4j through configuration files in formats such as properties and XML, Log4j also provides various interfaces that allow you to dynamically modify Log4j configuration using code, such as adding an appender to a logger. The method is straightforward: create a new appender and add it to the logger. Here is a sample code:

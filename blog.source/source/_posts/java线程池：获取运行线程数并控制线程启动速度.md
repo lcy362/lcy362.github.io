@@ -13,6 +13,7 @@ tags:
   - java
   - 多线程
 abbrlink: 5707
+cover: /img/5707.png
 date: 2017-05-26 20:36:00
 ---
 在java里， 我们可以使用Executors.newFixedThreadPool 来创建线程池， 然后就可以不停的创建新任务，并用线程池来执行了。

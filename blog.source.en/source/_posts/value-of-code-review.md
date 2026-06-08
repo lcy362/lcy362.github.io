@@ -12,6 +12,7 @@ categories:
 tags:
   - development-practices
 abbrlink: 57205
+cover: /img/57205.png
 date: 2021-04-27 18:07:11
 ---
 In a typical development workflow, there are various review stages — product spec reviews, design reviews, test case reviews, code reviews, and so on. To conduct these reviews, meetings are inevitably introduced. Some people might think these activities are useless and a waste of time. In reality, they are extremely important. If you have the impression that reviews don't matter, it's likely due to one of two reasons: either a lack of understanding, or poor review practices in your environment.

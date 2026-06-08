@@ -11,6 +11,7 @@ categories:
 tags:
   - reflections
 abbrlink: 3423
+cover: /img/3423.png
 date: 2021-02-01 17:38:11
 ---
 Hi everyone, I'm Liusha, a programmer with nearly six years of work experience. My career has spanned companies with very different cultures and atmospheres. I've collaborated with many different types of people and observed numerous inefficiencies. At the same time, I've always felt that my own development efficiency is quite high. Throughout my career, I've rarely had to handle work tasks outside of my eight-hour workday. Even when forced to work overtime due to company policy, I was usually executing my own learning plan or doing some deep thinking. So, I'd like to share a systematic summary of development efficiency with everyone.

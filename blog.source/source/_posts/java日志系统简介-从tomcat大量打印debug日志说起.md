@@ -13,6 +13,7 @@ tags:
   - java
   - 日志
 abbrlink: 4433
+cover: /img/4433.png
 date: 2017-03-31 19:47:00
 ---
 目前，java下应用最广泛的日志系统主要就是两个系列: log4j和slf4j+logback 。

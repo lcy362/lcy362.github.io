@@ -13,6 +13,7 @@ tags:
   - tampermonkey
   - chrome-extension
 abbrlink: 23393
+cover: /img/23393.png
 date: 2022-12-28 18:29:01
 ---
 Everyone knows what kind of website Zhihu is. Today, we're sharing a small tool to make your Zhihu browsing experience at work more enjoyable.

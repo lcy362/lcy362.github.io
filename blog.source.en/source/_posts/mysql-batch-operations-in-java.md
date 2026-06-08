@@ -14,6 +14,7 @@ tags:
   - mysql
   - batch-not-working
 abbrlink: 63688
+cover: /img/63688.png
 date: 2020-03-13 17:54:38
 ---
 As is well known, using batch operations with MySQL can significantly improve performance when dealing with large datasets. However, when using MySQL in Java, certain details must be carefully handled; otherwise, batch operations may not actually take effect, and you won't benefit from the performance gains of batching.

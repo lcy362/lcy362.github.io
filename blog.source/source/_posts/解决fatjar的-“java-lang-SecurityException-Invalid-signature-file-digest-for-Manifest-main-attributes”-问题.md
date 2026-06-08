@@ -6,6 +6,7 @@ description: "解决 Fat Jar 合并时因签名校验导致的 SecurityException
 tags:
   - java
 abbrlink: 2478
+cover: /img/2478.png
 date: 2017-04-27 14:16:00
 keywords:
   - Fat

@@ -13,6 +13,7 @@ tags:
   - kafka
   - 成长
 abbrlink: 40931
+cover: /img/40931.png
 date: 2016-12-29 17:21:00
 ---
 ## 问题过程

@@ -14,6 +14,7 @@ tags:
 categories:
   - Book Notes
 abbrlink: 44866
+cover: /img/44866.png
 date: 2020-12-12 15:24:34
 ---
 "Civilization, Modernization, Value Investing, and China" is a book by the renowned value investor Mr. Lu Li. It discusses the development of civilization, the emergence of modernization, and value investing, and explores these topics in the context of China's actual situation. I personally feel this is an extremely valuable book worth reading repeatedly. It is of great help in understanding the logic of how this world operates and in building correct investment philosophy.

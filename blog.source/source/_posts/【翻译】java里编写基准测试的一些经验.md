@@ -13,6 +13,7 @@ tags:
   - java
   - 测试
 abbrlink: 4987
+cover: /img/4987.png
 date: 2017-06-05 20:39:00
 ---
 有时候我们需要写一些简单的性能测试代码，恰好在stackoverflow上看到一篇经验之谈，https://stackoverflow.com/questions/504103/how-do-i-write-a-correct-micro-benchmark-in-java， 怎样写基准测试来尽量屏蔽掉环境的影响。

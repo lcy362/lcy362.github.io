@@ -10,6 +10,7 @@ categories:
 tags:
   - reflections
 abbrlink: 54296
+cover: /img/54296.png
 date: 2020-12-29 11:28:44
 ---
 Seeing this title, you might think this is going to be about information science. It's actually not — I just recently observed some things and felt compelled to share my thoughts. I happened to come across two statements online where I happened to be quite familiar with the facts, so I感慨ed that second-hand information is truly unreliable.
