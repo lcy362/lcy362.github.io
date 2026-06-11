@@ -191,7 +191,74 @@ hexo new "English Title"
 # 编辑内容，并在 front-matter 中添加 abbrlink: <上面的值>
 ```
 
-### 4. 验证 abbrlink 一致性
+### 5. 新增文章标题图（Cover Image）
+
+每篇文章都需要一张标题图，中英文对应文章共用同一张。
+
+#### 5.1 用 Agnes AI 生成图片
+
+API Key 存放在 `~/.hermes/.env` 的 `AGNES_API_KEY` 中。使用 `agnes-image-2.1-flash` 模型（免费）：
+
+```bash
+export AGNES_API_KEY=$(grep AGNES_API_KEY ~/.hermes/.env | cut -d= -f2)
+
+curl -X POST "https://apihub.agnes-ai.com/v1/images/generations" \
+  -H "Authorization: Bearer $AGNES_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "agnes-image-2.1-flash",
+    "prompt": "A minimalist blog header illustration about <文章主题>...",
+    "size": "1792x1024"
+  }'
+```
+
+从返回的 JSON 中获取图片 URL 并下载。
+
+#### 5.2 压缩图片
+
+原始 PNG 通常 2MB+，必须压缩为 JPEG（约 75KB/张）：
+
+```python
+from PIL import Image
+
+im = Image.open("downloaded.png")
+# 缩放到最大宽度 1200px
+w, h = im.size
+if w > 1200:
+    im = im.resize((1200, int(h * 1200 / w)), Image.LANCZOS)
+# 转换 RGBA 为 RGB（白色背景）
+if im.mode != "RGB":
+    bg = Image.new("RGB", im.size, (255, 255, 255))
+    bg.paste(im, mask=im.split()[-1] if im.mode == "RGBA" else None)
+    im = bg
+im.save(f"{abbrlink}.jpg", "JPEG", quality=82, optimize=True)
+```
+
+#### 5.3 放置图片
+
+将压缩后的 `{abbrlink}.jpg` 复制到中英文两个站的图片目录：
+
+```bash
+cp {abbrlink}.jpg ~/blogs/blog.source/source/img/
+cp {abbrlink}.jpg ~/blogs/blog.source.en/source/img/
+```
+
+#### 5.4 配置文章 front-matter
+
+在中英文文章的 YAML front-matter 中添加 `cover` 字段：
+
+```yaml
+cover: /img/{abbrlink}.jpg
+```
+
+#### 5.5 命名规范
+
+- 文件名：`{abbrlink}.jpg`（如 `12345.jpg`）
+- 格式：JPEG，quality=82
+- 最大宽度：1200px
+- 引用路径：`/img/{abbrlink}.jpg`
+
+### 6. 验证 abbrlink 一致性
 
 ```bash
 cd ~/blogs
