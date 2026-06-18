@@ -28,7 +28,7 @@ cover: /img/22470.jpg
 
 算了，自己搞一个吧。
 
-于是就有了 [Agnes Video Generator](https://github.com/easyeye163/agnes-video-generator)。说白了就是一个免费的AI视频生成器，不是那种"免费试用3次"的套路，是从写文案到出片、配音、上字幕，全程不花一分钱。只需要去 [Agnes AI](https://platform.agnes-ai.com) 注册个免费API Key就行。
+于是就有了 [Agnes Video Generator](https://github.com/easyeye163/agnes-video-generator)（[官网](https://video.lichuanyang.top/)）。说白了就是一个免费的AI视频生成器，不是那种"免费试用3次"的套路，是从写文案到出片、配音、上字幕，全程不花一分钱。只需要去 [Agnes AI](https://platform.agnes-ai.com) 注册个免费API Key就行。
 
 <!-- more -->
 
@@ -133,6 +133,6 @@ cd agnes-video-generator
 
 做这个东西就是因为不想花钱。AI视频这东西挺有意思的，但按秒计费的方式让试错成本太高了，很多想法还没试就放弃了。既然有免费的模型可以用，我就搭了这么一套工具，让想玩的人都能试试。
 
-MIT协议开源，代码都在 [GitHub](https://github.com/easyeye163/agnes-video-generator) 上。有问题可以提issue，也欢迎PR。
+MIT协议开源，代码都在 [GitHub](https://github.com/easyeye163/agnes-video-generator) 上。官网：[video.lichuanyang.top](https://video.lichuanyang.top/)。有问题可以提issue，也欢迎PR。
 
 反正免费的，试试呗。
