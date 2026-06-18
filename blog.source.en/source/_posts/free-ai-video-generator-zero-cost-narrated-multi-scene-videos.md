@@ -22,7 +22,7 @@ The other day I wanted to generate a short AI video, maybe 15 seconds. Opened up
 
 So I figured, why not just build one myself.
 
-That's how [Agnes Video Generator](https://github.com/easyeye163/agnes-video-generator) ([official website](https://video.lichuanyang.top/)) came to be. It's a free AI video generator — and I don't mean "free trial" or "free for 3 generations." I mean the whole thing: script writing, image synthesis, video rendering, voiceover, subtitles, all of it costs nothing. You just need a free API key from [Agnes AI](https://platform.agnes-ai.com) and you're set.
+That's how [Agnes Video Generator](https://github.com/lcy362/agnes-video-generator) ([official website](https://video.lichuanyang.top/)) came to be. It's a free AI video generator — and I don't mean "free trial" or "free for 3 generations." I mean the whole thing: script writing, image synthesis, video rendering, voiceover, subtitles, all of it costs nothing. You just need a free API key from [Agnes AI](https://platform.agnes-ai.com) and you're set.
 
 <!-- more -->
 
@@ -94,7 +94,7 @@ A few things I spent an unreasonable amount of time on:
 ## Getting It Running
 
 ```bash
-git clone https://github.com/easyeye163/agnes-video-generator.git
+git clone https://github.com/lcy362/agnes-video-generator.git
 cd agnes-video-generator
 ./start.sh
 ```
@@ -127,6 +127,6 @@ But the core generation pipeline works reliably. I use it regularly without issu
 
 I built this because I didn't want to pay. AI video is genuinely interesting, but per-second billing makes the cost of experimentation too high. You end up not trying ideas because they'd cost money. Since there are free models available, I put together a toolchain so anyone can play around with AI video without watching a meter tick.
 
-It's MIT-licensed and all the code is on [GitHub](https://github.com/easyeye163/agnes-video-generator). Official website: [video.lichuanyang.top](https://video.lichuanyang.top/). Issues and PRs welcome.
+It's MIT-licensed and all the code is on [GitHub](https://github.com/lcy362/agnes-video-generator). Official website: [video.lichuanyang.top](https://video.lichuanyang.top/). Issues and PRs welcome.
 
 It's free. Give it a shot — worst case you waste ten minutes.
