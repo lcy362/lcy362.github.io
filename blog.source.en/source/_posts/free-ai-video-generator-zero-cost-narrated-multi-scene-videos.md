@@ -18,17 +18,16 @@ top_img: /img/22470.jpg
 cover: /img/22470.jpg
 ---
 
-The other day I wanted to generate a short AI video, maybe 15 seconds. Opened up one of those popular tools, saw the pricing — per-second billing, and a one-minute video would cost me more than my lunch.
-
-So I figured, why not just build one myself.
-
-That's how [Agnes Video Generator](https://github.com/lcy362/agnes-video-generator) ([official website](https://video.lichuanyang.top/)) came to be. It's a free AI video generator — and I don't mean "free trial" or "free for 3 generations." I mean the whole thing: script writing, image synthesis, video rendering, voiceover, subtitles, all of it costs nothing. You just need a free API key from [Agnes AI](https://platform.agnes-ai.com) and you're set.
-
-The inspiration came from a quote by Bruce Yang, the founder of Agnes AI:
-
 > "The solution is not to suppress AI, but to make it a more equitable capability, so that everyone knows how to create more with AI. This is a very important vision for our company — to make world-class AI belong to everyone."
 
-Making AI videos today has an absurdly high barrier. Overseas services like Runway and Pika charge tens of dollars monthly, domestic platforms charge by the second once free quotas run out, and running open-source models locally requires a GPU costing over ten thousand RMB. But if the AI models themselves can be free, that door shouldn't be closed. This project exists to prove that point.
+This is something Bruce Yang, the founder of Agnes AI, said in an interview.
+
+Many Chinese AI companies today — DeepSeek, Zhipu, and others — are driving down the price of AI. To be fair, the cost of text and code processing has already been pushed remarkably low. But video is different. Making AI videos today has an absurdly high barrier — overseas services like Runway and Pika charge tens of dollars monthly, domestic platforms like Jimeng and Keling charge by the second once free quotas run out, and running open-source models locally requires a GPU costing over ten thousand RMB.
+
+But if the AI models themselves can be free, that door shouldn't be closed. This project exists to prove that point. [Agnes Video Generator](https://github.com/lcy362/agnes-video-generator) ([official website](https://video.lichuanyang.top/)) — it's a free AI video generator. Not "free trial" or "free for 3 generations," but the whole thing: script writing, image synthesis, video rendering, voiceover, subtitles, all at zero cost. You just need a free API key from [Agnes AI](https://platform.agnes-ai.com).
+
+Agnes's video model isn't perfect yet, to be honest. But I want to use this project to grow alongside Agnes, and contribute in my own small way toward AI equity.
+
 
 <!-- more -->
 
@@ -45,25 +44,6 @@ Give it a text prompt, get a video back. Depending on how much you want the tool
 **Digital Anchor — the newest one.** AI generates a virtual anchor (or upload your own image), creates dynamic anchor clips with TTS narration and subtitles, and loops them into a complete anchor video. Perfect for product presentations or news-style content.
 
 For detailed parameters and usage guides for each mode, check the [official website](https://video.lichuanyang.top/).
-
-## How Is This Free?
-
-Fair question. Free usually means "you get what you pay for," right?
-
-The honest answer is: Agnes AI, the platform this is built on, offers free model APIs. It's not some hack or workaround:
-
-| What it does | Model used | Price |
-|-------------|-----------|-------|
-| Writes scripts and narration | agnes-2.0-flash | $0 |
-| Generates images | agnes-image-2.1-flash | $0 |
-| Generates video | agnes-video-v2.0 | $0 |
-| Voiceover | Microsoft Edge TTS | $0 (no API key needed) |
-
-The first three are Agnes AI's free-tier models. The voiceover uses Microsoft Edge TTS, which has always been free. Put them together and you get a full video production pipeline at zero cost.
-
-Why would Agnes AI offer these models for free? Bruce Yang puts it simply: "Making world-class AI belong to everyone." It's not charity — it's a belief that AI shouldn't belong only to those who can afford the bill. To be honest, the video model isn't perfect yet — complex actions occasionally deform — but it iterates fast. I chose to grow with it rather than wait for a "perfect" commercial solution.
-
-As for quality — it's genuinely usable. Edge TTS's Chinese voices surprised me the most; the "Xiaoxiao" voice sounds surprisingly human. Is it going to match top-tier paid tools? No. But then again, those tools charge by the second.
 
 ## A Few Details Worth Mentioning
 
@@ -102,10 +82,6 @@ No point in me describing the output — just watch:
 - [Manuscript video](https://v.douyin.com/eSGE9KENWVU/) — pasted a long article, auto-split with different visuals per segment
 
 My favorite is the second one. The narration and subtitles really make it feel like something you'd actually watch.
-
-## Things I Should Be Honest About
-
-The project is early stage — corner cases may not all be handled. Flaky network can cause occasional retry failures, but usually works if you just run it again. The core generation pipeline works reliably. If you run into issues, feel free to file one on [GitHub](https://github.com/lcy362/agnes-video-generator).
 
 ## That's About It
 
