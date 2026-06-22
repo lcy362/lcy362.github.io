@@ -161,4 +161,6 @@ ViMax-Agnes 的改造也让我验证了一件事：**当免费模型的质量够
 
 项目开源在这里：[github.com/lcy362/vimax-agnes](https://github.com/lcy362/vimax-agnes)，欢迎 star 和提 issue。
 
+> **2026年6月更新**：本文工具已迭代为 [Agnes Video Generator](https://github.com/lcy362/agnes-video-generator)，支持 Web UI 和多语言，功能更完善，推荐使用新版本。
+
 原文地址：https://lichuanyang.top/posts/65500/
