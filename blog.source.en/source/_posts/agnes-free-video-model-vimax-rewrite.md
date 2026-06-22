@@ -164,4 +164,6 @@ The ViMax-Agnes rewrite confirmed something I'd been thinking: **when free model
 
 The project is open source: [github.com/lcy362/vimax-agnes](https://github.com/lcy362/vimax-agnes). Stars and issues welcome.
 
+> **Updated June 2026**: This tool has evolved into [Agnes Video Generator](https://github.com/lcy362/agnes-video-generator) with Web UI and multilingual support. The new version is more feature-complete — check it out.
+
 Source: https://lichuanyang.top/en/posts/65500/
