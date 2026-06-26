@@ -24,40 +24,24 @@ This is something Bruce Yang, the founder of Agnes AI, said in an interview.
 
 Many Chinese AI companies today — DeepSeek, Zhipu, and others — are driving down the price of AI. To be fair, the cost of text and code processing has already been pushed remarkably low. But video is different. Making AI videos today has an absurdly high barrier — overseas services like Runway and Pika charge tens of dollars monthly, domestic platforms like Jimeng and Keling charge by the second once free quotas run out, and running open-source models locally requires a GPU costing over ten thousand RMB.
 
-But if the AI models themselves can be free, that door shouldn't be closed. This project exists to prove that point. [Agnes Video Generator](https://github.com/lcy362/agnes-video-generator) ([official website](https://video.lichuanyang.top/)) — it's a free AI video generator. Not "free trial" or "free for 3 generations," but the whole thing: script writing, image synthesis, video rendering, voiceover, subtitles, all at zero cost. You just need a free API key from [Agnes AI](https://platform.agnes-ai.com).
+Objectively speaking, video generation is genuinely expensive right now. Making industrial-grade video generation available to everyone isn't realistic. But ordinary people should still have ways to experiment and create. Thanks to Agnes for opening up their video model and giving us this opportunity. This project is just a small contribution toward that goal. [Agnes Video Generator](https://github.com/lcy362/agnes-video-generator) ([official website](https://video.lichuanyang.top/)) — it's a free AI video generator. Not "free trial" or "free for 3 generations," but the whole thing: script writing, image synthesis, video rendering, voiceover, subtitles, all at zero cost. You just need a free API key from [Agnes AI](https://platform.agnes-ai.com).
 
 Agnes's video model isn't perfect yet, to be honest. But I want to use this project to grow alongside Agnes, and contribute in my own small way toward AI equity.
 
 
 <!-- more -->
 
-## Four Ways to Use It
+## Multiple Ways to Use It
 
-Give it a text prompt, get a video back. Depending on how much you want the tool to do for you, there are four modes:
+Give it a text prompt, get a video back. A few different modes:
 
-**Simple Video — the quick one.** Type a description, pick resolution and duration, hit generate. Supports text-to-video, image-to-video, and keyframes.
+**Simple Video.** A straightforward API wrapper — good for testing. Most API parameters are exposed as config options.
 
-**Creative Video — the fun one.** You write a story idea and the AI takes over: expand story → generate character references → split into scenes → write shot prompts → generate per-scene video → narration → subtitles → final output. Ten steps, all automatic. I was honestly surprised when I first got this pipeline working end to end — the output quality was way better than I expected.
+**Creative Video.** You write a story idea, like "dark version of The Frog Prince," and the AI handles everything: expand story → generate character references → split into scenes → write shot prompts → generate per-scene video → narration → subtitles → final output. Ten steps, all automatic. By pre-generating end frames, it ensures the best possible visual continuity between scenes.
 
-**Manuscript Video — the practical one.** Paste a long article or script, it auto-splits by speech duration, generates video per segment, and stitches everything with a unified TTS narration + subtitle track. Great for explainers and course content.
-
-**Digital Anchor — the newest one.** AI generates a virtual anchor (or upload your own image), creates dynamic anchor clips with TTS narration and subtitles, and loops them into a complete anchor video. Perfect for product presentations or news-style content.
+**Manuscript Video & Digital Anchor.** Paste a long article or script — it auto-splits by speech duration and generates video per segment, or puts a digital anchor there to read it. Everything stitched with a unified TTS narration + subtitle track. Great for explainers and course content.
 
 For detailed parameters and usage guides for each mode, check the [official website](https://video.lichuanyang.top/).
-
-## A Few Details Worth Mentioning
-
-Subtitles, voiceover, scene transitions — the [official website](https://video.lichuanyang.top/) covers all the parameters in detail. Here are a few design choices I think are worth calling out:
-
-**Word-level subtitle sync.** Edge TTS gives you precise timestamps for every word, so subtitles are aligned at roughly one entry every 2-3 characters, perfectly synced with the voiceover. Long subtitles auto-wrap at punctuation marks, so you never get a dangling "the" on the second line.
-
-**Scenes don't hard-cut.** In keyframes mode, each scene's last frame automatically becomes the next scene's first frame, giving smooth visual transitions. The Frog Prince demo uses this. There are also transition-frame and independent modes.
-
-**Checkpoint resume.** A creative video takes 10 pipeline steps. If something breaks midway, each step's state is persisted to disk — restart and click "Resume" to pick up where you left off, without wasting API calls.
-
-**Audio is laid as one track.** Not per-scene voiceover stitched together (that accumulates silences). All video clips are concatenated first, then a single narration track is laid across the full timeline.
-
-The tech stack is Python FastAPI + a single-file Tailwind frontend. Not a huge codebase, but it does what it needs to. If you're curious about the implementation, the [GitHub source](https://github.com/lcy362/agnes-video-generator) and AGENTS.md have thorough documentation.
 
 ## Getting It Running
 
@@ -67,21 +51,19 @@ cd agnes-video-generator
 ./start.sh
 ```
 
-That's it. `start.sh` creates a virtual environment, installs dependencies, and starts the server. Only prerequisites: Python 3.10+ and ffmpeg.
+That's it. `start.sh` creates a virtual environment, installs dependencies, and starts the server.
 
-Once it's running, open `http://localhost:8765`, paste in your Agnes AI API key at the top, pick a mode, write your idea, and go grab a coffee.
+Once it's running, open `http://localhost:8765`, paste in your Agnes AI API key at the top, pick a mode, write your idea, and wait patiently for the results.
 
-If you're using an AI coding assistant like Cursor or Claude, the project has a detailed `AGENTS.md` — just tell your agent to read it and it'll handle the whole setup on its own.
+If you're using an AI coding assistant like Cursor or Claude, I've included a dedicated guide for AI Agents. Just tell your agent to read the `Agents.md` file in the project — it'll handle the whole setup on its own.
 
 ## Demos
 
-No point in me describing the output — just watch:
+I made a few demos — check them out:
 
 - [The Frog Prince — no narration](https://v.douyin.com/L4F6KdGnD6U/) — 5 scenes, keyframes chaining, fully auto-generated
-- [Same story, with voiceover and subtitles](https://v.douyin.com/l2FlbF1Jdz0/) — this is where it starts to feel like a real video
+- [Same story, with voiceover and subtitles](https://v.douyin.com/l2FlbF1Jdz0/) — AI narration + auto subtitles, see the subtitle effect
 - [Manuscript video](https://v.douyin.com/eSGE9KENWVU/) — pasted a long article, auto-split with different visuals per segment
-
-My favorite is the second one. The narration and subtitles really make it feel like something you'd actually watch.
 
 ## That's About It
 
@@ -89,6 +71,4 @@ Going back to Bruce Yang's words — "making world-class AI belong to everyone."
 
 This project isn't some grand mission. It's just about keeping the door to AI video creation open. No subscription, no fancy GPU, no cost at all — just a free API key and a machine that can run Python.
 
-MIT-licensed, code on [GitHub](https://github.com/lcy362/agnes-video-generator), official website at [video.lichuanyang.top](https://video.lichuanyang.top/). Issues and PRs welcome.
-
-It's free. Give it a shot — worst case you waste ten minutes.
+Code on [GitHub](https://github.com/lcy362/agnes-video-generator), official website at [video.lichuanyang.top](https://video.lichuanyang.top/). Bug reports welcome.
