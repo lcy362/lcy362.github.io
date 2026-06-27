@@ -15,7 +15,12 @@ abbrlink: 32479
 cover: /img/32479.jpg
 date: 2016-01-05 18:09:00
 ---
+
+## Security Risks of Web Console
+
 ActiveMQ's web console is built on Jetty, and its permission management is also based on Jetty. Based on requirements, different permissions can be assigned to different users. Jetty's permission management is fairly flexible, though it can be a bit cumbersome to configure. You can specify whether a particular role (role) has access to a specific page.
+
+## JAAS Authentication Configuration
 
 Below is a brief introduction to the configuration method. You only need to modify the following files under `/conf`: `jetty.xml` and `jetty-realm.properties`.
 
@@ -26,6 +31,8 @@ This file configures all users' usernames, passwords, and their associated roles
 ```
 username: password [,rolename ...]
 ```
+
+## Role and Permission Definition
 
 **2. jetty.xml**
 

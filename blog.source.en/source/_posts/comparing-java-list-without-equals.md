@@ -14,11 +14,17 @@ abbrlink: 28720
 cover: /img/28720.jpg
 date: 2017-04-10 19:57:00
 ---
+## Problem Statement
+
 In Java, there are several ways to compare whether two Lists have the same values regardless of order, such as sorting followed by using `equals`, or executing `containsAll` in both directions, etc. All of these methods require us to implement the `equals` and `hashCode` methods for the element classes in the list.
 
 However, there are special cases where it's not convenient for us to implement the `equals` method of a class — for example, when it comes from an ancient third-party JAR package where modifying the code could bring many unknown issues. What should we do in such situations?
 
+## Comparison Approach Without equals
+
 Actually, it's quite simple. The all-powerful Apache Commons already thought of this, so they added externally supplied `equals` and `hashCode` methods in `commons-collections4`. Even the `equals` and `hashCode` methods themselves don't need to be written by us — they can be implemented using the `commons-lang` package. The specific code is as follows:
+
+## Using Third-Party Tools
 
 ```
         <dependency>

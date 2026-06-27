@@ -15,9 +15,13 @@ abbrlink: 3945
 cover: /img/3945.jpg
 date: 2017-05-14 09:32:00
 ---
+## What Is a Fat Jar
+
 Eclipse has a feature called "Export Runnable JAR File" that packages a project along with all its dependencies into a Fat JAR, with a specified Main class, so you can run the code directly using `java jar xxx.jar`.
 
 <!-- more -->
+
+## Maven Shade Plugin Configuration
 
 However, what if you're not using Eclipse? Actually, with the help of Maven, we can easily achieve the same functionality. Maven provides a Shade Plugin that can be used to build Fat JARs, and it also supports specifying the Main class.
 
@@ -51,6 +55,8 @@ However, what if you're not using Eclipse? Actually, with the help of Maven, we 
   ...
 </project>
 ```
+
+## Common Issues
 
 Then when you build with Maven, it will produce a directly runnable package.
 

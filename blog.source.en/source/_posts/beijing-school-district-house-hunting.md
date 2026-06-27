@@ -19,11 +19,15 @@ I started looking at houses around the National Day holiday this year, and made 
 
 <!-- more -->
 
+## Background and Requirements
+
 Actually, I had been thinking about buying school district housing since the beginning of the year when my child was born. However, my current property wouldn't reach the five-year mark until early next year, so I couldn't get in before the Xicheng 731 policy deadline — a small regret.
 
 Regarding whether to buy school district housing, I strongly agree with a viewpoint I've seen online: buying a house is essentially buying a social circle. You're buying neighbors of a certain type and classmates for your children. At the same price point, some people would choose a better school district with a slightly worse living condition, while others would prefer more comfortable living with a slightly lower-rated school district. After some thought, I'd rather be in the first group.
 
 So my spouse and I established our basic principle: pursue the best school district within our budget while ensuring a basic quality of living. After calculating our budget, we aimed for around 8.5 million RMB, with a maximum of 9.5 million. A small two-bedroom unit with a decent floor plan would suffice.
+
+## Area Analysis
 
 First, I did an initial round of screening. Most areas in Haidian were too far from both our workplaces, so they were eliminated. Financial Street had too much price pressure. So I narrowed the scope to the Yuetan and Desheng areas in Xicheng first to look at the housing situation.
 
@@ -36,6 +40,8 @@ After considering these points, I felt there would always be an underlying conce
 So these remained as backup options — only to be considered if a very satisfactory property appeared. Then I went back to Yuetan to look at houses a few more times. Surprisingly, these visits felt significantly better than the first time. I'm not sure if it was because I'd gotten used to it or because of the agents — maybe the first time they showed me all the worst properties in Yuetan?
 
 During these subsequent visits, I became quite familiar with the situation of each neighborhood in Yuetan. But there really wasn't a property that satisfied all criteria. So I told the agents at each location and decided to wait for new listings before looking again.
+
+## The Final Decision
 
 Fortunately, at the end of October, a property appeared that was excellent in every way — nice neighborhood environment, built in 2000 (the newest in the surrounding area), close to the metro, high floor plan utilization, and acceptable orientation and lighting. Of course, except for the price. But the agent still recommended we meet with the landlord to talk. We talked from 4 PM until 10 PM that day. The owner was indeed a very straightforward and kind person, but the price gap between us was significant. Moreover, the property belonged to his parents, so he could only keep calling to persuade them. In the end, we couldn't reach an agreement that night.
 

@@ -15,7 +15,11 @@ abbrlink: 3945
 cover: /img/3945.jpg
 date: 2017-05-14 09:32:00
 ---
+## Fat Jar 是什么
+
 eclipse里有一个功能叫做“打可执行(runnable) jar包”, 用这个功能可以把一个工程自身和所有依赖包打成一个fat jar，并且指定Main方法，这样直接使用java jar xxx.jar就可以运行代码了。
+
+## Maven Shade Plugin 配置
 
 但是在不使用eclipse的时候呢？其实，借助maven，我们很容易实现同样功能。maven提供了一个shade plugin,可以用来打fat jar, 同时也提供了指定main方法的功能。
 
@@ -49,6 +53,8 @@ eclipse里有一个功能叫做“打可执行(runnable) jar包”, 用这个功
   ...
 </project>
 ```
+
+## 常见问题
 
 然后在用maven打包的时候就可以打出直接可运行的包了。
 ---

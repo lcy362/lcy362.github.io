@@ -10,6 +10,8 @@ A while back, I came across Andrej Karpathy's llm-wiki concept and felt an insta
 
 <!-- more -->
 
+## Why a Knowledge Hub
+
 First, what is llm-wiki?
 
 llm-wiki is a concept recently proposed by Andrej Karpathy: take all the written material you've accumulated over the years — notes, blog posts, reading highlights, work logs — treat it as a "corpus," and let an LLM automatically extract concepts, create pages, and weave cross-references into a structured, continuously evolving personal wiki.
@@ -17,6 +19,8 @@ llm-wiki is a concept recently proposed by Andrej Karpathy: take all the written
 The core premise is simple: everyone produces a substantial amount of structured, insightful writing in their daily work and learning — it's just scattered everywhere with no connections. llm-wiki uses an LLM-driven process to string these scattered pearls together. You keep producing and collecting content; the LLM handles the organization and management.
 
 Unlike traditional manual wiki maintenance — creating pages, writing summaries, adding links, tedious and hard to sustain — llm-wiki brings the organizational cost down to nearly zero. You just tell the LLM the structure and rules of your knowledge base (an AGENTS.md file), and it can repeatedly execute ingestion, updating, and auditing operations. My personal experience: watching an AI turn scattered notes into a structured network of cross-references feels like clearing out a long-overdue debt.
+
+## Data Ingestion
 
 The first thing I did was export all my Notion notes — development knowledge, investing insights, and countless miscellaneous records — and move them into Obsidian.
 
@@ -40,6 +44,8 @@ Then it was time to execute. Watching the AI continuously generate wiki content,
 
 After that, I did a few more things: bringing in my Zhihu writings and WeChat Reading notes. I've written over a thousand answers on Zhihu, and over the years I've read more than a hundred books on WeChat Reading. Beyond just highlights, these are significant components of my knowledge system. Coincidentally, around that time, WeChat Reading released their official skill, so I put it to use.
 
+## Importing Zhihu Content
+
 **How to Sync Zhihu Writings to Obsidian**
 
 Zhihu doesn't provide an official data export API, so I used Playwright for browser automation.
@@ -53,6 +59,7 @@ Zhihu doesn't provide an official data export API, so I used Playwright for brow
 
 **Features**: Incremental sync — only fetches new content, existing files are never reprocessed. Files are organized by content type (answers/articles/pins).
 
+## Syncing WeChat Reading Notes
 
 **How to Sync WeChat Reading Notes to Obsidian**
 
@@ -67,6 +74,8 @@ WeChat Reading provides an Agent API Gateway — apply for an API key and you're
 **Output format**: Book title and author as the heading, each chapter's highlights in blockquote format (with dates), personal annotations placed below the corresponding highlights.
 
 **Features**: Fully incremental — the script maintains a state file of synced book IDs, only processing new additions on each run. Over 150 books' worth of notes silently flowed into Obsidian, becoming one of the richest sources of raw material for my knowledge hub.
+
+## Intelligent Retrieval with LLM Wiki
 
 At this point, the content layer was essentially ready. Then I started thinking: since most of my knowledge and creative output is here, could I start distilling... myself?
 
@@ -97,5 +106,7 @@ Reverse-engineers cognitive patterns, expressive styles, and value orientations 
 Both processes are structurally similar, but one looks outward, structuring and organizing the knowledge you possess; the other looks inward, distilling and modeling your cognitive traits as an individual. This "two sides of the same coin" design is, I think, the most fascinating part of the entire system.
 
 Lately I've been looking at projects like Nüwa online to see if there are better approaches to personality distillation.
+
+## Results and Reflections
 
 That's the recent story of my knowledge hub. If you have thoughts or ideas, I'd love to hear them.

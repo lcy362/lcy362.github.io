@@ -15,6 +15,8 @@ abbrlink: 25187
 cover: /img/25187.jpg
 date: 2012-10-28 18:42:00
 ---
+## 概述
+
 参考[http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html](http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html)
 
 &nbsp;
@@ -47,7 +49,9 @@ import org.apache.hadoop.util.GenericOptionsParser;
 
 public class WordCount {
 
-　　public static class&nbsp;**TokenizerMapper**
+　　## Mapper 实现
+
+public static class&nbsp;**TokenizerMapper**
 
 　　　　　　extends Mapper&lt;Object, Text, Text, IntWritable&gt;{ &nbsp;/<span style="color: #3366ff;">/继承org.apache.hadoop.mapreduce包中**Mapper**类，并**重写**其map方法</span>
 
@@ -77,7 +81,9 @@ public class WordCount {
 
 //系统自动对map结果进行排序等处理，reduce输入例 （asd,1-1-1)
 
-　　public static class&nbsp;**IntSumReducer**
+　　## Reducer 实现
+
+public static class&nbsp;**IntSumReducer**
 
 　　　　　　extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt; { &nbsp;//<span style="color: #3366ff;">Reducer&lt;KEYIN,VALUEIN,KEYOUT,VALUEOUT&gt;</span>
 
@@ -105,7 +111,9 @@ public class WordCount {
 
 &nbsp;
 
-　　public static void&nbsp;**main**(String[] args) throws Exception {
+　　## Main 方法
+
+public static void&nbsp;**main**(String[] args) throws Exception {
 
 　　　　Configuration conf = new Configuration();
 
@@ -143,7 +151,9 @@ public class WordCount {
 
 }
 
-//setInputFormat：设置map的输入格式，默认为TextInputFormat，key为LongWritable, value为Text
+## 其他配置说明
+
+setInputFormat：设置map的输入格式，默认为TextInputFormat，key为LongWritable, value为Text
 
 setNumMapTasks：设置map任务的个数，此设置通常不起作用，map任务的个数取决于输入的数据所能分成的input split的个数
 

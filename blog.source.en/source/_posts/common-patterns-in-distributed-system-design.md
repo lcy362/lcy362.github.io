@@ -19,6 +19,8 @@ Common distributed systems — whether databases like MySQL, Cassandra, HBase, m
 
 The implementation of these distributed systems typically needs to address two aspects: first, the system's own functionality; and second, maintaining good performance and stability in a distributed environment. Even two systems with completely different functions will have many similarities in how they address the second type of problem. This article focuses on the second type.
 
+## Core Challenges of Distributed Systems
+
 Next, let's enumerate the common goals of distributed systems, including but not limited to:
 
 + A large number of ordinary servers interconnected via a network, collectively providing services to the outside world.
@@ -41,6 +43,8 @@ What are the challenges in achieving these goals? Here are the main ones:
 
 Now, let's walk through the solutions to these problems.
 
+## Partitioning and Replication
+
 For process crashes, the key point is that simply ensuring no data loss during a crash is not difficult at all — the real challenge is achieving this while maintaining system performance.
 
 The first pattern to introduce is **Write-Ahead Log (WAL)**: the server stores every state change as a command in an append-only file on disk. Since append operations are sequential disk writes, they are typically very fast and can be completed without impacting performance. During server failure recovery, the log can be replayed to rebuild in-memory state.
@@ -54,6 +58,8 @@ WAL introduces a minor issue: the log keeps growing. How to handle its own stora
 Segmentation splits a large log into smaller ones. Since WAL logic is generally simple, splitting is not complex — much easier than typical database sharding. This pattern is called **Segmented Log**, and the canonical implementation is Kafka's partitions.
 
 For cleanup, there is a pattern called **low-water mark**: a marker indicating which parts of the log can be cleaned up. The marking can be based on data status (redo log), preset retention time (Kafka), or more fine-grained cleanup and compaction (AOF).
+
+## Consistency Protocols
 
 Moving to network-related issues, a simple **heartbeat** pattern solves inter-node state synchronization. If no heartbeat is received within a time window, the node is considered down.
 
@@ -76,6 +82,8 @@ At this point, let's summarize. Essentially, an operation on a distributed syste
 
 The order of steps 2–5 is not fixed. The most important way a distributed system balances performance and stability is, in essence, deciding the order of these operations and when to return a success acknowledgment to the client. For example, MySQL's synchronous replication, asynchronous replication, and semi-synchronous replication are classic examples of these different orderings.
 
+## Fault Detection and Recovery
+
 For process pauses, the main problem scenario is: suppose the leader pauses. During the pause, a new leader is elected. When the original leader recovers, what should happen? The **Generation Clock** pattern addresses this — simply put, each leader is assigned a monotonically increasing generation number to indicate which "generation" of leader it is. Concepts like Raft's "term" and ZAB's "epoch" are implementations of this Generation Clock idea.
 
 For clock skew, in a distributed environment, clock differences between nodes are inevitable. Under the Leader-Followers pattern, this problem is already largely minimized. Many systems choose to perform all operations on the leader, with leader-follower replication taking the form of replicating and replaying logs. In this way, clock issues generally don't need to be considered. The only potential issue arises during leader failover, where the old leader and new leader might produce out-of-order data.
@@ -89,6 +97,8 @@ The **Lamport Clock** technique achieves this goal. Its logic is simple, as show
 ![lamport stamp](/img/lamport.png)
 
 Operations on a local node increment the local stamp by 1. During network communication — for example, when node C receives data from node B — it compares its current stamp with B's stamp + 1 and takes the larger value as its new stamp. This simple operation guarantees that the order of any two causally related operations (whether on the same node or communicated between nodes) is consistent across all nodes.
+
+## Design Principles Summary
 
 Additionally, there are relatively simpler considerations that frequently arise in distributed system design — such as how to distribute data evenly across nodes. For this, we might need to find an appropriate shard key based on the business scenario, or find a suitable hash algorithm. There is also **consistent hashing** technology, which gives us more flexibility in controlling data distribution.
 

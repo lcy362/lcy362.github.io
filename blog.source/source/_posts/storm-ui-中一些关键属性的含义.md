@@ -14,6 +14,8 @@ abbrlink: 62259
 cover: /img/62259.jpg
 date: 2015-11-06 21:44:00
 ---
+## Storm UI 概览
+
 <span style="font-family: FangSong_GB2312; font-size: 14px;">Storm UI对于排查storm使用过程中遇到的问题会很有帮助，但是有些属性的含义不是很明确，虽然都是很简单的概念，如果不知道的话也会很难受。</span>
 
 <span style="font-family: FangSong_GB2312; font-size: 14px;">先说一点，鼠标只到UI上的标题栏时，是可以看到这一属性的具体属性的，几篇google rank很高的文章，其实就是把这个信息整理了下来。</span>
@@ -21,6 +23,8 @@ date: 2015-11-06 21:44:00
 <span style="font-family: FangSong_GB2312; font-size: 14px;">其实大部分属性都是很直白的，看到名字就知道是什么意思，我在这儿之把一些可能造成困扰的属性列一下，方便大家查问题。</span>
 
 &nbsp;
+
+## 关键指标详解
 
 <div style="orphans: 2; word-wrap: break-word;"><span style="font-family: FangSong_GB2312; font-size: 14px;">emitted和transfered: emitted，就是发射出的数据条数，也就是调用OutputCollector的emit方法的次数。transferred则是实际tuple发送到下一个task的数目。乍一看是一样的对吗。其实一般情况下也确实是一样的。但是，比如，一个bolt 发射了数据，但是下游并没有其他bolt取这个数，这个bolt的transfer数就会是0\. 又比如，<span style="orphans: 2;">如果一个bolt A使用all group的方式(每一个bolt都要接收到)向bolt B发射tuple，那么transfered就会是emitted的数倍。</span></span></div>
 <div style="orphans: 2; word-wrap: break-word;"><span style="orphans: 2;"><span style="font-family: FangSong_GB2312; font-size: 14px;"><span style="orphans: 2;">excute latency和process latency : excute latency 很直白，就是代码里excute()这个方法的执行时间, 而process latency则是excute方法执行，直到调用ack方法的时间，可以认为是业务代码执行所需的时间，正常情况下，<span style="orphans: 2;">excute latency是会大于<span style="orphans: 2;">process latency的，但是如果你一直不去ack,process latency会远远大于excute latency。</span></span></span>
