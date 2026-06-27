@@ -19,6 +19,7 @@ faq:
   - q: "What's the difference between canary release, blue-green deployment, and rolling updates?"
   - q: "Can traffic be precisely controlled with this dual-Deployment approach?"
   - q: "What if I want to route by user dimension for canary releases?"
+tldr: Simple K8s canary with dual Deployment + shared Service, no extra components
 date: 2021-12-23 18:55:20
 ---
 Canary release is actually a process well-suited for cloud-native environments, so I believe many people have the need to perform canary releases under Kubernetes. In this article, we introduce a very simple approach to canary release.

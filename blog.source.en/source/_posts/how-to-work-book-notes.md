@@ -12,7 +12,12 @@ categories:
 tags:
   - personal-growth
   - book-notes
+faq:
+  - Q: Should programmers read a book like this?
+  - Q: What is work for?
+  - Q: How do you learn to enjoy work you don't like?
 abbrlink: 3513
+tldr: Treat your job as running your own company
 date: 2021-05-15 17:29:34
 top_img: /img/book-kantang.jpg
 cover: /img/book-kantang.jpg
@@ -78,4 +83,18 @@ Many mistakes, even if you compensate for them afterward, will inevitably leave 
 At the end of the book, the author provides a formula. For work, thinking and passion are just as important as ability. And given this understanding, improving passion and changing your thinking is far easier than improving ability. So, wanting to improve work effectiveness isn't actually that difficult — the key is to build a reasonable understanding of work.
 
 I am Liusha, thank you for reading this article. If you found it helpful, please give it a like and follow. If you have questions, you can also reach me on my [personal blog](https://lichuanyang.top/) or WeChat public account (Mobility).
+
+## Frequently Asked Questions
+
+### Q: Should programmers read a book like this?
+
+Yes, but I recommend approaching it with a critical mindset rather than accepting everything at face value. The book's core value lies in getting you to first think through the question: "What is my relationship with work?" — are you working for the boss, or are you building skills and reputation for yourself? Once you've sorted that out, the book's ideas about passion, perfectionism, and sustained effort become genuinely informative. I suggest pairing it with the mental framework of "treating yourself as a company" for the best results.
+
+### Q: What is work for?
+
+It's both an economic source and a spiritual pursuit. The financial side is obvious, but more importantly, the drive to create value is deeply embedded in human nature — many financially independent people still choose to work. The book's answer is direct: work is not just a means of earning compensation, but a practice of character cultivation, a source of joy, and a way to understand the meaning of life. If you can't fully embrace this view yet, start with "run yourself as a company" — at least make sure what you produce at work translates concretely into your own accumulation.
+
+### Q: How do you learn to enjoy work you don't like?
+
+Doing work you don't like is the norm — very few people truly turn a hobby into a career, and even those who do often find the hobby losing its charm once it becomes work. The book offers two practical approaches: first, **put in effort first** — the positive feedback from your effort gradually builds engagement; second, **rejoice in small successes at work** — let every "I figured it out" moment fuel the energy to keep going. This isn't about motivational platitudes — it's about building a positive feedback loop through action.
 

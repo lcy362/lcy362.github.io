@@ -15,6 +15,7 @@ tags:
 categories:
   - redis系列
 abbrlink: 9329
+tldr: 理解Redis Cluster的16384个slot分配机制，就理解了它的核心原理
 date: 2017-04-14 20:02:00
 top_img: /img/redis-cluster.jpg
 cover: /img/redis-cluster.jpg

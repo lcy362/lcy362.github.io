@@ -11,7 +11,14 @@ categories:
   - 数据库
 abbrlink: 48312
 cover: /img/48312.jpg
+tldr: ClickHouse是OLAP领域的性能怪兽，列式存储+向量化执行让聚合查询飞快
 date: 2018-11-14 21:59:31
+howto:
+  - 安装ClickHouse：通过官方仓库安装ClickHouse服务端和客户端
+  - 创建表：使用MergeTree引擎创建列式存储表，指定分区键和排序键
+  - 导入数据：批量导入分析数据，ClickHouse会自动生成新part并异步merge
+  - 编写查询：使用标准SQL进行OLAP分析，充分利用列式存储和向量化执行优势
+  - 对比MySQL性能：在同等数据量下运行相同查询，直观感受列式存储在分析场景的性能优势
 tags:
   - 大数据
   - clickhouse
@@ -84,4 +91,11 @@ clickHouse是基于zookeeper的主主复制。写入任何可用的副本后，�
 此外，相对其他列存储数据库，clickhouse对sql语法的支持非常好，包括group by, order by, in, join等常用sql语句都支持。
 
 原文地址：https://lichuanyang.top/posts/48312/
----
+
+## 快速上手步骤
+
+1. **安装 ClickHouse**：以 Ubuntu 为例，`sudo apt-get install clickhouse-server clickhouse-client`，启动服务后使用 `clickhouse-client` 连接。
+2. **创建表**：使用 MergeTree 引擎建表，指定 `ORDER BY`（排序键）和 `PARTITION BY`（分区键，通常按日期），列按需定义，无需像 MySQL 那样为每列建索引。
+3. **导入数据**：通过 `clickhouse-client --query "INSERT INTO table FORMAT CSV" < data.csv` 或使用 `clickhouse-local` 工具批量导入。数据写入后立即可查，后台自动 merge。
+4. **编写查询**：使用标准 SQL 进行分析，ClickHouse 对 `GROUP BY`、`ORDER BY`、`JOIN` 等均有良好支持。建议查询时加上日期过滤条件以提升非主键查询性能。
+5. **对比 MySQL 性能**：将相同数据导入 MySQL 和 ClickHouse，运行相同的聚合分析查询，感受列式存储在 OLAP 场景下的数量级性能差异。

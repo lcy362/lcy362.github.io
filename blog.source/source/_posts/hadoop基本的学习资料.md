@@ -7,6 +7,11 @@ keywords:
   - MapReduce
   - 大数据
   - 学习资料
+faq:
+  - Q: 2026 年还要学 Hadoop 吗？
+  - Q: 学 Hadoop 从哪开始？
+  - Q: 学过时技术有价值吗？
+  - Q: 有了 Spark 还需要学 MapReduce 吗？
 categories:
   - 大数据
 tags:
@@ -14,6 +19,7 @@ tags:
   - 大数据
 abbrlink: 35575
 cover: /img/hadoop.jpg
+tldr: 2026年学Hadoop重点在HDFS和YARN，应用层直接用Spark
 date: 2012-10-28 18:05:00
 ---
 > ⚠️ 这是一篇 **2012 年**的学习笔记。Hadoop 生态在过去十几年发生了巨大变化，下面的链接已非常陈旧。我保留了原始内容作为历史记录，并补充了 2026 年的学习建议。
@@ -66,4 +72,22 @@ Hadoop 1.x → 2.x → 3.x 的几个关键变化值得了解：
 - [Hadoop 0.20.2 API](http://hadoop.apache.org/docs/r0.20.2/api/index.html) — 0.20.2 版本 API 文档
 
 > 回想 2012 年刚开始接触 Hadoop 的时候，还没有 Spark、没有数据湖、没有 Kubernetes。那时候 MapReduce 就是大数据处理的全部，连 Hive 都还在早期版本。技术的发展速度总是超出预期，但基础原理永远是值得学习的。
+
+## 常见问题
+
+### Q: 2026 年还要学 Hadoop 吗？
+
+要学，但不需要学到能写 MapReduce 的程度。HDFS 和 YARN 仍然是大数据基础设施的底座——Spark 默认跑在 YARN 上，Hive 数据存在 HDFS 里，甚至很多云原生数据平台底层还是 HDFS 兼容存储。理解分布式文件系统、资源调度、数据本地性这些核心概念，能帮你更好地理解上层框架的设计决策。
+
+### Q: 学 Hadoop 从哪开始？
+
+建议三步走：**入门阶段**先理解 HDFS（NameNode/DataNode 架构、副本机制）和 YARN（资源管理）的核心概念；**实践阶段**直接上手 Spark 做数据处理，而不是死磕 MapReduce 编程；**进阶阶段**了解 Hadoop 1.x → 2.x → 3.x 的架构演进，理解为什么引入了 Erasure Coding、NameNode Federation 等特性。
+
+### Q: 学过时技术有价值吗？
+
+有价值，但要区分"学原理"和"学操作"。十年前的技术操作细节确实会过时（比如某个版本的 API 调用方式），但它的设计原理往往历久弥新。MapReduce 的 shuffle 模型今天在 Spark 中依然存在，HDFS 的副本机制和机架感知思路在云存储设计中也能看到影子。关键在于通过过时的实现去理解不变的设计思路。
+
+### Q: 有了 Spark 还需要学 MapReduce 吗？
+
+不需要学具体的 MapReduce 编程，但建议理解它的计算模型。MapReduce 的 map-shuffle-reduce 处理流程、数据本地性优化、容错机制，这些思想在 Spark 中都有延续和改进。理解了 MapReduce 的"慢"从何而来，才能真正理解 Spark 的"快"——内存计算、DAG 调度、RDD 血缘关系这些优化，都是对 MapReduce 短板的直接回应。
 ---

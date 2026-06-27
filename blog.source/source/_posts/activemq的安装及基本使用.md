@@ -13,6 +13,7 @@ categories:
   - activemq系列文章
 abbrlink: 48216
 cover: /img/48216.jpg
+tldr: ActiveMQ五分钟上手：下载解压启动，开箱即用
 date: 2018-01-30 08:46:07
 ---
 ## 安装

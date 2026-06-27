@@ -9,6 +9,11 @@ keywords:
   - CLI
   - bash
   - 效率工具
+faq:
+  - Q: Skills 管理和 Agent 管理有什么区别？
+  - Q: 跨平台兼容性怎么保证？
+  - Q: pks 和直接在 Agent 里配置 skill 有什么不同？
+  - Q: 为什么用 bash 而不是 Python 或 Node.js？
 categories:
   - AI实践
 tags:
@@ -19,6 +24,7 @@ tags:
   - CLI
 abbrlink: 26061
 cover: /img/26061.jpg
+tldr: skills管理的精髓是agent无关性，让技能可以在不同平台间复用
 date: 2026-06-04 22:00:00
 ---
 
@@ -169,3 +175,22 @@ pks不是什么高深的东西，408行bash而已。但它代表了一个态度�
 该薅token薅token，该管skill管skill。钱要省，活要干好，这两件事不矛盾。
 
 原文地址：https://lichuanyang.top/posts/26061/
+
+## 常见问题
+
+### Q: Skills 管理和 Agent 管理有什么区别？
+
+Skills 管理是**独立于 Agent 平台的**，你把所有 skill 统一放在一个全局仓库里，项目需要什么就装什么。Agent 管理则是把 skill 配进某个 Agent 的内部配置中（如 OpenCode 的 `.opencode/skills/` 或 Cursor 的 `.cursorrules`），绑定到具体平台。前者的好处是换平台时不需要迁移任何 skill，后者虽然集成度高，但一旦切 Agent 就需要重新配置。
+
+### Q: 跨平台兼容性怎么保证？
+
+关键是 **纯 Markdown**。pks 安装 skill 后生成的都是 `.md` 文件，放在项目的 `.skills/` 目录下，附带一个自动维护的 `INDEX.md` 索引文件。任何 Agent 扫描项目目录时都会发现这个结构，读 INDEX.md 就知道有哪些 skill，再按需加载具体的 SKILL.md。不需要特定格式，不需要平台 SDK，纯 Markdown 是最大的公约数。
+
+### Q: pks 和直接在 Agent 里配置 skill 有什么不同？
+
+直接配在 Agent 里方便，但 skill 会"绑定"到那个 Agent。pks 的做法是**从 Agent 中解耦 skill 管理**——skill 存在全局仓库，按需安装到任何项目中。最大的实际好处：按需安装意味着**只有装了的 skill 才消耗 token**。一个纯前端项目不需要装数据库规范的 skill，一个老项目不需要装新人引导的 skill。相比把所有规则塞进一个大配置文件让 Agent 每次对话都吃一遍，pks 能省下大量无用 token。
+
+### Q: 为什么用 bash 而不是 Python 或 Node.js？
+
+零依赖。skill 管理工具本身不应该引入任何运行时负担——你的工作流已经够复杂了。408 行 bash 脚本在 macOS 和 Linux 上开箱即用，不需要安装解释器、不需要管理虚拟环境、不会因为某个运行时版本升级而挂掉。bash 十年前的脚本今天还能跑，这保证了你的工作流文档比任何框架都长寿。
+---

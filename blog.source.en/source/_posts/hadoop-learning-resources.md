@@ -12,8 +12,14 @@ categories:
 tags:
   - hadoop
   - big-data
+faq:
+  - Q: Do I still need to learn Hadoop in 2026?
+  - Q: Where should I start with Hadoop?
+  - Q: Is there value in learning outdated technologies?
+  - Q: With Spark around, do I still need MapReduce?
 abbrlink: 35575
 cover: /img/hadoop.jpg
+tldr: Focus on HDFS and YARN for 2026 Hadoop learning; use Spark for applications
 date: 2012-10-28 18:05:00
 ---
 > ⚠️ These are study notes from **2012**. The Hadoop ecosystem has changed dramatically over the past decade. The links below are very outdated. I've preserved the original content as a historical record and added 2026-era learning recommendations.
@@ -66,4 +72,22 @@ The following links were collected when I first started learning Hadoop. Most of
 - [Hadoop 0.20.2 API](http://hadoop.apache.org/docs/r0.20.2/api/index.html) — API docs for version 0.20.2
 
 > Back in 2012, when I first encountered Hadoop, there was no Spark, no data lakes, no Kubernetes. MapReduce *was* big data processing in its entirety — even Hive was in its early days. Technology always advances faster than expected, but the fundamentals are always worth learning.
+
+## Frequently Asked Questions
+
+### Q: Do I still need to learn Hadoop in 2026?
+
+Yes, but you don't need to go as far as writing MapReduce programs. HDFS and YARN remain the foundation of big data infrastructure — Spark runs on YARN by default, Hive data lives in HDFS, and even many cloud-native data platforms use HDFS-compatible storage under the hood. Understanding core concepts like distributed file systems, resource scheduling, and data locality helps you better grasp the design decisions of upper-layer frameworks.
+
+### Q: Where should I start with Hadoop?
+
+I recommend a three-step approach: **Stage 1 — Foundations**: understand HDFS (NameNode/DataNode architecture, replication) and YARN (resource management) at the conceptual level. **Stage 2 — Practice**: jump straight into Spark for data processing rather than grinding through MapReduce programming. **Stage 3 — Going deeper**: learn about the architectural evolution from Hadoop 1.x → 2.x → 3.x, understanding why features like Erasure Coding and NameNode Federation were introduced.
+
+### Q: Is there value in learning outdated technologies?
+
+Yes, but distinguish between "learning the principles" and "learning the operations." Operational details from ten years ago do become obsolete (like version-specific API calls), but design principles often stand the test of time. MapReduce's shuffle model still exists in Spark today. HDFS's replication mechanism and rack-awareness design can be seen echoed in cloud storage architectures. The key is to extract timeless design insights from dated implementations.
+
+### Q: With Spark around, do I still need MapReduce?
+
+You don't need to learn MapReduce programming specifically, but understanding its computation model is worthwhile. MapReduce's map-shuffle-reduce pipeline, data locality optimizations, and fault tolerance mechanisms — these ideas are carried forward and improved in Spark. Understanding *why* MapReduce was slow is the best way to truly grasp *how* Spark achieves speed through in-memory computation, DAG scheduling, and RDD lineage. Each of these optimizations is a direct response to MapReduce's shortcomings.
 ---

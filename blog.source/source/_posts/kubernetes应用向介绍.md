@@ -13,7 +13,14 @@ tags:
   - kubernetes
 abbrlink: 55227
 cover: /img/55227.jpg
+tldr: Kubernetes的核心就三件事：部署、伸缩、服务发现
 date: 2023-01-28 19:06:17
+howto:
+  - 安装kubectl：下载并配置kubectl命令行工具，连接到K8s集群
+  - 创建第一个Deployment：编写Deployment YAML，指定镜像、端口和资源限制
+  - 暴露Service：创建Service对象，通过标签选择器关联Pod，暴露访问入口
+  - 水平伸缩：配置HPA，根据CPU或内存使用率自动调整Pod副本数
+  - 配置探针和钩子：添加liveness/readiness探针和preStop钩子，提升应用健壮性
 ---
 这篇教程不会关注 kubernetes 的部署、架构、实现方式等内部原理，而是完全从一个使用 kubernetes 的开发人员的视角去介绍kubernetes是什么，从而帮助了解如何更好的去利用 kubernetes 的特性。
 
@@ -91,6 +98,12 @@ hook则支持应用在一些特定阶段插入一些行为，比如preStop hook,
 
 这些都是需要应用方结合应用的实际情况精心设计的。
 
-此外，k8s的设计理念决定了在k8s环境下，“重启”会是一件非常稀松平常的事，像硬件故障、小概率的死循环、不健康的gc, 等不同类型的问题，都可以在k8s的自主重启下实现自愈； 自动的扩缩容扩充中，也会经常性的有节点启停。 所以说，应用需要让自己的启动流程顺畅一些，避免大量耗时或大量资源消耗。
+此外，k8s的设计理念决定了在k8s环境下，"重启"会是一件非常稀松平常的事，像硬件故障、小概率的死循环、不健康的gc, 等不同类型的问题，都可以在k8s的自主重启下实现自愈； 自动的扩缩容扩充中，也会经常性的有节点启停。 所以说，应用需要让自己的启动流程顺畅一些，避免大量耗时或大量资源消耗。
 
----
+## 快速上手步骤
+
+1. **安装 kubectl**：从官方下载 `kubectl` 二进制文件，配置 `~/.kube/config` 连接到 K8s 集群，运行 `kubectl get nodes` 验证连接。
+2. **创建第一个 Deployment**：编写 Deployment YAML，指定容器镜像、端口（`containerPort`）、CPU/内存限制，运行 `kubectl apply -f deployment.yaml`。
+3. **暴露 Service**：编写 Service YAML，通过 `selector` 标签关联 Deployment 的 Pod，指定 `type: LoadBalancer` 或 `NodePort`，运行 `kubectl apply -f service.yaml`。
+4. **水平伸缩**：运行 `kubectl autoscale deployment <name> --cpu-percent=80 --min=2 --max=10` 创建 HPA，通过压测观察 Pod 自动扩缩容。
+5. **配置探针与钩子**：在 Deployment 中添加 `livenessProbe`、`readinessProbe` 和 `lifecycle.preStop` 配置，确保应用在 K8s 环境下具备自愈和优雅关闭能力。

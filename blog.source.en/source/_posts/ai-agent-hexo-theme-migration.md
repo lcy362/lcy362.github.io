@@ -13,6 +13,7 @@ tags:
   - prompt-engineering
 abbrlink: 48979
 cover: /img/48979.jpg
+tldr: AI-powered Hexo theme migration from Next to Butterfly
 date: 2026-05-28 22:00:00
 ---
 

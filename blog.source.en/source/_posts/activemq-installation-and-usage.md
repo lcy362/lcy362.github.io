@@ -13,6 +13,7 @@ categories:
   - ActiveMQ Series
 abbrlink: 48216
 cover: /img/48216.jpg
+tldr: ActiveMQ in five minutes: download, extract, start
 date: 2018-01-30 08:46:07
 ---
 ## Installation

@@ -13,6 +13,7 @@ tags:
   - text-to-video
   - agnes-ai
 abbrlink: 22470
+tldr: Free AI video generation with zero-cost open-source tool customization
 date: 2026-06-16 13:21:16
 top_img: /img/22470.jpg
 cover: /img/22470.jpg

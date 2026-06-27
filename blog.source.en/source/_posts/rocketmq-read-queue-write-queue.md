@@ -13,6 +13,7 @@ tags:
   - message-queue
 abbrlink: 32580
 cover: /img/32580.jpg
+tldr: RocketMQ's readQueue/writeQueue separation enables zero-loss scaling
 date: 2019-05-18 15:23:02
 ---
 RocketMQ's MessageQueue has a unique design: it splits a queue into `readQueueNums` (read queue count) and `writeQueueNums` (write queue count). In the vast majority of cases, these two values must be equal — if they diverge, serious problems arise. So why separate them? The answer lies in **smooth scaling**.

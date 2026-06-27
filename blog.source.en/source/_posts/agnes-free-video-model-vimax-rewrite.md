@@ -24,6 +24,12 @@ tags:
 abbrlink: 65500
 cover: /img/65500.jpg
 date: 2026-06-11 22:00:00
+howto:
+  - Setup: Register an Agnes AI account and get your API Key
+  - Call Agnes API: Configure OpenAI-compatible interface with base URL https://apihub.agnes-ai.com/v1
+  - Customize ViMax config: Create a YAML creative file with scene, style, and chaining_mode parameters
+  - Generate video: Run start.sh to generate multi-scene videos in one shot
+  - Verify results: Check character consistency, scene transition smoothness, and video quality
 ---
 
 A while back, I wrote about "token hunting" — the practice of bouncing between free AI models instead of paying for subscriptions. At the time, free models mostly meant text and maybe some image generation. Then Agnes AI quietly dropped something unexpected: **free video generation models.**
@@ -165,5 +171,13 @@ The ViMax-Agnes rewrite confirmed something I'd been thinking: **when free model
 The project is open source: [github.com/lcy362/vimax-agnes](https://github.com/lcy362/vimax-agnes). Stars and issues welcome.
 
 > **Updated June 2026**: This tool has evolved into [Agnes Video Generator](https://github.com/lcy362/agnes-video-generator) with Web UI and multilingual support. The new version is more feature-complete — check it out.
+
+## Quick Start Guide
+
+1. **Setup**: Register an [Agnes AI](https://platform.agnes-ai.com) account and get your API Key. Ensure Python 3.8+ and Git are installed locally.
+2. **Clone the project**: `git clone https://github.com/lcy362/vimax-agnes && cd vimax-agnes`, write your API Key to `.api_key`.
+3. **Create creative config**: Create a YAML file under `creatives/` defining `name`, `idea`, `style`, `chaining_mode`, etc.
+4. **Generate video**: Run `./start.sh <creative_name>`. The system auto-executes script generation, image generation, and video generation in one pipeline, with intermediate results cached for resume support.
+5. **Review output**: Videos are saved under `output/`. Check character consistency, scene transitions, and overall quality. Tweak the YAML config and rerun if needed.
 
 Source: https://lichuanyang.top/en/posts/65500/

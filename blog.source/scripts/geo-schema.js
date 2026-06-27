@@ -12,6 +12,7 @@
  * Works alongside existing structured-data.js (BreadcrumbList + BlogPosting).
  */
 hexo.extend.filter.register('after_render:html', function(html, data) {
+  try {
   var path = data.path || '';
   var page = data.page || {};
 
@@ -44,7 +45,7 @@ hexo.extend.filter.register('after_render:html', function(html, data) {
           '(?=<h3[^>]*>\\s*Q:|</div>)', 'i'
         );
         var match = html.match(qRegex);
-        if (match) {
+        if (match && match[1]) {
           answer = match[1]
             .replace(/<[^>]*>/g, '')
             .replace(/\s+/g, ' ')
@@ -89,7 +90,7 @@ hexo.extend.filter.register('after_render:html', function(html, data) {
           '(?=<h[23][^>]*>\\s*Step\\s*' + (i + 2) + '[:\\s]|<h2[^>]*>|</div>)', 'i'
         );
         var stepMatch = html.match(stepRegex);
-        if (stepMatch) {
+        if (stepMatch && stepMatch[0]) {
           stepText = stepMatch[0]
             .replace(/<h[23][^>]*>[\s\S]*?<\/h[23]>/g, '')
             .replace(/<[^>]*>/g, '')
@@ -143,4 +144,8 @@ hexo.extend.filter.register('after_render:html', function(html, data) {
   }
 
   return html;
+  } catch(e) {
+    console.error('[geo-schema] Error processing ' + (data.path || 'unknown') + ':', e.message);
+    return html;
+  }
 });

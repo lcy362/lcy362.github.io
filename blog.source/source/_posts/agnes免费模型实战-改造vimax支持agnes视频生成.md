@@ -22,6 +22,12 @@ tags:
 abbrlink: 65500
 cover: /img/65500.jpg
 date: 2026-06-11 22:00:00
+howto:
+  - 环境准备：注册Agnes AI账号，获取API Key
+  - 调用Agnes API：配置OpenAI兼容接口，base URL为https://apihub.agnes-ai.com/v1
+  - 改造ViMax配置：创建YAML创意文件，配置场景、风格和chaining_mode参数
+  - 生成视频：运行start.sh一键生成多场景视频
+  - 效果验证：检查角色一致性、场景过渡流畅度和视频质量
 ---
 
 前阵子我在薅各种免费AI token，写了一篇关于"哪里免费去哪里薅"的文章。当时提到过，各家平台会不定期放出免费模型。结果没等多久，Agnes AI 就给了我一个惊喜：**视频模型也免费了。**
@@ -164,3 +170,11 @@ ViMax-Agnes 的改造也让我验证了一件事：**当免费模型的质量够
 > **2026年6月更新**：本文工具已迭代为 [Agnes Video Generator](https://github.com/lcy362/agnes-video-generator)，支持 Web UI 和多语言，功能更完善，推荐使用新版本。
 
 原文地址：https://lichuanyang.top/posts/65500/
+
+## 快速上手步骤
+
+1. **环境准备**：注册 [Agnes AI 平台](https://platform.agnes-ai.com) 账号，获取 API Key。确保本地已安装 Python 3.8+ 和 Git。
+2. **克隆项目**：`git clone https://github.com/lcy362/vimax-agnes && cd vimax-agnes`，将 API Key 写入 `.api_key` 文件。
+3. **创建创意配置**：在 `creatives/` 目录下新建 YAML 文件，定义 `name`、`idea`、`style`、`chaining_mode` 等参数。
+4. **一键生成视频**：运行 `./start.sh <创意名称>`，系统自动执行编剧生成、图片生成、视频生成全流程，中间结果自动缓存，支持断点续跑。
+5. **查看效果**：视频输出在 `output/` 目录下，检查角色一致性、场景过渡流畅度和整体视频质量。如需调整，修改 YAML 配置后重新运行即可。
