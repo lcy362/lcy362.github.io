@@ -15,6 +15,10 @@ tags:
   - canary
 abbrlink: 30764
 cover: /img/30764.jpg
+faq:
+  - q: "What's the difference between canary release, blue-green deployment, and rolling updates?"
+  - q: "Can traffic be precisely controlled with this dual-Deployment approach?"
+  - q: "What if I want to route by user dimension for canary releases?"
 date: 2021-12-23 18:55:20
 ---
 Canary release is actually a process well-suited for cloud-native environments, so I believe many people have the need to perform canary releases under Kubernetes. In this article, we introduce a very simple approach to canary release.
@@ -114,6 +118,30 @@ This achieves the effect we described.
 ## Limitations
 
 Of course, this approach only implements a very simple canary release process and cannot perform more granular routing, such as gray releases based on user information. For the same user, one request might go to the canary while the next goes to the production environment. If more fine-grained gray release rules are needed, consider using tools like Spring Cloud, Istio, etc.
+
+## FAQ
+
+### Q: What's the difference between canary release, blue-green deployment, and rolling updates?
+
+- **Rolling Update**: Replaces old Pods batch by batch, with the new version going live gradually. It's the simplest, but during the brief period when old and new versions coexist, traffic is mixed, and rollback can only be done in reverse batch order.
+- **Blue-Green Deployment**: Prepare a complete "green" environment with the new version, then switch all traffic once testing passes. Fast switching and fast rollback, but requires double the resources.
+- **Canary Release**: Route a small portion of traffic to the new version (the canary) first, then gradually scale up after verification. The safest approach, but requires more fine-grained traffic control capabilities.
+
+These three approaches are not mutually exclusive: canary can be seen as a "gradual version" of blue-green, and they are often combined in real-world projects.
+
+### Q: Can traffic be precisely controlled with this dual-Deployment approach?
+
+Traffic percentages cannot be precisely controlled. The Service balances load via kube-proxy's iptables/ipvs rules, defaulting to round-robin. The traffic ratio between the two Deployments roughly approximates the replica count ratio. For example, if you deploy 3 old Pods + 1 new Pod, about 25% of traffic goes to the new version — but this is only a statistical approximation, not precise control.
+
+If you need precise traffic percentages (e.g., strictly 10% to canary), you'll need an Ingress Controller (such as Nginx Ingress's canary annotations) or a Service Mesh (such as Istio's VirtualService).
+
+### Q: What if I want to route by user dimension for canary releases?
+
+The approach described in this article is based on **traffic-percentage-based** simple canary releases and cannot route by user dimension (e.g., VIP users to the new version, internal employees to the new version). If you need user-dimension routing, consider:
+
+- **Istio / Linkerd**: Route rules based on HTTP Headers (e.g., Cookie, User-Agent), enabling "requests with userId=xxx go to canary"
+- **Spring Cloud Gateway**: Route based on request parameters at the gateway layer
+- **Nginx Ingress canary-by-header**: Route to the canary service based on specific Header values
 
 Original article: https://lichuanyang.top/posts/30764/
 

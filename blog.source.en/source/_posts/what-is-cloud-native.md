@@ -17,6 +17,11 @@ abbrlink: 42843
 date: 2021-06-09 19:54:37
 top_img: /img/cloud-native-arch.jpg
 cover: /img/cloud-native-arch.jpg
+faq:
+  - q: "Is cloud native just about adopting Kubernetes?"
+  - q: "Is it necessary to migrate legacy applications to cloud native?"
+  - q: "What's the difference between containerization and virtualization?"
+  - q: "What's the relationship between microservices and cloud native?"
 
 ---
 
@@ -79,6 +84,24 @@ We've covered a lot of theory above. So what are the concrete implementation pat
 5. DevOps and continuous delivery: This mainly involves development workflows and many process-related aspects of development-operations collaboration. In a cloud environment, we advocate a pattern of small batches, frequent releases, and fast feedback.
 
 I am Liu Sha. I hope this article can help everyone better understand what exactly cloud native is. Actually, cloud native is simple to describe — it's about adopting various approaches to better utilize cloud resources. But when explained in detail, it's a very comprehensive system covering everything from development to operations. Welcome to follow my WeChat public account (Mobility), or visit my [personal website](https://lichuanyang.top/). I will gradually expand on all aspects of cloud native in future articles.
+
+## FAQ
+
+### Q: Is cloud native just about adopting Kubernetes?
+
+No. Kubernetes is the core container orchestration tool in the cloud native ecosystem, but cloud native goes far beyond K8s. Cloud native is a comprehensive methodology covering microservices architecture, containerization, DevOps, continuous delivery, observability, and more. Running on K8s doesn't automatically mean you're "cloud native" — if your application is still a monolithic blob, with no automated CI/CD, no monitoring or alerting, then you're simply "running a traditional application on K8s."
+
+### Q: Is it necessary to migrate legacy applications to cloud native?
+
+It depends on the context. If the application is small in scale, has a low iteration frequency, and a small team, forcing a full cloud native adoption will only add complexity. But if the application needs frequent iteration, elastic scaling, high availability, or the team is large enough to warrant microservice decomposition — that's when cloud native delivers value. In short: don't adopt cloud native for its own sake; adopt it to solve real problems.
+
+### Q: What's the difference between containerization and virtualization?
+
+Virtual machines (VMs) virtualize at the hardware layer — each VM has its own OS kernel, with slow startup and significant resource overhead. Containers virtualize at the OS layer — all containers share the host kernel, isolating only the application and its dependencies, with fast startup (seconds) and minimal resource footprint. A simple analogy: VMs are like "each household has its own kitchen in an apartment building," while containers are like "sharing one large kitchen, each person having their own stove."
+
+### Q: What's the relationship between microservices and cloud native?
+
+Microservices are a core component of cloud native architecture, but not the whole picture. Microservices address "how to split applications for independent deployment and scaling," while cloud native also encompasses "how these microservices run" (containers and orchestration), "how they are delivered" (CI/CD), "how they are monitored" (observability), "how they communicate" (Service Mesh), and more. Think of microservices as the "business layer" of cloud native architecture.
 
 Original article: https://lichuanyang.top/posts/42843/
 
