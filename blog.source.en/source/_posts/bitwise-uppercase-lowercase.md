@@ -13,6 +13,11 @@ tags:
 abbrlink: 9193
 cover: /img/9193.jpg
 date: 2018-11-14 21:58:47
+faq:
+  - Is bitwise case conversion faster than the standard library? Which should I use in daily development?
+  - When is it actually worth using bitwise operations for case conversion?
+  - What happens when you apply bitwise case conversion to non-letter characters?
+  - Is the 32 difference between upper and lower case in ASCII a coincidence or intentional design?
 ---
 Bitwise operations are among the most fundamental and efficient operations in computer science. Today, let's explore a classic application: converting between uppercase and lowercase letters with a single line of code.
 

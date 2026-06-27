@@ -15,6 +15,13 @@ tags:
 abbrlink: 19890
 cover: /img/hexo-blog-system.jpg
 date: 2018-01-19 18:56:07
+tldr: Setting up a personal blog with Hexo takes just three steps: install the framework → choose a theme → configure deployment, online in 30 minutes
+howto:
+  - Install Hexo
+  - Choose a Theme
+  - Configure the Site
+  - Deploy to GitHub
+  - Bind a Domain
 ---
 
 Original article: https://lichuanyang.top/posts/19890/
@@ -59,3 +66,22 @@ After everything is done, this is what it looks like — what you see now.
 ---
 
 Source: https://lichuanyang.top/en/posts/19890/
+
+---
+
+## Quick Start Guide
+
+### Step 1: Install Hexo
+Make sure Node.js is installed. Run `npm install -g hexo-cli` to install the Hexo CLI tool. Then run `hexo init blog` to initialize a blog project, and `cd blog && npm install` to install dependencies.
+
+### Step 2: Choose a Theme
+Pick a theme you like from the Hexo theme marketplace (e.g. Next), download it to the `themes/` directory, and update the `theme` field in `_config.yml` with the theme name.
+
+### Step 3: Configure the Site
+Edit `_config.yml` to set your site title, description, author, and other basic information. Configure third-party services as needed: analytics tools, comment systems, search functionality, etc.
+
+### Step 4: Deploy to GitHub
+Install the `hexo-deployer-git` plugin. Configure the `deploy` field in `_config.yml` with your GitHub repository URL. Run `hexo generate && hexo deploy` to deploy.
+
+### Step 5: Bind a Domain
+Create a CNAME file in the `source/` directory with your custom domain name. Add a CNAME record in your domain DNS settings pointing to your GitHub Pages address.

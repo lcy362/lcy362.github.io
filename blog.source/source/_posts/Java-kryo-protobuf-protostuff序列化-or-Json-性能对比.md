@@ -17,6 +17,7 @@ tags:
   - json
 abbrlink: 57802
 cover: /img/57802.jpg
+tldr: kryo综合性能最优，protobuf跨语言首选，json仅适合可读性优先场景
 date: 2017-03-02 18:10:00
 ---
 <div class="markdown_views">

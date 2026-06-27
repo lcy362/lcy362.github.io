@@ -13,6 +13,7 @@ tags:
 abbrlink: 41673
 cover: /img/41673.jpg
 date: 2017-04-10 20:23:00
+tldr: Log4j 2 is faster, more flexible, and has fixed security vulnerabilities compared to 1.x. New projects should prefer the SLF4J + Log4j 2 combination
 ---
 ## Complete Configuration Example
 

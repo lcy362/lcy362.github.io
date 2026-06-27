@@ -7,6 +7,7 @@ tags:
  - i18n
 abbrlink: 40400
 cover: /img/hexo-multi-language.jpg
+tldr: For Hexo multilingual support, recommend a dual-site + subdirectory approach — build each language independently, then merge, with hreflang for SEO
 ---
 
 ## Common Multi-language Blog Solutions

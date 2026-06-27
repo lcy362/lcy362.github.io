@@ -16,6 +16,11 @@ tags:
 abbrlink: 20763
 cover: /img/20763.jpg
 date: 2021-10-08 16:45:42
+howto:
+  - 生成SSH密钥
+  - 配置iTerm2 Profile
+  - 添加书签
+  - 验证自动登录
 ---
 ## 痛点：频繁 SSH 登录
 
@@ -38,4 +43,25 @@ trigger也是profile的一个特性，入口在profile配置页的advanced标签
 这样，我们就实现了在iterm2中用“书签”保存远程服务器的地址和密码。使用时，直接访问对应的profile, 等待password manager 弹出，选择对应的密码记录，点击输入就可以了。
 
 原文地址: https://lichuanyang.top/posts/20763/
+
+---
+
+## 快速上手步骤
+
+### Step 1: 生成SSH密钥
+
+在终端执行 `ssh-keygen` 生成 SSH 密钥对，将公钥添加到目标服务器的 `~/.ssh/authorized_keys` 中，确保免密登录基础配置完成。
+
+### Step 2: 配置iTerm2 Profile
+
+打开 iTerm2，进入 Profiles → Open Profiles → Edit Profiles。在 General 标签页中将 Command 设置为 `ssh root@1.1.1.1` 格式的 SSH 命令。
+
+### Step 3: 添加书签
+
+在 Profile 编辑页的 Advanced 标签页中添加 Trigger：Regular Expression 填入 `password`，Action 选择 Open Password Manager，勾选 Instant 和 Enabled。然后在 Window → Password Manager 中录入服务器密码。
+
+### Step 4: 验证自动登录
+
+通过 Profiles 菜单选择配置好的 Profile，等待 Password Manager 弹出后选择对应密码记录，确认能自动完成 SSH 登录。
+
 ---

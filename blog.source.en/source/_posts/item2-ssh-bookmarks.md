@@ -16,6 +16,11 @@ tags:
 abbrlink: 20763
 cover: /img/20763.jpg
 date: 2021-10-08 16:45:42
+howto:
+  - Generate SSH Key
+  - Configure iTerm2 Profile
+  - Add Bookmarks
+  - Verify Auto Login
 ---
 ## Pain Point: Frequent SSH Logins
 
@@ -38,3 +43,19 @@ The last thing to configure is the password manager. The password manager is a p
 This way, we've implemented "bookmarks" in iTerm2 to save remote server addresses and passwords. When using them, simply access the corresponding profile, wait for the password manager to pop up, select the corresponding password record, and click to input it.
 
 Source: https://lichuanyang.top/en/posts/20763/
+
+---
+
+## Quick Start Guide
+
+### Step 1: Generate SSH Key
+Run `ssh-keygen` in the terminal to generate an SSH key pair. Add the public key to the target server's `~/.ssh/authorized_keys` to ensure the passwordless login foundation is set up.
+
+### Step 2: Configure iTerm2 Profile
+Open iTerm2, go to Profiles → Open Profiles → Edit Profiles. In the General tab, set the Command to an SSH command in the format `ssh root@1.1.1.1`.
+
+### Step 3: Add Bookmarks
+In the Profile editor's Advanced tab, add a Trigger: enter `password` for Regular Expression, select Open Password Manager for Action, and check Instant and Enabled. Then go to Window → Password Manager to store server passwords.
+
+### Step 4: Verify Auto Login
+Select the configured Profile from the Profiles menu, wait for the Password Manager to pop up, select the corresponding password record, and confirm that SSH login completes automatically.

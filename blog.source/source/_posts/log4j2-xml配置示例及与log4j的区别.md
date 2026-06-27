@@ -12,6 +12,7 @@ tags:
   - 日志
 abbrlink: 41673
 cover: /img/41673.jpg
+tldr: Log4j2比1.x性能更好、配置更灵活、已修复安全漏洞，新项目推荐SLF4J+Log4j2组合
 date: 2017-04-10 20:23:00
 ---
 ## 完整配置示例

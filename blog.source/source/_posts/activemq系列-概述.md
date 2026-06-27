@@ -13,6 +13,7 @@ categories:
   - activemq系列文章
 abbrlink: 12035
 cover: /img/12035.jpg
+tldr: 消息中间件解决两个核心问题——解耦和削峰，ActiveMQ是JMS规范最完整的实现
 date: 2018-01-22 18:33:02
 ---
 ActiveMQ 是 Apache 旗下的开源消息中间件（Message-Oriented Middleware，MOM），也是 JMS（Java Message Service）1.1 规范的完整实现。本文是 ActiveMQ 系列文章的开篇，先讲清楚消息中间件是什么、解决什么问题，再介绍 JMS 的核心概念，为后续深入学习 ActiveMQ 的具体特性打好基础。

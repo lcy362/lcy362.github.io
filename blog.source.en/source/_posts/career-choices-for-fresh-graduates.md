@@ -14,6 +14,11 @@ tags:
 abbrlink: 34931
 cover: /img/34931.jpg
 date: 2021-03-30 18:36:15
+faq:
+  - Is a first-tier city hukou still worth pursuing? How did its value change by 2021?
+  - Big tech or startup? What matters most for a fresh graduate's first job?
+  - Is it possible to have it all — high salary, no overtime, and a good culture?
+  - What is the fundamental way to address the mid-career crisis? Can choosing a government job solve it once and for all?
 ---
 
 Today I want to talk about career choices for fresh graduates, primarily focused on backend development (the topic of role selection is also quite broad, and I may write a separate article about it if I get the chance). Over the past few years, I've worked in state-owned enterprises, large companies, and small companies, so I feel I have some real perspective on what different companies are like.

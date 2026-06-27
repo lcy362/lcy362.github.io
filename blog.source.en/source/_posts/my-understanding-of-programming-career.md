@@ -13,6 +13,12 @@ tags:
 abbrlink: 27398
 cover: /img/27398.jpg
 date: 2020-03-18 17:21:18
+tldr: Programming is not a young person's game — the key is to complete a skill leap every 3-5 years, using scarcity to earn freedom of choice
+faq:
+  - Is programming a young person's game? What do you do after 35?
+  - Is transitioning from tech to management a good idea? When should you make the switch?
+  - Which is more important: technical depth or breadth? How to balance them?
+  - How to discover "hidden" problems in your code or system?
 ---
 
 Over the years of working, I've been constantly thinking about what a programmer actually does. As I've gained more experience, my understanding has continuously evolved. Writing this article now serves two purposes: sharing my thoughts, and leaving a record to revisit in a couple of years to see how my understanding has further changed.

@@ -19,6 +19,7 @@ tags:
 abbrlink: 57802
 cover: /img/57802.jpg
 date: 2017-03-02 18:10:00
+tldr: Kryo offers the best overall performance, Protobuf is the cross-language standard, and JSON is only suitable when readability is the priority
 ---
 <div class="markdown_views">
 

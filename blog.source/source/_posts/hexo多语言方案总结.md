@@ -16,6 +16,7 @@ tags:
   - 多语言
 abbrlink: 40400
 cover: /img/hexo-multi-language.jpg
+tldr: Hexo多语言推荐双站+子目录方案，每个语言独立构建后合并，配合hreflang实现SEO
 date: 2024-01-22 18:12:31
 ---
 ## 多语言博客的常见方案

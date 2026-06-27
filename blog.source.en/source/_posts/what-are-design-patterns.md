@@ -13,6 +13,7 @@ tags:
 abbrlink: 58527
 cover: /img/58527.jpg
 date: 2021-03-04 19:26:30
+tldr: Design patterns are merely tools — the real core lies in the six design principles: SOLID plus the Law of Demeter
 ---
 Hello everyone, I'm Liusha. Design patterns are something every programmer encounters frequently, but I believe many people still have questions about what design patterns really are. So today, let's talk about this — the main goal is to help you understand the purpose of design patterns and the right mindset for approaching them.
 
