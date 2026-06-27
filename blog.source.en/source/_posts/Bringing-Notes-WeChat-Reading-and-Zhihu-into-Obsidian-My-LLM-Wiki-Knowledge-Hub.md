@@ -42,23 +42,59 @@ After that, I did a few more things: bringing in my Zhihu writings and WeChat Re
 
 **How to Sync Zhihu Writings to Obsidian**
 
-Zhihu doesn't provide an official data export API, so I used Playwright for browser automation. The script launches a Chromium browser, you log in once by scanning a QR code or entering your password, and then it automatically crawls your profile page to capture all answers, articles, and status updates. The login state is persisted locally, so subsequent runs use the `--reuse` flag for silent execution without re-login. Synced files are organized by content type, and each run only incrementally fetches new content — existing files are never reprocessed.
+Zhihu doesn't provide an official data export API, so I used Playwright for browser automation.
+
+**Steps**:
+
+1. Install Playwright: `pip install playwright && playwright install chromium`
+2. Run the script for the first time, log in by scanning a QR code or entering your password in the opened Chromium browser
+3. Once logged in, the script automatically crawls your profile to capture all answers, articles, and status updates
+4. Login state is persisted locally; subsequent runs use `--reuse` for silent execution without re-login
+
+**Features**: Incremental sync — only fetches new content, existing files are never reprocessed. Files are organized by content type (answers/articles/pins).
+
 
 **How to Sync WeChat Reading Notes to Obsidian**
 
-WeChat Reading is quite developer-friendly in this regard — it provides an Agent API Gateway (`i.weread.qq.com/api/agent/gateway`), and you just need to apply for an API key to get started. My sync script first calls the `/user/notebooks` endpoint to get the list of books with notes, then fetches highlights and annotations for each new book, grouping them by chapter into well-formatted Markdown files. The output looks roughly like: book title and author as the heading, each chapter's highlights in blockquote format (with dates), and personal annotations placed below the corresponding highlights. The entire process is incremental — the script maintains a state file of synced book IDs, only processing new additions on each run. Over 150 books' worth of notes silently flowed into Obsidian, becoming one of the richest sources of raw material for my knowledge hub.
+WeChat Reading provides an Agent API Gateway — apply for an API key and you're good to go.
+
+**Steps**:
+
+1. Call the `/user/notebooks` endpoint to get the list of books with notes
+2. For each new book, fetch highlights and annotations separately
+3. Group content by chapter and output as well-formatted Markdown files
+
+**Output format**: Book title and author as the heading, each chapter's highlights in blockquote format (with dates), personal annotations placed below the corresponding highlights.
+
+**Features**: Fully incremental — the script maintains a state file of synced book IDs, only processing new additions on each run. Over 150 books' worth of notes silently flowed into Obsidian, becoming one of the richest sources of raw material for my knowledge hub.
 
 At this point, the content layer was essentially ready. Then I started thinking: since most of my knowledge and creative output is here, could I start distilling... myself?
 
 I built a simple first version: a "personal" pipeline parallel to the wiki pipeline, with similar ingestion and linting operations. The key difference: wiki focuses on knowledge, while personal focuses on who I am as an individual.
 
-Here it's worth explaining the difference between a "knowledge base" and "personality distillation" — they share the same set of raw materials but have entirely different goals and outputs.
+**Knowledge Base vs. Personality Distillation: Two Different AI Processing Approaches**
 
-**A knowledge base (Wiki) answers "what do I know?"** It extracts objective knowledge from your notes, blogs, and reading highlights, generating concept pages (e.g., "distributed consensus"), entity pages (e.g., "Raft algorithm"), source summary pages (e.g., "Designing Data-Intensive Applications — reading notes"), and builds dense cross-references between them. The goal of the wiki layer is to make knowledge queryable and reusable — an externalized second brain.
+Here it's worth explaining the difference — they share the same set of raw materials but have entirely different goals and outputs.
 
-**Personality distillation (Personal Model) answers "who am I?"** It reverse-engineers cognitive patterns, expressive styles, and value orientations from your writing and reading. For instance, analyzing your technical blog posts might reveal a style of "thesis-first, case-driven, targeting intermediate-to-advanced readers." Analyzing your Zhihu answers might uncover recurring cognitive traits like "first-principles reduction" and "quantitative thinking." The output of personality distillation isn't knowledge entries — it's a cognitive map of a person: what you're good at, how you approach problems, what you value.
+**Knowledge Base (Wiki): Answers "What Do I Know?"**
 
-Both processes are structurally similar — ingestion, querying, consistency checks (linting) — but one looks outward, structuring and organizing the knowledge you possess; the other looks inward, distilling and modeling your cognitive traits as an individual. This "two sides of the same coin" design is, I think, the most fascinating part of the entire system.
+Extracts objective knowledge from notes, blogs, and reading highlights, generating concept pages (e.g., "distributed consensus"), entity pages (e.g., "Raft algorithm"), and source summary pages (e.g., "Designing Data-Intensive Applications — reading notes"), with dense cross-references between them. The goal: make knowledge queryable and reusable — an externalized second brain.
+
+**Personality Distillation (Personal Model): Answers "Who Am I?"**
+
+Reverse-engineers cognitive patterns, expressive styles, and value orientations from your writing and reading. For example, analyzing technical blog posts might reveal a "thesis-first, case-driven" style; analyzing Zhihu answers might uncover recurring traits like "first-principles reduction" and "quantitative thinking." The output isn't knowledge entries — it's a cognitive map of a person: what you're good at, how you approach problems, what you value.
+
+**Comparison**
+
+| Dimension | Knowledge Base | Personality Distillation |
+|-----------|---------------|-------------------------|
+| Core question | What do I know? | Who am I? |
+| Input | Notes, blogs, reading highlights | All personal writing and reading records |
+| Output | Concept/entity/source pages + cross-references | Domain depth, cognitive traits, expressive style, values |
+| Direction | Outward: structuring external knowledge | Inward: modeling personal cognition |
+| Workflow | Ingest → Query → Lint → Audit | Ingest → Query → Lint → Audit (isomorphic) |
+
+Both processes are structurally similar, but one looks outward, structuring and organizing the knowledge you possess; the other looks inward, distilling and modeling your cognitive traits as an individual. This "two sides of the same coin" design is, I think, the most fascinating part of the entire system.
 
 Lately I've been looking at projects like Nüwa online to see if there are better approaches to personality distillation.
 

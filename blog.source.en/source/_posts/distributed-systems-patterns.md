@@ -120,7 +120,7 @@ We can combine these patterns to implement a Replicated WAL as follows:
 
 To provide durability guarantees, the Write-Ahead Log is used. The Segmented Log divides the write-ahead log into multiple segments. This helps the Low-Water Mark with log cleanup. Fault tolerance is provided by replicating the write-ahead log across multiple servers. Replication between servers is managed using the Master-Slave pattern. The Quorum is used when updating the High-Water Mark to determine which values are visible to clients. The Single Update Queue ensures all requests are processed in strict order. The Single Socket Channel is used to send master requests to slaves, maintaining event ordering. To optimize throughput and latency on the Single Socket Channel, the Request Pipeline is used. The slave determines master availability through Heartbeats. If the master is temporarily disconnected from the cluster due to a network partition, the Generation Clock can be used to detect it.
 
-![patterns](/img/paterns.png)
+![patterns](/img/paterns.jpg)
 
 By understanding these problems and their common solutions in this way, we can understand how to build complex systems.
 

@@ -49,7 +49,7 @@ ClickHouse中提供了很多种存储引擎，不过90%以上的情况下用Merg
 ![](/img/clickhouse/folder.png)
 其中20171001....这个目录就是代表一个part，下面这些文件，columns.txt记录列信息；每一列有一个bin文件和mrk文件, 其中bin文件是实际数据，primary.idx存储主键信息，结构与mrk一样，类似于稀疏索引。
 
-![具体存储结构](/img/clickhouse/mergetree.png)
+![具体存储结构](/img/clickhouse/mergetree.jpg)
 
 这里展示了mrk文件和primary文件的具体结构，可以看到，数据是按照主键排序的，并且会每隔一定大小分隔出很多个block。每个block中也会抽出一个数据作为索引，放到primary.idx和各列的mrk文件中。
 
