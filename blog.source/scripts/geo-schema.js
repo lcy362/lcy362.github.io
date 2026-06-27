@@ -33,7 +33,7 @@ hexo.extend.filter.register('after_render:html', function(html, data) {
 
     for (var i = 0; i < faqData.length; i++) {
       var item = faqData[i];
-      var question = typeof item === 'string' ? item : item.q;
+      var question = typeof item === 'string' ? item : (item.q || item.Q || '');
       var answer = item.a || '';
 
       // Auto-extract answer from rendered HTML

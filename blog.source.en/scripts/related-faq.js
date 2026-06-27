@@ -116,7 +116,7 @@ hexo.extend.filter.register('after_render:html', function(html, data) {
         '<ul class="relatedFaq-questions">';
 
       for (var q = 0; q < questions.length; q++) {
-        var qText = typeof questions[q] === 'string' ? questions[q] : questions[q].q;
+        var qText = typeof questions[q] === 'string' ? questions[q] : (questions[q].q || questions[q].Q || '');
         faqItemsHtml += '<li><a href="' + answerLink + '">' + qText + '</a></li>';
       }
 
