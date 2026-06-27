@@ -552,6 +552,8 @@ grep 'sameAs' public/posts/64/index.html  # 应看到社交链接
 
 **问题根因**：
 - macOS 文件系统大小写不敏感，git 无法正确追踪仅大小写不同的目录重命名
+
+**新增文件**：
 - Hexo 配置 `filename_case: 0` 保留原始大小写，导致标签如 `AI Agent` 生成为 `ai-Agent`
 - 在大小写敏感的 Vercel/Linux 环境中，混合大小写 URL 返回 404
 
@@ -585,6 +587,62 @@ grep 'categories' public/sitemap.xml | head -5  # 应全部小写
 | hreflang 映射 | 手动维护 `hreflang_map.json` + 硬编码分类映射 | 中 — 新增文章/分类需手动更新 |
 | 分类/标签 URL 小写化 | `category-slug-fix.js` 覆盖生成器 | 低 — 仅英文站 |
 | `.deploy_git` 管理 | 每次部署前删除重新克隆 | 低 — 避免大小写问题 |
+
+### 6. GEO 优化：FAQ/HowTo 结构化数据（2026-06-27）
+
+**目的**：为文章生成 FAQPage 和 HowTo JSON-LD 结构化数据，提升 Google AI Overview 和 People Also Ask 中的展示机会。
+
+**新增文件**：
+- `blog.source/scripts/geo-schema.js` — FAQ/HowTo JSON-LD 动态生成
+- `blog.source/scripts/related-faq.js` — 文章底部「相关问答」组件
+- `blog.source.en/scripts/geo-schema.js` — 同上（英文站）
+- `blog.source.en/scripts/related-faq.js` — 同上（英文站）
+
+**工作原理**：
+1. 文章 front-matter 中声明 `faq:` 字段（问题列表）
+2. 正文中以 `### Q: 问题` 格式编写 FAQ section
+3. `geo-schema.js` 在构建时读取 front-matter，从渲染后 HTML 自动提取答案
+4. 生成 `<script type="application/ld+json">` FAQPage Schema 注入 `<head>`
+5. `related-faq.js` 按同分类 + 标签交集匹配其他有 FAQ 的文章，注入文章底部推荐
+
+**Front-matter 示例**：
+```yaml
+---
+faq:
+  - q: "问题文本？"
+  - q: "另一个问题？"
+---
+```
+
+**正文 FAQ section 示例**：
+```markdown
+## 常见问题
+
+### Q: 问题文本？
+简短回答，2-4 句话。
+
+### Q: 另一个问题？
+同样简短的回答。
+```
+
+**⚠️ 新增文章注意事项**：
+- 只需在 front-matter 列问题清单，答案自动从正文 `### Q:` 段落提取
+- front-matter 中的问题文本和正文中的 `### Q:` 标题要完全一致（答案提取依赖文本匹配）
+- 英文版 FAQ 需要翻译：正文 FAQ section + front-matter `faq:` 字段都用英文
+- 如果文章没有对应的英文版，英文站脚本不会生成 FAQ Schema（因为没有对应文章）
+
+**验证方法**：
+```bash
+cd ~/blogs/blog.source
+hexo generate
+grep 'FAQPage' public/posts/<abbrlink>/index.html  # 应看到 FAQPage JSON-LD
+grep 'relatedFaq' public/posts/<abbrlink>/index.html  # 应看到相关问答组件
+```
+
+**FAQ 与 hreflang 的关系**：
+- FAQ 文章的中英文版通过 abbrlink 关联
+- 新增 FAQ 文章后，需要运行 `./scripts/update_hreflang_map.sh` 更新映射
+- related-faq 组件只在同语言内推荐（中文文章推荐中文 FAQ，英文推荐英文 FAQ）
 
 ## 踩坑记录
 

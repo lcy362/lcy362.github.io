@@ -105,6 +105,48 @@ vim source/_posts/new-article-title.md
 
 ---
 
+## GEO 优化：为文章添加 FAQ
+
+对搜索流量有期待的文章，建议在文末添加 FAQ section。这会自动生成 FAQPage JSON-LD 结构化数据，帮助 Google AI Overview 和 People Also Ask 抓取。
+
+### 操作步骤
+
+**1. 在文章末尾写 FAQ section**
+
+```markdown
+## 常见问题
+
+### Q: 这个问题读者可能会问？
+简短的回答，2-4 句话即可。
+
+### Q: 另一个相关问题？
+同样简短的回答。
+```
+
+**2. 在 front-matter 添加 `faq:` 字段**
+
+```yaml
+---
+faq:
+  - q: "这个问题读者可能会问？"
+  - q: "另一个相关问题？"
+---
+```
+
+只列问题——答案从正文 `### Q:` 段落自动提取，不需要重复写。
+
+**3. 效果**
+
+构建后自动生成：
+- `<script type="application/ld+json">` FAQPage Schema（搜索引擎可见）
+- 文章底部「相关问答」组件自动关联同分类下有 FAQ 的其他文章
+
+### 英文版同步
+
+英文版 FAQ section 需要翻译，但 front-matter 的 `faq:` 字段用英文问题文本。其他流程一致。
+
+---
+
 ## 新增文章标题图
 
 每篇文章都需要一张标题图（cover image），中英文对应文章共用同一张图。
