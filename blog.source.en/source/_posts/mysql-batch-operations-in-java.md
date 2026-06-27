@@ -21,7 +21,11 @@ As is well known, using batch operations with MySQL can significantly improve pe
 
 <!-- more -->
 
+## The Problem
+
 Recently, I noticed that the performance profile of a particular SQL query was abnormally slow — inserting several thousand records in batch was taking on the order of seconds. After ruling out server performance and network issues, I suspected that the code was causing the batch operation to not actually be effective. It felt as though each record was being sent to the database individually.
+
+## How MySQL JDBC Batch Works
 
 After digging into the code, I traced the issue to the mysql-connector driver. The key code block looked like this:
 
@@ -42,6 +46,8 @@ if (!this.batchHasPlainStatements && this.connection.getRewriteBatchedStatements
 ```
 
 As you can see, there are two main branches: `executeBatchedInserts` and `executeBatchSerially`. If execution falls into `executeBatchSerially`, it's essentially running a "fake" batch — in this method, each record interacts with MySQL individually.
+
+## Why Batch Didn't Work
 
 To successfully enter `executeBatchedInserts`, several preconditions must be met: `batchHasPlainStatements`, `connection.getRewriteBatchedStatements()`, and `canRewriteAsMultiValueInsertAtSqlLevel`.
 

@@ -20,9 +20,13 @@ Today I want to talk about career choices for fresh graduates, primarily focused
 
 <!-- more -->
 
+## Trade-offs Across Four Dimensions
+
 Career choice ultimately comes down to two key decisions: city and company. Choosing a city is highly subjective. For example, as someone from the north, I don't like the climate in southern cities, I want to be close to home, and I need the opportunities that a big city offers — so Beijing was almost the only option. As practical advice, I'd suggest considering fast-growing strong second-tier cities like Chongqing or Hefei, where you can ride the wave of urban development and increase your own value along the way.
 
 Within the scope of Beijing, I'll discuss company choices based on my own experience.
+
+## Hukou: The Ticket to a Tier-1 City
 
 When it comes to Beijing, one topic that inevitably comes up is the hukou (household registration). However, **I strongly advise against letting a hukou decision dictate your entire life trajectory** — for instance, joining a state-owned enterprise just for a hukou even though you have no desire to work in the system. Always prioritize thinking through your career development direction before worrying about hukou.
 
@@ -38,6 +42,8 @@ For any of these questions, no answer is inherently better than another. Tacklin
 With any combination of these choices, you can find suitable opportunities. For instance, if you don't expect much from work, don't want it to dominate your life, and are willing to do routine work, some peripheral state-owned institutions could be a good fit. If you want power, are willing to let work take up significant time, and prefer to accumulate resources through work, consider core state-owned institutions with real authority. And if you want to earn money and prefer to develop personal capabilities, being a programmer is a solid choice.
 
 Once you've thought through these questions, you can choose a company. Many times, we may not find a place that satisfies all our requirements. That's okay — we can use job-hopping to address one part at a time, continuously gather information and improve our abilities, and find opportunities when we're ready to seize them.
+
+## Big Tech: The Value and Cost of the Platform
 
 Let me share how I approached my own key decisions based on my experience.
 
@@ -56,6 +62,8 @@ First, whether to choose a Beijing hukou. Let me first say what I gained from it
 So currently, the value of a Beijing hukou is quite limited. If I could go back to 2015, I'd still choose a Beijing hukou without hesitation. But if I had to make this choice today in 2021, I'd most likely decline it.
 
 Second, regarding big tech experience. My view is that you must have it, and the sooner the better, but there's no need to stay at a big company for life. The value of big tech experience has been thoroughly discussed by many, so I won't repeat it here. Feel free to reach out if you're interested in discussing further.
+
+## How to Choose
 
 The above covers most of this article. One point I haven't mentioned is the midlife crisis — some might wonder why. The reason is that I don't think it's a problem that can be solved through career choices alone. Some people think the public sector is stable — even if you coast every day, no one can touch you. But I don't consider stability that depends on external conditions to be true stability. The public sector has had problems before in history. This path might give you a 99.99% chance of living peacefully for life, but if that 0.01% scenario occurs, what will you do? Being a programmer is different — perhaps only a 50% chance of staying comfortably at one company, but the capabilities developed through work give me the confidence to handle the other 50%. The only way to address the midlife crisis is self-improvement — whether building capabilities or accumulating resources, you must gain something from work to maintain your competitiveness.
 

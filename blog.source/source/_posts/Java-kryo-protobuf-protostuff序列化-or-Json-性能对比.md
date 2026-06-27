@@ -20,11 +20,16 @@ cover: /img/57802.jpg
 date: 2017-03-02 18:10:00
 ---
 <div class="markdown_views">
+
+## 为什么需要序列化方案对比
+
 对于一个java object的序列化，想测一下使用json和使用一般序列化工具，在时间性能、空间性能上的区别。
 
 json选择用fastjson.
 
 序列化工具使用了protostuff和kyro. 为什么不用protobuf呢？因为感觉对于一个已有的上百个属性的java class来说，再去新建一个匹配的proto文件有点反人类。protostuff是protobuf的改良版本，可以直接将一个java object进行序列化，使用方法与kyro有点类似，没有protobuf那么多中间过程。其他的，hession, java自带序列化之类的，据说性能比kryo和protobuf差很多，就不测了。
+
+## 时间性能对比
 
 简单测了一下，发现差距还挺明显的，所以感觉也不需要做具体的评测了。把日志截一段发出来，大家感受下。
 
@@ -55,9 +60,13 @@ json选择用fastjson.
 
 cost的时间用的是System.nanoTime(); 三种用的都是不加任何配置的默认配置。 
 
+## 空间性能对比
+
 序列化之后的占用空间，kryo略低于protostuff, 两者都远高于json. 这是很好理解的，毕竟json串是可读的，不要强求太多。 
 
 而序列化和反序列化的耗时，都是protostuff优于kyro优于fastjson, 而且差别挺明显。
+
+## 序列化方案选择建议
 
 所以结论呢，如果对空间没有极其苛刻的要求，protostuff也许是最佳选择。protostuff相比于kyro还有一个额外的好处，就是如果序列化之后，反序列化之前这段时间内，java class增加了字段（这在实际业务中是无法避免的事情），kyro就废了。但是protostuff只要保证新字段添加在类的最后，而且用的是sun系列的JDK, 是可以正常使用的。因此，如果序列化是用在缓存等场景下，序列化对象需要存储很久，也就只能选择protostuff了。
 

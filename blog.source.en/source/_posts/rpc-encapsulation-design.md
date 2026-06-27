@@ -15,7 +15,12 @@ abbrlink: 20888
 cover: /img/20888.jpg
 date: 2021-03-16 18:34:56
 ---
+
+## Problem Statement
+
 Regarding the inputs and outputs of RPC interfaces, there has long been a school of thought that advocates wrapping all inputs and outputs into individual request and response classes. In this article, we will analyze whether this approach constitutes a sound design.
+
+## Input Parameter Encapsulation Analysis
 
 Let's start with inputs. I'll state the conclusion first: encapsulation should only be done when there are excessive input parameters. In all other cases, there is absolutely no justification for encapsulation.
 
@@ -37,11 +42,17 @@ The biggest problem with wrapping input parameters into a request class is that 
 
 The only condition for encapsulating input parameters is when there are too many parameters, and you need to use other means such as comments or documentation to specify the legal input values and upgrade strategies for the interface.
 
+## Output Result Encapsulation Analysis
+
 Now let's discuss outputs. Wrapping output results into a response body is somewhat more reasonable than wrapping input parameters, but it still shouldn't be used indiscriminately. The general purpose of wrapping output results is to add a return status code layer.
+
+## Interface Segregation Principle Perspective
 
 This essentially forces callers to understand the error conditions of the interface. We know that one of the fundamental design principles is the "Interface Segregation Principle," which states that clients should not be forced to depend upon interfaces that they do not use. The situation here is analogous: if callers genuinely don't care about the reasons for request success or failure, they shouldn't be forced to understand them. For example, if I just want to query a count, there are only two possibilities — found or not found — and I don't want to care about why it wasn't found.
 
 Therefore, when designing interfaces, you need to carefully consider whether the error conditions of an interface should be information that is provided externally. Only on this basis can you determine whether wrapping in a response object is appropriate or not.
+
+## Conclusion and Recommendations
 
 In summary, blindly wrapping all input and output parameters is never advisable. You must carefully consider when encapsulation is appropriate and when it is not. If you have any thoughts on this topic, feel free to discuss them with me.
 

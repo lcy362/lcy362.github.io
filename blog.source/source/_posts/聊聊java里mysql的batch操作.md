@@ -21,7 +21,11 @@ date: 2020-03-13 17:54:38
 
 <!-- more -->
 
+## 问题现象
+
 前阵子，发现一条sql的性能明细不正常，几千条数据批量insert，耗时居然到了秒级。排除了服务器性能、网络的问题后，开始怀疑是代码的问题，导致batch操作没有真正生效，感觉只有一条一条去跟数据库交互的话才会出现这种性能。
+
+## MySQL JDBC Batch 原理
 
 调了一下代码，翻到了mysql-connector里，关键的代码是这么一块：
 
@@ -42,6 +46,8 @@ if (!this.batchHasPlainStatements && this.connection.getRewriteBatchedStatements
 ```
 
 可以看到有executeBatchedInserts和executeBatchSerially两个分支，如果执行到executeBatchSerially的话，其实就是执行了个“假的”batch, 在这个方法里会每条数据单独去跟mysql交互。
+
+## 为什么 batch 没生效
 
 为了能顺利的执行进executeBatchedInserts， 可以看到有一些先决条件：batchHasPlainStatements， connection.getRewriteBatchedStatements()， canRewriteAsMultiValueInsertAtSqlLevel。
 

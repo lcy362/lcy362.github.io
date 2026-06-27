@@ -19,6 +19,8 @@ Over the years of working, I've been constantly thinking about what a programmer
 
 <!-- more -->
 
+## The Essence of Programming as a Career
+
 I want to discuss this from two perspectives. First, from the work itself — in my view, a programmer's work falls into three categories: discovering problems, analyzing problems, and solving problems. In fact, the vast majority of jobs in the world can be encompassed within these three types of work. Second, from a capability standpoint, I divide abilities into two kinds: the ability to understand the real world, and the ability to map the real world into programming languages.
 
 Regarding the three types of work, in order from discovering to analyzing to solving problems, they progress from macro-level to detail-level. Day-to-day work primarily involves solving problems — all kinds of miscellaneous tasks are fundamentally about solving problems. Discovering and analyzing problems require deeper thinking, but in terms of work itself, I don't think there's any hierarchy among these three types. Being able to consistently provide appropriate solutions to identified problems is a formidable core competitiveness in the workplace. As for the two types of capabilities, people generally focus more on the second one. However, I believe the ability to understand the real world is extremely important for a programmer's career development. Think about it — when it comes to working on business logic or writing CRUD operations, is there a threshold? I think there is — doing business logic well has a very high threshold. Some people always implement business logic in peculiar ways and then blame product managers for unclear requirements, when the real issue may be a lack of understanding of the real world.
@@ -33,9 +35,13 @@ So how do we discover problems? This requires the ability to understand the real
 
 For analyzing problems, you should make reasonable conjectures and then use tools to verify or disprove your guesses. Once I discovered data wasn't being saved to the database. I could form several reasonable hypotheses: the database itself had an issue; the connection to the database was problematic; the transaction wasn't committed normally; logic errors prevented data from being generated; and so on. Then I checked the logs for errors, looked at MySQL monitoring for uncommitted transactions. Step by step, the problem was pinpointed.
 
+## Depth vs Breadth
+
 **Solving problems** is what most programmers spend the most time doing. For a programmer, solving problems means representing real-world concepts in a computer. The two most critical aspects, in my understanding, are: first, decomposing tasks — breaking a large task into independent subtasks; and second, the ability to quickly understand and use new tools — essentially, continuous learning. Many people complain that there's too much to learn as a programmer. But you must pay attention to what's worth spending significant time on and what you only need to skim through. I've noticed many people are enthusiastic about learning tools, enjoying writing various versions of Hello World — in my view, this is ineffective learning. Programming learning requires both depth and breadth. Depth means thoroughly researching certain technologies — after studying some, you'll find that various technologies, which may seem unrelated on the surface (like databases and message queues), actually share many similar concepts and ideas. Once you've studied some in depth, you can build your own knowledge system, and then learning new things becomes much faster.
 
 Because every new technology emerges from the urgent need to solve practical problems. For example, why was ClickHouse created? Because row-storage databases like MySQL aren't suitable for data analysis, and there was no columnar storage database with both good performance and stability. Similarly, Jedis connecting directly to Redis Server doesn't perform well in multi-threaded environments, which is why Lettuce was created. Once you understand what problem needs to be solved, try thinking about what solution you would propose. Then look at the actual solution. If your approach is similar — congratulations, your understanding of technology has reached a new level. If it's different — congratulations again, you've learned a new way of thinking. These insights can be applied whenever you work on business logic in the future.
+
+## My Career Philosophy
 
 Let's keep growing together.
 

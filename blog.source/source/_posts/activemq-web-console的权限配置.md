@@ -15,7 +15,12 @@ abbrlink: 32479
 cover: /img/32479.jpg
 date: 2016-01-05 18:09:00
 ---
+## Web Console 的安全风险
+
 <div>activemq的web console是基于jetty实现，其权限管理也是基于jetty. 根据需求，可以给不同的用户赋予不同的权限。jetty的权限管理还算灵活，虽然配起来比较麻烦，可以分别设定某个角色（role）下的用户是否有对某个页面的访问权限。</div>
+
+## JAAS 认证配置
+
 <div>下面简要介绍一下配置方法，只需要修改/conf 下的&nbsp;jetty.xml，&nbsp;jetty-realm.properties</div>
 <div>1.&nbsp;jetty-realm.properties</div>
 <div>&nbsp; 这里面配置了所有用户的用户名，密码和所属角色，按照如下格式：</div>
@@ -23,6 +28,8 @@ date: 2016-01-05 18:09:00
 <div>
 
 </div>
+## 角色与权限定义
+
 <div>2\. jetty.xml</div>
 <div>首先对每个角色配置一个Constraint 类，其中roles及对应&nbsp;jetty-realm.properties中的rolename</div>
 <div>

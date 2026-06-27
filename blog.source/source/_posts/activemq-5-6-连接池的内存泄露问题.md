@@ -15,11 +15,19 @@ abbrlink: 13925
 cover: /img/13925.jpg
 date: 2015-08-08 21:16:00
 ---
+## 问题现象
+
 最近在使用activemq 的连接池时，发现它存在很严重的内存泄露问题。
+
+## 排查过程
 
 通过jmap监控，可以看到java.util.concurrent.locks.ReentrantLock,&nbsp;org.apache.activemq.pool.PooledConnection这两个类占用的空间非常大，而且增长速度也很快。
 
+## 根因分析
+
 网上查了一下，正好找到activemq的[bug 报告](https://issues.apache.org/jira/browse/AMQ-3997).:[https://issues.apache.org/jira/browse/AMQ-3997](https://issues.apache.org/jira/browse/AMQ-3997)
+
+## 解决方案
 
 这个bug 在5.7中已经修复，可以通过升级版本解决。
 

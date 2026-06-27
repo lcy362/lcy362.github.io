@@ -18,9 +18,14 @@ abbrlink: 43947
 cover: /img/43947.jpg
 date: 2024-03-06 19:36:22
 ---
+
+## The Frontend Dilemma for Backend Engineers
+
 The pain point of backend engineers developing frontend code is usually that it's too tedious — you often have to spend a long time looking things up for even the smallest task. Vaadin solves this pain point well by providing backend engineers with an easy-to-learn, convenient solution for writing frontend code. Today, let's take a look.
 
 <!-- more -->
+
+## What is Vaadin
 
 Hello everyone, today I'd like to introduce a tool that's especially valuable for backend engineers — Vaadin.
 
@@ -28,9 +33,13 @@ To be honest, getting started with basic HTML and CSS development isn't really d
 
 Vaadin solves this pain point well. Through Vaadin's pre-packaged common frontend components, we can write functional, reasonably presentable pages with nearly zero learning cost. For programmers with a backend background, this will significantly reduce the cost of building small projects on your own.
 
+## Core Concepts
+
 What Vaadin offers is the ability to write pages directly in Java code. Vaadin provides various pre-built frontend styles including input fields, forms, and more, and it deeply integrates with Spring Boot, making it very convenient to use.
 
 The underlying principle of Vaadin isn't complex — it's mainly based on server-side rendering, meaning the final HTML code is generated on the backend and sent to the browser. Server-side rendering isn't uncommon, and we won't discuss its advantages and disadvantages compared to client-side rendering here. Of course, for Vaadin, using server-side rendering makes perfect sense — since you're writing backend code, doing rendering on the backend is a completely natural implementation path. Vaadin's engine encapsulates the interaction between frontend and backend, so for users, the interaction between frontend and backend is transparent. At the page level, we can also call backend services normally.
+
+## Quick Start
 
 Here's a code example I wrote to give you a more intuitive sense of Vaadin's capabilities:
 

@@ -21,6 +21,8 @@ Canary release is actually a process well-suited for cloud-native environments, 
 
 <!-- more -->
 
+## What is Canary Release
+
 First, let me introduce what a canary release is. The name "canary" originates from the fact that miners discovered canaries are very sensitive to gas. Before descending into the mine, miners would send a canary down first. If the canary stopped singing, it indicated a high concentration of gas.
 
 In the context of systems, it means that after a release begins, a new version of the application is started first, but traffic is not switched over directly. Instead, testers perform online testing on the new version. The newly started application is our "canary." After testing on the canary shows no issues, the production traffic is then switched to the new version.
@@ -31,7 +33,11 @@ If we are not deploying with Kubernetes but directly deploying to multiple serve
 
 However, in a Kubernetes environment, since Kubernetes manages the deployment process, we need to do something different to achieve this effect.
 
+## Canary Release Approach in Kubernetes
+
 A very simple approach is to create two Deployments that are associated with the same Service through labels. This distributes traffic from the same Service across two groups of containers. The two Deployments can be deployed independently, allowing different versions of images to be deployed.
+
+## Deployment Configuration Example
 
 For example, here are two Deployments:
 
@@ -104,6 +110,8 @@ spec:
 The Service is only configured in the first Deployment, with a selector rule of `app: nginx`. Both Deployments have the `app: nginx` label applied.
 
 This achieves the effect we described.
+
+## Limitations
 
 Of course, this approach only implements a very simple canary release process and cannot perform more granular routing, such as gray releases based on user information. For the same user, one request might go to the canary while the next goes to the production environment. If more fine-grained gray release rules are needed, consider using tools like Spring Cloud, Istio, etc.
 

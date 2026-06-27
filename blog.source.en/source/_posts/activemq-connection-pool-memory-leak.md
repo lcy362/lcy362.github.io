@@ -15,11 +15,20 @@ abbrlink: 13925
 cover: /img/13925.jpg
 date: 2015-08-08 21:16:00
 ---
+
+## Problem Symptoms
+
 Recently, while using ActiveMQ's connection pool, I discovered a very serious memory leak issue.
+
+## Investigation Process
 
 Through jmap monitoring, it can be seen that `java.util.concurrent.locks.ReentrantLock` and `org.apache.activemq.pool.PooledConnection` occupy a very large amount of memory, and the growth rate is also very fast.
 
+## Root Cause Analysis
+
 After searching online, I found exactly the corresponding ActiveMQ [bug report](https://issues.apache.org/jira/browse/AMQ-3997): https://issues.apache.org/jira/browse/AMQ-3997
+
+## Solution
 
 This bug has been fixed in version 5.7, so it can be resolved by upgrading the version.
 

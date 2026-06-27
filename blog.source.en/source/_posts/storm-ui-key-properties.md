@@ -14,11 +14,15 @@ abbrlink: 62259
 cover: /img/62259.jpg
 date: 2015-11-06 21:44:00
 ---
+## Storm UI Overview
+
 Storm UI is very helpful for troubleshooting issues encountered during Storm usage, but some properties have unclear meanings. Although they are all simple concepts, not knowing them can be quite frustrating.
 
 One thing to note: when you hover over the title bar in the UI, you can see the specific details of that property. Several highly-ranked Google articles are essentially just organizing this information.
 
 Most properties are straightforward — you know what they mean just by seeing the name. Here I'll only list some properties that might cause confusion, to help everyone troubleshoot issues more easily.
+
+## Key Metrics Explained
 
 **emitted and transferred**: "emitted" refers to the number of data items emitted, which is the number of times the `emit` method of `OutputCollector` is called. "transferred" is the actual number of tuples sent to the next task. At first glance they seem the same, right? In most cases they are indeed the same. However, for example, if a bolt emits data but no downstream bolt consumes it, the bolt's transfer count will be 0. Another example: if bolt A uses the `all` group strategy (every bolt must receive it) to emit tuples to bolt B, then the transferred count will be a multiple of the emitted count.
 

@@ -17,6 +17,8 @@ keywords:
 categories:
   - Java
 ---
+## The Problem
+
 Recently I encountered an error when trying to run a fat jar:
 ```
 Exception in thread "main" java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
@@ -41,13 +43,21 @@ Exception in thread "main" java.lang.SecurityException: Invalid signature file d
 	at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:482)
 ```
 
+## Root Cause: Signature File Conflict
+
 After some investigation, I found it's related to jar signing. For details on signing, you can refer to: http://www.cnblogs.com/jackofhearts/p/jar_signing.html
 
 Some jar packages contain a `.SF` file in `META-INF`, which includes the hashes of the class files and resource files in the original jar package, used for verifying file integrity and other validations.
 
+## The Problem Caused by Maven Shade
+
 However, when building a fat jar, we combine many jar packages into one. This means the fat jar ends up containing signature files from each individual jar, but they obviously cannot be validated against the final fat jar.
 
+## Solution
+
 The solution is to remove all signature files during packaging. If you're using Maven, you can use the shade plugin:
+
+## Maven Configuration Example
 
 ```
            <plugin>
@@ -76,6 +86,9 @@ The solution is to remove all signature files during packaging. If you're using 
                 </executions>
             </plugin>
 ```
+
+## Prevention Measures
+
 Source: https://lichuanyang.top/en/posts/2478/
 
 ---

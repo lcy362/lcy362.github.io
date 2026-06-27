@@ -1,7 +1,5 @@
 ---
-title: >-
-  解决fatjar的 “java.lang.SecurityException: Invalid signature file digest for
-  Manifest main attributes” 问题
+title: "解决fatjar的 \"java.lang.SecurityException: Invalid signature file digest for Manifest main attributes\" 问题"
 description: "解决 Fat Jar 合并时因签名校验导致的 SecurityException，理解 META-INF 签名机制及排除签名文件的方法。"
 tags:
   - java
@@ -17,6 +15,8 @@ keywords:
 categories:
   - Java
 ---
+## 问题现象
+
 最近试图运行一个fatjar的时候报错：
 ```
 Exception in thread "main" java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
@@ -41,13 +41,21 @@ Exception in thread "main" java.lang.SecurityException: Invalid signature file d
 	at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:482)
 ```
 
+## 根因：签名文件冲突
+
 查了一下，跟jar包的签名有关。关于签名可以参考： http://www.cnblogs.com/jackofhearts/p/jar_signing.html
 
 有些Jar包会在metainf里包含一个.SF：包含原Jar包内的class文件和资源文件的Hash， 用来校验文件的完整度等验证。
 
+## Maven Shade 引发的问题
+
 但是在打fat-jar的时候，我们是把很多jar包合成了一个，这样fatjar下就会存在各个jar包中的签名文件，但是他们显然无法跟最终的fatjar作校验。
 
+## 解决方案
+
 解决方法就是打包时把签名文件全都去掉，如果是使用maven的话，可以使用shade插件：
+
+## Maven 配置示例
 
 ```
            <plugin>
@@ -75,4 +83,6 @@ Exception in thread "main" java.lang.SecurityException: Invalid signature file d
                     </execution>
                 </executions>
             </plugin>
-```---
+```
+
+## 预防措施

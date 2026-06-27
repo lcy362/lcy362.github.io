@@ -8,12 +8,18 @@ tags:
 abbrlink: 40400
 cover: /img/hexo-multi-language.jpg
 ---
+
+## Common Multi-language Blog Solutions
+
 The simplest way to use hexo to build a multilingual website is to directly build two independent sites and make a jump link to each other. 
 
 Here's how to implement it.
 
-<!-- more -->
+## Solution Comparison
+
 Suppose I now have a Chinese blog and plan to add an English site
+
+## Hexo Dual-site Implementation Details
 
 - Copy the entire blog directory as the English blog directory. For example, my blog root directory is called blog.source, and copy a blog.source.en. After this, if source code of the blog is maintained using git, you can just create a new git project directly in the outer layer of the original directory and manage it in the outer layer. For example:
      ```
@@ -29,6 +35,8 @@ Suppose I now have a Chinese blog and plan to add an English site
 
      ```
 - After that, the configuration is basically completed. You can write English articles in the en directory. The process is exactly the same as when writing Chinese articles before.
+
+## Deployment and CI/CD
 
 - The last step is to generate and publish. Pay attention to this step. Everytime we generate, we need to generate a Chinese site first, then generate an English site and copy the English content to the Chinese directory to avoid overwriting the English content when generating Chinese content.  Specific operation examples are as follows:
   ```

@@ -22,6 +22,8 @@ cover: /img/cloud-native-arch.jpg
 
 
 
+## Definition of Cloud Native
+
 In recent years, cloud native has become an increasingly popular concept across the open-source community. But what exactly is cloud native? Is it an architecture? A platform? What does it affect? System security? Development efficiency? So today, let's dig deep and sort out what cloud native really is.
 
 <!-- more -->
@@ -34,13 +36,21 @@ The core advantage of cloud computing is essentially just centralizing more reso
 
 By analogy, many people have used streaming frameworks like Storm. What are their advantages? One important factor is the ability to break down a complex workflow into multiple sub-nodes, where each node can be configured with different levels of concurrency based on its needs. Nodes with higher concurrency demands can receive more resources. This way, resource utilization is improved.
 
+## Microservices
+
 For microservices, it's similar — splitting different functions into separate services allows independent scaling at a finer granularity.
 
 It's worth noting that splitting includes not only separating different business domains, but also separating business code, third-party software (third-party libraries), and non-functional features (high availability, security, observability, etc.) into three distinct categories.
 
 Pure business splitting has actually been happening since very early stages of software development. The trend accompanying the rise of cloud native is to maximize the separation of non-business code portions from cloud applications, allowing cloud infrastructure to take over the many non-functional features originally in applications (such as elasticity, resilience, security, observability, canary releases, etc.) — this is the so-called service mesh.
 
-Since resources and applications in the cloud are not strongly bound, to make resource utilization more convenient, we need a more universal runtime format that allows applications to have a certain degree of decoupling from their runtime environment. This is container technology. Containers provide a logical packaging mechanism. Applications packaged with this mechanism can operate independently of their actual runtime environment. Using this decoupling, regardless of whether the target environment is a private data center, public cloud, or a developer's personal laptop, you can easily and consistently deploy container-based applications. Containerization makes the concerns of developers and IT operations teams distinct — developers focus on application logic and dependencies, while IT operations teams can focus on deployment and management without being distracted by specific software versions and application-specific configurations.
+Since resources and applications in the cloud are not strongly bound, to make resource utilization more convenient, we need a more universal runtime format that allows applications to have a certain degree of decoupling from their runtime environment. 
+
+## Containerization
+
+This is container technology. Containers provide a logical packaging mechanism. Applications packaged with this mechanism can operate independently of their actual runtime environment. Using this decoupling, regardless of whether the target environment is a private data center, public cloud, or a developer's personal laptop, you can easily and consistently deploy container-based applications. Containerization makes the concerns of developers and IT operations teams distinct — developers focus on application logic and dependencies, while IT operations teams can focus on deployment and management without being distracted by specific software versions and application-specific configurations.
+
+## Observability
 
 On the other hand, after splitting services into finer granularity, the system's inherent complexity obviously increases. For example, local calls become network requests, and call chains cannot be reflected through code structure. Therefore, operations need to be more intelligent and automated to ensure stronger stability of individual services. At the same time, a powerful monitoring system is needed that can analyze dependencies between microservices and quickly detect anomalies in the system.
 
@@ -57,6 +67,8 @@ DevOps: Automated, rapid, development-operations collaboration
 Continuous delivery: Frequent releases, fast feedback
 
 Containerization: Logical packaging mechanism
+
+## Cloud Native Mindset
 
 We've covered a lot of theory above. So what are the concrete implementation paths for adopting cloud native? We can consider the following aspects:
 

@@ -16,6 +16,8 @@ abbrlink: 17762
 cover: /img/17762.jpg
 date: 2015-08-08 20:55:00
 ---
+## Test Scenario
+
 <span style="font-family: Arial,Helvetica,sans-serif; background-color: #ffffff;">The company uses ActiveMQ and Camel for message distribution. Previously, the data volume wasn't very large, so we never really considered efficiency issues, and the research into Camel's working principles wasn't deep. However, recently, as the business volume increased, Camel's efficiency has gradually become a bottleneck, so I got a general understanding of Camel's working principles based on logs. Although Camel is embedded into ActiveMQ, during the working process, Camel and ActiveMQ are actually relatively independent. We configure a connection to ActiveMQ in Camel.</span>
 
 <pre name="code" class="html">http://camel.apache.org/activemq.html
@@ -24,7 +26,11 @@ date: 2015-08-08 20:55:00
 
 Regarding the VM transport method, refer to [http://activemq.apache.org/vm-transport-reference.html](http://activemq.apache.org/vm-transport-reference.html)
 
+## Bottleneck Analysis
+
 After checking the logs, I found that with this configuration, Camel has a very serious problem: every time Camel performs a forwarding operation, it creates a new connection to ActiveMQ and then closes it. This severely slows down the forwarding efficiency, since in fact, the same connection could be reused for every forwarding operation.
+
+## Optimization Suggestions
 
 So I looked up the Camel documentation and found [http://camel.apache.org/activemq.html](http://camel.apache.org/activemq.html). It contains configuration for thread pools:
 

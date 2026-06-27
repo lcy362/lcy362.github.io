@@ -16,6 +16,8 @@ cover: /img/25187.jpg
 date: 2012-10-28 18:42:00
 ---
 
+## Overview
+
 Reference: [http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html](http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html)
 
 &nbsp;
@@ -49,6 +51,10 @@ import org.apache.hadoop.util.GenericOptionsParser;
 
 public class WordCount {
 
+```
+## Mapper Implementation
+
+```java
 　　public static class **TokenizerMapper**
 
 　　　　　　extends Mapper<Object, Text, Text, IntWritable>{ // Inherits from org.apache.hadoop.mapreduce.Mapper class and overrides its map method
@@ -78,7 +84,10 @@ public class WordCount {
 　　}
 
 // The system automatically sorts the map results, etc. The reduce input example: (asd,1-1-1)
+```
+## Reducer Implementation
 
+```java
 　　public static class **IntSumReducer**
 
 　　　　　　extends Reducer<Text,IntWritable,Text,IntWritable> { // Reducer<KEYIN,VALUEIN,KEYOUT,VALUEOUT>
@@ -107,6 +116,11 @@ public class WordCount {
 
 　　}
 
+　　}
+```
+## Main Method
+
+```java
 　　public static void **main**(String[] args) throws Exception {
 
 　　　　Configuration conf = new Configuration();
@@ -145,6 +159,11 @@ public class WordCount {
 
 }
 
+}
+```
+## Other Configuration Notes
+
+```java
 // setInputFormat: Set the map input format, defaults to TextInputFormat, key is LongWritable, value is Text
 
 setNumMapTasks: Set the number of map tasks. This setting usually doesn't take effect; the number of map tasks depends on the number of input splits the input data can be divided into
