@@ -1,14 +1,6 @@
 ---
-layout: blog
-title: 'SSP,DSP,RTB,ADX都是什么? 讲讲互联网广告的概念与发展'
+title: SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展
 description: "从广告的本质出发，系统梳理互联网广告的发展脉络，讲清楚 SSP、DSP、RTB、ADX 等核心概念及程序化交易的底层逻辑。"
-keywords:
-  - 互联网广告
-  - SSP
-  - DSP
-  - RTB
-  - ADX
-  - 程序化交易
 categories:
   - 技术杂谈
 date: 2022-03-07 16:28:58

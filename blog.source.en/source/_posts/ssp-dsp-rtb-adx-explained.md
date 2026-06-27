@@ -1,14 +1,6 @@
 ---
-layout: blog
 title: "What Are SSP, DSP, RTB, and ADX? Understanding the Concepts and Evolution of Internet Advertising"
 description: "Starting from the essence of advertising, systematically untangle the evolution of internet advertising, explaining core concepts like SSP, DSP, RTB, ADX and the underlying logic of programmatic trading."
-keywords:
-  - internet advertising
-  - ssp
-  - dsp
-  - rtb
-  - adx
-  - programmatic trading
 categories:
   - Tech Talk
 date: 2022-03-07 16:28:58
