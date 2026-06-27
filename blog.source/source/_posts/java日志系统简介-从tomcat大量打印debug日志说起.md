@@ -15,6 +15,11 @@ tags:
 abbrlink: 4433
 cover: /img/4433.jpg
 date: 2017-03-31 19:47:00
+faq:
+  - SLF4J 如何选择日志实现？有多个实现共存时会怎样？
+  - 桥接器方向搞反了会有什么后果？slf4j-log4j12 和 log4j-over-slf4j 能同时用吗？
+  - 2026 年推荐的 Java 日志组合是什么？Log4j 2 相比 Logback 有什么优势？
+  - 排查日志不按预期输出时，最有效的三步走是什么？
 ---
 Java 的日志框架生态可能是所有编程语言中最复杂的——不是因为它功能多复杂，而是历史原因导致了多套体系的并存和交叉。本文从一个真实的线上排查案例出发，理清 Java 日志框架的体系结构。
 
@@ -133,4 +138,22 @@ mvn dependency:tree | grep -E "log4j|logback|slf4j|commons-logging|jul"
 ```
 
 如果你的项目还是旧的 Log4j 1.x，建议趁早升级——不仅是性能和安全问题，Log4j 1.x 已经 EOL 多年了。
+
+## 常见问题
+
+### Q: SLF4J 如何选择日志实现？有多个实现共存时会怎样？
+
+SLF4J 在 classpath 中发现多个实现（如 Logback + Log4j）时，会**不确定地**选择其中一个。如果选到的实现缺少对应的配置文件（比如选了 Logback 但只配了 `log4j.xml`），就会使用默认行为——所有日志级别全部输出，这正是文中的磁盘被 DEBUG 日志撑爆的根本原因。因此必须保证 classpath 中**有且只有一套**日志实现。
+
+### Q: 桥接器方向搞反了会有什么后果？slf4j-log4j12 和 log4j-over-slf4j 能同时用吗？
+
+绝对不能同时用。`slf4j-log4j12` 是把 SLF4J 日志交给 Log4j 处理，`log4j-over-slf4j` 是把 Log4j 日志交给 SLF4J（进而交给 Logback 或 Log4j 2）处理。两者同时存在会造成 A → B → A → B 这样的**无限循环**。正确做法是选定一个方向后，用 Maven `<exclusion>` 彻底排除另一个。
+
+### Q: 2026 年推荐的 Java 日志组合是什么？Log4j 2 相比 Logback 有什么优势？
+
+推荐组合：**SLF4J（门面）+ Log4j 2（实现）**。Log4j 2 的优势在于：1) 异步日志性能优于 Logback；2) 已修复 Log4j 1.x 的安全漏洞（Log4Shell 等 CVE）；3) Log4j 1.x 已 EOL 多年，不再有安全补丁。代码中使用 `org.slf4j.Logger`，实现可随时切换。
+
+### Q: 排查日志不按预期输出时，最有效的三步走是什么？
+
+1) **找肇事日志**：从大量日志中用 `grep` 捞几行不符合你配置的日志，确认代码用的是哪个日志接口；2) **查 jar 包依赖树**：`mvn dependency:tree | grep -E "log4j|logback|slf4j"`，找多套实现共存或桥接器方向搞反的问题；3) **清除多余实现**：只保留一套，旧接口用桥接器单向路由到新实现。
 ---

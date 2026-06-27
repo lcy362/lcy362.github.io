@@ -13,6 +13,12 @@ tags:
 abbrlink: 42764
 cover: /img/42764.jpg
 date: 2017-06-30 19:30:00
+howto:
+  - Identify the Requirement
+  - Create Appender Instance
+  - Configure Parameters
+  - Activate and Add to Logger
+  - Verify Log Output
 ---
 Most Java developers manage log output through configuration files (`log4j.properties` or `log4j.xml`). But in certain operational scenarios, dynamically modifying logging configuration at runtime offers greater flexibility — for example, temporarily enabling DEBUG level during online troubleshooting, or dynamically pushing logs to Kafka for centralized analysis.
 
@@ -112,4 +118,22 @@ Configurator.setLevel("com.example", Level.DEBUG);
 ```
 
 If you're still on Log4j 1.x, the dynamic API above can handle many operational scenarios. For new projects, consider going straight to Log4j 2 or SLF4J + Logback.
+
 ---
+
+## Quick Start Guide
+
+### Step 1: Identify the Requirement
+Clarify the scenario for dynamically adding an Appender: temporarily enabling DEBUG logs, pushing logs to Kafka, or dynamically switching log files. Identify the target Logger name and the required Appender type.
+
+### Step 2: Create Appender Instance
+Create the corresponding Appender instance based on your requirements, such as `KafkaLog4jAppender`, `DailyRollingFileAppender`, etc. Use `Logger.getLogger(name)` to obtain the target Logger object.
+
+### Step 3: Configure Parameters
+Set the necessary Appender parameters, such as Kafka broker address and topic, file path and rolling strategy, log format `PatternLayout`, etc.
+
+### Step 4: Activate and Add to Logger
+Call `appender.activateOptions()` to activate the configuration (initialization operations such as establishing connections), then add the Appender to the target Logger via `logger.addAppender(appender)`. Adjust the log level as needed.
+
+### Step 5: Verify Log Output
+Trigger business logic to generate logs and confirm that logs are output as expected to the target destination (Kafka consumers receive messages, new log entries appear in files, etc.). Remember to call `removeAppender` after troubleshooting to release resources.

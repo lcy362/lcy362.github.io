@@ -14,6 +14,7 @@ categories:
 abbrlink: 12035
 cover: /img/12035.jpg
 date: 2018-01-22 18:33:02
+tldr: Messaging middleware solves two core problems — decoupling and load leveling. ActiveMQ is the most complete implementation of the JMS specification
 ---
 ActiveMQ is an open-source messaging middleware (Message-Oriented Middleware, MOM) under the Apache Software Foundation and a complete implementation of the JMS (Java Message Service) 1.1 specification. This article is the opening piece of the ActiveMQ series. We'll first clarify what messaging middleware is and what problems it solves, then introduce the core concepts of JMS, laying a solid foundation for further exploration of ActiveMQ's specific features.
 

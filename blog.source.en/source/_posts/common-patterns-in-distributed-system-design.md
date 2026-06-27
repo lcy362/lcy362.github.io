@@ -7,6 +7,11 @@ description: An exploration of common patterns in distributed system design, inc
 abbrlink: 45718
 cover: /img/45718.jpg
 date: 2022-04-13 20:13:24
+faq:
+  - What is the most important thing to learn in distributed system design? What are the core patterns?
+  - What is the practical significance of the CAP theorem? Why are there no CA systems?
+  - Where should a beginner start with distributed systems? Is there a recommended learning path?
+  - How to make trade-off decisions between "performance" and "consistency"?
 ---
 
 Previously, I translated an article about distributed systems (https://lichuanyang.top/posts/3914/) which received positive feedback across various platforms. So I recently reorganized the related knowledge, combined with new insights gained over the past year, and rewrote this article.

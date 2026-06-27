@@ -14,6 +14,7 @@ tags:
   - 多线程
 abbrlink: 5707
 cover: /img/5707.jpg
+tldr: 线程池背压推荐CallerRunsPolicy+有界队列，避免无限堆积导致OOM
 date: 2017-05-26 20:36:00
 ---
 Java 的线程池用起来很方便——`Executors.newFixedThreadPool(n)` 一行代码搞定。但如果任务提交速度远快于执行速度，任务会在无界队列中无限堆积，最终导致 OOM。今天分享一个真实案例和几种解决方案。

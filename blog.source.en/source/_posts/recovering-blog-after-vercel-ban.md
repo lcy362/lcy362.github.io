@@ -17,6 +17,12 @@ tags:
 abbrlink: 39648
 cover: /img/39648.jpg
 date: 2026-05-11 19:30:00
+howto:
+  - Identify the Problem
+  - Investigate the Cause
+  - Migrate Email Verification
+  - Redeploy
+  - Verify Recovery
 ---
 
 A few days ago, I wrote a new article and deployed it to Vercel as usual, but the pipeline threw an error. At first I thought it was a build issue, and after messing around for a while I realized something was wrong — it was the Vercel account itself. The account registered with a 163 email couldn't log in at all. Later I found out that Vercel had banned the entire 163.com email root domain.
@@ -94,3 +100,22 @@ Original article: https://lichuanyang.top/posts/39648/
 ---
 
 Source: https://lichuanyang.top/en/posts/39648/
+
+---
+
+## Quick Start Guide
+
+### Step 1: Identify the Problem
+When your blog is inaccessible or Vercel deployment throws errors, first confirm whether your account has been banned. Try logging into Vercel — if your 163 email-registered account cannot log in, it's likely been banned.
+
+### Step 2: Investigate the Cause
+Search related forums (NodeSeek, V2EX, etc.) to confirm whether Vercel has banned 163 email on a large scale. Understand the background and impact scope of the ban to be well-informed.
+
+### Step 3: Migrate Email Verification
+If you can still log in, immediately add a Gmail or Outlook email in your account settings and remove the 163 email. If you can no longer log in, re-register a Vercel account with a new email. It's recommended to use mainstream international email services like Gmail or Outlook.
+
+### Step 4: Redeploy
+After logging in with a new account, connect to GitHub and import your blog repository. Vercel will automatically detect the project type and complete building and deploying — the process is essentially the same as the initial deployment.
+
+### Step 5: Verify Recovery
+Re-bind your custom domain. Vercel now supports automatically modifying Cloudflare DNS configuration, making the process very simple. Confirm that all pages of your blog are accessible and that HTTPS, CDN, and other functions are working properly.

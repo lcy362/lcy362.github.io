@@ -14,7 +14,14 @@ tags:
   - 博客搭建
 abbrlink: 19890
 cover: /img/hexo-blog-system.jpg
+tldr: Hexo搭建个人博客只需三步：安装框架→选择主题→配置部署，30分钟即可上线
 date: 2018-01-19 18:56:07
+howto:
+  - 安装Hexo
+  - 选择主题
+  - 配置站点
+  - 部署到GitHub
+  - 绑定域名
 ---
 原文地址： https://lichuanyang.top/posts/19890/
 
@@ -50,5 +57,29 @@ hexo提供了多个从其他博客迁移数据的插件，rss,blogger等等都�
 包括部署到github， 也有现成的配置可以用，简单配置一下就好了。
 
 弄完之后，就是大家现在看到的样子了。
+
+---
+
+## 快速上手步骤
+
+### Step 1: 安装Hexo
+
+确保已安装 Node.js，执行 `npm install -g hexo-cli` 安装 Hexo 命令行工具。然后 `hexo init blog` 初始化博客项目，`cd blog && npm install` 安装依赖。
+
+### Step 2: 选择主题
+
+在 Hexo 主题市场中选择喜欢的主题（如 Next），下载到 `themes/` 目录，在 `_config.yml` 中修改 `theme` 字段为主题名称。
+
+### Step 3: 配置站点
+
+编辑 `_config.yml` 配置站点标题、描述、作者等基本信息。根据需要配置第三方服务：统计工具、评论系统、搜索功能等。
+
+### Step 4: 部署到GitHub
+
+安装 `hexo-deployer-git` 插件，在 `_config.yml` 中配置 `deploy` 字段填入 GitHub 仓库地址。执行 `hexo generate && hexo deploy` 即可部署。
+
+### Step 5: 绑定域名
+
+在 `source/` 目录下创建 CNAME 文件写入自定义域名，在域名 DNS 管理中添加 CNAME 记录指向 GitHub Pages 地址。
 
 ---

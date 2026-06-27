@@ -15,6 +15,7 @@ tags:
 abbrlink: 64970
 cover: /img/64970.jpg
 date: 2016-12-02 19:45:00
+tldr: Integer caches values from -128 to 127; == comparison can be counterintuitive — always use equals() to compare wrapper classes
 ---
 Java's `Integer` caching mechanism is a frequently asked interview topic and a common source of pitfalls in daily development. To understand it, let's start with a counterintuitive experiment.
 

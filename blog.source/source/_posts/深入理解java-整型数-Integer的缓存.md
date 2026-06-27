@@ -14,6 +14,7 @@ tags:
   - javaInteger缓存
 abbrlink: 64970
 cover: /img/64970.jpg
+tldr: Integer在-128到127范围内使用缓存，==比较可能违反直觉，始终用equals比较包装类
 date: 2016-12-02 19:45:00
 ---
 Java 的 `Integer` 缓存机制是一个高频面试题，也是日常开发中容易踩坑的地方。理解它，首先从一个看起来违反直觉的实验开始。

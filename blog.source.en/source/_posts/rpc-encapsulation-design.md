@@ -14,6 +14,11 @@ tags:
 abbrlink: 20888
 cover: /img/20888.jpg
 date: 2021-03-16 18:34:56
+faq:
+  - When should you wrap RPC input/output into request/response classes?
+  - Does adding a unified status code to RPC responses conflict with the Interface Segregation Principle?
+  - What is the industry's common practice for RPC interface design?
+  - How to avoid semantic ambiguity after wrapping parameters into a request class?
 ---
 
 ## Problem Statement
