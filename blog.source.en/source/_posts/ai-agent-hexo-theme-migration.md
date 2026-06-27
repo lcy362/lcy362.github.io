@@ -175,4 +175,4 @@ If you have similar "grunt work," try letting an AI Agent help. You'll find that
 
 *This article was written with AI Agent assistance, documenting a real theme migration practice.*
 
-Source: https://lichuanyang.top/posts/48979/
+Source: https://lichuanyang.top/en/posts/48979/

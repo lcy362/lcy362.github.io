@@ -138,5 +138,3 @@ Maintaining docs is the better investment. An Agent subscription costs tens to h
 ### Q: Are free models really sufficient?
 
 For the vast majority of daily tasks, yes. The author's experience shows that DeepSeek Flash-level free models can handle most code modifications, document generation, and knowledge organization tasks. When you encounter genuinely complex scenarios beyond their reach, you can temporarily switch to platforms with free trial credits (like Trae, Codex trial bundles). The real bottleneck is rarely model capability — it's whether the context (docs) you feed it is good enough.
-
-Source: https://lichuanyang.top/posts/26060/

@@ -644,6 +644,65 @@ grep 'relatedFaq' public/posts/<abbrlink>/index.html  # 应看到相关问答组
 - 新增 FAQ 文章后，需要运行 `./scripts/update_hreflang_map.sh` 更新映射
 - related-faq 组件只在同语言内推荐（中文文章推荐中文 FAQ，英文推荐英文 FAQ）
 
+### 7. TL;DR 摘要模式（2026-06-27）
+
+**目的**：为文章注入结构化摘要，提升 AI 搜索引擎（Google SGE、Perplexity 等）对文章核心观点的理解和引用。
+
+这解决了两个问题：
+1. **视觉层**：读者打开文章后一眼看到核心观点，决定要不要精读
+2. **数据层**：BlogPosting JSON-LD 中注入 `abstract` 字段，AI 可直接解析
+
+**工作原理**：
+1. 文章 front-matter 中声明 `tldr:` 字段（一句话摘要）
+2. `geo-schema.js` 在构建时：
+   - 将 TL;DR 渲染为文章顶部的主题色引用块（`<blockquote class="tldr-block">`）
+   - 注入到 BlogPosting JSON-LD 的 `abstract` 字段（位于 `image` 和 `datePublished` 之间）
+3. 无 `tldr:` 字段的文章不受影响，不会生成 `abstract`
+
+**Front-matter 示例**：
+```yaml
+---
+title: 文章标题
+tldr: "一句话总结这篇文章的核心观点"
+---
+```
+
+**HTML 输出**（视觉层）：
+```html
+<blockquote class="tldr-block">
+  <strong>TL;DR</strong> 一句话总结这篇文章的核心观点
+</blockquote>
+```
+
+**JSON-LD 输出**（数据层）：
+```json
+{
+  "@type": "BlogPosting",
+  "abstract": "一句话总结这篇文章的核心观点",
+  "datePublished": "2026-06-16T05:20:05.000Z",
+  ...
+}
+```
+
+**目前覆盖**：中文站 29/93 篇（31%），英文站 24/89 篇（27%）。
+
+**⚠️ 注意事项**：
+- TL;DR 只用一句话（30-60 字），陈述核心观点，不要写成营销文案
+- 英文版文章的 `tldr:` 用英文写，内容与中文版对应
+- 短文章（<1500 字）可以不加，超过 3000 字的建议都加
+
+**验证方法**：
+```bash
+cd ~/blogs/blog.source
+hexo generate
+grep '"abstract"' public/posts/<abbrlink>/index.html  # 应看到 abstract 字段
+grep 'tldr-block' public/posts/<abbrlink>/index.html  # 应看到 TL;DR 块
+```
+
+**与 meta description 的区别**：
+- `description`：150-160 字符，面向 SERP 点击，可带营销性
+- `abstract`（TL;DR）：30-60 字符，面向 AI 理解，纯陈述核心观点
+
 ## 踩坑记录
 
 ### 1. 英文站 root 必须是 `/en/`，不能是 `/`
@@ -716,7 +775,11 @@ for item in data:
 | `blog.source/source/_posts/` | 中文文章（88 篇） |
 | `blog.source.en/source/_posts/` | 英文文章（84 篇） |
 | `blog.source/scripts/hreflang.js` | hreflang 标签注入脚本（含分类映射表） |
-| `blog.source/scripts/structured-data.js` | 结构化数据增强脚本 |
+| `blog.source/scripts/structured-data.js` | 结构化数据增强（BreadcrumbList + author.sameAs） |
+| `blog.source/scripts/geo-schema.js` | GEO schema 生成（FAQ/HowTo JSON-LD + TL;DR abstract） |
+| `blog.source/scripts/related-faq.js` | 文章底部「相关问答/教程」组件 |
 | `blog.source.en/scripts/category-slug-fix.js` | 英文站分类/标签 URL 小写化 |
-| `blog.source/sitemap_template.xml` | 中文站 sitemap 模板 |
+| `blog.source.en/scripts/geo-schema.js` | 英文站 GEO schema 生成 |
+| `blog.source.en/scripts/related-faq.js` | 英文站相关问答组件 |
+| `blog.source/sitemap_template.xml` | 中文站 sitemap 模板（含 changefreq/priority） |
 | `blog.source.en/sitemap_template.xml` | 英文站 sitemap 模板（含 `| lower`） |
