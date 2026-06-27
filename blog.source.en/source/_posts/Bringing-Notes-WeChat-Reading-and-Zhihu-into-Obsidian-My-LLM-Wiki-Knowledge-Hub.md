@@ -1,21 +1,21 @@
 ---
-title: Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub
-tldr: Build a knowledge hub with Obsidian + LLM Wiki, integrating your blog, WeChat Reading, and Zhihu
+title: "Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub"
+tldr: "Build a knowledge hub with Obsidian + LLM Wiki, integrating your blog, WeChat Reading, and Zhihu"
 date: 2026-06-26 16:18:13
 categories: [Tech Talk]
 tags: [Obsidian, llm-wiki, knowledge-management, WeChat-Reading, Zhihu, AI, Notion]
 faq:
-  - Q: Is Obsidian suitable for programmers doing knowledge management?
-  - Q: Does LLM Wiki require a GPU?
-  - Q: What's the difference between llm-wiki and a traditional wiki?
-  - Q: What's the difference between knowledge distillation and personality distillation?
+  - "Q: Is Obsidian suitable for programmers doing knowledge management?"
+  - "Q: Does LLM Wiki require a GPU?"
+  - "Q: What's the difference between llm-wiki and a traditional wiki?"
+  - "Q: What's the difference between knowledge distillation and personality distillation?"
 abbrlink: 18804
 howto:
-  - Install Obsidian: Download the Obsidian client and create a Vault
-  - Configure LLM Wiki: Create AGENTS.md with ingestion, auditing, and wiki maintenance rules
-  - Connect WeChat Reading: Use the WeChat Reading Agent API to sync book highlights and notes
-  - Import Zhihu: Use Playwright automation scripts to scrape Zhihu answers and articles
-  - Integrate blog: Import blog articles into Obsidian for unified knowledge management
+  - "Install Obsidian: Download the Obsidian client and create a Vault"
+  - "Configure LLM Wiki: Create AGENTS.md with ingestion, auditing, and wiki maintenance rules"
+  - "Connect WeChat Reading: Use the WeChat Reading Agent API to sync book highlights and notes"
+  - "Import Zhihu: Use Playwright automation scripts to scrape Zhihu answers and articles"
+  - "Integrate blog: Import blog articles into Obsidian for unified knowledge management"
 ---
 
 A while back, I came across Andrej Karpathy's llm-wiki concept and felt an instant sense of resonance. I've always enjoyed writing things down, but the problem was that everything ended up scattered across different places, and I never had the energy to manage it properly. When I discovered llm-wiki, I realized — all that stuff I'd been writing over the years was finally going to pay off.

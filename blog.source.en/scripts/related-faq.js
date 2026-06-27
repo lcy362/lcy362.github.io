@@ -149,7 +149,17 @@ hexo.extend.filter.register('after_render:html', function(html, data) {
         '<ol class="relatedHowto-steps">';
 
       for (var s = 0; s < steps.length; s++) {
-        var stepName = typeof steps[s] === 'string' ? steps[s] : steps[s].name;
+        var step = steps[s];
+        var stepName = '';
+        if (typeof step === 'string') {
+          stepName = step;
+        } else if (step.name) {
+          stepName = step.name;
+        } else {
+          // YAML object with key as step name (e.g. {Setup: "desc"})
+          var keys = Object.keys(step);
+          stepName = keys.length > 0 ? keys[0] : '';
+        }
         howtoItemsHtml += '<li>' + stepName + '</li>';
       }
 
