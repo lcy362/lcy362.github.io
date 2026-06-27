@@ -16,25 +16,121 @@ abbrlink: 4433
 cover: /img/4433.jpg
 date: 2017-03-31 19:47:00
 ---
-目前，java下应用最广泛的日志系统主要就是两个系列: log4j和slf4j+logback 。
+Java 的日志框架生态可能是所有编程语言中最复杂的——不是因为它功能多复杂，而是历史原因导致了多套体系的并存和交叉。本文从一个真实的线上排查案例出发，理清 Java 日志框架的体系结构。
 
-其中,slf4j只包含日志的接口，logback只包括日志的具体实现，两者加起来才是一个完整的日志系统。Log4j则同时包含了日志接口和实现。
+<!-- more -->
 
-这两套日志系统之间有可以相互兼容的组件，分别是slf4j-log4j12和 log4j-over-slf4j，引入之后就可以用log4j打出slf4j接口的日志，或者用logback打出log4j接口的日志。
+## Java 日志体系架构
 
-背景知识介绍到这里，再简单说一下标题里提到的问题。问题的现象就是我们在war包里配置了log4j的日志级别为info, 但在catalina里却一直在打大量的debug日志。初看现象肯定很诡异，前期各种研究tomcat配置也没什么头绪。直到磁盘压力太大，去看jstack发现大量进程是等待在Logback代码中，才发现之前关注错了重点。再去具体了解了java下的日志系统后，问题也就很明了了。
+目前 Java 下最主流的两套日志体系是 **Log4j** 和 **SLF4J + Logback**。
 
-先把几个事实摆出来：
-	1\. 打出的debug日志都是用slf4j写的，根据堆栈得知logback具体执行了日志打印
-	2\. logback在无配置文件时默认debug级别
-	3\. 我们的war包中同时包含logback,log4j和slf4j-log4j12
-	4\. Slf4j无法主动选择具体的日志实现
-想必看到这里，大家也明白了问题所在。根据我们引入的包，log4j和logback都可以实现打印slf4j日志，而具体谁来打，不是一个用正常办法可以控制的事情，在这个具体案例下，logback就成了具体的日志打印者。而因为我们其实是想用lo4j打日志，所以没有配logback配置，所以logback就按默认的debug级别打了大量日志。
+### 日志门面 vs 日志实现
 
-解决办法也很简单，就是把logback的包全去掉。看似有些暴力，但确实是最合理的一个解决办法。
+理解这个区分是搞懂 Java 日志生态的关键：
 
-最后提供一个排查日志问题的通用套路，免得找不到方向乱看。
-	1\. 找几行不符合自己日志配置的具体日志，翻阅对应代码，看看是哪个日志接口打的
-	2\. 查jar包，看看这套日志框架有哪些具体实现
-        3\. 把多的jar包去掉
+| 类型 | 角色 | 例子 |
+|------|------|------|
+| **日志门面（Facade）** | 只定义接口，不提供具体实现 | SLF4J、Commons Logging（JCL） |
+| **日志实现** | 真正的日志写入逻辑 | Logback、Log4j 1.x、Log4j 2、java.util.logging（JUL） |
+
+**SLF4J + Logback** 是典型的门面+实现分离架构：SLF4J 只包含接口（`LoggerFactory`、`Logger`），Logback 是具体实现。分离的好处是代码只依赖 SLF4J 接口，实现可以随时替换。
+
+**Log4j 1.x** 则同时包含接口和实现——代码直接用 `org.apache.log4j.Logger`。
+
+### 桥接器
+
+正是因为有两套体系，才出现了桥接器（Bridge）——让一套体系的接口打出的日志能被另一套体系的实现处理：
+
+```
+SLF4J 接口 ──→ slf4j-log4j12 ──→ Log4j 实现    （用 Log4j 输出 SLF4J 日志）
+Log4j 接口 ──→ log4j-over-slf4j ──→ SLF4J → Logback  （用 Logback 输出 Log4j 日志）
+```
+
+**重要**：`slf4j-log4j12` 和 `log4j-over-slf4j` 方向相反，不能同时使用，否则会造成无限循环。
+
+## 一个真实的排查故事
+
+### 问题现象
+
+部署在 Tomcat 上的一个 Web 应用，磁盘空间持续下降，日志文件异常庞大。我们明明在 war 包里把 Log4j 的日志级别配成了 `INFO`，但 Tomcat 的 `catalina.out` 里却在疯狂打印 `DEBUG` 级别的日志。
+
+### 排查过程
+
+1. 起初以为是 Tomcat 配置问题，花了不少时间调整 Tomcat 日志级别，无果
+2. 磁盘告急，只好先 `jstack` 看看哪些线程在跑，发现大量线程阻塞在 **Logback 的写日志代码**上
+3. 这个线索完全出乎意料——我们根本没配置 Logback！
+
+### 真相
+
+逐一梳理 war 包的依赖关系后，破案了：
+
+1. 业务代码使用 **SLF4J 接口**写日志
+2. war 包里同时存在 **logback-core**、**log4j**、**slf4j-log4j12** 三个包
+3. Classpath 中有 Logback 和 Log4j 两个 SLF4J 的实现——SLF4J 会随机（或者说"不确定地"）选择其中一个
+4. 这次它选了 **Logback**
+5. 我们只配了 Log4j 的配置文件（`log4j.xml`），Logback 找不到配置，按默认行为——**所有级别都输出**
+6. 于是磁盘被 DEBUG 日志撑爆了
+
+### 解决方案
+
+把 Logback 相关的 jar 包从 war 包里全部移除。看似粗暴，但这其实是最合理的做法——当你已经确定使用一套日志实现时，就应该清除另一套，避免 SLF4J 的自动绑定逻辑给你"惊喜"。
+
+后来我们用 Maven 的 `dependency:tree` 命令找到了引入 Logback 的间接依赖，加上 `<exclusion>` 一劳永逸。
+
+## 日志问题排查通用套路
+
+下次再遇到类似的日志诡异问题，按这个三步走：
+
+**1. 找到"肇事"日志**
+
+在巨大的日志文件里找几行不符合你配置的日志，用 `grep` 找到具体是哪行代码打印的：
+
+```bash
+grep -n "某个独特关键词" catalina.out
+```
+
+然后去代码里确认：这个日志是用哪个接口写的？SLF4J 的 `Logger`？还是 Log4j 的 `Logger`？
+
+**2. 查 jar 包依赖树**
+
+```bash
+mvn dependency:tree | grep -E "log4j|logback|slf4j|commons-logging|jul"
+```
+
+重点关注：有没有**多套日志实现**同时出现在 classpath 中？有没有**桥接器方向搞反**？
+
+**3. 清除多余的实现**
+
+只保留一套日志实现。如果需要兼容旧代码，用桥接器将旧接口路由到新实现：
+
+```xml
+<!-- 想用 SLF4J + Logback，把 Log4j 接口也桥接过来 -->
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>log4j-over-slf4j</artifactId>
+</dependency>
+<!-- 排除原版 log4j，避免冲突 -->
+<exclusion>
+    <groupId>log4j</groupId>
+    <artifactId>log4j</artifactId>
+</exclusion>
+```
+
+## 2026 年的推荐组合
+
+当前推荐的 Java 日志架构：
+
+- **门面**：SLF4J（事实标准）
+- **实现**：Log4j 2（异步性能优于 Logback，且已修复 Log4j 1.x 的安全漏洞）
+- **规范**：代码中只使用 `org.slf4j.Logger`，不要直接依赖任何具体日志实现
+
+```xml
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-slf4j2-impl</artifactId>
+    <version>2.23.1</version>
+</dependency>
+```
+
+如果你的项目还是旧的 Log4j 1.x，建议趁早升级——不仅是性能和安全问题，Log4j 1.x 已经 EOL 多年了。
 ---

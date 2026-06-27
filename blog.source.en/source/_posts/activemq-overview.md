@@ -15,34 +15,94 @@ abbrlink: 12035
 cover: /img/12035.jpg
 date: 2018-01-22 18:33:02
 ---
-ActiveMQ is a messaging middleware (MOM) based on the JMS protocol. When introducing ActiveMQ, we inevitably need to talk about messaging middleware and JMS.
+ActiveMQ is an open-source messaging middleware (Message-Oriented Middleware, MOM) under the Apache Software Foundation and a complete implementation of the JMS (Java Message Service) 1.1 specification. This article is the opening piece of the ActiveMQ series. We'll first clarify what messaging middleware is and what problems it solves, then introduce the core concepts of JMS, laying a solid foundation for further exploration of ActiveMQ's specific features.
 
-Messaging middleware is a very common component in distributed systems, providing a flexible mechanism to integrate different applications. Applications do not communicate directly with each other, but instead communicate through the messaging middleware acting as an intermediary.
+<!-- more -->
 
-Messaging middleware serves two main purposes: **decoupling** and **peak shaving**, both of which are common challenges in large-scale systems.
+## What Problems Does Messaging Middleware Solve?
 
-**Decoupling** means maintaining relative independence among applications within a system. For example, when a user logs in, multiple applications may need to trigger various actions such as recommendations, sending messages, and so on. These actions are unrelated to the login operation itself. If all of them were handled in the login module, it would clearly be inappropriate and the user experience would be very poor. In this case, a message can be sent during login, and other systems can listen to this message and handle their respective business logic accordingly.
+Messaging middleware is a very common component in distributed systems. Its core role is to act as an intermediary between applications — applications do not communicate directly with each other, but pass messages through the messaging middleware instead.
 
-**Peak shaving** is designed to handle sudden traffic spikes. After all, system resources cannot be allocated based on maximum demand. If traffic is too high in a short period, messages can remain in the messaging middleware first, and the business can process them gradually.
+There are two primary values it delivers: **decoupling** and **peak shaving**.
 
-Messaging middleware generally has two delivery modes: **Point-to-Point (P2P)** and **Publish-Subscribe (Pub/Sub)**.
+### Decoupling
 
-Point-to-Point mode is called **Queue** in JMS, with three main characteristics:
+Imagine a user login scenario: after a successful login, multiple downstream systems might need to respond — sending a welcome message to the user, updating a recommendation algorithm, syncing user data to a data warehouse, triggering risk control checks... These operations have nothing to do with the login itself. If all of this logic were crammed into the login module, not only would the code become a tangled mess, but the login response time would also become unacceptable.
 
-1. Each message has only one consumer.
-2. There is no temporal dependency between the sender and receiver. That is, after the sender sends a message, it does not affect the message being delivered to the queue regardless of whether the receiver is running.
-3. The receiver needs to send an acknowledgment (ack) signal to the queue after successfully receiving a message.
+By introducing messaging middleware, the login module only needs to publish a "user logged in" message after successful authentication. Other systems each listen for this message and execute their own business logic independently. The login module no longer needs to know which downstream systems exist, and adding a new consumer does not require modifying any login code.
 
-Publish-Subscribe mode corresponds to **Topic** in JMS. In contrast to the point-to-point mode, it has the following characteristics:
+### Peak Shaving
 
-1. Each message can be consumed by multiple consumers.
-2. There is a temporal dependency between the publisher and subscriber. A subscriber for a specific topic must create a subscriber before it can consume the publisher's messages, and in order to consume messages, the subscriber must remain in a running state.
+System resources are allocated based on routine traffic, not provisioned for flash-sale-level peaks. When instantaneous traffic far exceeds the system's processing capacity, rather than letting requests hit the database directly and bring the entire system down, messages can queue up in the middleware first, with downstream systems consuming them at their own pace.
 
-JMS is a standard messaging API defined by Sun. JMS itself is not a messaging system; it is an abstraction of the interfaces and classes needed for messaging clients to communicate with messaging systems. It is similar to JDBC, JNDI, and others.
+For example: during a flash sale, 100,000 order requests flood in within one second, but the database can only process 1,000 per second. Using messaging middleware as a buffer, requests are first written into message queues, and backend services process them at a steady 1,000 QPS, ensuring the system is not overwhelmed.
 
-JMS specifies the message structure, connections, sessions, producers, consumers, and more.
+## Two Message Delivery Modes
 
-ActiveMQ is a concrete implementation of JMS 1.1. In subsequent articles, we will provide a comprehensive introduction to the installation, usage, and various features of ActiveMQ.
+Messaging middleware generally supports two message delivery modes:
 
-Source: https://lichuanyang.top/en/posts/12035/
+### Point-to-Point Mode (P2P / Queue)
+
+In JMS, this corresponds to **Queue**, with three characteristics:
+
+1. **One message, one consumer**: multiple consumers can listen on the same Queue, but each message will be consumed by only one of them.
+2. **Temporal decoupling**: the receiver does not need to be online when the sender sends a message. Messages are persisted in the queue, waiting for the receiver to come online and consume them.
+3. **Acknowledgment required**: after successfully processing a message, the consumer needs to send an acknowledgment (ACK) to the queue before the message is marked as consumed.
+
+Typical scenarios: order processing, asynchronous task distribution.
+
+### Publish-Subscribe Mode (Pub/Sub / Topic)
+
+In JMS, this corresponds to **Topic**:
+
+1. **One message, multiple consumers**: once a publisher sends a message, all consumers subscribed to that Topic will receive it.
+2. **Temporal coupling**: subscribers must remain online to receive messages (unless using Durable Subscription).
+3. **Broadcast characteristics**: well-suited for one-to-many notification scenarios.
+
+Typical scenarios: configuration change notifications, real-time push, event broadcasting.
+
+### Queue vs Topic Comparison
+
+| Feature | Queue | Topic |
+|----------|-------|-------|
+| Consumption model | One message, one consumer | One message broadcast to all subscribers |
+| Temporal dependency | None (messages are persisted) | Yes (subscribers must be online, except for durable subscriptions) |
+| Message acknowledgment | ACK required | Fire and forget |
+| Typical scenarios | Async tasks, peak shaving | Event notifications, real-time push |
+
+## What is JMS?
+
+JMS (Java Message Service) is a set of messaging API specifications defined by Sun. JMS itself is not a concrete messaging system — it only defines the abstractions of interfaces and classes needed for messaging clients to communicate with messaging systems, similar to how JDBC defines database access interfaces and JNDI defines naming and directory service interfaces.
+
+The JMS specification primarily defines:
+
+- **Message structure**: message header, properties, and body
+- **Connection factory**: `ConnectionFactory`, used to create connections to the messaging middleware
+- **Connection and session**: `Connection` and `Session`, managing the sending and receiving of messages
+- **Destinations**: `Queue` and `Topic`
+- **Producers and consumers**: `MessageProducer` and `MessageConsumer`
+
+ActiveMQ is a complete implementation of the JMS 1.1 specification.
+
+## ActiveMQ's Positioning
+
+In the messaging middleware ecosystem, ActiveMQ's unique strengths include:
+
+- **Best JMS compatibility**: full JMS 1.1 support, making it the best practice reference for learning the JMS specification
+- **Multi-protocol support**: supports various transport protocols including OpenWire, AMQP, MQTT, and STOMP
+- **Flexible persistence**: supports multiple persistence methods such as JDBC, KahaDB, and LevelDB
+- **Rich clustering solutions**: Master-Slave, Network of Brokers, and more
+
+In subsequent articles in this series, we will dive deeper into ActiveMQ installation and configuration, persistence mechanisms, cluster deployment, plugin development, and other topics.
+
+## Series Navigation
+
+> This is Article 1 of the ActiveMQ Series. Upcoming articles include:
+> - [ActiveMQ Installation and Basic Configuration]()
+> - [ActiveMQ Persistence Mechanisms in Detail]()
+> - [ActiveMQ Multi-threaded Consumption Model]()
+> - [ActiveMQ Plugin Development Guide](/posts/61645/)
+> - [ActiveMQ Web Console Permission Configuration](/posts/32479/)
+
+Stay tuned.
 ---
