@@ -7,6 +7,7 @@ tags:
 description: A practical guide to high-concurrency design. Learn when concurrency is actually a problem and proven solutions like caching, queuing, and horizontal scaling.
 abbrlink: 11970
 cover: /img/11970.jpg
+tldr: High concurrency is fundamentally about reducing connections to a single database — six progressive layers: system decomposition → caching → MQ peak shaving → sharding → heterogeneous storage → rate limiting, each layer reduces database pressure.
 date: 2022-03-29 18:40:46
 ---
 

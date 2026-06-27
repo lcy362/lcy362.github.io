@@ -17,6 +17,11 @@ tags:
   - prometheus-tutorial
 abbrlink: 28288
 cover: /img/28288.jpg
+howto:
+  - name: "Install and configure Prometheus"
+  - name: "Configure data collection targets"
+  - name: "Write PromQL queries"
+  - name: "Connect Grafana for visualization"
 date: 2021-11-10 19:54:05
 ---
 As the "default" monitoring system in the cloud-native ecosystem, Prometheus is gaining increasing attention. Today, we'll write a tutorial about Prometheus's design philosophy, examining how it uses very simple designs to support such complex functionality.
@@ -176,6 +181,24 @@ In addition to the explicitly configured HTTP monitoring, there is also a large 
 Beyond that, monitoring for other components is also easy to add, such as thread pools, HTTP connection pools, and custom metrics. You can refer to https://github.com/lcy362/springboot-prometheus-demo
 
 This way, regardless of how the Spring Boot project is deployed — whether using native Java deployment, Docker deployment, or deployment on Kubernetes — it's very easy to obtain all the monitoring metrics data.
+
+## Quick Start Steps
+
+### Step 1: Install and configure Prometheus
+
+Download and install Prometheus on your server, then edit the `prometheus.yml` configuration file to set basic parameters such as the global scrape interval and evaluation interval. Once Prometheus is running, visit `http://localhost:9090` to access the Web UI.
+
+### Step 2: Configure data collection targets
+
+Define the monitoring targets in the `scrape_configs` section of the configuration file, including the `/actuator/prometheus` endpoint exposed by your application. Use Spring Actuator and Micrometer to expose Spring Boot metrics in Prometheus format, and Prometheus will automatically pull data at the configured interval.
+
+### Step 3: Write PromQL queries
+
+Use Prometheus's built-in PromQL query language to flexibly query the collected time-series data. You can filter by metric name and labels, perform aggregations, calculate rates, and more to address various monitoring analysis needs.
+
+### Step 4: Connect Grafana for visualization
+
+Add Prometheus as a data source in Grafana and use Grafana's rich panels and dashboard features to visualize monitoring data in charts and other graphical formats. You can also configure alerting rules in Grafana to receive timely notifications when metrics become abnormal.
 
 Original article: https://lichuanyang.top/posts/28288/
 

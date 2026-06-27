@@ -17,6 +17,11 @@ tags:
   - prometheus教程
 abbrlink: 28288
 cover: /img/28288.jpg
+howto:
+  - name: "安装和配置 Prometheus"
+  - name: "配置数据采集目标"
+  - name: "编写 PromQL 查询"
+  - name: "对接 Grafana 可视化"
 date: 2021-11-10 19:54:05
 ---
 作为云原生体系下的“默认”监控系统，prometheus正在获得越来越广泛的关注。今天，我们就写一篇教程，讲一下prometheus的设计理念，看看它是如何用非常简单的设计支撑起如此复杂的功能的。
@@ -176,6 +181,24 @@ tomcat_connections_current_connections{application="ads-programad",name="http-ni
 除此之外，对于其他组件的监控也很容易添加，诸如线程池、http连接池、自定义监控等，可以参考 https://github.com/lcy362/springboot-prometheus-demo
 
 这样，无论这个springboot项目如何部署，无论是用java原生的部署，还是用docker部署，还是部署在kubernetes上，都可以非常容易的获取各个监控metrics数据。
+
+## 快速上手步骤
+
+### Step 1: 安装和配置 Prometheus
+
+首先在服务器上下载并安装 Prometheus，编辑 `prometheus.yml` 配置文件，设置 global 抓取间隔和 evaluation interval 等基本参数。启动 Prometheus 后，访问 `http://localhost:9090` 即可打开 Web UI 界面。
+
+### Step 2: 配置数据采集目标
+
+在配置文件的 `scrape_configs` 中定义需要监控的目标，包括你的应用暴露的 `/actuator/prometheus` 端点地址。通过 Spring Actuator 和 Micrometer 将 Spring Boot 应用的指标以 Prometheus 格式暴露出来，Prometheus 会按配置的间隔自动拉取数据。
+
+### Step 3: 编写 PromQL 查询
+
+利用 Prometheus 内置的 PromQL 查询语言，可以对收集到的时序数据进行灵活查询。你可以按 metric 名称和 label 进行过滤、聚合、计算速率等操作，满足各种监控场景的分析需求。
+
+### Step 4: 对接 Grafana 可视化
+
+将 Prometheus 作为数据源添加到 Grafana 中，利用 Grafana 丰富的面板和仪表盘功能，将监控数据以图表等可视化形式呈现。通过 Grafana 还可以设置告警规则，在指标异常时及时通知。
 
 原文地址: https://lichuanyang.top/posts/28288/
 
