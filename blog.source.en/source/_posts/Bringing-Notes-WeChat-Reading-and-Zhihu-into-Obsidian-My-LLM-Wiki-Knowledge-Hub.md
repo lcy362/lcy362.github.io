@@ -148,3 +148,5 @@ Both share the same set of raw materials, but their goals and outputs are entire
 3. **Import Notion notes**: Export from Notion settings as Markdown + CSV, use the Obsidian Importer plugin for one-click import, or drop the extracted Markdown folder directly into the Vault.
 4. **Connect WeChat Reading**: Apply for a WeChat Reading API key, call the `/user/notebooks` endpoint to fetch books, pull highlights and notes, group by chapter, and output as Markdown files into the Vault.
 5. **Import Zhihu and blog**: Use a Playwright script to auto-scrape Zhihu answers and articles; copy blog Markdown source files into the Vault. Once done, run a full wiki ingestion via AI to generate the complete cross-reference network.
+
+Source: https://lichuanyang.top/posts/18804/

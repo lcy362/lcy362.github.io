@@ -183,3 +183,5 @@ Configuring directly in an Agent is convenient, but skills become "bound" to tha
 ### Q: Why use bash instead of Python or Node.js?
 
 Zero dependencies. A skill management tool itself shouldn't introduce any runtime overhead — your workflow is already complex enough. A 408-line bash script works out of the box on macOS and Linux, requires no interpreter installation, no virtual environment management, and won't break because of a runtime version upgrade. A bash script from ten years ago still runs today, ensuring your workflow documentation outlives any framework.
+
+Source: https://lichuanyang.top/posts/26061/

@@ -73,3 +73,5 @@ Going back to Bruce Yang's words — "making world-class AI belong to everyone."
 This project isn't some grand mission. It's just about keeping the door to AI video creation open. No subscription, no fancy GPU, no cost at all — just a free API key and a machine that can run Python.
 
 Code on [GitHub](https://github.com/lcy362/agnes-video-generator), official website at [video.lichuanyang.top](https://video.lichuanyang.top/). Bug reports welcome.
+
+Source: https://lichuanyang.top/posts/22470/
