@@ -15,6 +15,7 @@ tags:
   - ACID
   - 事务隔离级别
 abbrlink: 7774
+tldr: "系统梳理redo log和undo log如何高效实现原子性与持久性，以及不同隔离级别下的加锁策略差异与性能权衡。"
 cover: /img/7774.jpg
 date: 2022-02-07 16:40:02
 ---

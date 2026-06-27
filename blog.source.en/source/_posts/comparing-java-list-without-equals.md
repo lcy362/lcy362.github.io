@@ -11,6 +11,7 @@ categories:
 tags:
   - java
 abbrlink: 28720
+tldr: "Without modifying the equals method of third-party classes, utilizing Apache Commons tools to externally inject comparison logic, achieving flexible comparison of two List values."
 cover: /img/28720.jpg
 date: 2017-04-10 19:57:00
 ---

@@ -15,6 +15,7 @@ tags:
   - zookeeper
   - distributed
 abbrlink: 48104
+tldr: "Focuses on usage rather than theory, introducing distributed lock implementations based on Zookeeper (Curator) and Redis with code examples."
 cover: /img/java-distributed-lock.jpg
 date: 2017-02-20 19:21:00
 ---

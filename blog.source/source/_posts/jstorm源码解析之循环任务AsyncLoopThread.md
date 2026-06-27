@@ -11,6 +11,7 @@ tags:
 categories:
   - jstorm源码解析
 abbrlink: 31761
+tldr: "解析 JStorm 中循环任务工具 AsyncLoopThread 的源码，说明其通过 RunnableCallback 封装实现心跳、状态更新等后台任务的机制。"
 cover: /img/async-loop.jpg
 date: 2018-02-08 16:17:37
 ---

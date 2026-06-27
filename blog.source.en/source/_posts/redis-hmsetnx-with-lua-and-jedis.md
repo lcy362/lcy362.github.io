@@ -13,6 +13,7 @@ tags:
   - redis
   - lua
 abbrlink: 63756
+tldr: "Batch initializes Hash fields without overwriting existing data, completing the task in a single network round-trip instead of multiple HSETNX calls."
 cover: /img/63756.jpg
 date: 2017-04-06 17:54:00
 ---

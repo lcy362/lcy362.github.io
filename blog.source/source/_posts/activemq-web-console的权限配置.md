@@ -12,6 +12,7 @@ tags:
   - activemq
   - 监控
 abbrlink: 32479
+tldr: "介绍 ActiveMQ Web Console 基于 Jetty JAAS 的权限管理配置方法，实现不同角色的用户对控制台页面的访问控制。"
 cover: /img/32479.jpg
 date: 2016-01-05 18:09:00
 ---

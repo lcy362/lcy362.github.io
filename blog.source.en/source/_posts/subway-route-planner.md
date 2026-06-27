@@ -13,6 +13,7 @@ tags:
   - tools
   - open-source-project
 abbrlink: 13793
+tldr: "Implementing a Beijing subway route planner using Java, obtaining subway data from Amap, and calculating transfer routes with the fewest stops between two locations using BFS algorithm."
 cover: /img/13793.jpg
 date: 2018-03-23 14:33:52
 ---

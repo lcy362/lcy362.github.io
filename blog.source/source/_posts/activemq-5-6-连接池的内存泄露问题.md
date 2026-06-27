@@ -12,6 +12,7 @@ categories:
 tags:
   - activemq
 abbrlink: 13925
+tldr: "记录 ActiveMQ 5.6 连接池中 ReentrantLock 和 PooledConnection 的严重内存泄露问题，通过 jmap 监控定位根因，升级 5.7 或替换为 Spring 连接池解决。"
 cover: /img/13925.jpg
 date: 2015-08-08 21:16:00
 ---

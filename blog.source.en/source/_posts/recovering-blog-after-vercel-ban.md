@@ -15,6 +15,7 @@ tags:
   - devops
   - independent-blog
 abbrlink: 39648
+tldr: "Documents the troubleshooting and recovery process after Vercel's 163 email ban caused blog deployment failure, covering complete steps for GitHub App installation permissions and email migration."
 cover: /img/39648.jpg
 date: 2026-05-11 19:30:00
 howto:

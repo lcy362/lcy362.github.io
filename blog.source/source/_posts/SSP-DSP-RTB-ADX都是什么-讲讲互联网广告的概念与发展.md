@@ -13,6 +13,7 @@ categories:
   - 技术杂谈
 date: 2022-03-07 16:28:58
 abbrlink: 27934
+tldr: "从广告三方博弈（媒体、广告主、受众）出发，梳理互联网广告发展脉络，讲清 SSP、DSP、RTB、ADX 等程序化交易核心概念。"
 cover: /img/27934.jpg
 tags:
   - 计算广告

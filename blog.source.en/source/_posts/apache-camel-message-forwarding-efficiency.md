@@ -13,6 +13,7 @@ tags:
   - java
   - camel
 abbrlink: 17762
+tldr: "Points out the inefficiency of Camel creating and closing connections for each forwarding, and provides connection pool configuration as an optimization solution."
 cover: /img/17762.jpg
 date: 2015-08-08 20:55:00
 ---

@@ -12,6 +12,7 @@ categories:
 tags:
   - maven
 abbrlink: 32793
+tldr: "厘清 Maven 中 repository 和 mirror 的区别与关系，介绍通过多 profile 或多 repository 配置多个远程仓库的正确方式。"
 cover: /img/32793.jpg
 date: 2017-05-19 19:40:00
 ---

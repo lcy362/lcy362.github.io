@@ -11,6 +11,7 @@ categories:
 tags:
   - reflections
 abbrlink: 3423
+tldr: "Covers three dimensions: design-first in daily development, information gathering and proactive advancement in communication, and systematic approaches to problem troubleshooting."
 cover: /img/3423.jpg
 date: 2021-02-01 17:38:11
 ---

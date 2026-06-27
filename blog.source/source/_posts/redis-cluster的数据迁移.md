@@ -14,6 +14,7 @@ tags:
 categories:
   - redis系列
 abbrlink: 37583
+tldr: "详解Redis Cluster以slot为单位的在线数据迁移流程和ASK/MOVED转向机制，迁移中仅单个key被原子阻塞，集群整体保持可用。"
 cover: /img/37583.jpg
 date: 2018-02-24 18:34:19
 ---

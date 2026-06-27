@@ -12,6 +12,7 @@ categories:
 tags:
   - hbase
 abbrlink: 46290
+tldr: "Leverage HBase qualifier uniqueness to naturally implement Set deduplication: store elements as qualifier names with a placeholder value. Add, delete, and lookup are all O(1) atomic operations, solving HBase's lack of native collection type support."
 cover: /img/46290.jpg
 date: 2017-04-10 20:42:00
 ---

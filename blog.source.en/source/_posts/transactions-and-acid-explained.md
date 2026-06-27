@@ -15,6 +15,7 @@ tags:
   - acid
   - transaction-isolation-levels
 abbrlink: 7774
+tldr: "A systematic breakdown of how redo log and undo log efficiently implement atomicity and durability, and the locking strategy differences and performance trade-offs across isolation levels."
 cover: /img/7774.jpg
 date: 2022-02-07 16:40:02
 ---

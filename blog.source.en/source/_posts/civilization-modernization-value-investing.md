@@ -14,6 +14,7 @@ tags:
 categories:
   - Book Notes
 abbrlink: 44866
+tldr: "Starting from the limitations of agrarian civilization, this article explores the underlying logic of how free markets combined with technology drive modernization, and the practical path of value investing in China."
 cover: /img/44866.jpg
 date: 2020-12-12 15:24:34
 ---

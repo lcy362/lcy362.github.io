@@ -12,6 +12,7 @@ categories:
 tags:
   - design-pattern
 abbrlink: 20888
+tldr: "Wrapping RPC inputs into a request class is reasonable when there are too many parameters, but blindly encapsulating with few parameters destroys interface semantics and reduces code readability — choose carefully based on the scenario."
 cover: /img/20888.jpg
 date: 2021-03-16 18:34:56
 faq:

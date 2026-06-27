@@ -6,6 +6,7 @@ tags:
   - kubernetes
 description: Practical experience using Kubernetes in startup Java projects with low infrastructure costs, covering CI/CD, deployment, and monitoring setup.
 abbrlink: 40964
+tldr: "A full-process solution for building Java projects from creation to deployment and monitoring using K8s and open-source tools. Auto-scaling saves hundreds of dollars daily, with Prometheus+Grafana for observability."
 date: 2022-01-26 15:19:32
 top_img: /img/k8s-kubernetes.jpg
 cover: /img/k8s-kubernetes.jpg

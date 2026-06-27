@@ -13,6 +13,7 @@ tags:
   - java
   - 日志
 abbrlink: 4433
+tldr: "从线上 Tomcat debug 日志问题切入，梳理 Java 日志门面与实现两套体系（log4j 和 slf4j+logback）的架构和桥接原理。"
 cover: /img/4433.jpg
 date: 2017-03-31 19:47:00
 faq:

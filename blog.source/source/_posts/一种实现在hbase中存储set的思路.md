@@ -12,6 +12,7 @@ categories:
 tags:
   - hbase
 abbrlink: 46290
+tldr: "利用HBase qualifier唯一性天然实现Set去重，元素作为qualifier名存储，增删查均为O(1)原子操作，解决HBase不支持集合类型的难题。"
 cover: /img/46290.jpg
 date: 2017-04-10 20:42:00
 ---

@@ -15,6 +15,7 @@ tags:
   - springboot
   - frontend-development
 abbrlink: 43947
+tldr: "Introduces how the Vaadin framework provides backend engineers with pre-packaged web components, enabling them to rapidly build full-featured UIs without learning the frontend ecosystem."
 cover: /img/43947.jpg
 date: 2024-03-06 19:36:22
 howto:

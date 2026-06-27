@@ -16,6 +16,7 @@ tags:
   - kafka
   - activemq
 abbrlink: 22103
+tldr: "Introduces the toolkit for integrating Storm/JStorm with external systems such as ActiveMQ, Kafka, and HDFS, enabling complete big data real-time processing pipelines."
 cover: /img/22103.jpg
 date: 2016-11-16 20:16:00
 ---

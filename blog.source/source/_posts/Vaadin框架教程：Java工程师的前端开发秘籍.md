@@ -15,6 +15,7 @@ tags:
   - springboot
   - 前端开发
 abbrlink: 43947
+tldr: "介绍 Vaadin 框架如何为后端工程师提供预封装的 Web 组件，使其无需学习前端生态就能快速构建功能完备的页面。"
 cover: /img/43947.jpg
 date: 2024-03-06 19:36:22
 howto:

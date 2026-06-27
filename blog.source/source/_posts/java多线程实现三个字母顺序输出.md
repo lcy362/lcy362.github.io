@@ -13,6 +13,7 @@ tags:
   - java
   - 多线程
 abbrlink: 60353
+tldr: "通过synchronized加wait/notify机制控制三个线程的执行顺序，实现ABC三个字母的循环顺序输出，深入理解多线程锁策略设计。"
 cover: /img/java-multithread-a-b-c.jpg
 date: 2017-01-25 16:59:00
 ---

@@ -11,6 +11,7 @@ categories:
 tags:
   - bitwise-operations
 abbrlink: 9193
+tldr: "Leveraging the 32-unit difference between uppercase and lowercase letters in ASCII, a single ch ^= 32 bitwise operation quickly toggles letter case."
 cover: /img/9193.jpg
 date: 2018-11-14 21:58:47
 faq:

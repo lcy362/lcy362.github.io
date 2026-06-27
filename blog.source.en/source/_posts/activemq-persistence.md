@@ -12,6 +12,7 @@ tags:
 categories:
   - ActiveMQ Series
 abbrlink: 31044
+tldr: "A comparison of ActiveMQ's three persistence methods, with a detailed explanation of the KahaDB mechanism and practical tips. Configuring separate storage directories per queue is recommended to optimize disk space reclamation."
 cover: /img/31044.jpg
 date: 2018-02-02 18:56:49
 ---

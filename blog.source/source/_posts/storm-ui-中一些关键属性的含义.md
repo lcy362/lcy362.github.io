@@ -11,6 +11,7 @@ categories:
 tags:
   - storm
 abbrlink: 62259
+tldr: "解读Storm UI中emitted与transferred、execute latency与process latency等关键监控指标的区别，帮助快速定位topology性能瓶颈。"
 cover: /img/62259.jpg
 date: 2015-11-06 21:44:00
 ---

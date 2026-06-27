@@ -13,6 +13,7 @@ tags:
 categories:
   - Distributed Systems Patterns Series
 abbrlink: 3914
+tldr: "Martin Fowler summarizes common distributed system patterns — such as write-ahead logging, quorum, and leader-follower replication — addressing core challenges like process crashes and network partitions."
 cover: /img/3914.jpg
 date: 2020-08-10 20:33:49
 ---

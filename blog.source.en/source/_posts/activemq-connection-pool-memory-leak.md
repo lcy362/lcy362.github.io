@@ -12,6 +12,7 @@ categories:
 tags:
   - activemq
 abbrlink: 13925
+tldr: "Documents a severe memory leak issue with ReentrantLock and PooledConnection, located via jmap monitoring, resolved by upgrading to 5.7 or replacing with Spring connection pool."
 cover: /img/13925.jpg
 date: 2015-08-08 21:16:00
 ---

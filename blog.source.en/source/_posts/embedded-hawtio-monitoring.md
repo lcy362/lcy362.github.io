@@ -13,6 +13,7 @@ tags:
   - hawtio
   - monitoring
 abbrlink: 11299
+tldr: "A complete practice of embedding Hawtio monitoring system in Java standalone applications, supplementing missing dependency configurations in official documentation, enabling direct viewing of JMX monitoring data within the application."
 cover: /img/11299.jpg
 date: 2017-04-01 19:42:00
 ---

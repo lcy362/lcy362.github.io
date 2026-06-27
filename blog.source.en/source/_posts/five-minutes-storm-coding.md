@@ -13,6 +13,7 @@ categories:
 tags:
   - storm
 abbrlink: 27021
+tldr: "Storm differs from traditional Java programs in three critical ways: the main method runs only on the submission node, initialization must happen in lifecycle methods, and all data transfers must be serializable."
 cover: /img/27021.jpg
 date: 2016-11-16 18:21:00
 ---

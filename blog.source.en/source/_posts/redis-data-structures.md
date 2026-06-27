@@ -15,6 +15,7 @@ tags:
 categories:
   - Redis Series
 abbrlink: 22179
+tldr: "Explains the design principles of Redis's core underlying data structures—SDS, ziplist, dict, skiplist, and more—and how to optimize structure selection based on data volume to balance memory and performance."
 cover: /img/22179.jpg
 date: 2020-07-11 16:47:30
 ---

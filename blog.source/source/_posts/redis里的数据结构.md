@@ -14,6 +14,7 @@ tags:
 categories:
   - redis系列
 abbrlink: 22179
+tldr: "详解 Redis 底层 SDS、ziplist、dict、skiplist 等核心数据结构的设计原理，以及如何根据数据量优化结构选择以平衡内存与性能。"
 cover: /img/22179.jpg
 date: 2020-07-11 16:47:30
 ---

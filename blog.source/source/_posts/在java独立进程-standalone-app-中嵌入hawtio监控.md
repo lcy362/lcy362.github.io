@@ -13,6 +13,7 @@ tags:
   - hawtio
   - 监控
 abbrlink: 11299
+tldr: "在Java独立应用中嵌入Hawtio监控系统的完整实践，补充官方文档缺失的依赖配置，实现应用内直接查看JMX等监控数据。"
 cover: /img/11299.jpg
 date: 2017-04-01 19:42:00
 ---

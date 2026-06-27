@@ -12,6 +12,7 @@ tags:
 categories:
   - activemq系列文章
 abbrlink: 31044
+tldr: "对比ActiveMQ三种持久化方式优劣，详解KahaDB机制与使用经验，建议按队列独立配置存储目录以优化磁盘空间释放。"
 cover: /img/31044.jpg
 date: 2018-02-02 18:56:49
 ---

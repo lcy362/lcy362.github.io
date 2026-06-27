@@ -15,6 +15,7 @@ tags:
   - zookeeper
   - 分布式
 abbrlink: 48104
+tldr: "简单粗暴的分布式锁入门实战，只讲使用不讲原理，分别介绍基于 Zookeeper（Curator）和 Redis 的分布式锁实现方式与代码示例。"
 cover: /img/java-distributed-lock.jpg
 date: 2017-02-20 19:21:00
 ---

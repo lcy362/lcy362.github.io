@@ -12,6 +12,7 @@ tags:
   - lda
   - big-data
 abbrlink: 63299
+tldr: "The LDA topic model uses a three-layer probabilistic modeling of documents-topics-words and iterative learning to output topic distributions for documents and keyword distributions for topics, achieving unsupervised text clustering."
 cover: /img/63299.jpg
 date: 2012-12-02 15:20:00
 ---

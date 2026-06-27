@@ -12,6 +12,7 @@ tags:
   - hadoop
   - big-data
 abbrlink: 25187
+tldr: "The classic Hadoop MapReduce WordCount example, demonstrating the distributed computing paradigm through the Mapper tokenization and Reducer aggregation model."
 cover: /img/25187.jpg
 date: 2012-10-28 18:42:00
 ---
