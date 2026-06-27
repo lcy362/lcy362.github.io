@@ -12,6 +12,7 @@ categories:
 tags:
   - career-development
 abbrlink: 34931
+tldr: "Drawing on the author's experience across SOEs, big tech, and startups, this guide offers a pragmatic career choice framework covering hukou value shifts, the necessity of big tech experience, and work-life balance."
 cover: /img/34931.jpg
 date: 2021-03-30 18:36:15
 faq:

@@ -20,6 +20,7 @@ tags:
   - 开源
   - 效率工具
 abbrlink: 65500
+tldr: "将开源视频框架 ViMax 全面适配 Agnes 三个免费模型，实现 YAML 配置驱动、断点续跑和关键帧插值的完整视频生成管线。"
 cover: /img/65500.jpg
 date: 2026-06-11 22:00:00
 howto:

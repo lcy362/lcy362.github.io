@@ -12,6 +12,7 @@ categories:
 tags:
   - 设计模式
 abbrlink: 20888
+tldr: "RPC接口输入参数过多时封装成request类是合理设计，但参数少时盲目封装会破坏接口语义、降低代码可读性，需按场景慎重选择。"
 cover: /img/20888.jpg
 date: 2021-03-16 18:34:56
 faq:

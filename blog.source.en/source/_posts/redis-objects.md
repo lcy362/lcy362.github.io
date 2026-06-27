@@ -13,6 +13,7 @@ tags:
 categories:
   - Redis Series
 abbrlink: 25564
+tldr: "An in-depth analysis of the underlying encoding selection strategies for Redis's six object types, showing how Redis makes extreme optimization trade-offs between memory efficiency and performance based on data scale and usage scenarios."
 cover: /img/25564.jpg
 date: 2020-08-08 15:05:48
 ---

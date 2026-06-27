@@ -5,6 +5,7 @@ tags:
   - distributed-system-design
 description: An exploration of common patterns in distributed system design, including sharding, replication, consistency models, and fault tolerance strategies.
 abbrlink: 45718
+tldr: "A systematic overview of five core challenges and six universal design patterns in distributed systems, revealing the trade-offs between consistency and performance across different middleware solutions."
 cover: /img/45718.jpg
 date: 2022-04-13 20:13:24
 faq:

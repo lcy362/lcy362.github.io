@@ -13,6 +13,7 @@ tags:
   - redis
   - lua
 abbrlink: 63756
+tldr: "用 Lua 脚本在 Redis 服务端实现 HMSETNX 命令，批量初始化 Hash 字段时不覆盖已有数据，只需一次网络往返替代多次 HSETNX 调用。"
 cover: /img/63756.jpg
 date: 2017-04-06 17:54:00
 ---

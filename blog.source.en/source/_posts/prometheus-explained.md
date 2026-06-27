@@ -16,6 +16,7 @@ tags:
   - grafana
   - prometheus-tutorial
 abbrlink: 28288
+tldr: "Prometheus supports complex cloud-native monitoring needs through a unified time-series metric data model and pull-based collection, all with a deliberately simple design."
 cover: /img/28288.jpg
 howto:
   - name: "Install and configure Prometheus"

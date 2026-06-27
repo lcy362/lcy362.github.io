@@ -14,6 +14,7 @@ tags:
   - mysql
   - batch不生效
 abbrlink: 63688
+tldr: "排查Java中MySQL批量操作不生效的原因，深入分析JDBC驱动rewriteBatchedStatements参数，解决batch性能退化为逐条执行的常见问题。"
 cover: /img/63688.jpg
 date: 2020-03-13 17:54:38
 ---

@@ -13,6 +13,7 @@ tags:
 categories:
   - redis系列
 abbrlink: 25564
+tldr: "深入解析Redis六种对象的底层编码选择策略，展示其如何根据不同数据规模和场景在内存效率与性能之间做极致优化权衡。"
 cover: /img/25564.jpg
 date: 2020-08-08 15:05:48
 ---

@@ -11,6 +11,7 @@ tags:
 categories:
   - ActiveMQ Series
 abbrlink: 20459
+tldr: "Analyzing the essential differences among three parallel consumption approaches in ActiveMQ: multiple connections, multiple sessions, and multiple consumers. Multiple consumers is pseudo-parallelism; multiple sessions is the recommended approach."
 cover: /img/20459.jpg
 date: 2018-09-16 09:58:11
 ---

@@ -11,6 +11,7 @@ categories:
 tags:
   - logging
 abbrlink: 42764
+tldr: "Demonstrates how to dynamically add a KafkaAppender at runtime via the Log4j API, enabling hot log configuration updates without restarts—ideal for online troubleshooting and ops scenarios."
 cover: /img/42764.jpg
 date: 2017-06-30 19:30:00
 howto:

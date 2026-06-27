@@ -1,5 +1,6 @@
 ---
 abbrlink: 64
+tldr: "基于 Karpathy 的 llm-wiki 三层架构思路，用 LLM 将散落的安全开发规范编译为结构化 Wiki，实现持续更新与精准问答。"
 cover: /img/64.jpg
 title: 用LLM管理安全开发规范：一次llm-wiki实践
 description: "用 LLM 管理团队安全开发规范的实践，基于 Karpathy 的 llm-wiki 思路解决规范文档散落的问题。"

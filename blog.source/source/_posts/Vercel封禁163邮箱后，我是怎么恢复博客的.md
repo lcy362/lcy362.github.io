@@ -15,6 +15,7 @@ tags:
   - 运维
   - 独立博客
 abbrlink: 39648
+tldr: "记录 Vercel 封禁 163 邮箱导致博客部署失败的排查过程与恢复方案，包括 GitHub App 安装权限和邮箱迁移的完整步骤。"
 cover: /img/39648.jpg
 date: 2026-05-11 19:30:00
 howto:

@@ -13,6 +13,7 @@ categories:
 tags:
   - storm
 abbrlink: 27021
+tldr: "Storm 与传统 Java 程序有三大关键区别：main 方法仅在提交节点运行、初始化须在生命周期方法中完成、数据传输必须可序列化。"
 cover: /img/27021.jpg
 date: 2016-11-16 18:21:00
 ---

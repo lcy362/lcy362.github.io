@@ -11,6 +11,7 @@ categories:
 tags:
   - reflections
 abbrlink: 40071
+tldr: "Demonstrates that business development offers greater growth value in business knowledge accumulation, technical breadth, and comprehensive ability, helping programmers make rational career choices."
 cover: /img/40071.jpg
 date: 2021-03-12 19:27:36
 ---

@@ -14,6 +14,7 @@ tags:
   - microservices
   - cloud-native-architecture
 abbrlink: 42843
+tldr: "Cloud native is a methodology composed of microservices, containerization, DevOps, and continuous delivery, centered on maximizing cloud capabilities to achieve elastic scaling and automated operations."
 date: 2021-06-09 19:54:37
 top_img: /img/cloud-native-arch.jpg
 cover: /img/cloud-native-arch.jpg

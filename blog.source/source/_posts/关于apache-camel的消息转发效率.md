@@ -13,6 +13,7 @@ tags:
   - java
   - camel
 abbrlink: 17762
+tldr: "分析 Apache Camel 消息转发的性能瓶颈，指出 Camel 每次转发都新建并关闭连接的低效问题，提供连接池配置以复用连接的优化方案。"
 cover: /img/17762.jpg
 date: 2015-08-08 20:55:00
 ---

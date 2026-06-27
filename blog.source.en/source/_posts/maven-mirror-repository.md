@@ -12,6 +12,7 @@ categories:
 tags:
   - maven
 abbrlink: 32793
+tldr: "Clarifies the difference and relationship between repository and mirror in Maven, and introduces the correct approach to configuring multiple remote repositories via multiple profiles or repositories."
 cover: /img/32793.jpg
 date: 2017-05-19 19:40:00
 ---

@@ -11,6 +11,7 @@ tags:
 categories:
   - activemq系列文章
 abbrlink: 20459
+tldr: "分析ActiveMQ多connection、多session和多consumer三种并行消费方式的本质差异，多consumer是伪并行，推荐多session方案。"
 cover: /img/20459.jpg
 date: 2018-09-16 09:58:11
 ---

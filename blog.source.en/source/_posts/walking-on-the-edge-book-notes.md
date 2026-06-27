@@ -13,6 +13,7 @@ tags:
 categories:
   - Book Notes
 abbrlink: 6471
+tldr: "Reading notes on Yu Minhong's autobiography 'I Once Walked on the Edge of Collapse', tracing New Oriental's entrepreneurial journey from a small workshop to an industry giant, sharing decisions and insights at key turning points."
 cover: /img/6471.jpg
 date: 2020-10-31 10:35:22
 ---

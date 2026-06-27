@@ -6,6 +6,7 @@ description: "Solving the SecurityException caused by signature verification whe
 tags:
   - java
 abbrlink: 2478
+tldr: "When building a fat JAR, signature files from individual JARs cannot be verified against the merged JAR, causing a SecurityException. Exclude signature files under META-INF using the maven-shade-plugin to resolve the issue."
 cover: /img/2478.jpg
 date: 2017-04-27 14:16:00
 keywords:

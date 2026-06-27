@@ -11,6 +11,7 @@ categories:
 tags:
   - java
 abbrlink: 28720
+tldr: "在不修改第三方类equals方法的前提下，利用Apache Commons工具外部注入比较逻辑，实现对两个List值的灵活比较。"
 cover: /img/28720.jpg
 date: 2017-04-10 19:57:00
 ---

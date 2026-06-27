@@ -4,6 +4,7 @@ description: "解决 Fat Jar 合并时因签名校验导致的 SecurityException
 tags:
   - java
 abbrlink: 2478
+tldr: "打fatjar时各jar包签名文件无法与新jar校验导致SecurityException，用maven-shade-plugin排除META-INF中签名文件即可解决。"
 cover: /img/2478.jpg
 date: 2017-04-27 14:16:00
 keywords:

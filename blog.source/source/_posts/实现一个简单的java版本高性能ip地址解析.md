@@ -11,6 +11,7 @@ categories:
 tags:
   - 开源项目
 abbrlink: 36780
+tldr: "用 Java 实现高性能 IP 地址归属国家查询工具，基于 IP2Location 数据源，将 IP 段排序后通过二分查找定位，单次查询延迟微秒级。"
 cover: /img/36780.jpg
 date: 2021-10-12 19:25:15
 ---

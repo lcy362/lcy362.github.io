@@ -11,6 +11,7 @@ categories:
 tags:
   - storm
 abbrlink: 62259
+tldr: "Interpreting the differences between emitted vs transferred, execute latency vs process latency, and other key monitoring metrics in Storm UI, helping quickly locate topology performance bottlenecks."
 cover: /img/62259.jpg
 date: 2015-11-06 21:44:00
 ---

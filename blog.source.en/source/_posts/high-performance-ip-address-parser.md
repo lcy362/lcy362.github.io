@@ -11,6 +11,7 @@ categories:
 tags:
   - open-source-project
 abbrlink: 36780
+tldr: "Based on IP2Location data source, sorts IP segments and locates via binary search, achieving microsecond-level latency per query."
 cover: /img/36780.jpg
 date: 2021-10-12 19:25:15
 ---

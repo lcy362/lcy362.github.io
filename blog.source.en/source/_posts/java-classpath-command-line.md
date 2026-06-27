@@ -11,6 +11,7 @@ categories:
 tags:
   - java
 abbrlink: 65262
+tldr: "Introduces a lightweight approach for including third-party JARs when running Java programs from the command line, using shell scripts or -cp parameter to set classpath instead of fat jar packaging."
 cover: /img/65262.jpg
 date: 2017-05-03 18:42:00
 ---

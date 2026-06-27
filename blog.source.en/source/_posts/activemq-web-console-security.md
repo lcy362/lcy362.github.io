@@ -12,6 +12,7 @@ tags:
   - activemq
   - monitoring
 abbrlink: 32479
+tldr: "Introduces permission management configuration for ActiveMQ Web Console using Jetty JAAS, enabling role-based access control for console pages."
 cover: /img/32479.jpg
 date: 2016-01-05 18:09:00
 ---

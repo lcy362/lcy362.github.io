@@ -16,6 +16,7 @@ tags:
   - grafana
   - prometheus教程
 abbrlink: 28288
+tldr: "Prometheus 通过统一的时序 metric 数据模型和拉模式采集，用简单设计支撑了云原生监控的复杂需求。"
 cover: /img/28288.jpg
 howto:
   - name: "安装和配置 Prometheus"

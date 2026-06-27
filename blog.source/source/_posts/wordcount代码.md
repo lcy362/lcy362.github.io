@@ -12,6 +12,7 @@ tags:
   - hadoop
   - 大数据
 abbrlink: 25187
+tldr: "Hadoop MapReduce 经典 WordCount 示例，通过 Mapper 分词、Reducer 汇总的模型演示分布式计算的编程范式。"
 cover: /img/25187.jpg
 date: 2012-10-28 18:42:00
 ---

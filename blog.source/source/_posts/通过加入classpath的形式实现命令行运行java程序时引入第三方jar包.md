@@ -11,6 +11,7 @@ categories:
 tags:
   - java
 abbrlink: 65262
+tldr: "介绍在命令行运行Java程序时，通过Shell脚本或-cp参数手动设置classpath引入第三方jar包的轻量方案，替代传统fat jar打包方式。"
 cover: /img/65262.jpg
 date: 2017-05-03 18:42:00
 ---

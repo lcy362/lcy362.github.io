@@ -15,6 +15,7 @@ tags:
   - 持续集成
   - kubernetes
 abbrlink: 40964
+tldr: "基于K8s和开源工具搭建Java项目从创建到部署监控的全流程方案，自动扩缩容日均节省数百美元，用Prometheus+Grafana实现可观测性。"
 date: 2022-01-26 15:19:32
 top_img: /img/k8s-kubernetes.jpg
 cover: /img/k8s-kubernetes.jpg

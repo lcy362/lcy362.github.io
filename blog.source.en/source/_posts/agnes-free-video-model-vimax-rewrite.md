@@ -22,6 +22,7 @@ tags:
   - open source
   - ViMax
 abbrlink: 65500
+tldr: "Fully adapting the open-source video framework ViMax to Agnes's three free models, implementing a YAML configuration-driven, checkpoint-resumable, and keyframe-interpolated complete video generation pipeline."
 cover: /img/65500.jpg
 date: 2026-06-11 22:00:00
 howto:

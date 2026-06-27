@@ -11,6 +11,7 @@ tags:
 categories:
   - JStorm Source Code Analysis
 abbrlink: 31761
+tldr: "Analyzes the source code of JStorm's loop task utility AsyncLoopThread, explaining how it encapsulates background tasks like heartbeats and state updates through RunnableCallback."
 cover: /img/async-loop.jpg
 date: 2018-02-08 16:17:37
 ---

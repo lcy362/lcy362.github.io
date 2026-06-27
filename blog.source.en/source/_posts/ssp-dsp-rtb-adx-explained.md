@@ -13,6 +13,7 @@ categories:
   - Tech Talk
 date: 2022-03-07 16:28:58
 abbrlink: 27934
+tldr: "Starting from the three-way dynamics of advertising (publishers, advertisers, audience), traces the evolution of internet advertising and clarifies core programmatic trading concepts—SSP, DSP, RTB, and ADX."
 cover: /img/27934.jpg
 tags:
   - computational-advertising

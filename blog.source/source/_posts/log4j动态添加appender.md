@@ -11,6 +11,7 @@ categories:
 tags:
   - 日志
 abbrlink: 42764
+tldr: "演示如何通过 Log4j API 在运行时动态添加 KafkaAppender，实现无需重启的日志配置热更新，适用于线上排查和运维场景。"
 cover: /img/42764.jpg
 date: 2017-06-30 19:30:00
 howto:

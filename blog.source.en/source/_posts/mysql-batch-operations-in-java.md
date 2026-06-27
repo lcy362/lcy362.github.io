@@ -14,6 +14,7 @@ tags:
   - mysql
   - batch-not-working
 abbrlink: 63688
+tldr: "Investigating why MySQL batch operations in Java don't take effect, deeply analyzing the JDBC driver's rewriteBatchedStatements parameter, solving the common problem of batch performance degrading to row-by-row execution."
 cover: /img/63688.jpg
 date: 2020-03-13 17:54:38
 ---

@@ -14,6 +14,7 @@ tags:
 categories:
   - Redis Series
 abbrlink: 37583
+tldr: "A detailed breakdown of Redis Cluster's slot-based online data migration process and the ASK/MOVED redirection mechanism. Only a single key is atomically blocked during migration, keeping the cluster available overall."
 cover: /img/37583.jpg
 date: 2018-02-24 18:34:19
 ---

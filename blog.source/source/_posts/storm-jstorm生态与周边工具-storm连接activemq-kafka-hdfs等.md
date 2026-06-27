@@ -16,6 +16,7 @@ tags:
   - kafka
   - activemq
 abbrlink: 22103
+tldr: "介绍 Storm/JStorm 与 ActiveMQ、Kafka、HDFS 等外部系统的集成工具包，构建完整大数据实时处理管道。"
 cover: /img/22103.jpg
 date: 2016-11-16 20:16:00
 ---

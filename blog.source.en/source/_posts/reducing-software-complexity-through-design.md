@@ -14,6 +14,7 @@ tags:
   - software-engineering
   - design-patterns
 abbrlink: 33852
+tldr: "From module division, eliminating duplicate code, decoupling, and other aspects, systematically analyzing the causes and reduction methods of software complexity, providing actionable design principles."
 cover: /img/33852.jpg
 date: 2021-01-04 18:12:34
 ---

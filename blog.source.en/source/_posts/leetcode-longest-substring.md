@@ -13,6 +13,7 @@ tags:
   - algorithm
   - leetcode
 abbrlink: 43423
+tldr: "Uses the sliding window technique to solve the longest substring without repeating characters problem in O(n) time, tracking each character's last occurrence for a single-pass solution."
 cover: /img/43423.jpg
 date: 2017-02-15 20:34:00
 ---

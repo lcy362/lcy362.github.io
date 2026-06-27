@@ -10,6 +10,7 @@ tags:
   - practice
 description: How to use LLM to manage team security development standards, based on Karpathy's llm-wiki approach to solve scattered documentation problems.
 abbrlink: 64
+tldr: "Inspired by Karpathy's llm-wiki three-layer architecture, this article shows how to use LLMs to compile scattered security development standards into a structured, continuously updated wiki with precise Q&A capabilities."
 cover: /img/64.jpg
 date: 2026-05-11 15:38:16
 ---
