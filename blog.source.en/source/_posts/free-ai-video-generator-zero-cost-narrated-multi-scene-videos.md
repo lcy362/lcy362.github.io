@@ -74,4 +74,4 @@ This project isn't some grand mission. It's just about keeping the door to AI vi
 
 Code on [GitHub](https://github.com/lcy362/agnes-video-generator), official website at [video.lichuanyang.top](https://video.lichuanyang.top/). Bug reports welcome.
 
-Source: https://lichuanyang.top/posts/22470/
+Source: https://lichuanyang.top/en/posts/22470/
