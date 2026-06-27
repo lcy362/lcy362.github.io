@@ -1,14 +1,18 @@
 /**
  * related-faq.js
- * Injects a "Related Q&A" section after the existing relatedPosts widget.
+ * Injects a "Related Q&A" and/or "Related How-To" section after the existing relatedPosts widget.
  * 
- * Matching logic:
+ * FAQ matching logic:
  * 1. Same category → +3 weight
  * 2. Shared tags → +1 weight per shared tag
  * 3. Only includes articles that have front-matter `faq:` defined
- * 4. Excludes current article
  * 
- * Front-matter: faq: [{q: "question"}]
+ * HowTo matching logic:
+ * 1. Same category → +3 weight
+ * 2. Shared tags → +2 weight per shared tag
+ * 3. Only includes articles that have front-matter `howto:` defined
+ * 
+ * Note: HowTo recommendations use a separate section with its own headline.
  */
 hexo.extend.filter.register('after_render:html', function(html, data) {
   var path = data.path || '';
@@ -25,95 +29,150 @@ hexo.extend.filter.register('after_render:html', function(html, data) {
   var currentTags = (page.tags && page.tags.data) ? 
     page.tags.data.map(function(t) { return t.name; }) : [];
 
-  // Collect all articles that have faq front-matter
-  var candidates = [];
+  // ==== Collect FAQ candidates ====
+  var faqCandidates = [];
+  var howtoCandidates = [];
+
   site.forEach(function(post) {
-    // Skip self
     if (post._id === page._id) return;
-    // Only include posts with FAQ
-    if (!post.faq || !Array.isArray(post.faq) || post.faq.length === 0) return;
 
-    var weight = 0;
-
-    // Category match
-    if (post.categories && post.categories.data) {
-      for (var i = 0; i < post.categories.data.length; i++) {
-        if (currentCategories.indexOf(post.categories.data[i].name) !== -1) {
-          weight += 3;
+    // FAQ candidates
+    if (post.faq && Array.isArray(post.faq) && post.faq.length > 0) {
+      var fWeight = 0;
+      if (post.categories && post.categories.data) {
+        for (var i = 0; i < post.categories.data.length; i++) {
+          if (currentCategories.indexOf(post.categories.data[i].name) !== -1) {
+            fWeight += 3;
+          }
         }
+      }
+      if (post.tags && post.tags.data) {
+        for (var i = 0; i < post.tags.data.length; i++) {
+          if (currentTags.indexOf(post.tags.data[i].name) !== -1) {
+            fWeight += 1;
+          }
+        }
+      }
+      if (fWeight > 0) {
+        faqCandidates.push({
+          title: post.title,
+          path: post.path,
+          faq: post.faq.slice(0, 3),
+          weight: fWeight,
+          date: post.date
+        });
       }
     }
 
-    // Tag match
-    if (post.tags && post.tags.data) {
-      for (var i = 0; i < post.tags.data.length; i++) {
-        if (currentTags.indexOf(post.tags.data[i].name) !== -1) {
-          weight += 1;
+    // HowTo candidates
+    if (post.howto && Array.isArray(post.howto) && post.howto.length > 0) {
+      var hWeight = 0;
+      if (post.categories && post.categories.data) {
+        for (var i = 0; i < post.categories.data.length; i++) {
+          if (currentCategories.indexOf(post.categories.data[i].name) !== -1) {
+            hWeight += 3;
+          }
         }
       }
-    }
-
-    // Only include if there's at least some relevance (same category or shared tag)
-    if (weight > 0) {
-      candidates.push({
-        title: post.title,
-        path: post.path,
-        faq: post.faq.slice(0, 3), // Max 3 questions per article
-        weight: weight,
-        date: post.date
-      });
+      if (post.tags && post.tags.data) {
+        for (var i = 0; i < post.tags.data.length; i++) {
+          if (currentTags.indexOf(post.tags.data[i].name) !== -1) {
+            hWeight += 2;
+          }
+        }
+      }
+      if (hWeight > 0) {
+        howtoCandidates.push({
+          title: post.title,
+          path: post.path,
+          howto: post.howto,
+          weight: hWeight,
+          date: post.date
+        });
+      }
     }
   });
 
-  // Sort by weight desc, then date desc
-  candidates.sort(function(a, b) {
+  var config = this.config;
+  var baseUrl = config.url;
+  var injection = '';
+
+  // ==== Build Related FAQ section ====
+  faqCandidates.sort(function(a, b) {
     if (b.weight !== a.weight) return b.weight - a.weight;
     return b.date - a.date;
   });
+  faqCandidates = faqCandidates.slice(0, 4);
 
-  // Take top 4 articles
-  candidates = candidates.slice(0, 4);
+  if (faqCandidates.length > 0) {
+    var faqItemsHtml = '';
+    for (var c = 0; c < faqCandidates.length; c++) {
+      var candidate = faqCandidates[c];
+      var questions = candidate.faq.slice(0, 3);
+      var answerLink = baseUrl + '/' + candidate.path;
 
-  if (candidates.length === 0) return html;
+      faqItemsHtml += '<div class="relatedFaq-item">' +
+        '<a class="relatedFaq-title" href="' + answerLink + '">' + candidate.title + '</a>' +
+        '<ul class="relatedFaq-questions">';
 
-  // Build FAQ items HTML
-  var faqItemsHtml = '';
-  var config = this.config;
-  var baseUrl = config.url;
+      for (var q = 0; q < questions.length; q++) {
+        var qText = typeof questions[q] === 'string' ? questions[q] : questions[q].q;
+        faqItemsHtml += '<li><a href="' + answerLink + '">' + qText + '</a></li>';
+      }
 
-  for (var c = 0; c < candidates.length; c++) {
-    var candidate = candidates[c];
-    var questions = candidate.faq.slice(0, 3);
-    var answerLink = baseUrl + '/' + candidate.path;
-
-    faqItemsHtml += '<div class="relatedFaq-item">' +
-      '<a class="relatedFaq-title" href="' + answerLink + '">' + candidate.title + '</a>' +
-      '<ul class="relatedFaq-questions">';
-
-    for (var q = 0; q < questions.length; q++) {
-      var qText = typeof questions[q] === 'string' ? questions[q] : questions[q].q;
-      faqItemsHtml += '<li><a href="' + answerLink + '">' + qText + '</a></li>';
+      faqItemsHtml += '</ul></div>';
     }
 
-    faqItemsHtml += '</ul></div>';
+    injection += 
+      '<div class="relatedPosts relatedFaq">' +
+      '<div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div>' +
+      '<div class="relatedFaq-list">' + faqItemsHtml + '</div>' +
+      '</div>';
   }
 
-  var faqSection = 
-    '<div class="relatedPosts relatedFaq">' +
-    '<div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div>' +
-    '<div class="relatedFaq-list">' + faqItemsHtml + '</div>' +
-    '</div>';
+  // ==== Build Related HowTo section ====
+  howtoCandidates.sort(function(a, b) {
+    if (b.weight !== a.weight) return b.weight - a.weight;
+    return b.date - a.date;
+  });
+  howtoCandidates = howtoCandidates.slice(0, 3);
 
-  // Inject after the existing relatedPosts section
-  // relatedPosts closes with </div>\n</div> before <hr> or comments
-  var relatedEnd = '<\/div>\n<\/div>\n<hr class="custom-hr">';
-  if (html.match(relatedEnd)) {
-    html = html.replace(relatedEnd, '</div>\n</div>\n' + faqSection + '\n<hr class="custom-hr">');
-  } else {
-    // Fallback: inject before comments
-    var commentMarker = '<div id="post-comment">';
-    if (html.indexOf(commentMarker) !== -1) {
-      html = html.replace(commentMarker, faqSection + '\n<hr class="custom-hr">\n' + commentMarker);
+  if (howtoCandidates.length > 0) {
+    var howtoItemsHtml = '';
+    for (var h = 0; h < howtoCandidates.length; h++) {
+      var hc = howtoCandidates[h];
+      var steps = hc.howto.slice(0, 4);
+      var howtoLink = baseUrl + '/' + hc.path;
+
+      howtoItemsHtml += '<div class="relatedHowto-item">' +
+        '<a class="relatedHowto-title" href="' + howtoLink + '">' + hc.title + '</a>' +
+        '<ol class="relatedHowto-steps">';
+
+      for (var s = 0; s < steps.length; s++) {
+        var stepName = typeof steps[s] === 'string' ? steps[s] : steps[s].name;
+        howtoItemsHtml += '<li>' + stepName + '</li>';
+      }
+
+      howtoItemsHtml += '</ol></div>';
+    }
+
+    injection += 
+      '<div class="relatedPosts relatedHowto">' +
+      '<div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div>' +
+      '<div class="relatedHowto-list">' + howtoItemsHtml + '</div>' +
+      '</div>';
+  }
+
+  // ==== Inject ====
+  if (injection) {
+    var relatedEnd = '<\/div>\n<\/div>\n<hr class="custom-hr">';
+    if (html.match(relatedEnd)) {
+      html = html.replace(relatedEnd, '</div>\n</div>\n' + injection + '\n<hr class="custom-hr">');
+    } else {
+      var commentMarker = '<div id="post-comment">';
+      if (html.indexOf(commentMarker) !== -1) {
+        html = html.replace(commentMarker, injection + '\n<hr class="custom-hr">\n' + commentMarker);
+      }
     }
   }
 
