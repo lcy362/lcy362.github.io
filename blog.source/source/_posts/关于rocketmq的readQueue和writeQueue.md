@@ -13,6 +13,7 @@ tags:
   - 消息队列
 abbrlink: 32580
 cover: /img/32580.jpg
+tldr: RocketMQ的readQueue和writeQueue分离是为了实现无损扩缩容
 date: 2019-05-18 15:23:02
 ---
 RocketMQ 的 MessageQueue 有一个独特设计：将队列拆分为 `readQueueNums`（读队列数）和 `writeQueueNums`（写队列数）。这两个值在绝大多数情况下必须相等，一旦不等就会产生严重问题——那为什么要拆开？答案在于**平滑扩缩容**。

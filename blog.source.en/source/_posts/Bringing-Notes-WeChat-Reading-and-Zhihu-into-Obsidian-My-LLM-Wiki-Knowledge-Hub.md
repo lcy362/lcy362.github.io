@@ -1,9 +1,21 @@
 ---
 title: Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub
+tldr: Build a knowledge hub with Obsidian + LLM Wiki, integrating your blog, WeChat Reading, and Zhihu
 date: 2026-06-26 16:18:13
 categories: [Tech Talk]
 tags: [Obsidian, llm-wiki, knowledge-management, WeChat-Reading, Zhihu, AI, Notion]
+faq:
+  - Q: Is Obsidian suitable for programmers doing knowledge management?
+  - Q: Does LLM Wiki require a GPU?
+  - Q: What's the difference between llm-wiki and a traditional wiki?
+  - Q: What's the difference between knowledge distillation and personality distillation?
 abbrlink: 18804
+howto:
+  - Install Obsidian: Download the Obsidian client and create a Vault
+  - Configure LLM Wiki: Create AGENTS.md with ingestion, auditing, and wiki maintenance rules
+  - Connect WeChat Reading: Use the WeChat Reading Agent API to sync book highlights and notes
+  - Import Zhihu: Use Playwright automation scripts to scrape Zhihu answers and articles
+  - Integrate blog: Import blog articles into Obsidian for unified knowledge management
 ---
 
 A while back, I came across Andrej Karpathy's llm-wiki concept and felt an instant sense of resonance. I've always enjoyed writing things down, but the problem was that everything ended up scattered across different places, and I never had the energy to manage it properly. When I discovered llm-wiki, I realized — all that stuff I'd been writing over the years was finally going to pay off.
@@ -110,3 +122,29 @@ Lately I've been looking at projects like Nüwa online to see if there are bette
 ## Results and Reflections
 
 That's the recent story of my knowledge hub. If you have thoughts or ideas, I'd love to hear them.
+
+## Frequently Asked Questions
+
+### Q: Is Obsidian suitable for programmers doing knowledge management?
+
+Absolutely. Obsidian's core philosophy — local Markdown files, bidirectional links, graph visualization — naturally aligns with how programmers work. You already know Markdown syntax. Local file storage means full data control and Git versioning. Bidirectional links let you manage knowledge references just like code dependencies. Layer on the llm-wiki approach, and AI can automatically extract concepts from scattered notes, create pages with cross-references, transforming loose documents into a structured knowledge network.
+
+### Q: Does LLM Wiki require a GPU?
+
+No local GPU deployment is needed. The core idea of LLM Wiki is **letting an LLM process your text**, not running a model yourself. You simply call a cloud LLM API, feed it your Markdown files, and let it extract concepts, generate pages, and build cross-references. The entire "hardware" requirement is just Obsidian plus any tool that can call an LLM API (like WorkBuddy or another Agent).
+
+### Q: What's the difference between llm-wiki and a traditional wiki?
+
+A traditional wiki requires you to manually create pages, write summaries, and add internal links — high maintenance cost that's hard to sustain. llm-wiki reduces the organizational cost to nearly zero — you just keep producing and collecting written content, and the LLM reads your AGENTS.md rules, repeatedly running ingestion, updating, and auditing operations to generate a structured cross-reference network. In short: a traditional wiki means "you organize knowledge"; llm-wiki means "AI organizes knowledge for you."
+
+### Q: What's the difference between knowledge distillation and personality distillation?
+
+Both share the same set of raw materials, but their goals and outputs are entirely different. **Knowledge Base (Wiki)** answers "What do I know?" — extracting objective knowledge from notes and reading highlights, generating concept pages and cross-references. **Personality Distillation (Personal Model)** answers "Who am I?" — reverse-engineering your cognitive patterns, expressive style, and value orientations from your writing and reading records. One looks outward (structuring knowledge), the other looks inward (modeling personal cognition). The workflows are similar, but the direction is opposite.
+
+## Quick Start Guide
+
+1. **Install Obsidian**: Download the client from [obsidian.md](https://obsidian.md) and create a local Vault — just a local folder.
+2. **Configure LLM Wiki**: Create `AGENTS.md` in the Vault root, following Karpathy's llm-wiki approach to define maintenance rules, including ingestion, updating, and auditing workflows. Let AI tools read this file to automatically extract concepts and build cross-references from raw notes.
+3. **Import Notion notes**: Export from Notion settings as Markdown + CSV, use the Obsidian Importer plugin for one-click import, or drop the extracted Markdown folder directly into the Vault.
+4. **Connect WeChat Reading**: Apply for a WeChat Reading API key, call the `/user/notebooks` endpoint to fetch books, pull highlights and notes, group by chapter, and output as Markdown files into the Vault.
+5. **Import Zhihu and blog**: Use a Playwright script to auto-scrape Zhihu answers and articles; copy blog Markdown source files into the Vault. Once done, run a full wiki ingestion via AI to generate the complete cross-reference network.

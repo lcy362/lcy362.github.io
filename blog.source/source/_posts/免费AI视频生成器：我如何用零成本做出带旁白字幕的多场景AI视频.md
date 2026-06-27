@@ -19,6 +19,7 @@ tags:
   - text-to-video
   - Agnes AI
 abbrlink: 22470
+tldr: 免费AI视频生成不是梦，改造开源工具也能零成本做出带旁白的视频
 date: 2026-06-16 13:20:05
 top_img: /img/22470.jpg
 cover: /img/22470.jpg

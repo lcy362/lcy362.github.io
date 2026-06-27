@@ -21,6 +21,7 @@ tags:
   - 效率工具
 abbrlink: 48979
 cover: /img/48979.jpg
+tldr: 用AI Agent自动化迁移Hexo主题，从Next到Butterfly全程零手改
 date: 2026-05-28 22:00:00
 ---
 ## 背景：一个繁琐到让人崩溃的任务

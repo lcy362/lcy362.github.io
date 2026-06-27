@@ -15,7 +15,13 @@ tags:
   - monitoring
 abbrlink: 13749
 cover: /img/storm-metrics.jpg
+tldr: Export JStorm metrics and visualize with Grafana
 date: 2017-09-06 20:18:00
+howto:
+  - Implement MetricUploader: Create a class implementing MetricUploader to obtain TopologyMetricsRunnable
+  - Configure metrics: Specify your custom MetricUploader implementation in JStorm configuration
+  - Test: Run a topology and verify metrics are correctly reported to the target storage
+  - Connect Grafana: Add the storage as a Grafana data source and create monitoring dashboards
 ---
 
 ## JStorm Metrics System
@@ -63,6 +69,14 @@ Taking componentMetric as an example, you can use componentMetric.get_metrics() 
 In this example, I only output some of the data using logging. In practice, you can use storage media such as HBase, Redis, MySQL, etc. according to your needs.
 
 The specific code can be viewed at https://github.com/lcy362/StormTrooper/blob/master/src/main/java/com/trooper/storm/monitor/MetricUploaderTest.java
+
+## Quick Start Guide
+
+1. **Implement MetricUploader**: Create a custom class implementing the `MetricUploader` interface. Use the `TopologyMetricsRunnable` object obtained via the constructor to query metrics from RocksDB.
+2. **Write metrics collection logic**: Call `metricsRunnable.getTopologyMetric(topologyId)` to get the `TopologyMetric`. Read `componentMetric`, `workerMetric`, and `topologyMetric` data, parse the `@`-delimited metric keys, and store them.
+3. **Configure JStorm**: Register your custom MetricUploader implementation in the JStorm config file to enable automatic metrics reporting at topology startup.
+4. **Test**: Start a topology and check whether metrics data is written to your target storage (HBase/Redis/MySQL, etc.). Cross-reference with the JStorm UI to ensure consistency.
+5. **Connect Grafana**: Configure the storage medium as a Grafana data source, write queries to build monitoring dashboards for historical data visualization and alerting.
 
 ---
 

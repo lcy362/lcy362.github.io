@@ -12,6 +12,7 @@ tags:
   - 源码阅读
 abbrlink: 15594
 cover: /img/bolt-exception.jpg
+tldr: JStorm的bolt异常处理关键在于理解ack机制和fail策略
 date: 2017-08-03 19:29:00
 categories:
   - jstorm源码解析

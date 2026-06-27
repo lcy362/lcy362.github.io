@@ -10,8 +10,13 @@ categories:
   - Tech Talk
 tags:
   - reflections
+faq:
+  - Q: What's the path forward for mid-career engineers?
+  - Q: How should technical people respond to industry changes?
+  - Q: Big company or startup — which is better for senior engineers?
 abbrlink: 2345
 cover: /img/2345.jpg
+tldr: Technology changes, but the ability to learn and adapt is an engineer's most reliable asset
 date: 2022-01-04 21:49:57
 ---
 
@@ -58,3 +63,17 @@ Regarding foundational capabilities, I focused this year on cultivating what I c
 In summary, this year has been a year of critical decisions for me, and I'm steadily moving toward my life goals. I'm grateful to everyone who has helped me along the way. Here's to continuing to give it my all in 2022.
 
 Source: https://lichuanyang.top/en/posts/2345/
+
+## Frequently Asked Questions
+
+### Q: What's the path forward for mid-career engineers?
+
+The path doesn't depend on company size — it depends on your capability circle. At the mid-to-late career stage, what matters more than "which company to join" is: what domain you have unique insights in, what level of technical problems you can solve, and whether your experience has crystallized into transferable methodologies. The author's choice — letting go of big-tech prestige to seek startups with good culture and promising prospects — offers one viable path. But it's not the only one. The key is to actively think about what you want, not passively wait for opportunities to land.
+
+### Q: How should technical people respond to industry changes?
+
+In one phrase: expand your capability circle. An industry can vanish overnight (as the tutoring industry did for the author), but if you've been consistently broadening your capabilities, you gain the mobility to move across industries. Concretely: maintain technical sharpness (read seminal books like "Phoenix Architecture"), cultivate transferable foundational skills (like "clarity power"), and never anchor your sense of professional security to a single company or industry.
+
+### Q: Big company or startup — which is better for senior engineers?
+
+It depends on what you need most at this stage. Big companies offer platform credentials and resource leverage, but personal growth pace and work-life balance aren't guaranteed. Startups offer broader scope and faster decision-making, but stability is lower. The author's conclusion after comparison: personal growth comes from yourself, not company size; if you already have big-tech experience, credentials matter less; and income depends more on the macro environment and luck than company size. The core advice: clarify your current-stage selection criteria before deciding, because at this stage of your career, there's rarely a path back.

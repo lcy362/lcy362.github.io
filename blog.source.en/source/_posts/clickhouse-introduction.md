@@ -11,11 +11,18 @@ categories:
   - Database
 abbrlink: 48312
 cover: /img/48312.jpg
+tldr: ClickHouse is the OLAP performance beast with columnar storage and vectorized execution
 date: 2018-11-14 21:59:31
 tags:
   - big-data
   - clickhouse
   - clickhouse-introduction
+howto:
+  - Install ClickHouse: Install server and client via official repository
+  - Create table: Use MergeTree engine with partition key and sorting key for columnar storage
+  - Import data: Bulk-load analytics data — ClickHouse auto-generates new parts and merges asynchronously
+  - Write queries: Use standard SQL for OLAP analysis, leveraging columnar storage and vectorized execution
+  - Compare MySQL performance: Run the same queries on equivalent data to see the performance gains
 ---
 
 ClickHouse is an open-source database for real-time data analytics developed by Yandex, initially used in multiple data analytics projects internally at Yandex. To introduce ClickHouse, we first need to introduce Yandex. ClickHouse's emergence is closely related to Yandex's business needs. Yandex is Russia's largest search engine, with many data analytics projects. The largest of these by data volume is Yandex.Metrica, a website analytics service similar to Baidu Analytics, with data volume second only to Google Analytics. Since ClickHouse was open-sourced, many companies both domestically and internationally have begun using it in their production systems. Therefore, I'm writing this ClickHouse tutorial to provide a basic introduction.
@@ -93,5 +100,13 @@ With the MergeTree engine, newly inserted data first forms a new part, at which 
 ClickHouse uses ZooKeeper-based master-master replication. After writing to any available replica, data is distributed to all remaining replicas. Replication is performed block by block, and failed replications can be directly retried. The system maintains identical data across different replicas.
 
 Additionally, compared to other columnar databases, ClickHouse has excellent support for SQL syntax, including common SQL statements like GROUP BY, ORDER BY, IN, and JOIN.
+
+## Quick Start Guide
+
+1. **Install ClickHouse**: On Ubuntu: `sudo apt-get install clickhouse-server clickhouse-client`. Start the service and connect with `clickhouse-client`.
+2. **Create table**: Use the MergeTree engine, specify `ORDER BY` (sort key) and `PARTITION BY` (partition key, typically by date). Define columns as needed — no per-column indexes required like in MySQL.
+3. **Import data**: Use `clickhouse-client --query "INSERT INTO table FORMAT CSV" < data.csv` or the `clickhouse-local` tool for bulk import. Data is queryable immediately; merges happen in the background.
+4. **Write queries**: Use standard SQL for analysis. ClickHouse has solid support for `GROUP BY`, `ORDER BY`, `JOIN`, etc. Add date filters to boost non-primary-key query performance.
+5. **Compare MySQL performance**: Load the same data into MySQL and ClickHouse, run identical aggregation queries, and experience the order-of-magnitude difference that columnar storage makes for OLAP workloads.
 
 Source: https://lichuanyang.top/en/posts/48312/

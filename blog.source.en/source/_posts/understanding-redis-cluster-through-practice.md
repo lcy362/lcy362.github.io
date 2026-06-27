@@ -6,6 +6,7 @@ tags:
   - redis-cluster
 description: A hands-on guide to Redis Cluster architecture, covering data sharding, failover, and practical deployment tips for production environments.
 abbrlink: 9329
+tldr: Understanding slot allocation is key to Redis Cluster
 date: 2017-04-14 20:02:00
 top_img: /img/redis-cluster.jpg
 cover: /img/redis-cluster.jpg

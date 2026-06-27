@@ -11,7 +11,13 @@ tags:
   - prompt
   - productivity
   - workflow
+faq:
+  - Q: What's the relationship between Agents and Skills?
+  - Q: What's the most effective way to optimize token usage?
+  - Q: Which is a better investment — maintaining docs or subscribing to an Agent?
+  - Q: Are free models really sufficient?
 abbrlink: 26060
+tldr: The core of AI workflows is packaging knowledge into reusable skills, not writing prompts from scratch
 date: 2026-06-03 22:00:00
 top_img: /img/ai-agent-workflow.jpg
 cover: /img/ai-agent-workflow.jpg
@@ -114,3 +120,21 @@ The takeaway is simple: **Agents are just tools. Documentation is the core.** Ma
 As for those burning through hundreds of dollars in tokens every month—hey, your money is well spent. But my tokens cost nothing, and the results are about the same.
 
 Source: https://lichuanyang.top/en/posts/26060/
+
+## Frequently Asked Questions
+
+### Q: What's the relationship between Agents and Skills?
+
+An Agent is the "worker" executing tasks; a Skill is the "instruction manual" telling it how. The Agent's underlying model provides general reasoning ability, but it doesn't know your project structure, coding conventions, or API design constraints — that knowledge must be communicated through Skills (structured instruction documents). The relationship can be understood as: Agent = General Reasoning Engine + On-Demand Skill Loading. If you maintain your Skills well, you can switch between different Agent platforms and still get consistent output quality.
+
+### Q: What's the most effective way to optimize token usage?
+
+Not switching to cheaper models — it's **writing better docs**. A well-crafted AGENTS.md or SKILL.md allows the Agent to precisely locate the files it needs, avoiding a full project scan for every task. In comparison, tweaking model choices or prompt phrasing on top of poor documentation saves far fewer tokens than good documentation would. Invest time in clear docs first, then farm free tokens — that's the highest-ROI path.
+
+### Q: Which is a better investment — maintaining docs or subscribing to an Agent?
+
+Maintaining docs is the better investment. An Agent subscription costs tens to hundreds of dollars a month, essentially paying for the platform's convenience of "finding files, assembling prompts." But if your project docs are already comprehensive — tech stack, directory structure, design decisions, coding conventions all spelled out — switching to a free Agent yields almost identical results. Docs are your asset, reusable across platforms. An Agent subscription is a consumable — switch platforms and you start over.
+
+### Q: Are free models really sufficient?
+
+For the vast majority of daily tasks, yes. The author's experience shows that DeepSeek Flash-level free models can handle most code modifications, document generation, and knowledge organization tasks. When you encounter genuinely complex scenarios beyond their reach, you can temporarily switch to platforms with free trial credits (like Trae, Codex trial bundles). The real bottleneck is rarely model capability — it's whether the context (docs) you feed it is good enough.

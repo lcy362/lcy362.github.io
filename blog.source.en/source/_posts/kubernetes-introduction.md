@@ -13,7 +13,14 @@ tags:
   - kubernetes
 abbrlink: 55227
 cover: /img/55227.jpg
+tldr: Kubernetes boils down to three things: deployment, scaling, service discovery
 date: 2023-01-28 19:06:17
+howto:
+  - Install kubectl: Download and configure kubectl CLI, connect to a K8s cluster
+  - Create first Deployment: Write a Deployment YAML with image, port, and resource limits
+  - Expose Service: Create a Service object with label selectors to route traffic to Pods
+  - Horizontal scaling: Configure HPA to auto-adjust replicas based on CPU or memory usage
+  - Add probes and hooks: Configure liveness/readiness probes and preStop hooks for robustness
 ---
 
 This tutorial will not focus on Kubernetes deployment, architecture, implementation, or other internal principles. Instead, it will introduce Kubernetes entirely from the perspective of a developer who uses Kubernetes, helping you understand how to better leverage its features.
@@ -93,6 +100,14 @@ Another example: when K8s uses metrics like CPU and memory to determine system l
 These are all aspects that application developers need to carefully design based on their specific application's characteristics.
 
 Additionally, K8s's design philosophy means that in a K8s environment, "restarts" will be a very common occurrence. Various types of problems — hardware failures, low-probability infinite loops, unhealthy garbage collection, etc. — can all be self-healed through K8s's automatic restarts. During automatic scaling, nodes will also frequently start and stop. Therefore, applications need to have smooth startup processes, avoiding excessive time consumption or resource usage.
+
+## Quick Start Guide
+
+1. **Install kubectl**: Download the `kubectl` binary from the official site, configure `~/.kube/config` to connect to your K8s cluster, and run `kubectl get nodes` to verify.
+2. **Create first Deployment**: Write a Deployment YAML specifying the container image, port (`containerPort`), and CPU/memory limits. Run `kubectl apply -f deployment.yaml`.
+3. **Expose Service**: Write a Service YAML, use `selector` labels to match the Deployment's Pods, set `type: LoadBalancer` or `NodePort`, and run `kubectl apply -f service.yaml`.
+4. **Horizontal scaling**: Run `kubectl autoscale deployment <name> --cpu-percent=80 --min=2 --max=10` to create an HPA. Test with load to observe automatic scaling.
+5. **Add probes and hooks**: Add `livenessProbe`, `readinessProbe`, and `lifecycle.preStop` to your Deployment so your app has self-healing and graceful shutdown capabilities in K8s.
 
 ---
 

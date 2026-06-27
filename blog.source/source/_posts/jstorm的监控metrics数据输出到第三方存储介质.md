@@ -15,7 +15,13 @@ tags:
   - 监控
 abbrlink: 13749
 cover: /img/storm-metrics.jpg
+tldr: 把JStorm监控数据输出到外部存储，配合Grafana实现可视化监控
 date: 2017-09-06 20:18:00
+howto:
+  - 实现MetricUploader接口：创建类实现MetricUploader，获取TopologyMetricsRunnable对象
+  - 配置metrics：在jstorm配置中指定自定义的MetricUploader实现类
+  - 测试验证：运行拓扑，检查metrics数据是否正确上报到目标存储
+  - 对接Grafana：将存储介质接入Grafana数据源，创建监控面板
 ---
 ## JStorm Metrics 体系
 
@@ -61,4 +67,11 @@ jstorm的metric数据存在rocksdb里，这里取的数据实质上是用jstorm�
 在这个例子里，我只是用打日志的方式，将部分数据输出。具体用的时候，可以根据需求使用hbase, redis,mysql等存储介质。
 
 具体代码可以查看 https://github.com/lcy362/StormTrooper/blob/master/src/main/java/com/trooper/storm/monitor/MetricUploaderTest.java
----
+
+## 快速上手步骤
+
+1. **实现 MetricUploader 接口**：创建自定义类实现 `MetricUploader` 接口，通过构造函数获取 `TopologyMetricsRunnable` 对象，用它来查询 RocksDB 中的 metrics 数据。
+2. **编写 metrics 采集逻辑**：调用 `metricsRunnable.getTopologyMetric(topologyId)` 获取 `TopologyMetric`，分别读取 `componentMetric`、`workerMetric`、`topologyMetric` 等维度的数据，解析 `@` 分隔的 metric key 并存储。
+3. **配置 JStorm**：在 JStorm 配置文件中将自定义的 MetricUploader 实现类注册进去，确保拓扑启动后自动启用 metrics 上报。
+4. **测试验证**：启动拓扑，检查目标存储介质（HBase/Redis/MySQL 等）中是否有 metrics 数据写入，对照 JStorm UI 确认数据一致性。
+5. **对接 Grafana**：将存储介质配置为 Grafana 数据源，编写查询语句创建监控面板，实现历史数据的可视化查询和告警。

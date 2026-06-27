@@ -10,10 +10,15 @@ categories:
   - Architecture Design
 tags:
   - design-patterns
+faq:
+  - Q: What if I learn design patterns but forget them without using them?
+  - Q: Which design pattern is the most commonly used?
+  - Q: Which is more important — design patterns or design principles?
+  - Q: Why has the Singleton pattern become an anti-pattern?
 abbrlink: 58527
 cover: /img/58527.jpg
 date: 2021-03-04 19:26:30
-tldr: Design patterns are merely tools — the real core lies in the six design principles: SOLID plus the Law of Demeter
+tldr: Design patterns are just tools; the six design principles are fundamental
 ---
 Hello everyone, I'm Liusha. Design patterns are something every programmer encounters frequently, but I believe many people still have questions about what design patterns really are. So today, let's talk about this — the main goal is to help you understand the purpose of design patterns and the right mindset for approaching them.
 
@@ -453,3 +458,21 @@ Finally, I should mention that much of the content in this article actually come
 ![design](/img/design.jpg)
 
 Source: https://lichuanyang.top/en/posts/58527/
+
+## Frequently Asked Questions
+
+### Q: What if I learn design patterns but forget them without using them?
+
+This is normal. The key is to **use the right learning approach**. Don't try to memorize all 23 patterns' definitions and structures in one go — that's guaranteed to fade. The correct path: first understand the underlying ideas of SOLID and other design principles, then when you encounter design problems in real projects, refer back to design patterns for ready-made solutions. Apply them purposefully, refactor continuously. As you use them more, the mapping between scenarios and solutions becomes internalized — no deliberate memorization needed.
+
+### Q: Which design pattern is the most commonly used?
+
+Among creational patterns, **Factory** and **Builder** are used most — you'll find them in dependency injection and object construction in nearly any project of moderate complexity. Among structural patterns, **Proxy** (e.g., AOP, RPC frameworks), **Adapter** (interface compatibility), and **Decorator** (e.g., Java IO streams) are the most common. Among behavioral patterns, **Strategy**, **Template Method**, and **Chain of Responsibility** appear most often in real-world business code, since they directly correspond to three high-frequency scenarios: "choose an algorithm based on conditions," "define a processing skeleton," and "chain-based request handling."
+
+### Q: Which is more important — design principles or design patterns?
+
+Design principles are more important. Principles are the "why"; patterns are the "how." SOLID, KISS, DRY, and the Law of Demeter guide you in judging the trade-offs of code quality — they are the common foundation for all good code. Design patterns are merely concrete implementations of these principles in certain typical scenarios. Understand the principles, and you can write good code even without remembering a specific pattern's implementation. The reverse — memorizing patterns without understanding principles — leads to cargo-cult application.
+
+### Q: Why has the Singleton pattern become an anti-pattern?
+
+The main issues: Singletons **hide dependencies between classes** — calling code depends on `Singleton.getInstance()` without revealing from the interface that global state is involved. They have **poor testability** — Singletons can't be mocked, and global state can cause cross-test interference. They **don't support parameterized constructors** — limiting flexibility. That said, this doesn't mean Singletons are categorically unusable. When you genuinely need a single process-wide instance and complex testing isn't involved, a Singleton remains the simplest choice. The key is understanding its costs, not blindly believing "Singleton = bad."

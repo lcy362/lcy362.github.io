@@ -12,6 +12,7 @@ tags:
   - source-code-reading
 abbrlink: 15594
 cover: /img/bolt-exception.jpg
+tldr: Understanding JStorm's ack mechanism and fail strategy is key
 date: 2017-08-03 19:29:00
 categories:
   - JStorm Source Code Analysis
