@@ -157,3 +157,5 @@ llm-wiki 是 Andrej Karpathy 在 最近提出的一个概念：把你过往积�
 3. **导入 Notion 笔记**：在 Notion 设置中导出为 Markdown + CSV 格式，使用 Obsidian Importer 插件一键导入，或将解压的 Markdown 文件夹直接放入 Vault 目录。
 4. **接入微信读书**：申请微信读书 API Key，调用 `/user/notebooks` 接口获取书籍列表，拉取划线和笔记，按章节分组输出为 Markdown 文件存入 Vault。
 5. **导入知乎与博客**：使用 Playwright 脚本自动抓取知乎回答和文章；将博客 Markdown 源文件复制到 Vault。完成后让 AI 执行一次全量 wiki 摄入，生成完整的知识交叉引用网络。
+
+原文地址：https://lichuanyang.top/posts/18804/

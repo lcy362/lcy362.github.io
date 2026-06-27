@@ -131,6 +131,13 @@ hexo.extend.filter.register('after_render:html', function(html, data) {
       /(<article[^>]*class="[^"]*post-content[^"]*"[^>]*>)/,
       '$1' + tldrBlock
     );
+
+    // Inject abstract into BlogPosting JSON-LD for AI/Geo visibility
+    // BlogPosting structure: headline → url → image → datePublished → ...
+    html = html.replace(
+      /("image":\s*"[^"]*",)\s*\n\s*("datePublished")/,
+      '$1\n  "abstract": ' + JSON.stringify(tldrText) + ',\n  $2'
+    );
   }
 
   // ==== Inject JSON-LD ====

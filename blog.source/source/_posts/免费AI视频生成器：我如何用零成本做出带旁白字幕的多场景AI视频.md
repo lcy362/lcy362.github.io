@@ -84,4 +84,6 @@ cd agnes-video-generator
 
 代码在 [GitHub](https://github.com/lcy362/agnes-video-generator)，官网在 [video.lichuanyang.top](https://video.lichuanyang.top/)。欢迎提bug。
 
+原文地址：https://lichuanyang.top/posts/22470/
+
 

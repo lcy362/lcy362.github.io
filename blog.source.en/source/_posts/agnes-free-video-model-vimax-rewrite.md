@@ -180,4 +180,4 @@ The project is open source: [github.com/lcy362/vimax-agnes](https://github.com/l
 4. **Generate video**: Run `./start.sh <creative_name>`. The system auto-executes script generation, image generation, and video generation in one pipeline, with intermediate results cached for resume support.
 5. **Review output**: Videos are saved under `output/`. Check character consistency, scene transitions, and overall quality. Tweak the YAML config and rerun if needed.
 
-Source: https://lichuanyang.top/en/posts/65500/
+Source: https://lichuanyang.top/posts/65500/
