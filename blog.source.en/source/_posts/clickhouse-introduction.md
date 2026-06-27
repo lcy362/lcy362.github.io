@@ -52,7 +52,7 @@ First, let's look at the file structure of MergeTree. (The images in this sectio
 ![](/img/clickhouse/folder.png)
 The directory like 20171001.... represents a part. The files within include: columns.txt records column information; each column has a bin file and an mrk file, where the bin file contains the actual data. primary.idx stores primary key information, with a structure similar to mrk, like a sparse index.
 
-![Detailed Storage Structure](/img/clickhouse/mergetree.png)
+![Detailed Storage Structure](/img/clickhouse/mergetree.jpg)
 
 This shows the specific structure of mrk and primary files. As we can see, data is sorted by primary key and divided into blocks at regular intervals. Each block also extracts one data point as an index, stored in primary.idx and each column's mrk file.
 
