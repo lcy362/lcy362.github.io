@@ -1,0 +1,331 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>activemq系列-概述 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="ActiveMQ 消息中间件系列开篇，介绍消息中间件的核心作用（解耦和平峰）以及 JMS 协议的基本概念。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="activemq系列-概述">
+<meta property="og:url" content="https://lichuanyang.top/posts/12035/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="ActiveMQ 消息中间件系列开篇，介绍消息中间件的核心作用（解耦和平峰）以及 JMS 协议的基本概念。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/12035.jpg">
+<meta property="article:published_time" content="2018-01-22T10:33:02.000Z">
+<meta property="article:modified_time" content="2026-06-27T02:15:49.471Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="activemq">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/12035.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "activemq系列-概述",
+  "url": "https://lichuanyang.top/posts/12035/",
+  "image": "https://lichuanyang.top/img/12035.jpg",
+  "abstract": "消息中间件解决两个核心问题——解耦和削峰，ActiveMQ是JMS规范最完整的实现",
+  "datePublished": "2018-01-22T10:33:02.000Z",
+  "dateModified": "2026-06-27T02:15:49.471Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/12035/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'activemq系列-概述',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/12035/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/12035/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/12035/">
+<meta name="keywords" content="activemq">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"activemq系列文章","item":"https://lichuanyang.top/categories/activemq系列文章/"},{"@type":"ListItem","position":3,"name":"activemq系列-概述","item":"https://lichuanyang.top/posts/12035/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/12035.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">activemq系列-概述</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">activemq系列-概述</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-01-22T10:33:02.000Z" title="发表于 2018-01-22 18:33:02">2018-01-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T02:15:49.471Z" title="更新于 2026-06-27 10:15:49">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/activemq%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/">activemq系列文章</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> 消息中间件解决两个核心问题——解耦和削峰，ActiveMQ是JMS规范最完整的实现</blockquote><p>ActiveMQ 是 Apache 旗下的开源消息中间件（Message-Oriented Middleware，MOM），也是 JMS（Java Message Service）1.1 规范的完整实现。本文是 ActiveMQ 系列文章的开篇，先讲清楚消息中间件是什么、解决什么问题，再介绍 JMS 的核心概念，为后续深入学习 ActiveMQ 的具体特性打好基础。</p>
+<span id="more"></span>
+
+<h2 id="消息中间件解决什么问题？"><a href="#消息中间件解决什么问题？" class="headerlink" title="消息中间件解决什么问题？"></a>消息中间件解决什么问题？</h2><p>消息中间件是分布式系统中非常常见的组件。它的核心定位是作为应用程序之间的中介——各个应用不直接互相通信，而是通过消息中间件来传递消息。</p>
+<p>两个最核心的价值：<strong>解耦</strong>和<strong>削峰</strong>。</p>
+<h3 id="解耦"><a href="#解耦" class="headerlink" title="解耦"></a>解耦</h3><p>想象一个用户登录的场景：登录成功后，可能会有多个下游系统需要响应——给用户发欢迎消息、更新推荐算法、同步用户数据到数据仓库、触发风控检查……这些操作跟登录本身没有直接关系，如果把逻辑全部写在登录模块里，不仅代码会变成一锅粥，登录的响应时间也会变得不可接受。</p>
+<p>引入消息中间件后，登录模块只需要在验证成功后发一条”用户已登录”的消息，其他系统各自监听这个消息，独立执行自己的业务逻辑。登录模块不再需要知道下游有哪些系统，新增一个消费者也无需修改登录代码。</p>
+<h3 id="削峰"><a href="#削峰" class="headerlink" title="削峰"></a>削峰</h3><p>系统的资源是按日常流量分配的，不可能按秒杀级别的峰值去配置。当瞬时流量远超系统处理能力时，与其让请求直接打到数据库把整个系统拖垮，不如让消息先在中间件里排队，下游系统按照自己的能力慢慢消费。</p>
+<p>举个例子：秒杀场景下，1 秒内涌入 10 万个下单请求，但数据库每秒只能处理 1000 个。用消息中间件作为缓冲，请求先写入消息队列，后台服务按 1000 QPS 匀速处理，保证系统不被冲垮。</p>
+<h2 id="消息传递的两种模式"><a href="#消息传递的两种模式" class="headerlink" title="消息传递的两种模式"></a>消息传递的两种模式</h2><p>消息中间件一般支持两种消息传递模式：</p>
+<h3 id="点对点模式（P2P-Queue）"><a href="#点对点模式（P2P-Queue）" class="headerlink" title="点对点模式（P2P / Queue）"></a>点对点模式（P2P / Queue）</h3><p>在 JMS 中对应 <strong>Queue（队列）</strong>，有三个特点：</p>
+<ol>
+<li><strong>一条消息一个消费者</strong>：多个消费者可以监听同一个 Queue，但每条消息只会被其中一个消费</li>
+<li><strong>时间解耦</strong>：发送者发消息时，接收者不需要在线。消息会持久化在队列中，等待接收者上线后消费</li>
+<li><strong>需要确认</strong>：消费者成功处理消息后，需要向队列发送应答（ACK），消息才会被标记为已消费</li>
+</ol>
+<p>典型场景：订单处理、异步任务分发。</p>
+<h3 id="发布-订阅模式（Pub-Sub-Topic）"><a href="#发布-订阅模式（Pub-Sub-Topic）" class="headerlink" title="发布-订阅模式（Pub/Sub / Topic）"></a>发布-订阅模式（Pub/Sub / Topic）</h3><p>在 JMS 中对应 <strong>Topic（主题）</strong>：</p>
+<ol>
+<li><strong>一条消息多个消费者</strong>：发布者发出消息后，所有订阅了该 Topic 的消费者都会收到</li>
+<li><strong>时间耦合</strong>：订阅者必须保持在线才能收到消息（除非使用持久订阅，Durable Subscription）</li>
+<li><strong>广播特性</strong>：适合一对多通知的场景</li>
+</ol>
+<p>典型场景：配置变更通知、实时推送、事件广播。</p>
+<h3 id="Queue-vs-Topic-对比"><a href="#Queue-vs-Topic-对比" class="headerlink" title="Queue vs Topic 对比"></a>Queue vs Topic 对比</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Queue</th>
+<th>Topic</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>消费模式</td>
+<td>一条消息一个消费者</td>
+<td>一条消息广播给所有订阅者</td>
+</tr>
+<tr>
+<td>时间依赖</td>
+<td>无（消息持久化）</td>
+<td>有（订阅者需在线，持久订阅除外）</td>
+</tr>
+<tr>
+<td>消息确认</td>
+<td>需要 ACK</td>
+<td>发布即完成</td>
+</tr>
+<tr>
+<td>典型场景</td>
+<td>异步任务、削峰</td>
+<td>事件通知、实时推送</td>
+</tr>
+</tbody></table>
+<h2 id="JMS-是什么？"><a href="#JMS-是什么？" class="headerlink" title="JMS 是什么？"></a>JMS 是什么？</h2><p>JMS（Java Message Service）是 Sun 定义的一套消息传送 API 规范。JMS 本身不是一个具体的消息系统——它只是定义了消息客户端和消息系统之间通信所需的接口和类的抽象，类似于 JDBC 定义数据库访问接口、JNDI 定义命名和目录服务接口。</p>
+<p>JMS 规范主要定义了：</p>
+<ul>
+<li><strong>消息结构</strong>：消息头（Header）、属性（Properties）、消息体（Body）</li>
+<li><strong>连接工厂</strong>：<code>ConnectionFactory</code>，用于创建与消息中间件的连接</li>
+<li><strong>连接与会话</strong>：<code>Connection</code> 和 <code>Session</code>，管理消息的发送和接收</li>
+<li><strong>目的地</strong>：<code>Queue</code> 和 <code>Topic</code></li>
+<li><strong>生产者与消费者</strong>：<code>MessageProducer</code> 和 <code>MessageConsumer</code></li>
+</ul>
+<p>ActiveMQ 就是 JMS 1.1 规范的一个完整实现。</p>
+<h2 id="ActiveMQ-的定位"><a href="#ActiveMQ-的定位" class="headerlink" title="ActiveMQ 的定位"></a>ActiveMQ 的定位</h2><p>在消息中间件的生态中，ActiveMQ 的独特优势在于：</p>
+<ul>
+<li><strong>JMS 兼容性最好</strong>：完整支持 JMS 1.1，是学习 JMS 规范的最佳实践参考</li>
+<li><strong>多协议支持</strong>：支持 OpenWire、AMQP、MQTT、STOMP 等多种传输协议</li>
+<li><strong>灵活的持久化</strong>：支持 JDBC、KahaDB、LevelDB 等多种持久化方式</li>
+<li><strong>丰富的集群方案</strong>：Master-Slave、Network of Brokers 等</li>
+</ul>
+<p>在后续系列文章中，我们会深入介绍 ActiveMQ 的安装配置、持久化机制、集群部署、插件开发等主题。</p>
+<h2 id="系列文章导航"><a href="#系列文章导航" class="headerlink" title="系列文章导航"></a>系列文章导航</h2><blockquote>
+<p>这是 ActiveMQ 系列的第 1 篇。后续文章包括：</p>
+<ul>
+<li><a href="">ActiveMQ 安装与基本配置</a></li>
+<li><a href="">ActiveMQ 持久化机制详解</a></li>
+<li><a href="">ActiveMQ 多线程消费模型</a></li>
+<li><a href="/posts/61645/">ActiveMQ 插件开发指南</a></li>
+<li><a href="/posts/32479/">ActiveMQ Web Console 权限配置</a></li>
+</ul>
+</blockquote>
+<h2 id="欢迎保持关注。"><a href="#欢迎保持关注。" class="headerlink" title="欢迎保持关注。"></a>欢迎保持关注。</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/12035/">https://lichuanyang.top/posts/12035/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/12035.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/48216/" title="activemq的安装及基本使用"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/48216.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">activemq的安装及基本使用</div></div><div class="info-2"><div class="info-item-1">安装从官网下载最新版本，解压，其他的前期准备只需要安装jdk。 从activemq 5.14开始，只支持jdk8。 配置核心配置文件是conf目录下的activemq.xml, 默认的配置无需修改即可使用,其他配置我们会在后续文章介绍activemq各种特性时详细介绍。 启动bin目录下运行 activemq start 即可 ，启动之后浏览器打开localhost:8161 可以打开web管理页面。 基本api使用这里只介绍java下的api使用，activemq默认的openwire协议是只支持java的，因为实现的JMS协议是java下的协议。如果有其他语言的访问需求，可以用stomp,amqp等协议。 依赖包引入activemq官方的client包。 1234&lt;dependency&gt;	&lt;groupId&gt;org.apache.activemq&lt;/groupId&gt;	&lt;artifactId&gt;activemq-client&lt;/artifactId&gt;&lt;/dependency&gt;  actibemq收发消息的主要步...</div></div></div></a><a class="pagination-related" href="/posts/19890/" title="hexo教程：博客系统搭建及部署到github"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/hexo-blog-system.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">hexo教程：博客系统搭建及部署到github</div></div><div class="info-2"><div class="info-item-1">原文地址： https://lichuanyang.top/posts/19890/ Hexo是一款开源的博客系统。对于一个后端程序员来说，不想折腾前端的东西，但是csdn,博客园之类的用起来还是不太方便，自己搭博客又麻烦，做出来还丑。偶然间看到了hexo,这个对后端程序员来说可以说是非常友好了。所以也写篇文章记录一下hexo安装,一些关键配置，以及部署到github的过程。 安装及初始化参考官方文档 就可以了。hexo是基于node.js的，用过node的自然没有任何问题，没用过也没关系，照着说明文档做就可以了。 hexo支持直接向github的page发布，只需要配置好自己的github信息就可以。 主题hexo有很多定制主题, 按个人喜好使用吧， 我用的是next , 这款主题功能非常多，统计、搜索之类的都是一条配置都搞定了。不过这款的一些基础配置和其他主题似乎是有些区别的，所以用了以后如果以后想换别的可能会有点困难。 内容迁移hexo提供了多个从其他博客迁移数据的插件，rss,blogger等等都可以。 以博客园为例，博客园的博客可以导出一个rss文件，然后我们用hexo...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/20459/" title="activemq多线程消费的不同处理方式"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/20459.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2018-09-16</div><div class="info-item-2">activemq多线程消费的不同处理方式</div></div><div class="info-2"><div class="info-item-1">问题场景之前在另一篇文章里介绍过使用activemq时，client端的基本语法。 值得注意的是消费者，  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849    public void consume() throws JMSException {        ActiveMQConnectionFactory cf = new ActiveMQConnectionFactory();        cf.setBrokerURL("tcp://localhost:61616");        Connection connection = cf.createConnection();        connection.start();        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);       ...</div></div></div></a><a class="pagination-related" href="/posts/31044/" title="activemq特性之持久化"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/31044.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-02</div><div class="info-item-2">activemq特性之持久化</div></div><div class="info-2"><div class="info-item-1">介绍数据的持久化是很多系统都会涉及到的一个问题，尤其是redis,activemq这些数据主要是存储在内存中的。既然存在内存中，就会面临宕机时数据丢失的风险。这一问题的解决方案就是通过某种方式将数据落到磁盘上，也就是所谓的持久化。 activemq提供了三种持久化方式，分别基于jdbc, kahadb和leveldb. 目前官方最推荐的是基于kahadb的持久化。 jdbc是activemq最早提供的一种持久化方式，但是用数据库去做持久化确实不合适，毕竟性能有瓶颈，而且只是需要简单的读写数据，不需要数据库各种强大的功能。现在去看文档的话，连基本的配置都被埋的很深，所以这种方式我们也就不细说了。 正是由于基于jdbc的方式存在的种种问题，activemq后来就接连提供了基于kahabd和leveldb的持久化方式.leveldb 是google开源的一个KV磁盘存储系统，应用很广，kahadb没找着源头，应该就是activemq团队开发的，也是一种基于磁盘的存储系统。按理说,leveldb的性能是要好一些的，之前无论是activemq的默认配置，还是文档里的推荐使用方法，都是首选l...</div></div></div></a><a class="pagination-related" href="/posts/48216/" title="activemq的安装及基本使用"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/48216.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2018-01-30</div><div class="info-item-2">activemq的安装及基本使用</div></div><div class="info-2"><div class="info-item-1">安装从官网下载最新版本，解压，其他的前期准备只需要安装jdk。 从activemq 5.14开始，只支持jdk8。 配置核心配置文件是conf目录下的activemq.xml, 默认的配置无需修改即可使用,其他配置我们会在后续文章介绍activemq各种特性时详细介绍。 启动bin目录下运行 activemq start 即可 ，启动之后浏览器打开localhost:8161 可以打开web管理页面。 基本api使用这里只介绍java下的api使用，activemq默认的openwire协议是只支持java的，因为实现的JMS协议是java下的协议。如果有其他语言的访问需求，可以用stomp,amqp等协议。 依赖包引入activemq官方的client包。 1234&lt;dependency&gt;	&lt;groupId&gt;org.apache.activemq&lt;/groupId&gt;	&lt;artifactId&gt;activemq-client&lt;/artifactId&gt;&lt;/dependency&gt;  actibemq收发消息的主要步...</div></div></div></a><a class="pagination-related" href="/posts/22103/" title="storm/jstorm生态与周边工具,storm连接activemq,kafka,hdfs等"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22103.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2016-11-16</div><div class="info-item-2">storm/jstorm生态与周边工具,storm连接activemq,kafka,hdfs等</div></div><div class="info-2"><div class="info-item-1">storm的周边生态非常丰富，与kafka,activemq,hdfs,hbase等的交互都有现成的工具包可以使用。大部分工具，包括今天介绍的这几个，在jstorm中也可以完全正常的使用。 storm-jms实现了与activemq等jms实现的交互。 这里主要介绍JmsSpout。由于storm中发送队列数据与普通java程序没有任何区别，专门封装一个bolt显得有些多此一举。 https://github.com/ptgoetz/storm-jms 包中自带了使用spring方式加载队列配置。 使用示例1234567891011121314JmsProvider jmsQueueProvider = new SpringJmsProvider(        "jms-activemq.xml", "jmsConnectionFactory",        "TEST_QUEUE");JmsTupleProducer producer = new JsonTupleProducer();// JMS Queue S...</div></div></div></a><a class="pagination-related" href="/posts/32479/" title="activemq web console的权限配置"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/32479.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2016-01-05</div><div class="info-item-2">activemq web console的权限配置</div></div><div class="info-2"><div class="info-item-1">Web Console 的安全风险activemq的web console是基于jetty实现，其权限管理也是基于jetty. 根据需求，可以给不同的用户赋予不同的权限。jetty的权限管理还算灵活，虽然配起来比较麻烦，可以分别设定某个角色（role）下的用户是否有对某个页面的访问权限。  JAAS 认证配置下面简要介绍一下配置方法，只需要修改/conf 下的&nbsp;jetty.xml，&nbsp;jetty-realm.properties 1.&nbsp;jetty-realm.properties &nbsp; 这里面配置了所有用户的用户名，密码和所属角色，按照如下格式： username: password [,rolename ...] &nbsp;&nbsp;    ## 角色与权限定义  2\. jetty.xml 首先对每个角色配置一个Constraint 类，其中roles及对应&nbsp;jetty-realm.properties中的rolename        &lt;bean id="securityConstraint" class="org.e...</div></div></div></a><a class="pagination-related" href="/posts/13925/" title="activemq 5.6 连接池的内存泄露问题"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/13925.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2015-08-08</div><div class="info-item-2">activemq 5.6 连接池的内存泄露问题</div></div><div class="info-2"><div class="info-item-1">问题现象最近在使用activemq 的连接池时，发现它存在很严重的内存泄露问题。 排查过程通过jmap监控，可以看到java.util.concurrent.locks.ReentrantLock,&nbsp;org.apache.activemq.pool.PooledConnection这两个类占用的空间非常大，而且增长速度也很快。 根因分析网上查了一下，正好找到activemq的bug 报告.:https://issues.apache.org/jira/browse/AMQ-3997 解决方案这个bug 在5.7中已经修复，可以通过升级版本解决。 同时，也有另一种解决方式，就是使用spring带的连接池替换activemq自带的连接池，配置如下：   &lt;bean id="jmsConnectionFactory"                 class="org.apache.activemq.ActiveMQConnectionFactory"&gt;                 &lt;property name="brokerURL" value="v...</div></div></div></a></div></div><hr class="custom-hr"><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">消息中间件解决什么问题？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E8%80%A6"><span class="toc-number">1.1.</span> <span class="toc-text">解耦</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8A%E5%B3%B0"><span class="toc-number">1.2.</span> <span class="toc-text">削峰</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">消息传递的两种模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%82%B9%E5%AF%B9%E7%82%B9%E6%A8%A1%E5%BC%8F%EF%BC%88P2P-Queue%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">点对点模式（P2P / Queue）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F%EF%BC%88Pub-Sub-Topic%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">发布-订阅模式（Pub/Sub / Topic）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Queue-vs-Topic-%E5%AF%B9%E6%AF%94"><span class="toc-number">2.3.</span> <span class="toc-text">Queue vs Topic 对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JMS-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">JMS 是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ActiveMQ-%E7%9A%84%E5%AE%9A%E4%BD%8D"><span class="toc-number">4.</span> <span class="toc-text">ActiveMQ 的定位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E5%AF%BC%E8%88%AA"><span class="toc-number">5.</span> <span class="toc-text">系列文章导航</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AC%A2%E8%BF%8E%E4%BF%9D%E6%8C%81%E5%85%B3%E6%B3%A8%E3%80%82"><span class="toc-number">6.</span> <span class="toc-text">欢迎保持关注。</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

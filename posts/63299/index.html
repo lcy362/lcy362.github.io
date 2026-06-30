@@ -1,0 +1,303 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>一篇不错的lda模型入门文档 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="LDA（Latent Dirichlet Allocation）主题模型入门学习笔记，帮助理解 LDA 的基本概念和应用场景。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一篇不错的lda模型入门文档">
+<meta property="og:url" content="https://lichuanyang.top/posts/63299/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="LDA（Latent Dirichlet Allocation）主题模型入门学习笔记，帮助理解 LDA 的基本概念和应用场景。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/63299.jpg">
+<meta property="article:published_time" content="2012-12-02T07:20:00.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:42:25.690Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="LDA">
+<meta property="article:tag" content="大数据">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/63299.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "一篇不错的lda模型入门文档",
+  "url": "https://lichuanyang.top/posts/63299/",
+  "image": "https://lichuanyang.top/img/63299.jpg",
+  "abstract": "LDA 主题模型通过文档-主题-词三层概率建模和迭代学习，输出文档的主题分布与主题的关键词分布，实现非监督文本聚类。",
+  "datePublished": "2012-12-02T07:20:00.000Z",
+  "dateModified": "2026-06-27T03:42:25.690Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/63299/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '一篇不错的lda模型入门文档',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/63299/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/63299/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/63299/">
+<meta name="keywords" content="大数据, LDA">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"技术杂谈","item":"https://lichuanyang.top/categories/技术杂谈/"},{"@type":"ListItem","position":3,"name":"一篇不错的lda模型入门文档","item":"https://lichuanyang.top/posts/63299/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/63299.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">一篇不错的lda模型入门文档</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">一篇不错的lda模型入门文档</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2012-12-02T07:20:00.000Z" title="发表于 2012-12-02 15:20:00">2012-12-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T03:42:25.690Z" title="更新于 2026-06-27 11:42:25">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/">技术杂谈</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> LDA 主题模型通过文档-主题-词三层概率建模和迭代学习，输出文档的主题分布与主题的关键词分布，实现非监督文本聚类。</blockquote><p>转自<a target="_blank" rel="noopener external nofollow noreferrer" href="http://leyew.blog.51cto.com/5043877/860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0">http://leyew.blog.51cto.com/5043877/860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0</a></p>
+<p>前几天开始学习lda,走了不少弯路，对lda仍然是一头雾水。看了这篇文档以后总算明白lda是干啥的了</p>
+<p>&nbsp;</p>
+<h3 id="LDA（Latent-Dirichlet-Allocation）学习笔记"><a href="#LDA（Latent-Dirichlet-Allocation）学习笔记" class="headerlink" title="LDA（Latent Dirichlet Allocation）学习笔记"></a>LDA（Latent Dirichlet Allocation）学习笔记</h3><p>最近在看LDA算法，经过了几天挣扎，总算大致了解了这个算法的整体框架和流程。</p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>LDA要干的事情简单来说就是为一堆文档进行聚类（所以是非监督学习），一种topic就是一类，要聚成的topic数目是事先指定的。聚类的结果是一个概率，而不是布尔型的100%属于某个类。国外有个博客[1]上有一个清晰的例子，直接引用：</p>
+<blockquote>
+<p>Suppose you have the following set of sentences:</p>
+<ul>
+<li>I like to eat broccoli and bananas.</li>
+<li>I ate a banana and spinach smoothie for breakfast.</li>
+<li>Chinchillas and kittens are cute.</li>
+<li>My sister adopted a kitten yesterday.</li>
+<li>Look at this cute hamster munching on a piece of broccoli.</li>
+</ul>
+<p>What is latent Dirichlet allocation? It’s a way of automatically discovering topics that these sentences contain. For example, given these sentences and asked for 2 topics, LDA might produce something like</p>
+<ul>
+<li><strong>Sentences 1 and 2</strong>: 100% Topic A</li>
+<li><strong>Sentences 3 and 4</strong>: 100% Topic B</li>
+<li><strong>Sentence 5</strong>: 60% Topic A, 40% Topic B</li>
+<li><strong>Topic A</strong>: 30% broccoli, 15% bananas, 10% breakfast, 10% munching, … (at which point, you could interpret topic A to be about food)</li>
+<li><strong>Topic B</strong>: 20% chinchillas, 20% kittens, 20% cute, 15% hamster, … (at which point, you could interpret topic B to be about cute animals)</li>
+</ul>
+</blockquote>
+<p>上面关于sentence 5的结果，可以看出来是一个明显的概率类型的聚类结果（sentence 1和2正好都是100%的确定性结果）。</p>
+<p>再看例子里的结果，除了为每句话得出了一个概率的聚类结果，而且对每个Topic，都有代表性的词以及一个比例。以Topic A为例，就是说所有对应到Topic A的词里面，有30%的词是broccoli。在LDA算法中，会把每一个文档中的每一个词对应到一个Topic，所以能算出上面这个比例。这些词为描述这个Topic起了一个很好的指导意义，我想这就是LDA区别于传统文本聚类的优势吧。</p>
+<h4 id="LDA整体流程"><a href="#LDA整体流程" class="headerlink" title="LDA整体流程"></a>LDA整体流程</h4><p>先定义一些字母的含义：</p>
+<ul>
+<li>文档集合<strong>D</strong>，topic集合<strong>T</strong></li>
+<li>D中每个文档d看作一个单词序列**&lt; w1,w2,…,wn &gt;**，wi表示第i个单词，设d有n个单词。（LDA里面称之为_word bag_，实际上每个单词的出现位置对LDA算法无影响）</li>
+<li>D中涉及的所有不同单词组成一个大集合<strong>VOCABULARY</strong>（简称<strong>VOC</strong>）</li>
+</ul>
+<p>LDA以文档集合D作为输入（会有切词，去停用词，取词干等常见的预处理，略去不表），希望训练出的两个结果向量（<strong>设聚成k个Topic，VOC中共包含m个词</strong>）：</p>
+<ul>
+<li><strong>对每个D中的文档d，对应到不同topic的概率θ<sub>d</sub>&nbsp;&lt; p<sub>t1</sub>,…, p<sub>tk</sub>&nbsp;&gt;</strong>，其中，p<sub>ti</sub>表示d对应T中第i个topic的概率。计算方法是直观的，p<sub>ti</sub>=n<sub>ti</sub>/n，其中n<sub>ti</sub>表示d中对应第i个topic的词的数目，n是d中所有词的总数。</li>
+<li><strong>对每个T中的topic t，生成不同单词的概率φ<sub>t</sub>&nbsp;&lt; p<sub>w1</sub>,…, p<sub>wm</sub>&nbsp;&gt;</strong>，其中，p<sub>wi</sub>表示t生成VOC中第i个单词的概率。计算方法同样很直观，p<sub>wi</sub>=N<sub>wi</sub>/N，其中N<sub>wi</sub>表示对应到topic t的VOC中第i个单词的数目，N表示所有对应到topic t的单词总数。</li>
+</ul>
+<p>LDA的核心公式如下：</p>
+<p>*<em>p(w|d) = p(w|t)<em>p(t|d)</em></em></p>
+<p>直观的看这个公式，就是以Topic作为中间层，可以通过当前的θ<sub>d</sub>和φ<sub>t</sub>给出了文档d中出现单词w的概率。其中p(t|d)利用θ<sub>d</sub>计算得到，p(w|t)利用φ<sub>t</sub>计算得到。</p>
+<p>实际上，利用当前的θ<sub>d</sub>和φ<sub>t</sub>，我们可以为一个文档中的一个单词计算它对应任意一个Topic时的p(w|d)，然后根据这些结果来更新这个词应该对应的topic。然后，如果这个更新改变了这个单词所对应的Topic，就会反过来影响θ<sub>d</sub>和φ<sub>t</sub>。</p>
+<p>LDA算法开始时，先随机地给θ<sub>d</sub>和φ<sub>t</sub>赋值（对所有的d和t）。然后上述过程不断重复，最终收敛到的结果就是LDA的输出。</p>
+<p>再详细说一下这个迭代的学习过程：</p>
+<p>针对一个特定的文档d<sub>s</sub>中的第i单词w<sub>i</sub>，如果令该单词对应的topic为t<sub>j</sub>，可以把上述公式改写为：</p>
+<p><em>p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>) = p(w<sub>i</sub>|t<sub>j</sub>)*p(t<sub>j</sub>|d<sub>s</sub>)</em></p>
+<p>先不管这个值怎么计算（可以先理解成直接从θ<sub>ds</sub>和φ<sub>tj</sub>中取对应的项。实际没这么简单，但对理解整个LDA流程没什么影响，后文再说。）。现在我们可以枚举T中的topic，得到所有的p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)，其中j取值1~k。然后可以根据这些概率值结果为d<sub>s</sub>中的第i个单词w<sub>i</sub>选择一个topic。最简单的想法是取令p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)最大的t<sub>j</sub>（注意，这个式子里只有j是变量），即</p>
+<p><em>argmax[j]p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)</em></p>
+<p>当然这只是一种方法（好像还不怎么常用），实际上这里怎么选择t在学术界有很多方法，我还没有好好去研究。</p>
+<p>然后，如果d<sub>s</sub>中的第i个单词w<sub>i</sub>在这里选择了一个与原先不同的topic，就会对θ<sub>d</sub>和φ<sub>t</sub>有影响了（根据前面提到过的这两个向量的计算公式可以很容易知道）。它们的影响又会反过来影响对上面提到的p(w|d)的计算。对D中所有的d中的所有w进行一次p(w|d)的计算并重新选择topic看作一次迭代。这样进行n次循环迭代之后，就会收敛到LDA所需要的结果了。&nbsp;<em>【在这里突然想到了一个问题，就是对θ<sub>d</sub>和φ<sub>t</sub>这两个向量的更新究竟是在一次迭代对所有的d中的所有w更新之后统一更新（也就是在一次迭代中，θ<sub>d</sub>和φ<sub>t</sub>不变，统一在迭代结束时更新），还是每对一个d中的一个w更新topic之后，就马上对θ<sub>d</sub>和φ<sub>t</sub>进行更新呢？这个看来要去看一下那篇LDA最原始的论文了】</em></p>
+<h4 id="怎样计算p-w-t-和p-t-d"><a href="#怎样计算p-w-t-和p-t-d" class="headerlink" title="怎样计算p(w|t)和p(t|d)"></a>怎样计算p(w|t)和p(t|d)</h4><p>待续……</p>
+<p>&nbsp;</p>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><h2 id="【1】Introduction-to-Latent-Dirichlet-Allocation：国外博客，很不错的入门文章"><a href="#【1】Introduction-to-Latent-Dirichlet-Allocation：国外博客，很不错的入门文章" class="headerlink" title="【1】Introduction to Latent Dirichlet Allocation：国外博客，很不错的入门文章"></a>【1】<a target="_blank" rel="noopener external nofollow noreferrer" href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/">Introduction to Latent Dirichlet Allocation</a>：国外博客，很不错的入门文章</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/63299/">https://lichuanyang.top/posts/63299/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/63299.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/17762/" title="关于apache camel的消息转发效率"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/17762.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">关于apache camel的消息转发效率</div></div><div class="info-2"><div class="info-item-1">测试场景公司使用activemq和camel做消息的分发，之前数据量不是很大，所以一直没怎么考虑效率问题，对camel的工作原理研究也不深。单是最近随着业务量的增加，camel的效率逐渐成了瓶颈，所以根据日志大概了解了camel的工作原理。虽然camel是被嵌入到activemq中，但在工作过程中，camel和activemq其实还是相对独立的。我们在camel中会配置一个到activemq的连接. http://camel.apache.org/activemq.html    关于vm这种传输方式，参考http://activemq.apache.org/vm-transport-reference.html 瓶颈分析看了下日志，发现这种配置下camel会有一个很严重的问题: camel每次执行转发操作时，都会新建一个到activemq的连接，之后再将其关闭。这严重拖慢了转发效率，因为事实上每次转发都可以使用同一个连接。 优化建议因此查了一下camel文档，找到了  http://camel.apache.org/activemq.html 。 里边有关于线程池的配置： &amp;n...</div></div></div></a><a class="pagination-related" href="/posts/25187/" title="wordcount代码"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/25187.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">wordcount代码</div></div><div class="info-2"><div class="info-item-1">概述参考http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html &nbsp; package org.apache.hadoop.examples; import java.io.IOException; import java.util.StringTokenizer; import org.apache.hadoop.conf.Configuration; import org.apache.hadoop.fs.Path; import org.apache.hadoop.io.IntWritable; import org.apache.hadoop.io.Text; import org.apache.hadoop.mapreduce.Job; import org.apache.hadoop.mapreduce.Mapper; import org.apache.hadoop.mapreduce.Reducer; import org.apache.hadoop.mapreduce.lib.inpu...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/25187/" title="wordcount代码"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/25187.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2012-10-28</div><div class="info-item-2">wordcount代码</div></div><div class="info-2"><div class="info-item-1">概述参考http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html &nbsp; package org.apache.hadoop.examples; import java.io.IOException; import java.util.StringTokenizer; import org.apache.hadoop.conf.Configuration; import org.apache.hadoop.fs.Path; import org.apache.hadoop.io.IntWritable; import org.apache.hadoop.io.Text; import org.apache.hadoop.mapreduce.Job; import org.apache.hadoop.mapreduce.Mapper; import org.apache.hadoop.mapreduce.Reducer; import org.apache.hadoop.mapreduce.lib.inpu...</div></div></div></a><a class="pagination-related" href="/posts/48312/" title="数据分析的利器-clickhouse介绍"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/48312.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2018-11-14</div><div class="info-item-2">数据分析的利器-clickhouse介绍</div></div><div class="info-2"><div class="info-item-1">Clickhouse是Yandex开源的一个用于实时数据分析的数据库，一开始就用在yandex内部的多个数据分析业务上。要介绍clickhouse，还是需要先介绍一下yandex。Clickhouse为什么会出现，其实和yandex的业务关系非常大。Yandex是俄罗斯最大的搜索引擎，会有很多数据分析的业务，其中数据量最大的业务，就是Yandex.Metrica，这是一个和百度统计类似的网站数据分析服务，数据量也仅次于google analysis。自从Clickhouse开源后，在国内外的很多公司的线上业务都已经开始使用。 因此，写这篇clickhouse教程，对clickhouse做一个基础的介绍。   概述Clickhouse是极其适合OLAP（联机分析处理）问题的一个数据库。这类问题有如下一些特点：  请求以读为主，数据添加、更新一般以批量的形式进行； 表可以很宽，但是实际查询时只会用到有限的几列； 列值较小，一般是数字或者短字符串; 查询结果集的大小显著小于源数据； 事务处理需求较弱  根据clickhouse提供的性能测试结果，clickhouse的性能要大大领先于所...</div></div></div></a><a class="pagination-related" href="/posts/35575/" title="hadoop基本的学习资料"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/hadoop.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2012-10-28</div><div class="info-item-2">hadoop基本的学习资料</div></div><div class="info-2"><div class="info-item-1"> ⚠️ 这是一篇 2012 年的学习笔记。Hadoop 生态在过去十几年发生了巨大变化，下面的链接已非常陈旧。我保留了原始内容作为历史记录，并补充了 2026 年的学习建议。    为什么 2026 年还要了解 Hadoop？可能你会问：现在都用 Spark、Flink、数据湖了，为什么还要学 Hadoop？ 答案很简单：HDFS 和 YARN 仍然是大数据基础设施的底座。Spark 默认跑在 YARN 上，Hive 的表数据存在 HDFS 里，甚至很多云原生数据平台底层还是 HDFS 兼容存储。理解 Hadoop 的核心设计（分布式文件系统、计算资源调度、数据本地性），能帮你更好地理解上层框架的设计决策。 2026 年推荐的学习路径入门：理解核心概念 HDFS：分布式文件系统的基本原理——NameNode/DataNode 架构、数据块（block）、副本机制、机架感知 MapReduce：了解 map-shuffle-reduce 的计算模型，理解为什么它适合批处理但不适合迭代计算 YARN：资源管理和调度框架，理解 ApplicationMaster 和 Cont...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/18804/">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/18804/">Obsidian 适合程序员做知识管理吗？</a></li><li><a href="https://lichuanyang.top/posts/18804/">LLM Wiki 需要 GPU 吗？</a></li><li><a href="https://lichuanyang.top/posts/18804/">llm-wiki 和传统 Wiki 有什么区别？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/2345/">剧变中的2021-一个中年工程师的年终总结</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/2345/">中年工程师的出路在哪？</a></li><li><a href="https://lichuanyang.top/posts/2345/">技术人如何应对行业变化？</a></li><li><a href="https://lichuanyang.top/posts/2345/">大公司还是小公司更适合资深工程师？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/3513/">读书笔记 稻盛和夫《干法》-思考应该怎样去工作</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/3513/">程序员需要读《干法》这种书吗？</a></li><li><a href="https://lichuanyang.top/posts/3513/">工作是为了什么？</a></li><li><a href="https://lichuanyang.top/posts/3513/">如何喜欢上自己不喜欢的工作？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/34931/">户口?大厂?高薪?生活?聊聊应届程序员的职业选择</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/34931/">一线城市户口还值不值得争取？2021 年的户口价值发生了什么变化？</a></li><li><a href="https://lichuanyang.top/posts/34931/">大厂还是小厂？应届生第一份工作选什么最重要？</a></li><li><a href="https://lichuanyang.top/posts/34931/">想鱼与熊掌兼得（高薪 + 不加班 + 氛围好）可能吗？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/18804/">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><ol class="relatedHowto-steps"><li>安装Obsidian：下载Obsidian客户端，创建Vault知识库</li><li>配置LLM Wiki：编写AGENTS.md，定义摄入、审计等wiki维护规则，让AI自动组织知识</li><li>接入微信读书：调用微信读书Agent API，同步书籍划线和笔记到Obsidian</li><li>导入知乎：使用Playwright自动化脚本抓取知乎回答和文章</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/39648/">Vercel封禁163邮箱后，我是怎么恢复博客的</a><ol class="relatedHowto-steps"><li>发现问题</li><li>排查原因</li><li>迁移邮箱验证</li><li>重新部署</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/20763/">iterm2配置ssh书签, 实现记住密码和自动登录</a><ol class="relatedHowto-steps"><li>生成SSH密钥</li><li>配置iTerm2 Profile</li><li>添加书签</li><li>验证自动登录</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#LDA%EF%BC%88Latent-Dirichlet-Allocation%EF%BC%89%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">LDA（Latent Dirichlet Allocation）学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.1.</span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LDA%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text">LDA整体流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%8E%E6%A0%B7%E8%AE%A1%E7%AE%97p-w-t-%E5%92%8Cp-t-d"><span class="toc-number">1.3.</span> <span class="toc-text">怎样计算p(w|t)和p(t|d)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.4.</span> <span class="toc-text">参考资料</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%901%E3%80%91Introduction-to-Latent-Dirichlet-Allocation%EF%BC%9A%E5%9B%BD%E5%A4%96%E5%8D%9A%E5%AE%A2%EF%BC%8C%E5%BE%88%E4%B8%8D%E9%94%99%E7%9A%84%E5%85%A5%E9%97%A8%E6%96%87%E7%AB%A0"><span class="toc-number">2.</span> <span class="toc-text">【1】Introduction to Latent Dirichlet Allocation：国外博客，很不错的入门文章</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

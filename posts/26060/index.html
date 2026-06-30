@@ -1,0 +1,328 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>教你薅token：构建agent无关的AI工作流 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="我折腾了一阵子AI Agent，发现它本质上就是把文档和prompt拼来拼去。与其花钱订阅，不如自己维护好项目文档，然后哪里免费token用哪里。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="教你薅token：构建agent无关的AI工作流">
+<meta property="og:url" content="https://lichuanyang.top/posts/26060/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="我折腾了一阵子AI Agent，发现它本质上就是把文档和prompt拼来拼去。与其花钱订阅，不如自己维护好项目文档，然后哪里免费token用哪里。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/ai-agent-workflow.jpg">
+<meta property="article:published_time" content="2026-06-03T14:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:21:42.170Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="AI Agent">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="prompt">
+<meta property="article:tag" content="工作流">
+<meta property="article:tag" content="效率工具">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/ai-agent-workflow.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "教你薅token：构建agent无关的AI工作流",
+  "url": "https://lichuanyang.top/posts/26060/",
+  "image": "https://lichuanyang.top/img/ai-agent-workflow.jpg",
+  "abstract": "AI工作流的核心是把知识和工具封装成可复用的skill，而非每次手写prompt",
+  "datePublished": "2026-06-03T14:00:00.000Z",
+  "dateModified": "2026-06-27T03:21:42.170Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/26060/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '教你薅token：构建agent无关的AI工作流',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Agent 和 Skill 是什么关系？","acceptedAnswer":{"@type":"Answer","text":"Agent 是”干活的人”，Skill 是”教它怎么干活的说明书”。Agent 的底层模型提供了通用推理能力，但它不知道你的项目结构、编码规范、API 设计约束——这些知识需要通过 Skill（结构化指令文档）告诉它。两者的关系可以这样理解：Agent &#x3D; 通用推理引擎 + 按需加载 Skill。把 Skill 维护好，换不同的 Agent 平台也能保持一致的输出质量。 Q: Token 优化最有效的方法是什么？不是换更便宜的模型，而是写好文档。一份完备的 AGENTS.md 或 SKILL.md，能让 Agent 精准定位到需要读取的文件，避免每次做任务都全量扫描项目。相比之下，在不完备的文档上折腾模型选择或 prompt 精简，省下的 token 远远小于文档带来的提升。先花时间把文档写清楚，再去薅免费 token，这是效益最高的路径。 Q: 文档维护和 Agent 订阅哪个更值？文档维护更值。Agent 订阅每月花几十上百美元，本质上是为平台帮你”找文件、拼 prompt”的便利性付费。但如果你的项目文档已经足够完备——技术栈、目录结构、设计决策、编码规范都写清楚了——"}},{"@type":"Question","name":"Token 优化最有效的方法是什么？","acceptedAnswer":{"@type":"Answer","text":"不是换更便宜的模型，而是写好文档。一份完备的 AGENTS.md 或 SKILL.md，能让 Agent 精准定位到需要读取的文件，避免每次做任务都全量扫描项目。相比之下，在不完备的文档上折腾模型选择或 prompt 精简，省下的 token 远远小于文档带来的提升。先花时间把文档写清楚，再去薅免费 token，这是效益最高的路径。 Q: 文档维护和 Agent 订阅哪个更值？文档维护更值。Agent 订阅每月花几十上百美元，本质上是为平台帮你”找文件、拼 prompt”的便利性付费。但如果你的项目文档已经足够完备——技术栈、目录结构、设计决策、编码规范都写清楚了——那么换个免费 Agent 效果几乎没差。文档是你自己的资产，可以跨平台复用；Agent 订阅是消耗品，换了平台就得重新来。 Q: 免费模型真的够用吗？对绝大多数日常任务够用。作者的经验是 DeepSeek Flash 级别的免费模型就能处理大部分代码修改、文档生成、知识整理等任务。遇到确实搞不动的复杂场景，可以临时切到有免费试用额度的平台（如 Trae、Codex 试用套装）。真正的瓶颈通常不是模型能力，而是你给它的上下文"}},{"@type":"Question","name":"文档维护和 Agent 订阅哪个更值？","acceptedAnswer":{"@type":"Answer","text":"文档维护更值。Agent 订阅每月花几十上百美元，本质上是为平台帮你”找文件、拼 prompt”的便利性付费。但如果你的项目文档已经足够完备——技术栈、目录结构、设计决策、编码规范都写清楚了——那么换个免费 Agent 效果几乎没差。文档是你自己的资产，可以跨平台复用；Agent 订阅是消耗品，换了平台就得重新来。 Q: 免费模型真的够用吗？对绝大多数日常任务够用。作者的经验是 DeepSeek Flash 级别的免费模型就能处理大部分代码修改、文档生成、知识整理等任务。遇到确实搞不动的复杂场景，可以临时切到有免费试用额度的平台（如 Trae、Codex 试用套装）。真正的瓶颈通常不是模型能力，而是你给它的上下文（文档）够不够好。 快速上手步骤 理解 Agent 与 Skill 的关系：Agent 是执行引擎（负责调模型、读文件、改代码），Skill 是结构化指令文档（告诉 Agent 你的项目结构、编码规范、操作流程）。文档质量直接决定 Agent 的输出质量，好的文档可以让不同 Agent 平台的产出高度一致。 编写项目文档：在项目根目录创建 AGENTS.md，至少包含：项目概述"}},{"@type":"Question","name":"免费模型真的够用吗？","acceptedAnswer":{"@type":"Answer","text":"对绝大多数日常任务够用。作者的经验是 DeepSeek Flash 级别的免费模型就能处理大部分代码修改、文档生成、知识整理等任务。遇到确实搞不动的复杂场景，可以临时切到有免费试用额度的平台（如 Trae、Codex 试用套装）。真正的瓶颈通常不是模型能力，而是你给它的上下文（文档）够不够好。 快速上手步骤 理解 Agent 与 Skill 的关系：Agent 是执行引擎（负责调模型、读文件、改代码），Skill 是结构化指令文档（告诉 Agent 你的项目结构、编码规范、操作流程）。文档质量直接决定 Agent 的输出质量，好的文档可以让不同 Agent 平台的产出高度一致。 编写项目文档：在项目根目录创建 AGENTS.md，至少包含：项目概述（技术栈、目录结构、关键模块）、工作流说明（新增功能怎么做、修 bug 步骤、发布流程）、规则文档（命名规范、注释要求、踩坑记录）。 让 AI 辅助写文档：将 karpathy 的 llm-wiki gist 或已有的项目规范喂给 AI，让它自动生成 AGENTS.md 和各模块的 SKILL 文档，人工审核后放入项目目录。 切换平台验证：用"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"教你薅token：构建agent无关的AI工作流","step":[{"@type":"HowToStep","position":1,"name":"","text":""},{"@type":"HowToStep","position":2,"name":"","text":""},{"@type":"HowToStep","position":3,"name":"","text":""},{"@type":"HowToStep","position":4,"name":"","text":""}]}</script>
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/26060/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/26060/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/26060/">
+<meta name="keywords" content="效率工具, AI Agent, LLM, prompt, 工作流">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"AI实践","item":"https://lichuanyang.top/categories/AI实践/"},{"@type":"ListItem","position":3,"name":"教你薅token：构建agent无关的AI工作流","item":"https://lichuanyang.top/posts/26060/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/ai-agent-workflow.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">教你薅token：构建agent无关的AI工作流</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">教你薅token：构建agent无关的AI工作流</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T03:21:42.170Z" title="更新于 2026-06-27 11:21:42">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI%E5%AE%9E%E8%B7%B5/">AI实践</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> AI工作流的核心是把知识和工具封装成可复用的skill，而非每次手写prompt</blockquote><p>目前大家使用AI的最大或者唯一痛点，是什么？可能就是账单了。</p>
+<p>无论是Claude、CodeX、Cursor，还是qoder或是mimo、minimax，基础套餐基本都要奔着20刀以上去，这还得省着用，很多时候用以来会很不爽。要想量大管饱，那就会更贵。</p>
+<p>而同时，很多平台会有试用装，或是常规的免费模型。比如OpenCode里的deepseek flash长期免费。</p>
+<p>我们怎么才能好好的薅一下这些免费模型呢？</p>
+<p>我长期在各种不同的项目用Agent，有代码，有个人博客，有笔记知识库，有小说，还有我和AI完的小游戏。用着用着发现一个事：<strong>Agent的所有操作，本质上是：读你文档 → 拼prompt → 发给模型 → 按结果改文件。</strong></p>
+<p>文档在哪里，智能就在哪里。你自己拼prompt，跟平台帮你拼，其实没差那么多。</p>
+<p>所以我后来干脆不再纠结用哪个Agent平台了。文档维护好，哪里有免费token就去哪薅。</p>
+<span id="more"></span>
+
+<h2 id="Agent到底干了什么"><a href="#Agent到底干了什么" class="headerlink" title="Agent到底干了什么"></a>Agent到底干了什么</h2><p>不管哪家Agent，流程都差不多：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用户说需求 → Agent看项目文档 → 读相关文件 → 拼prompt → 问模型 → 处理返回 → 改文件 → 循环上述流程</span><br></pre></td></tr></tbody></table></figure>
+
+<p>比如让它帮你修个bug，它：</p>
+<ol>
+<li>先读你项目里的 <code>AGENTS.md</code>、<code>README.md</code>，知道这项目是啥、目录在哪</li>
+<li>再找到bug涉及的几个文件，读源码</li>
+<li>把”项目上下文 + 相关代码 + bug描述 + 修改要求”拼成一个prompt</li>
+<li>发给大模型</li>
+<li>把返回的结果写成代码修改</li>
+</ol>
+<p>这些步骤，agent硬有差别，能有多大差别？</p>
+<p>别误会，这里不是要全盘否定一些公认的好Agent。好的Agent在上下文管理、流程控制、工具集成上确实做得顺手，不然也不会流行。但，“人的智能”，完全可以补上这些差距。</p>
+<p>比如上下文管理，Agent能定位到”这个bug涉及用户认证模块，需要读这三个文件”——可前提是它已经看过了你的AGENTS.md。那些文件路径、模块职责、约定俗成的写法，本来就是你自己写进去的。</p>
+<p>文档不好的时候，好的agent能有效率更高的方式找到需要的信息。但在文档完备的情况下，agent的差距就微乎其微了。</p>
+<p>总之，好的Agent在某些场景下，确实是方便，但是，不值这个价格。省下的那点维护文档、切窗口的时间，换每个月几十上百刀订阅费，性价比太低了。</p>
+<p>对我个人来说，维护一份完备的agent指南，性价比高多了。何况，这些指南文档，也完全可以让AI自己写。</p>
+<h2 id="文档才是关键"><a href="#文档才是关键" class="headerlink" title="文档才是关键"></a>文档才是关键</h2><p>想明白上面那段之后，你还得接受一个反直觉的事实：<strong>真正值钱的，不是Agent平台，甚至不是模型，而是你自己的工作流。</strong></p>
+<p>大模型谁都能调，Agent平台也大多只是编排层，功能都差不多。但你的项目文档和你对项目流程的管理，是唯一的，里面记着项目结构、设计决策、踩过的坑、你偏好的写法。</p>
+<p>同样的文档换个Agent平台，效果基本没差；可文档写得垃圾的话，放哪个平台都救不回来。</p>
+<p>我在代码项目里是这么维护的：</p>
+<ul>
+<li>项目概述文档：技术栈、目录结构、关键模块说明</li>
+<li>工作流文档：”新增功能怎么走”、”修bug步骤”、”发布流程”</li>
+<li>规则文档：命名规范、注释要求、踩坑记录</li>
+</ul>
+<p>同一个项目目录，用不同的agent打开，效果几乎没区别。</p>
+<p>小说创作项目同理。世界观、角色档案、章节大纲、写作规范，这些文档不变，换不同模型产出的风格都能保持一致。<strong>文档的样子定了，内容质量就定了。</strong></p>
+<p>包括模型这一层，差别也没那么大。deepseek-v4-flash, 足够处理绝大多数问题。</p>
+<p>就算你真的要花钱买时间，该投资的也是文档本身，不是挑平台。</p>
+<h2 id="薅token实战"><a href="#薅token实战" class="headerlink" title="薅token实战"></a>薅token实战</h2><p>工作流搬到文档之后，最大的好处就是：平台随便切。</p>
+<p>哪家有免费token用哪家，用完换下一家。</p>
+<p>比如这些：</p>
+<ul>
+<li>OpenCode：每天有免费DeepSeek Flash</li>
+<li>Qoder：新用户送一些试用credits，还有免费模型额度</li>
+<li>Codex：试用套装，我其实到现在都还没轮到去薅他，总想着遇到一些复杂场景再去用它的免费额度，免得浪费了。但实际上根本遇不到这种场景。</li>
+<li>Hermes：不定期放出免费模型，有时候能意外捡到好模型，比如前阵子有免费的deepseek flash</li>
+<li>trae: 完全免费，只是要排队，有时候真有些任务觉得免费模型搞不动了，临时去trae跑一下，也完全没问题</li>
+</ul>
+<p>除此之外还有不少路子：</p>
+<ul>
+<li>大模型API的新用户赠金：OpenAI、Anthropic、DeepSeek等，新号通常送几美元。直接调API比走Agent平台更便宜</li>
+<li>开源模型的免费托管：HuggingFace、Together AI有免费推理额度，小任务完全够用</li>
+<li>学生优惠：GitHub Student Pack之类的，送一堆平台credits</li>
+<li>一些社区活动：经常有AI平台送额度</li>
+</ul>
+<p>所以这篇要说的结论其实挺简单：<strong>Agent只是工具，文档才是核心。</strong> 把文档维护好，平台随便换，哪里免费去哪薅。一个月省几十刀，换一顿火锅，不香吗？ </p>
+<p>至于那些每个月烧几百刀token的重度用户——我只能说，你们的钱花得值，但我的token没花钱，效果也差不多。</p>
+<p>原文地址：<a href="https://lichuanyang.top/posts/26060/">https://lichuanyang.top/posts/26060/</a></p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="Q-Agent-和-Skill-是什么关系？"><a href="#Q-Agent-和-Skill-是什么关系？" class="headerlink" title="Q: Agent 和 Skill 是什么关系？"></a>Q: Agent 和 Skill 是什么关系？</h3><p>Agent 是”干活的人”，Skill 是”教它怎么干活的说明书”。Agent 的底层模型提供了通用推理能力，但它不知道你的项目结构、编码规范、API 设计约束——这些知识需要通过 Skill（结构化指令文档）告诉它。两者的关系可以这样理解：Agent = 通用推理引擎 + 按需加载 Skill。把 Skill 维护好，换不同的 Agent 平台也能保持一致的输出质量。</p>
+<h3 id="Q-Token-优化最有效的方法是什么？"><a href="#Q-Token-优化最有效的方法是什么？" class="headerlink" title="Q: Token 优化最有效的方法是什么？"></a>Q: Token 优化最有效的方法是什么？</h3><p>不是换更便宜的模型，而是<strong>写好文档</strong>。一份完备的 AGENTS.md 或 SKILL.md，能让 Agent 精准定位到需要读取的文件，避免每次做任务都全量扫描项目。相比之下，在不完备的文档上折腾模型选择或 prompt 精简，省下的 token 远远小于文档带来的提升。先花时间把文档写清楚，再去薅免费 token，这是效益最高的路径。</p>
+<h3 id="Q-文档维护和-Agent-订阅哪个更值？"><a href="#Q-文档维护和-Agent-订阅哪个更值？" class="headerlink" title="Q: 文档维护和 Agent 订阅哪个更值？"></a>Q: 文档维护和 Agent 订阅哪个更值？</h3><p>文档维护更值。Agent 订阅每月花几十上百美元，本质上是为平台帮你”找文件、拼 prompt”的便利性付费。但如果你的项目文档已经足够完备——技术栈、目录结构、设计决策、编码规范都写清楚了——那么换个免费 Agent 效果几乎没差。文档是你自己的资产，可以跨平台复用；Agent 订阅是消耗品，换了平台就得重新来。</p>
+<h3 id="Q-免费模型真的够用吗？"><a href="#Q-免费模型真的够用吗？" class="headerlink" title="Q: 免费模型真的够用吗？"></a>Q: 免费模型真的够用吗？</h3><p>对绝大多数日常任务够用。作者的经验是 DeepSeek Flash 级别的免费模型就能处理大部分代码修改、文档生成、知识整理等任务。遇到确实搞不动的复杂场景，可以临时切到有免费试用额度的平台（如 Trae、Codex 试用套装）。真正的瓶颈通常不是模型能力，而是你给它的上下文（文档）够不够好。</p>
+<h2 id="快速上手步骤"><a href="#快速上手步骤" class="headerlink" title="快速上手步骤"></a>快速上手步骤</h2><ol>
+<li><strong>理解 Agent 与 Skill 的关系</strong>：Agent 是执行引擎（负责调模型、读文件、改代码），Skill 是结构化指令文档（告诉 Agent 你的项目结构、编码规范、操作流程）。文档质量直接决定 Agent 的输出质量，好的文档可以让不同 Agent 平台的产出高度一致。</li>
+<li><strong>编写项目文档</strong>：在项目根目录创建 <code>AGENTS.md</code>，至少包含：项目概述（技术栈、目录结构、关键模块）、工作流说明（新增功能怎么做、修 bug 步骤、发布流程）、规则文档（命名规范、注释要求、踩坑记录）。</li>
+<li><strong>让 AI 辅助写文档</strong>：将 karpathy 的 llm-wiki gist 或已有的项目规范喂给 AI，让它自动生成 AGENTS.md 和各模块的 SKILL 文档，人工审核后放入项目目录。</li>
+<li><strong>切换平台验证</strong>：用不同的免费 Agent 平台（OpenCode、Qoder、Hermes 等）打开同一个项目，执行相同任务（如修 bug、加功能），对比输出质量。如果文档完备，差异应该很小。</li>
+</ol>
+<p>原文地址：<a href="https://lichuanyang.top/posts/26060/">https://lichuanyang.top/posts/26060/</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/26060/">https://lichuanyang.top/posts/26060/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/ai-agent-workflow.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">教你薅token（二）：构建agent无关的skills管理工作流</div></div><div class="info-2"><div class="info-item-1">上篇文章最后说了句：Agent只是工具，文档才是核心。 这话说了之后，有人问我：道理都懂，但文档具体怎么管？总不能每个项目都复制粘贴一遍吧？ 确实不能。 我后来写了个工具来解决这事——pks（Personal Skills Manager），408行纯bash，零依赖。它干的事很简单：把你的AI工作流文档打包成skill，按需装到项目里，不绑定任何Agent平台。   什么是skill如果你用过OpenCode、Cursor或者其他Agent平台，大概率见过”skill”这个概念。不同平台叫法不一样——有的叫skill，有的叫rules，有的叫custom instructions——但说的都是同一件事：你给Agent的结构化指令，告诉它怎么处理特定类型的任务。 比如”调用我们的API网关时，参数必须平铺在body顶层，不要嵌套在params里”，这是一条skill。”commit消息必须用中文，格式是type(scope):描述”，这也是。”数据库表名用snake_case，字段必须有注释”，还是。 Agent的底层模型提供了通用推理能力——它知道怎么写代码、怎么调API。但你...</div></div></div></a><a class="pagination-related" href="/posts/48979/" title="用 AI Agent 完成 Hexo 主题迁移：从 Next 到 Butterfly 的全自动化实践"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/48979.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">用 AI Agent 完成 Hexo 主题迁移：从 Next 到 Butterfly 的全自动化实践</div></div><div class="info-2"><div class="info-item-1">背景：一个繁琐到让人崩溃的任务最近想给自己的 Hexo 博客换个主题。用了好几年的 Next 主题，虽然经典，但想换个更现代的风格。 看起来很简单对吧？但实际操作过的朋友都知道，Hexo 主题迁移是一个极其繁琐的过程：  配置文件长达 1000+ 行，需要逐项对比新旧主题的配置格式 功能映射复杂：Next 的 leancloud_visitors 对应 Butterfly 的 busuanzi，Next 的 reading_progress 对应 Butterfly 的 preloader 两个站点要同步：中英文站都要改，而且配置略有不同 Font Awesome 版本兼容：Butterfly 默认配的 FA 7.1.0 根本不存在于 cdnjs YAML 格式敏感：缩进、换行符都可能导致配置失效  如果手动操作，估计要花一整天，而且很容易出错。 解决方案：让 AI Agent 来干这次我尝试了一个不同的方式：让 AI Agent（Hermes）全程接管这个任务。 AI Agent 的工作流程整个过程，AI Agent 自主完成了以下工作：  环境分析：检查当前 Hexo 版本（...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-04</div><div class="info-item-2">教你薅token（二）：构建agent无关的skills管理工作流</div></div><div class="info-2"><div class="info-item-1">上篇文章最后说了句：Agent只是工具，文档才是核心。 这话说了之后，有人问我：道理都懂，但文档具体怎么管？总不能每个项目都复制粘贴一遍吧？ 确实不能。 我后来写了个工具来解决这事——pks（Personal Skills Manager），408行纯bash，零依赖。它干的事很简单：把你的AI工作流文档打包成skill，按需装到项目里，不绑定任何Agent平台。   什么是skill如果你用过OpenCode、Cursor或者其他Agent平台，大概率见过”skill”这个概念。不同平台叫法不一样——有的叫skill，有的叫rules，有的叫custom instructions——但说的都是同一件事：你给Agent的结构化指令，告诉它怎么处理特定类型的任务。 比如”调用我们的API网关时，参数必须平铺在body顶层，不要嵌套在params里”，这是一条skill。”commit消息必须用中文，格式是type(scope):描述”，这也是。”数据库表名用snake_case，字段必须有注释”，还是。 Agent的底层模型提供了通用推理能力——它知道怎么写代码、怎么调API。但你...</div></div></div></a><a class="pagination-related" href="/posts/48979/" title="用 AI Agent 完成 Hexo 主题迁移：从 Next 到 Butterfly 的全自动化实践"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/48979.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-28</div><div class="info-item-2">用 AI Agent 完成 Hexo 主题迁移：从 Next 到 Butterfly 的全自动化实践</div></div><div class="info-2"><div class="info-item-1">背景：一个繁琐到让人崩溃的任务最近想给自己的 Hexo 博客换个主题。用了好几年的 Next 主题，虽然经典，但想换个更现代的风格。 看起来很简单对吧？但实际操作过的朋友都知道，Hexo 主题迁移是一个极其繁琐的过程：  配置文件长达 1000+ 行，需要逐项对比新旧主题的配置格式 功能映射复杂：Next 的 leancloud_visitors 对应 Butterfly 的 busuanzi，Next 的 reading_progress 对应 Butterfly 的 preloader 两个站点要同步：中英文站都要改，而且配置略有不同 Font Awesome 版本兼容：Butterfly 默认配的 FA 7.1.0 根本不存在于 cdnjs YAML 格式敏感：缩进、换行符都可能导致配置失效  如果手动操作，估计要花一整天，而且很容易出错。 解决方案：让 AI Agent 来干这次我尝试了一个不同的方式：让 AI Agent（Hermes）全程接管这个任务。 AI Agent 的工作流程整个过程，AI Agent 自主完成了以下工作：  环境分析：检查当前 Hexo 版本（...</div></div></div></a><a class="pagination-related" href="/posts/64/" title="用LLM管理安全开发规范：一次llm-wiki实践"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/64.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-11</div><div class="info-item-2">用LLM管理安全开发规范：一次llm-wiki实践</div></div><div class="info-2"><div class="info-item-1">最近在整理团队的安全开发规范时，遇到了一个老问题：安全规范文档越积越多，但真正用的时候却找不到。每次新人入职，都要翻遍各种文档才能拼凑出完整的安全规范；每次出安全故障，事后总结的经验也散落在各处，下次遇到类似问题还得重新排查。 我试过用Confluence、Notion、甚至Git仓库的README来管理，但效果都不理想。直到看到了Karpathy提的llm-wiki思路，才觉得这可能是个突破口。   Karpathy的llm-wiki是什么？Karpathy在Gist里提了个想法：让LLM维护一个Wiki中间层。原话是”the wiki is a persistent, compounding artifact”——这个Wiki层就像个编译器，把原始文档编译成结构化数据，这样LLM每次回答问题时就不用从头在原始文档里”找”信息，直接查Wiki就行。 我觉得这个思路特别妙。传统文档管理是”存”和”找”，而llm-wiki是”编译”和”查询”。原始文档可能很乱、有重复、甚至有矛盾，但Wiki层是干净、结构化、有交叉引用的。 举个例子：我们团队有十几份安全开发规范文档，从输入验证到渗...</div></div></div></a><a class="pagination-related" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-11</div><div class="info-item-2">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</div></div><div class="info-2"><div class="info-item-1">前阵子我在薅各种免费AI token，写了一篇关于”哪里免费去哪里薅”的文章。当时提到过，各家平台会不定期放出免费模型。结果没等多久，Agnes AI 就给了我一个惊喜：视频模型也免费了。 不是文字，不是图片，是视频。agnes-video-v2.0、agnes-image-2.1-flash、agnes-2.0-flash，三个模型全免费，注册就送API Key，不要信用卡，不要GPU。其中 Agnes-Video-V2.0 是目前免费 agnes video 生成方案里能力最强的一个，支持多种生成模式，质量相当能打。 这谁忍得住？我直接把开源框架 ViMax 改造成了 Agnes 全家桶方案，顺便把原来一些反人类的用法都优化了一遍。   Agnes免费模型：到底给了什么先说 Agnes 这波免费到底给了啥。在 Agnes AI 平台 注册之后，拿到一个 API Key，就能用三个模型：  agnes-2.0-flash（对话模型）：写故事、编剧本、生成prompt，标准的chat接口 agnes-image-2.1-flash（图片模型）：text-to-image，生成角色...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/26061/">教你薅token（二）：构建agent无关的skills管理工作流</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/26061/">Skills 管理和 Agent 管理有什么区别？</a></li><li><a href="https://lichuanyang.top/posts/26061/">跨平台兼容性怎么保证？</a></li><li><a href="https://lichuanyang.top/posts/26061/">pks 和直接在 Agent 里配置 skill 有什么不同？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/64/">用LLM管理安全开发规范：一次llm-wiki实践</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/64/">LLM 生成的代码或规范文档安全吗？会不会引入新的安全风险？</a></li><li><a href="https://lichuanyang.top/posts/64/">用 LLM 管理规范后，如何审核和保证质量？</a></li><li><a href="https://lichuanyang.top/posts/64/">llm-wiki 方案和传统 lint 工具（SonarQube、ESLint 等）有何不同？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/65500/">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><ol class="relatedHowto-steps"><li>环境准备：注册Agnes AI账号，获取API Key</li><li>调用Agnes API：配置OpenAI兼容接口，base URL为https://apihub.agnes-ai.com/v1</li><li>改造ViMax配置：创建YAML创意文件，配置场景、风格和chaining_mode参数</li><li>生成视频：运行start.sh一键生成多场景视频</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent%E5%88%B0%E5%BA%95%E5%B9%B2%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">Agent到底干了什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E6%89%8D%E6%98%AF%E5%85%B3%E9%94%AE"><span class="toc-number">2.</span> <span class="toc-text">文档才是关键</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%96%85token%E5%AE%9E%E6%88%98"><span class="toc-number">3.</span> <span class="toc-text">薅token实战</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-Agent-%E5%92%8C-Skill-%E6%98%AF%E4%BB%80%E4%B9%88%E5%85%B3%E7%B3%BB%EF%BC%9F"><span class="toc-number">4.1.</span> <span class="toc-text">Q: Agent 和 Skill 是什么关系？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-Token-%E4%BC%98%E5%8C%96%E6%9C%80%E6%9C%89%E6%95%88%E7%9A%84%E6%96%B9%E6%B3%95%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">4.2.</span> <span class="toc-text">Q: Token 优化最有效的方法是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-%E6%96%87%E6%A1%A3%E7%BB%B4%E6%8A%A4%E5%92%8C-Agent-%E8%AE%A2%E9%98%85%E5%93%AA%E4%B8%AA%E6%9B%B4%E5%80%BC%EF%BC%9F"><span class="toc-number">4.3.</span> <span class="toc-text">Q: 文档维护和 Agent 订阅哪个更值？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-%E5%85%8D%E8%B4%B9%E6%A8%A1%E5%9E%8B%E7%9C%9F%E7%9A%84%E5%A4%9F%E7%94%A8%E5%90%97%EF%BC%9F"><span class="toc-number">4.4.</span> <span class="toc-text">Q: 免费模型真的够用吗？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B%E6%AD%A5%E9%AA%A4"><span class="toc-number">5.</span> <span class="toc-text">快速上手步骤</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

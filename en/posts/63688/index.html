@@ -1,0 +1,274 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Troubleshooting MySQL Batch Operations in Java: Why Batches Sometimes Don't Work | Mobility</title><meta name="author" content="SandGrid"><meta name="copyright" content="SandGrid"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Analysis of common reasons why MySQL batch operations fail in Java, along with a complete debugging approach for batch performance issues.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Troubleshooting MySQL Batch Operations in Java: Why Batches Sometimes Don&#39;t Work">
+<meta property="og:url" content="https://lichuanyang.top/en/posts/63688/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="Analysis of common reasons why MySQL batch operations fail in Java, along with a complete debugging approach for batch performance issues.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://lichuanyang.top/en/img/63688.jpg">
+<meta property="article:published_time" content="2020-03-13T09:54:38.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:53:05.204Z">
+<meta property="article:author" content="SandGrid">
+<meta property="article:tag" content="batch-not-working">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/en/img/63688.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Troubleshooting MySQL Batch Operations in Java: Why Batches Sometimes Don't Work",
+  "url": "https://lichuanyang.top/en/posts/63688/",
+  "image": "https://lichuanyang.top/en/img/63688.jpg",
+  "abstract": "Investigating why MySQL batch operations in Java don't take effect, deeply analyzing the JDBC driver's rewriteBatchedStatements parameter, solving the common problem of batch performance degrading to row-by-row execution.",
+  "datePublished": "2020-03-13T09:54:38.000Z",
+  "dateModified": "2026-06-27T03:53:05.204Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "SandGrid",
+      "url": "https://lichuanyang.top/en/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/en/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/en/posts/63688/"><link rel="preconnect" href="//cdnjs.cloudflare.com"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"/><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"/><meta name="baidu-site-verification" content="code-T8LautTf5f"/><link rel="stylesheet" href="/en/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/en/',
+  algolia: undefined,
+  localSearch: {"path":"/en/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Troubleshooting MySQL Batch Operations in Java: Why Batches Sometimes Don\'t Work',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/en/atom.xml" title="Mobility" type="application/atom+xml">
+<meta name="keywords" content="java, mysql, batch-not-working">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/en/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://lichuanyang.top/en/categories/Database/"},{"@type":"ListItem","position":3,"name":"Troubleshooting MySQL Batch Operations in Java: Why Batches Sometimes Don't Work","item":"https://lichuanyang.top/en/posts/63688/"}]}</script>
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/63688/"/>
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/63688/"/>
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/63688/"/>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">85</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">128</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/en/img/63688.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/en/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/en/"><span class="site-name">Troubleshooting MySQL Batch Operations in Java: Why Batches Sometimes Don't Work</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Troubleshooting MySQL Batch Operations in Java: Why Batches Sometimes Don't Work</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-03-13T09:54:38.000Z" title="Created 2020-03-13 17:54:38">2020-03-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-06-27T03:53:05.204Z" title="Updated 2026-06-27 11:53:05">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/en/categories/database/">Database</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">417</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>2mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> Investigating why MySQL batch operations in Java don't take effect, deeply analyzing the JDBC driver's rewriteBatchedStatements parameter, solving the common problem of batch performance degrading to row-by-row execution.</blockquote><p>As is well known, using batch operations with MySQL can significantly improve performance when dealing with large datasets. However, when using MySQL in Java, certain details must be carefully handled; otherwise, batch operations may not actually take effect, and you won’t benefit from the performance gains of batching.</p>
+<span id="more"></span>
+
+<h2 id="The-Problem"><a href="#The-Problem" class="headerlink" title="The Problem"></a>The Problem</h2><p>Recently, I noticed that the performance profile of a particular SQL query was abnormally slow — inserting several thousand records in batch was taking on the order of seconds. After ruling out server performance and network issues, I suspected that the code was causing the batch operation to not actually be effective. It felt as though each record was being sent to the database individually.</p>
+<h2 id="How-MySQL-JDBC-Batch-Works"><a href="#How-MySQL-JDBC-Batch-Works" class="headerlink" title="How MySQL JDBC Batch Works"></a>How MySQL JDBC Batch Works</h2><p>After digging into the code, I traced the issue to the mysql-connector driver. The key code block looked like this:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="built_in">this</span>.batchHasPlainStatements &amp;&amp; <span class="built_in">this</span>.connection.getRewriteBatchedStatements()) &#123;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (canRewriteAsMultiValueInsertAtSqlLevel()) &#123;</span><br><span class="line">                        <span class="keyword">return</span> executeBatchedInserts(batchTimeout);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (<span class="built_in">this</span>.connection.versionMeetsMinimum(<span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>) &amp;&amp; !<span class="built_in">this</span>.batchHasPlainStatements &amp;&amp; <span class="built_in">this</span>.batchedArgs != <span class="literal">null</span></span><br><span class="line">                            &amp;&amp; <span class="built_in">this</span>.batchedArgs.size() &gt; <span class="number">3</span> <span class="comment">/* cost of option setting rt-wise */</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> executePreparedBatchAsMultiStatement(batchTimeout);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> executeBatchSerially(batchTimeout);</span><br></pre></td></tr></table></figure>
+
+<p>As you can see, there are two main branches: <code>executeBatchedInserts</code> and <code>executeBatchSerially</code>. If execution falls into <code>executeBatchSerially</code>, it’s essentially running a “fake” batch — in this method, each record interacts with MySQL individually.</p>
+<h2 id="Why-Batch-Didn’t-Work"><a href="#Why-Batch-Didn’t-Work" class="headerlink" title="Why Batch Didn’t Work"></a>Why Batch Didn’t Work</h2><p>To successfully enter <code>executeBatchedInserts</code>, several preconditions must be met: <code>batchHasPlainStatements</code>, <code>connection.getRewriteBatchedStatements()</code>, and <code>canRewriteAsMultiValueInsertAtSqlLevel</code>.</p>
+<p>In fact, to successfully execute batch SQL, the MySQL driver performs a “rewrite” on the SQL. What does this rewrite mean? It’s quite simple. Suppose you have a bunch of SQL statements:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert into</span> () <span class="keyword">values</span>()</span><br><span class="line"><span class="keyword">insert into</span> () <span class="keyword">values</span>()</span><br><span class="line">...</span><br><span class="line"><span class="keyword">insert into</span> () <span class="keyword">values</span>()</span><br></pre></td></tr></table></figure>
+
+<p>After rewriting, they become:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert into</span> () <span class="keyword">values</span> () () ()</span><br></pre></td></tr></table></figure>
+
+<p>This becomes a single SQL statement, which naturally means only one interaction with MySQL.</p>
+<p>Only after a successful rewrite can batch SQL execution proceed. The conditions listed above are essentially all about enabling SQL rewriting. The two key points here are: first, at the database connection level, you need to configure <code>rewriteBatchedStatements=true</code> to allow SQL rewriting; second, at the SQL level, the SQL must be rewriteable. We know that MySQL has this syntax:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert into</span> () <span class="keyword">set</span> x<span class="operator">=</span>x,y<span class="operator">=</span>y</span><br></pre></td></tr></table></figure>
+
+<p>This syntax is not part of the SQL standard — it’s a MySQL “dialect” and does not have a batch operation form. Therefore, if you write SQL in this form, you cannot perform true batch operations.</p>
+<p>Source: <a href="https://lichuanyang.top/en/posts/63688/">https://lichuanyang.top/en/posts/63688/</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en">SandGrid</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en/posts/63688/">https://lichuanyang.top/en/posts/63688/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener external nofollow noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/en/img/63688.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>Subscribe to WeChat</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/upload/qrcode.bmp" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/en/posts/27398/" title="Reflections on a Programmer's Career — My Understanding of the Programming Profession"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/27398.jpg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">Reflections on a Programmer's Career — My Understanding of the Programming Profession</div></div><div class="info-2"><div class="info-item-1">Over the years of working, I’ve been constantly thinking about what a programmer actually does. As I’ve gained more experience, my understanding has continuously evolved. Writing this article now serves two purposes: sharing my thoughts, and leaving a record to revisit in a couple of years to see how my understanding has further changed.   The Essence of Programming as a CareerI want to discuss this from two perspectives. First, from the work itself — in my view, a programmer’s work falls int...</div></div></div></a><a class="pagination-related" href="/en/posts/695/" title="Unit Testing Best Practices: Practical Experience and Guidelines"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/695.jpg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">Unit Testing Best Practices: Practical Experience and Guidelines</div></div><div class="info-2"><div class="info-item-1">A while ago, when I was trying to improve the unit tests for a project, I realized that I never had a particularly clear understanding of how to write unit tests. So I looked up some materials, and in the process discovered that everyone’s perspectives are quite different. Every article I read updated my own understanding. This article combines others’ viewpoints with my own practical experience to summarize what I currently believe to be correct. It probably won’t be the most definitive answ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/en/posts/57802/" title="Java Serialization Performance Comparison: kryo&#x2F;protobuf&#x2F;protostuff vs Json"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/57802.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-03-02</div><div class="info-item-2">Java Serialization Performance Comparison: kryo&#x2F;protobuf&#x2F;protostuff vs Json</div></div><div class="info-2"><div class="info-item-1">  Why Compare Serialization SolutionsFor serializing a Java object, I wanted to test the differences in time and space performance between using JSON and using general-purpose serialization tools. For JSON, I chose fastjson. For serialization tools, I used protostuff and kryo. Why not protobuf? Because for an existing Java class with hundreds of properties, creating a matching proto file feels somewhat inhumane. Protostuff is an improved version of protobuf — it can directly serialize a Java ...</div></div></div></a><a class="pagination-related" href="/en/posts/53072/" title="Java Details: Ternary Operator and Autoboxing"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/java-details-ternary.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2018-05-10</div><div class="info-item-2">Java Details: Ternary Operator and Autoboxing</div></div><div class="info-2"><div class="info-item-1">Problem IntroductionI encountered an interesting problem today while scanning code with FindBugs — it’s about the ternary operator. Let me record it here.   It’s about code like this: 12boolean b = true; Long a = b ? 0l : Long.valueOf(2);   FindBugs gave the warning: “Boxed value is unboxed and then immediately reboxed” — meaning a boxed object is unboxed and then immediately reboxed. This problem is actually quite common. I didn’t pay much attention to it at first, and just habitually change...</div></div></div></a><a class="pagination-related" href="/en/posts/48104/" title="Java Distributed Lock Practice for Beginners"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/java-distributed-lock.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-02-20</div><div class="info-item-2">Java Distributed Lock Practice for Beginners</div></div><div class="info-2"><div class="info-item-1">This article covers usage only, no theory. Simple and straightforward. A distributed lock is, as the name suggests, a lock for distributed systems, used in scenarios where multiple instances need coordination. For example, if a service is deployed on multiple machines and may operate on the same record in a database, a distributed lock becomes necessary. There are many ways to implement distributed locks. Generally, a lock requires an entity to represent it — when acquiring the lock, this ent...</div></div></div></a><a class="pagination-related" href="/en/posts/43947/" title="Vaadin Framework Tutorial: A Frontend Development Guide for Java Engineers"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/43947.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-06</div><div class="info-item-2">Vaadin Framework Tutorial: A Frontend Development Guide for Java Engineers</div></div><div class="info-2"><div class="info-item-1">The Frontend Dilemma for Backend EngineersThe pain point of backend engineers developing frontend code is usually that it’s too tedious — you often have to spend a long time looking things up for even the smallest task. Vaadin solves this pain point well by providing backend engineers with an easy-to-learn, convenient solution for writing frontend code. Today, let’s take a look.   What is VaadinHello everyone, today I’d like to introduce a tool that’s especially valuable for backend engineers...</div></div></div></a><a class="pagination-related" href="/en/posts/2478/" title="Fixing the SecurityException: Invalid Signature File Digest for Manifest Main Attributes in Fat Jars"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/2478.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-04-27</div><div class="info-item-2">Fixing the SecurityException: Invalid Signature File Digest for Manifest Main Attributes in Fat Jars</div></div><div class="info-2"><div class="info-item-1">The ProblemRecently I encountered an error when trying to run a fat jar: 1234567891011121314151617181920Exception in thread &quot;main&quot; java.lang.SecurityException: Invalid signature file digest for Manifest main attributes	at sun.security.util.SignatureFileVerifier.processImpl(SignatureFileVerifier.java:287)	at sun.security.util.SignatureFileVerifier.process(SignatureFileVerifier.java:240)	at java.util.jar.JarVerifier.processEntry(JarVerifier.java:317)	at java.util.jar.JarVerifier.updat...</div></div></div></a><a class="pagination-related" href="/en/posts/17762/" title="About Apache Camel&#39;s Message Forwarding Efficiency"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/17762.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2015-08-08</div><div class="info-item-2">About Apache Camel&#39;s Message Forwarding Efficiency</div></div><div class="info-2"><div class="info-item-1">Test ScenarioThe company uses ActiveMQ and Camel for message distribution. Previously, the data volume wasn’t very large, so we never really considered efficiency issues, and the research into Camel’s working principles wasn’t deep. However, recently, as the business volume increased, Camel’s efficiency has gradually become a bottleneck, so I got a general understanding of Camel’s working principles based on logs. Although Camel is embedded into ActiveMQ, during the working process, Camel and...</div></div></div></a></div></div><hr class="custom-hr"/><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/en/posts/48312/">A Powerful Tool for Data Analytics: Introduction to ClickHouse</a><ol class="relatedHowto-steps"><li>Install ClickHouse</li><li>Create table</li><li>Import data</li><li>Write queries</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/en/posts/43947/">Vaadin Framework Tutorial: A Frontend Development Guide for Java Engineers</a><ol class="relatedHowto-steps"><li>Environment Setup</li><li>Create First Vaadin Project</li><li>Write UI Components</li><li>Data Binding</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comments</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">SandGrid</div><div class="author-info-description">Mobility | Expanding life's choices</div><div class="site-data"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">85</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">128</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="Zhihu"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Backend Dev | Architecture | AI Practice<br>Expanding choices through code</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-Problem"><span class="toc-number">1.</span> <span class="toc-text">The Problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-MySQL-JDBC-Batch-Works"><span class="toc-number">2.</span> <span class="toc-text">How MySQL JDBC Batch Works</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-Batch-Didn%E2%80%99t-Work"><span class="toc-number">3.</span> <span class="toc-text">Why Batch Didn’t Work</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/en/posts/18804/" title="Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub">Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub</a><time datetime="2026-06-26T08:18:13.000Z" title="Created 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/22470/" title="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/22470.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos"/></a><div class="content"><a class="title" href="/en/posts/22470/" title="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos">Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos</a><time datetime="2026-06-16T05:21:16.000Z" title="Created 2026-06-16 13:21:16">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/65500/" title="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/65500.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0"/></a><div class="content"><a class="title" href="/en/posts/65500/" title="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0">Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0</a><time datetime="2026-06-11T14:00:00.000Z" title="Created 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/26061.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"/></a><div class="content"><a class="title" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow">How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow</a><time datetime="2026-06-04T14:00:00.000Z" title="Created 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="How to Farm Free Tokens: Building Agent-Independent AI Workflows"/></a><div class="content"><a class="title" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows">How to Farm Free Tokens: Building Agent-Independent AI Workflows</a><time datetime="2026-06-03T14:00:00.000Z" title="Created 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By SandGrid</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">Sub-sites: <a target="_blank" rel="noopener external nofollow noreferrer" href='https://video.lichuanyang.top/'>AI Video Generator</a> &middot; <a target="_blank" rel="noopener external nofollow noreferrer" href='https://math.lichuanyang.top/'>Math Practice</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll to Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/en/js/utils.js?v=5.5.4"></script><script src="/en/js/main.js?v=5.5.4"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script>if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://dummyjson.com/quotes/random").then(e=>e.json()).then(t=>{e.innerHTML="“"+t.quote+"” — "+t.author}).catch(()=>{})}</script><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/en/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

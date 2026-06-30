@@ -1,0 +1,312 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Storm/JStorm 编程快速入门，重点说明 topology 运行时与传统 Java 程序在初始化上的关键区别。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别">
+<meta property="og:url" content="https://lichuanyang.top/posts/27021/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="Storm/JStorm 编程快速入门，重点说明 topology 运行时与传统 Java 程序在初始化上的关键区别。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/27021.jpg">
+<meta property="article:published_time" content="2016-11-16T10:21:00.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:42:25.689Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="storm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/27021.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别",
+  "url": "https://lichuanyang.top/posts/27021/",
+  "image": "https://lichuanyang.top/img/27021.jpg",
+  "abstract": "Storm 与传统 Java 程序有三大关键区别：main 方法仅在提交节点运行、初始化须在生命周期方法中完成、数据传输必须可序列化。",
+  "datePublished": "2016-11-16T10:21:00.000Z",
+  "dateModified": "2026-06-27T03:42:25.689Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/27021/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/27021/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/27021/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/27021/">
+<meta name="keywords" content="storm">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"大数据","item":"https://lichuanyang.top/categories/大数据/"},{"@type":"ListItem","position":3,"name":"五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别","item":"https://lichuanyang.top/posts/27021/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/27021.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">五分钟学会写storm代码: jstorm/storm编码原理与普通java程序的区别</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2016-11-16T10:21:00.000Z" title="发表于 2016-11-16 18:21:00">2016-11-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T03:42:25.689Z" title="更新于 2026-06-27 11:42:25">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> Storm 与传统 Java 程序有三大关键区别：main 方法仅在提交节点运行、初始化须在生命周期方法中完成、数据传输必须可序列化。</blockquote><p>Storm（以及阿里巴巴开源的 JStorm）是一个分布式实时计算框架。它的编程模型跟传统 Java 程序有一些关键区别，如果不了解这些区别，很容易写出在本地跑得好好的、部署到集群就出各种诡异 bug 的代码。</p>
+<p>本文不深入 Storm 内核原理，而是聚焦开发者最需要知道的几个关键区别，帮你快速上手并避开常见坑。</p>
+<span id="more"></span>
+
+<h2 id="Storm-运行机制速览"><a href="#Storm-运行机制速览" class="headerlink" title="Storm 运行机制速览"></a>Storm 运行机制速览</h2><p>一个 Storm Topology 由若干 Spout（数据源）和 Bolt（处理逻辑）组成，它们分散运行在多个 Worker（进程）中。同一个 Worker 可能同时运行多个 Spout/Bolt 的多个线程。</p>
+<p>关键要理解的是：<strong>你的代码会被序列化后分发到各个 Worker 上执行，而不是在提交 Topology 的那台机器上运行。</strong></p>
+<h2 id="与传统-Java-程序的三大关键区别"><a href="#与传统-Java-程序的三大关键区别" class="headerlink" title="与传统 Java 程序的三大关键区别"></a>与传统 Java 程序的三大关键区别</h2><h3 id="1-main-方法只跑在-Nimbus-上"><a href="#1-main-方法只跑在-Nimbus-上" class="headerlink" title="1. main 方法只跑在 Nimbus 上"></a>1. main 方法只跑在 Nimbus 上</h3><p><code>main</code> 方法只在提交 Topology 时运行在 Nimbus（Storm 的 master 节点）上。它的作用仅限于构建 Topology 的结构并提交——<strong>实际的 Spout 和 Bolt 代码不在 main 方法所在进程执行</strong>。</p>
+<p>这意味着：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ❌ 这样不会生效！</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">    <span class="comment">// Spring 容器在这里初始化，但 Worker 进程完全看不见</span></span><br><span class="line">    <span class="type">ApplicationContext</span> <span class="variable">ctx</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">"applicationContext.xml"</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="type">TopologyBuilder</span> <span class="variable">builder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TopologyBuilder</span>();</span><br><span class="line">    builder.setSpout(<span class="string">"myspout"</span>, <span class="keyword">new</span> <span class="title class_">MySpout</span>());</span><br><span class="line">    builder.setBolt(<span class="string">"mybolt"</span>, <span class="keyword">new</span> <span class="title class_">MyBolt</span>()).shuffleGrouping(<span class="string">"myspout"</span>);</span><br><span class="line">    </span><br><span class="line">    StormSubmitter.submitTopology(<span class="string">"mytopo"</span>, config, builder.createTopology());</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Spring 配置、数据库连接池、加密密钥等，都不能放在 <code>main</code> 中初始化。<code>main</code> 里只放 Storm 本身的配置项（<code>Config</code> 对象）和 Topology 结构构建。</p>
+<h3 id="2-Spout-Bolt-的生命周期"><a href="#2-Spout-Bolt-的生命周期" class="headerlink" title="2. Spout/Bolt 的生命周期"></a>2. Spout/Bolt 的生命周期</h3><p>每个 Spout 和 Bolt 都有自己的生命周期方法：</p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>初始化</th>
+<th>每条消息</th>
+<th>退出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Spout</strong></td>
+<td><code>open()</code></td>
+<td><code>nextTuple()</code></td>
+<td><code>close()</code></td>
+</tr>
+<tr>
+<td><strong>Bolt</strong></td>
+<td><code>prepare()</code></td>
+<td><code>execute()</code></td>
+<td><code>cleanup()</code></td>
+</tr>
+</tbody></table>
+<p>关键点：</p>
+<ul>
+<li><strong><code>prepare()</code>/<code>open()</code> 在 Worker 进程启动时执行一次</strong>——这里才是做初始化的正确位置。Spring 容器、数据库连接、配置加载等，都放在这里。</li>
+<li><strong>多个 Bolt 需要加载 Spring 时，建议使用相同配置</strong>：多个 Bolt 在同一个 Worker 中可能共享 JVM 进程，重复初始化 Spring 容器可能造成资源浪费甚至冲突。</li>
+</ul>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyBolt</span> <span class="keyword">extends</span> <span class="title class_">BaseRichBolt</span> {</span><br><span class="line">    <span class="keyword">private</span> SomeService service;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">prepare</span><span class="params">(Map stormConf, TopologyContext context, OutputCollector collector)</span> {</span><br><span class="line">        <span class="comment">// ✅ 初始化放在这里</span></span><br><span class="line">        <span class="type">ApplicationContext</span> <span class="variable">ctx</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">"applicationContext.xml"</span>);</span><br><span class="line">        <span class="built_in">this</span>.service = ctx.getBean(SomeService.class);</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">(Tuple input)</span> {</span><br><span class="line">        <span class="comment">// 每条消息处理</span></span><br><span class="line">        service.process(input);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="3-序列化——最常见的坑"><a href="#3-序列化——最常见的坑" class="headerlink" title="3. 序列化——最常见的坑"></a>3. 序列化——最常见的坑</h3><p>由于 Spout 和 Bolt 可能在不同 Worker（甚至不同机器）上运行，<strong>所有通过 Storm 传输的数据都必须可序列化</strong>：</p>
+<ul>
+<li><code>emit()</code> 发出的 Tuple</li>
+<li>Spout/Bolt 的成员变量（如果不是在 <code>prepare()</code> 中初始化而是在构造器或静态块中）</li>
+<li>配置中传递的对象</li>
+</ul>
+<p>Storm 默认使用 <strong>Kryo</strong> 序列化，它比 Java 原生序列化更快，但有一些要求：</p>
+<ul>
+<li><strong>类必须有公开的无参构造函数</strong>。如果类没有无参构造（比如某些第三方库的类），会有 <code>IllegalArgumentException</code></li>
+<li><strong>内部类和匿名类默认不支持</strong>，需要手动注册</li>
+</ul>
+<p>如果不方便添加无参构造函数，可以降级：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Config</span> <span class="variable">config</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Config</span>();</span><br><span class="line">config.setFallBackOnJavaSerialization(<span class="literal">true</span>);  <span class="comment">// 降级为 Java 序列化</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="一个完整的-WordCount-示例"><a href="#一个完整的-WordCount-示例" class="headerlink" title="一个完整的 WordCount 示例"></a>一个完整的 WordCount 示例</h2><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Spout：不断发射句子</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SentenceSpout</span> <span class="keyword">extends</span> <span class="title class_">BaseRichSpout</span> {</span><br><span class="line">    <span class="keyword">private</span> SpoutOutputCollector collector;</span><br><span class="line">    <span class="keyword">private</span> String[] sentences = {</span><br><span class="line">        <span class="string">"hello world"</span>, <span class="string">"hello storm"</span>, <span class="string">"goodbye world"</span></span><br><span class="line">    };</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">open</span><span class="params">(Map conf, TopologyContext context, SpoutOutputCollector collector)</span> {</span><br><span class="line">        <span class="built_in">this</span>.collector = collector;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">nextTuple</span><span class="params">()</span> {</span><br><span class="line">        collector.emit(<span class="keyword">new</span> <span class="title class_">Values</span>(sentences[index]));</span><br><span class="line">        index = (index + <span class="number">1</span>) % sentences.length;</span><br><span class="line">        Utils.sleep(<span class="number">1000</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">declareOutputFields</span><span class="params">(OutputFieldsDeclarer declarer)</span> {</span><br><span class="line">        declarer.declare(<span class="keyword">new</span> <span class="title class_">Fields</span>(<span class="string">"sentence"</span>));</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// Bolt 1：拆分单词</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SplitBolt</span> <span class="keyword">extends</span> <span class="title class_">BaseRichBolt</span> {</span><br><span class="line">    <span class="keyword">private</span> OutputCollector collector;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">prepare</span><span class="params">(Map conf, TopologyContext context, OutputCollector collector)</span> {</span><br><span class="line">        <span class="built_in">this</span>.collector = collector;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">(Tuple tuple)</span> {</span><br><span class="line">        <span class="type">String</span> <span class="variable">sentence</span> <span class="operator">=</span> tuple.getStringByField(<span class="string">"sentence"</span>);</span><br><span class="line">        <span class="keyword">for</span> (String word : sentence.split(<span class="string">" "</span>)) {</span><br><span class="line">            collector.emit(<span class="keyword">new</span> <span class="title class_">Values</span>(word));</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">declareOutputFields</span><span class="params">(OutputFieldsDeclarer declarer)</span> {</span><br><span class="line">        declarer.declare(<span class="keyword">new</span> <span class="title class_">Fields</span>(<span class="string">"word"</span>));</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// Bolt 2：计数</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CountBolt</span> <span class="keyword">extends</span> <span class="title class_">BaseRichBolt</span> {</span><br><span class="line">    <span class="keyword">private</span> OutputCollector collector;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, Integer&gt; counts = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">prepare</span><span class="params">(Map conf, TopologyContext context, OutputCollector collector)</span> {</span><br><span class="line">        <span class="built_in">this</span>.collector = collector;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">(Tuple tuple)</span> {</span><br><span class="line">        <span class="type">String</span> <span class="variable">word</span> <span class="operator">=</span> tuple.getStringByField(<span class="string">"word"</span>);</span><br><span class="line">        counts.merge(word, <span class="number">1</span>, Integer::sum);</span><br><span class="line">        System.out.println(word + <span class="string">": "</span> + counts.get(word));</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">declareOutputFields</span><span class="params">(OutputFieldsDeclarer declarer)</span> {}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="2026-年的视角"><a href="#2026-年的视角" class="headerlink" title="2026 年的视角"></a>2026 年的视角</h2><p>Storm 曾经是实时计算的事实标准，但近年来 <strong>Apache Flink</strong> 已经成为流计算的主流选择。Flink 提供了更好的 exactly-once 语义、更丰富的窗口操作和更成熟的状态管理。如果你是新项目选型，我会建议优先考虑 Flink。</p>
+<p>不过，如果你维护的是已有的 Storm/JStorm 遗留系统，本文的内容依然能帮你快速定位问题。理解了 Storm 的 Worker 模型和序列化机制，很多”诡异的线上 bug”其实都有迹可循。</p>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/27021/">https://lichuanyang.top/posts/27021/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/27021.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/31996/" title="jstorm UI 介绍"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/jstorm-ui.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">jstorm UI 介绍</div></div><div class="info-2"><div class="info-item-1">UI说明jstorm的UI相对于storm提供了更为丰富的监控项。UI本身是在tomcat中运行的一个war包，进行二次开发也相对容易。 cluster页Cluster Summary, Cluster Stats, Topology Summarycluster的整体信息, conf中是nimbus节点的配置。 Topology Summary当前运行的所有topology列表及概要信息，conf中对应的是topology单独配置的配置项。 Supervisor Summary所有supervisor列表, 可以查看supervisor的配置、日志等。 topology页Topology Summary主要关注Topology Graph 项，这是Component Metrics 页的概要信息，可以较直观的看出运行状况。 其中，节点大小和箭头粗细代表数据量，节点颜色用于区分spout和bolt。箭头颜色对应TupleLifeCycle属性，由绿到红越来越慢。箭头变红色时，可以适当增加下游节点的并行度。 Component Metrics包含每个spout, bolt的统计信息...</div></div></div></a><a class="pagination-related" href="/posts/32479/" title="activemq web console的权限配置"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/32479.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">activemq web console的权限配置</div></div><div class="info-2"><div class="info-item-1">Web Console 的安全风险activemq的web console是基于jetty实现，其权限管理也是基于jetty. 根据需求，可以给不同的用户赋予不同的权限。jetty的权限管理还算灵活，虽然配起来比较麻烦，可以分别设定某个角色（role）下的用户是否有对某个页面的访问权限。  JAAS 认证配置下面简要介绍一下配置方法，只需要修改/conf 下的&nbsp;jetty.xml，&nbsp;jetty-realm.properties 1.&nbsp;jetty-realm.properties &nbsp; 这里面配置了所有用户的用户名，密码和所属角色，按照如下格式： username: password [,rolename ...] &nbsp;&nbsp;    ## 角色与权限定义  2\. jetty.xml 首先对每个角色配置一个Constraint 类，其中roles及对应&nbsp;jetty-realm.properties中的rolename        &lt;bean id="securityConstraint" class="org.e...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/13749/" title="jstorm的监控metrics数据输出到第三方存储介质"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/storm-metrics.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="info-item-2">jstorm的监控metrics数据输出到第三方存储介质</div></div><div class="info-2"><div class="info-item-1">JStorm Metrics 体系Jstorm的UI中提供了大量非常详细的监控参数，对于我们排查问题帮助非常大，关于UI，可以参考我之前的另一篇文章： https://lichuanyang.top/posts/31996/ 。 不过，UI这种方式用起来有时可能会不太方便，比如需要查历史数据的时候。所以我们希望将监控数据输出到别的存储介质中，方便后续查询、分析。 由于jstorm的监控相比于apache-storm进行了完全的重写，所以网上查到的storm的监控输出方式并不适用于jstorm. 而jstorm除了官方文档以外实在缺少资料，官方文档又太简略，给的只是一些线索性的东西，具体还要结合这些线索去翻阅源码。所以我整理了一个jstorm监控数据输出的例子。 自定义 Metrics 上报首先需要实现MetricUploader这个接口，不过其实我们并不会实际使用这个接口里的哪个方法，主要是要去用它的TopologyMetricsRunnable这个参数，然后用这个参数去取监控信息。所以理论上只要拿到TopologyMetricsRunnable就行，并不一定非要实现Metric...</div></div></div></a><a class="pagination-related" href="/posts/31996/" title="jstorm UI 介绍"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/jstorm-ui.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2016-11-16</div><div class="info-item-2">jstorm UI 介绍</div></div><div class="info-2"><div class="info-item-1">UI说明jstorm的UI相对于storm提供了更为丰富的监控项。UI本身是在tomcat中运行的一个war包，进行二次开发也相对容易。 cluster页Cluster Summary, Cluster Stats, Topology Summarycluster的整体信息, conf中是nimbus节点的配置。 Topology Summary当前运行的所有topology列表及概要信息，conf中对应的是topology单独配置的配置项。 Supervisor Summary所有supervisor列表, 可以查看supervisor的配置、日志等。 topology页Topology Summary主要关注Topology Graph 项，这是Component Metrics 页的概要信息，可以较直观的看出运行状况。 其中，节点大小和箭头粗细代表数据量，节点颜色用于区分spout和bolt。箭头颜色对应TupleLifeCycle属性，由绿到红越来越慢。箭头变红色时，可以适当增加下游节点的并行度。 Component Metrics包含每个spout, bolt的统计信息...</div></div></div></a><a class="pagination-related" href="/posts/62259/" title="storm ui 中一些关键属性的含义"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/62259.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2015-11-06</div><div class="info-item-2">storm ui 中一些关键属性的含义</div></div><div class="info-2"><div class="info-item-1">Storm UI 概览Storm UI对于排查storm使用过程中遇到的问题会很有帮助，但是有些属性的含义不是很明确，虽然都是很简单的概念，如果不知道的话也会很难受。 先说一点，鼠标只到UI上的标题栏时，是可以看到这一属性的具体属性的，几篇google rank很高的文章，其实就是把这个信息整理了下来。 其实大部分属性都是很直白的，看到名字就知道是什么意思，我在这儿之把一些可能造成困扰的属性列一下，方便大家查问题。 &nbsp; 关键指标详解emitted和transfered: emitted，就是发射出的数据条数，也就是调用OutputCollector的emit方法的次数。transferred则是实际tuple发送到下一个task的数目。乍一看是一样的对吗。其实一般情况下也确实是一样的。但是，比如，一个bolt 发射了数据，但是下游并没有其他bolt取这个数，这个bolt的transfer数就会是0\. 又比如，如果一个bolt A使用all group的方式(每一个bolt都要接收到)向bolt B发射tuple，那么transfered就会是emitted的数倍。 e...</div></div></div></a><a class="pagination-related" href="/posts/22103/" title="storm/jstorm生态与周边工具,storm连接activemq,kafka,hdfs等"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22103.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2016-11-16</div><div class="info-item-2">storm/jstorm生态与周边工具,storm连接activemq,kafka,hdfs等</div></div><div class="info-2"><div class="info-item-1">storm的周边生态非常丰富，与kafka,activemq,hdfs,hbase等的交互都有现成的工具包可以使用。大部分工具，包括今天介绍的这几个，在jstorm中也可以完全正常的使用。 storm-jms实现了与activemq等jms实现的交互。 这里主要介绍JmsSpout。由于storm中发送队列数据与普通java程序没有任何区别，专门封装一个bolt显得有些多此一举。 https://github.com/ptgoetz/storm-jms 包中自带了使用spring方式加载队列配置。 使用示例1234567891011121314JmsProvider jmsQueueProvider = new SpringJmsProvider(        "jms-activemq.xml", "jmsConnectionFactory",        "TEST_QUEUE");JmsTupleProducer producer = new JsonTupleProducer();// JMS Queue S...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/35575/">hadoop基本的学习资料</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/35575/">2026 年还要学 Hadoop 吗？</a></li><li><a href="https://lichuanyang.top/posts/35575/">学 Hadoop 从哪开始？</a></li><li><a href="https://lichuanyang.top/posts/35575/">学过时技术有价值吗？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/13749/">jstorm的监控metrics数据输出到第三方存储介质</a><ol class="relatedHowto-steps"><li>实现MetricUploader接口：创建类实现MetricUploader，获取TopologyMetricsRunnable对象</li><li>配置metrics：在jstorm配置中指定自定义的MetricUploader实现类</li><li>测试验证：运行拓扑，检查metrics数据是否正确上报到目标存储</li><li>对接Grafana：将存储介质接入Grafana数据源，创建监控面板</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Storm-%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6%E9%80%9F%E8%A7%88"><span class="toc-number">1.</span> <span class="toc-text">Storm 运行机制速览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8E%E4%BC%A0%E7%BB%9F-Java-%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%8C%BA%E5%88%AB"><span class="toc-number">2.</span> <span class="toc-text">与传统 Java 程序的三大关键区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-main-%E6%96%B9%E6%B3%95%E5%8F%AA%E8%B7%91%E5%9C%A8-Nimbus-%E4%B8%8A"><span class="toc-number">2.1.</span> <span class="toc-text">1. main 方法只跑在 Nimbus 上</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Spout-Bolt-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">2.2.</span> <span class="toc-text">2. Spout/Bolt 的生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%BA%8F%E5%88%97%E5%8C%96%E2%80%94%E2%80%94%E6%9C%80%E5%B8%B8%E8%A7%81%E7%9A%84%E5%9D%91"><span class="toc-number">2.3.</span> <span class="toc-text">3. 序列化——最常见的坑</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84-WordCount-%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.</span> <span class="toc-text">一个完整的 WordCount 示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2026-%E5%B9%B4%E7%9A%84%E8%A7%86%E8%A7%92"><span class="toc-number">4.</span> <span class="toc-text">2026 年的视角</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

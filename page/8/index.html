@@ -1,0 +1,323 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Mobility - 聚沙成塔，让每一步都有选择</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="聚焦后端开发与架构设计，分享 Java、消息队列、数据库、云原生、大数据、AI/LLM 等技术实践与个人成长">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mobility">
+<meta property="og:url" content="https://lichuanyang.top/page/8/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="聚焦后端开发与架构设计，分享 Java、消息队列、数据库、云原生、大数据、AI/LLM 等技术实践与个人成长">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/butterfly-icon.png">
+<meta property="article:author" content="流沙">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/butterfly-icon.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/page/8/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Mobility',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(/img/hero-banner.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">Mobility</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover left"><a href="/posts/46290/" title="一种实现在hbase中存储set的思路"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/46290.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="一种实现在hbase中存储set的思路"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/46290/" title="一种实现在hbase中存储set的思路">一种实现在hbase中存储set的思路</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-04-10T12:42:00.000Z" title="发表于 2017-04-10 20:42:00">2017-04-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></span></div><div class="content">HBase 的存储模型是简单的键值对（rowkey → column family → qualifier → value），不像 Redis 那样原生支持 Set、List、Hash 等数据结构。但实际业务中，我们经常需要存储集合类型的数据——比如用户的标签集合、商品的属性集合、社交关系中的好友列表。 如何在 HBase 中优雅地实现一个 Set？本文介绍一种利用 HBase 列（qualifier）特性实现的高效方案。   需求定义一个合格的 Set 存储方案需要满足：  元素自动去重——Set 的基本语义 原子操作单个元素——增删查改不应影响其他元素 方便查询——能快速获取整个 Set，也能快速判断某个元素是否存在  方案对比方案 A：整体序列化把整个 Set 序列化为一个字节数组，存到 HBase 的某个 cell 中。 12345678910111213// 写Set&lt;String&gt; set = new HashSet&lt;&gt;(Arrays.asList("a", "b", "c"));by...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/41673/" title="log4j2.xml配置示例及与log4j的区别"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/41673.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="log4j2.xml配置示例及与log4j的区别"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/41673/" title="log4j2.xml配置示例及与log4j的区别">log4j2.xml配置示例及与log4j的区别</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-04-10T12:23:00.000Z" title="发表于 2017-04-10 20:23:00">2017-04-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">完整配置示例1234567891011121314151617181920212223242526272829303132333435&lt;?xml version="1.0" encoding="UTF-8" ?&gt;&lt;configuration status="warn"&gt;    &lt;Appenders&gt;        &lt;Console name="Console" target="SYSTEM_OUT"&gt;            &lt;PatternLayout pattern="[%p] %d %c %l - %m%n"/&gt;        &lt;/Console&gt;        &lt;RollingFile name="activity" fileName="/opt/fox.log"                     filePattern="...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/28720/" title="不实现equals方法的情况下比较java list"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/28720.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="不实现equals方法的情况下比较java list"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/28720/" title="不实现equals方法的情况下比较java list">不实现equals方法的情况下比较java list</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-04-10T11:57:00.000Z" title="发表于 2017-04-10 19:57:00">2017-04-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">问题的提出java里比较两个list的值是否一致，不考虑顺序，有多种方法，比如排序后直接用equals比较，相互之间执行两次containsAll等，这些办法都需要我们给list的元素类实现equals和hashcode方法。但是有一种特殊情况，如果我们并不方便去实习类的equals方法，例如是一个古老的第三方jar包，改代码会带来很多未知问题，这时候该怎么办呢。 不实现 equals 的比较方案其实很简单，万能的apache-commons早就想到了这一点，所以在commons-collections4中增加了外部输入equals和hashcode的方法，甚至equals和hashcode方法本身也不需要我们自己写代码，可以用comons-lang包实现，具体代码如下 使用第三方工具1234567891011&lt;dependency&gt;    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;    &lt;artifactId&gt;commons-collections4&lt;/artifactId&gt;    &amp;...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/63756/" title="使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/63756.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/63756/" title="使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据">使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-04-06T09:54:00.000Z" title="发表于 2017-04-06 17:54:00">2017-04-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="content">Redis 的 Hash 操作中，HSETNX 可以保证只在 field 不存在时才写入，但 HMSET（批量设置多个 field）却没有对应的 HMSETNX 命令。如果你需要批量初始化缓存且不覆盖已有数据，每次发 N 个 HSETNX 命令会产生 N 次网络往返，这在批量场景下性能很差。 用 Lua 脚本可以完美解决这个问题——把逻辑放到 Redis 服务端执行，只需要一次网络往返。   问题背景假设你有一个用户配置的缓存场景：新用户首次访问时，需要初始化一组默认配置到 Redis Hash 中。但如果用户已经有了部分配置，不应该覆盖。 用 HSETNX 逐个设置当然可以，但如果有 20 个配置项，就是 20 次 Redis 往返。在高并发下，这会成为瓶颈。 而 HMSET 一次可以设多个 field，但它会无条件覆盖已有值——这不符合需求。 Lua 脚本方案12345678910local keyfor i, j in ipairs(ARGV)do    if i % 2 == 0 then        redis.call('hsetnx', KEY...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/62625/" title="vitualbox虚拟机安装centos 7 及ssh访问、自启动等配置"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/62625.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="vitualbox虚拟机安装centos 7 及ssh访问、自启动等配置"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/62625/" title="vitualbox虚拟机安装centos 7 及ssh访问、自启动等配置">vitualbox虚拟机安装centos 7 及ssh访问、自启动等配置</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-04-02T04:45:00.000Z" title="发表于 2017-04-02 12:45:00">2017-04-02</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/">技术杂谈</a></span></div><div class="content">为了方便，最近用vitualbox搭了一个centos7的虚拟机，整个过程比较简单，在这里记录一下。 下载vitualbox直接去官网（https://www.virtualbox.org/wiki/Downloads）下载即可 下载centos安装包同样官网下载（https://www.centos.org/download/），我下载的是minimal iso 安装安装过程很简单，一路默认点下去就可以，中间内存、分区什么的可以根据需要调一下 配置本机ssh访问vitualbox默认的分辨率非常低，可以通过安装增强工具进行优化。不过由于我们不需要图形化界面，其实可以通过其他方式解决这一问题，就是用xshell或者putty通过ssh远程登陆到虚拟机上。 打开ssh服务12service sshd startchkconfig sshd on 分别启动ssh服务，并将ssh设定为自启动 关闭防火墙由于只是弄着玩的，直接把防火墙关掉，方便。 centos7的防火墙操作和之前版本区别很大： 12sudo systemctl stop firewalld.servicesudo sys...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/11299/" title="在java独立进程(standalone app)中嵌入hawtio监控"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/11299.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="在java独立进程(standalone app)中嵌入hawtio监控"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/11299/" title="在java独立进程(standalone app)中嵌入hawtio监控">在java独立进程(standalone app)中嵌入hawtio监控</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-04-01T11:42:00.000Z" title="发表于 2017-04-01 19:42:00">2017-04-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">hawtio(hawt.io)是一个开源的监控系统，它提供了多种启动方式，可以运行单独的jar包、war包，然后远程连接其他应用进行监控，也可以将它直接嵌到我们自己的应用中。 本文会介绍在一个单独的java进程(java standalone application)中嵌入hawtio，对应官方文档（http://hawt.io/getstarted/index.html）的 “Using hawtio inside a stand alone Java application”,不过这一节文档问题是比较多的，如果你只看这段，会遇到各种问题。 下面介绍具体步骤 引入jar包除了官方文档里说的hawtio-embedded外，hawtio-insight-log，hawtio-core，hawtio-web这几个包都是必需的，我们都引入当前的最新版本. 1234567891011121314151617181920&lt;dependency&gt;    &lt;groupId&gt;io.hawt&lt;/groupId&gt;    &lt;artifactId&gt;haw...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/4433/" title="java日志系统简介: 从tomcat大量打印debug日志说起"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/4433.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="java日志系统简介: 从tomcat大量打印debug日志说起"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/4433/" title="java日志系统简介: 从tomcat大量打印debug日志说起">java日志系统简介: 从tomcat大量打印debug日志说起</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-03-31T11:47:00.000Z" title="发表于 2017-03-31 19:47:00">2017-03-31</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">Java 的日志框架生态可能是所有编程语言中最复杂的——不是因为它功能多复杂，而是历史原因导致了多套体系的并存和交叉。本文从一个真实的线上排查案例出发，理清 Java 日志框架的体系结构。   Java 日志体系架构目前 Java 下最主流的两套日志体系是 Log4j 和 SLF4J + Logback。 日志门面 vs 日志实现理解这个区分是搞懂 Java 日志生态的关键：    类型 角色 例子    日志门面（Facade） 只定义接口，不提供具体实现 SLF4J、Commons Logging（JCL）   日志实现 真正的日志写入逻辑 Logback、Log4j 1.x、Log4j 2、java.util.logging（JUL）   SLF4J + Logback 是典型的门面+实现分离架构：SLF4J 只包含接口（LoggerFactory、Logger），Logback 是具体实现。分离的好处是代码只依赖 SLF4J 接口，实现可以随时替换。 Log4j 1.x 则同时包含接口和实现——代码直接用 org.apache.log4j.Logger。 桥接器正是因为有...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/57802/" title="Java kryo/protobuf/protostuff序列化 or Json 性能对比"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/57802.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java kryo/protobuf/protostuff序列化 or Json 性能对比"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/57802/" title="Java kryo/protobuf/protostuff序列化 or Json 性能对比">Java kryo/protobuf/protostuff序列化 or Json 性能对比</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-03-02T10:10:00.000Z" title="发表于 2017-03-02 18:10:00">2017-03-02</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">  为什么需要序列化方案对比对于一个java object的序列化，想测一下使用json和使用一般序列化工具，在时间性能、空间性能上的区别。 json选择用fastjson. 序列化工具使用了protostuff和kyro. 为什么不用protobuf呢？因为感觉对于一个已有的上百个属性的java class来说，再去新建一个匹配的proto文件有点反人类。protostuff是protobuf的改良版本，可以直接将一个java object进行序列化，使用方法与kyro有点类似，没有protobuf那么多中间过程。其他的，hession, java自带序列化之类的，据说性能比kryo和protobuf差很多，就不测了。 时间性能对比简单测了一下，发现差距还挺明显的，所以感觉也不需要做具体的评测了。把日志截一段发出来，大家感受下。 fastjson serilise cost &lt;span class="hljs-number"&gt;555805&lt;/span&gt;  &lt;span class="hljs-built_in"...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/48104/" title="java分布式锁入门实战"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/java-distributed-lock.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="java分布式锁入门实战"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/48104/" title="java分布式锁入门实战">java分布式锁入门实战</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-02-20T11:21:00.000Z" title="发表于 2017-02-20 19:21:00">2017-02-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">这篇文章只讲使用，不讲原理，简单粗暴。 分布式锁，顾名思义，就是分布式的锁，应用于一些分布式系统中。例如，有一个服务部在数太机器上，然后有可能操作数据库中的同一条记录。这时，就需要分布式锁。 分布式锁实现的方式很多，一般来说需要一个实体来代表一个锁，占用锁时就新建这个实体，锁释放时也对应将相应实体删除。同时，一般还需要一个锁超时过期的策略，避免一些异常情况造成锁无法被释放。 zookeeper和redis都是常用的实现分布式锁的方式。接下来就简单介绍一下这两种方式的使用。 基于zookeeper的分布式锁使用zookeeper的话，建议直接使用curator客户端.         &lt;span class="hljs-tag"&gt;&amp;lt;&lt;span class="hljs-title"&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;             &lt;span class="hljs-tag"&gt;&amp;lt;&lt;span c...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/43423/" title="leetcode第三题: 输出不包含重复字母的最长子串"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/43423.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="leetcode第三题: 输出不包含重复字母的最长子串"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/43423/" title="leetcode第三题: 输出不包含重复字母的最长子串">leetcode第三题: 输出不包含重复字母的最长子串</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-02-15T12:34:00.000Z" title="发表于 2017-02-15 20:34:00">2017-02-15</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div><div class="content">题目Given a string, find the length of the longest substring without repeating characters. Examples: Given “abcabcbb”, the answer is “abc”, which the length is 3. Given “bbbbb”, the answer is “b”, with the length of 1. Given “pwwkew”, the answer is “wke”, with the length of 3. Note that the answer must be a substring, “pwke” is a subsequence and not a substring. 也就是说给定一个字符串，输出不包含重复字母的最长子串长度。 思路遍历一次字符串，O(n)复杂度下可以...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/7/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">…</span><a class="page-number" href="/page/7/#content-inner">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/#content-inner">9</a><a class="page-number" href="/page/10/#content-inner">10</a><a class="extend next" rel="next" href="/page/9/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/AI%E5%AE%9E%E8%B7%B5/"><span class="card-category-list-name">AI实践</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Java/"><span class="card-category-list-name">Java</span><span class="card-category-list-count">20</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/activemq%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/"><span class="card-category-list-name">activemq系列文章</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/jstorm%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"><span class="card-category-list-name">jstorm源码解析</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/redis%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">redis系列</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/"><span class="card-category-list-name">云原生</span><span class="card-category-list-count">5</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">分布式系统模式系列</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"><span class="card-category-list-name">大数据</span><span class="card-category-list-count">8</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" style="font-size: 1.1em; color: #999">软件工程</a> <a href="/tags/ssh%E5%85%8D%E5%AF%86%E7%A0%81%E7%99%BB%E5%BD%95/" style="font-size: 1.1em; color: #999">ssh免密码登录</a> <a href="/tags/%E6%B2%B9%E7%8C%B4/" style="font-size: 1.18em; color: #999ca1">油猴</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 1.1em; color: #999">算法</a> <a href="/tags/rocketMq/" style="font-size: 1.1em; color: #999">rocketMq</a> <a href="/tags/json/" style="font-size: 1.1em; color: #999">json</a> <a href="/tags/%E5%AE%89%E5%85%A8%E8%A7%84%E8%8C%83/" style="font-size: 1.1em; color: #999">安全规范</a> <a href="/tags/LDA/" style="font-size: 1.1em; color: #999">LDA</a> <a href="/tags/java/" style="font-size: 1.5em; color: #99a9bf">java</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/grafana/" style="font-size: 1.1em; color: #999">grafana</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 1.18em; color: #999ca1">持续集成</a> <a href="/tags/prompt/" style="font-size: 1.1em; color: #999">prompt</a> <a href="/tags/Obsidian/" style="font-size: 1.1em; color: #999">Obsidian</a> <a href="/tags/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" style="font-size: 1.18em; color: #999ca1">开发规范</a> <a href="/tags/blog/" style="font-size: 1.1em; color: #999">blog</a> <a href="/tags/prometheus%E6%95%99%E7%A8%8B/" style="font-size: 1.1em; color: #999">prometheus教程</a> <a href="/tags/springboot/" style="font-size: 1.1em; color: #999">springboot</a> <a href="/tags/text-to-video/" style="font-size: 1.1em; color: #999">text-to-video</a> <a href="/tags/camel/" style="font-size: 1.18em; color: #999ca1">camel</a> <a href="/tags/lua/" style="font-size: 1.1em; color: #999">lua</a> <a href="/tags/hadoop/" style="font-size: 1.18em; color: #999ca1">hadoop</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">前端开发</a> <a href="/tags/CLI/" style="font-size: 1.1em; color: #999">CLI</a> <a href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F%E6%9E%B6%E6%9E%84/" style="font-size: 1.1em; color: #999">云原生架构</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 1.18em; color: #999ca1">多线程</a> <a href="/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/" style="font-size: 1.34em; color: #99a3b0">个人成长</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%86%99/" style="font-size: 1.1em; color: #999">单元测试怎么写</a> <a href="/tags/ssh%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95/" style="font-size: 1.1em; color: #999">ssh自动登录</a> <a href="/tags/javaInteger%E7%BC%93%E5%AD%98/" style="font-size: 1.1em; color: #999">javaInteger缓存</a> <a href="/tags/LLM/" style="font-size: 1.34em; color: #99a3b0">LLM</a> <a href="/tags/%E7%9F%A5%E4%B9%8E/" style="font-size: 1.26em; color: #999fa8">知乎</a> <a href="/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/" style="font-size: 1.1em; color: #999">独立博客</a> <a href="/tags/clickhouse%E4%BB%8B%E7%BB%8D/" style="font-size: 1.1em; color: #999">clickhouse介绍</a> <a href="/tags/prometheus/" style="font-size: 1.1em; color: #999">prometheus</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%8Cskiplist/" style="font-size: 1.1em; color: #999">数据结构，skiplist</a> <a href="/tags/%E6%97%A5%E5%BF%97/" style="font-size: 1.26em; color: #999fa8">日志</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1/" style="font-size: 1.1em; color: #999">数据库事务</a> <a href="/tags/activemq/" style="font-size: 1.42em; color: #99a6b7">activemq</a> <a href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/" style="font-size: 1.18em; color: #999ca1">云原生</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      <a class="card-more-btn" href="/archives/" title="查看更多">
+            <i class="fas fa-angle-right"></i>
+          </a>
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/06/">
+            <span class="card-archive-list-date">
+              六月 2026
+            </span>
+            <span class="card-archive-list-count">5</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/05/">
+            <span class="card-archive-list-date">
+              五月 2026
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2024/03/">
+            <span class="card-archive-list-date">
+              三月 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2024/01/">
+            <span class="card-archive-list-date">
+              一月 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2023/12/">
+            <span class="card-archive-list-date">
+              十二月 2023
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2023/01/">
+            <span class="card-archive-list-date">
+              一月 2023
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2022/12/">
+            <span class="card-archive-list-date">
+              十二月 2022
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2022/05/">
+            <span class="card-archive-list-date">
+              五月 2022
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">93</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">131.6k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastpushdate="2026-06-30T05:40:52.198Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>window.typedJSFn = {
+  init: str => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, null))
+  },
+  run: subtitleType => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        btf.getScript('https://cdn.jsdelivr.net/npm/typed.js@3.0.0/dist/typed.umd.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
+    }
+  },
+  processSubtitle: (content, extraContents = []) => {
+    if (true) {
+      const sub = [].slice()
+
+      if (extraContents.length > 0) {
+        sub.unshift(...extraContents)
+      }
+
+      if (typeof content === 'string') {
+        sub.unshift(content)
+      } else if (Array.isArray(content)) {
+        sub.unshift(...content)
+      }
+
+      sub.length > 0 && typedJSFn.init(sub)
+    } else {
+      document.getElementById('subtitle').textContent = typeof content === 'string' ? content :
+        (Array.isArray(content) && content.length > 0 ? content[0] : '')
+    }
+  }
+}
+btf.addGlobalFn('pjaxSendOnce', () => { typed.destroy() }, 'typedDestroy')
+;
+function subtitleType () {
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+      const from = '出自 ' + data.from
+      typedJSFn.processSubtitle(data.hitokoto, [from])
+    })
+    .catch(err => {
+      console.error('Failed to get the Hitokoto API:', err)
+      typedJSFn.processSubtitle([])
+    })
+}
+typedJSFn.run(subtitleType)
+;
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

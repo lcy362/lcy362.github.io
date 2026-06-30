@@ -1,0 +1,323 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>camel系列之camel debugger的使用 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Apache Camel 调试工具 debugger 的使用指南，帮助在 Camel 高度封装的数据路由框架中高效排查问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="camel系列之camel debugger的使用">
+<meta property="og:url" content="https://lichuanyang.top/posts/1120/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="Apache Camel 调试工具 debugger 的使用指南，帮助在 Camel 高度封装的数据路由框架中高效排查问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/1120.jpg">
+<meta property="article:published_time" content="2017-08-03T11:56:00.000Z">
+<meta property="article:modified_time" content="2026-06-27T02:31:54.478Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="camel">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/1120.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "camel系列之camel debugger的使用",
+  "url": "https://lichuanyang.top/posts/1120/",
+  "image": "https://lichuanyang.top/img/1120.jpg",
+  "abstract": "用Camel Debugger可以像调试普通Java程序一样在路由节点打断点",
+  "datePublished": "2017-08-03T11:56:00.000Z",
+  "dateModified": "2026-06-27T02:31:54.478Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/1120/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'camel系列之camel debugger的使用',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"什么时候用 Debugger 而不是 Tracer？","acceptedAnswer":{"@type":"Answer","text":"Debugger 适合本地开发调试，信息最全面，可以逐节点打断点、查看消息体、对比处理前后的变化。Tracer 适合线上生产环境排查，全局开启后可追踪每一条消息经过的完整路由路径，但会对性能有一定影响。简单选择就是：开发环境用 Debugger 精确定位问题，生产环境用 Tracer 快速了解消息流向。 Q: Camel 调试有哪些替代工具？除了 Debugger，Camel 还提供了 Tracer Interceptor（全局消息追踪）、Log EIP（在路由中插入临时日志）、以及 Hawtio 管理控制台（可视化监控）。此外，也可以在路由中临时添加 log: 或 wireTap: 组件来做即时排查。 Q: Debugger 会影响性能吗？会有影响。Debugger 在每个 processor 执行前后都会触发回调，如果回调中做了大量日志输出或序列化操作，路由吞吐量会明显下降。因此 Debugger 设计上只用于本地开发和测试，不建议在生产环境开启。 Q: Debugger 只能用在测试环境吗？严格来说是的。Camel 的 Debugger 依托于 CamelTestSupport "}},{"@type":"Question","name":"Camel 调试有哪些替代工具？","acceptedAnswer":{"@type":"Answer","text":"除了 Debugger，Camel 还提供了 Tracer Interceptor（全局消息追踪）、Log EIP（在路由中插入临时日志）、以及 Hawtio 管理控制台（可视化监控）。此外，也可以在路由中临时添加 log: 或 wireTap: 组件来做即时排查。 Q: Debugger 会影响性能吗？会有影响。Debugger 在每个 processor 执行前后都会触发回调，如果回调中做了大量日志输出或序列化操作，路由吞吐量会明显下降。因此 Debugger 设计上只用于本地开发和测试，不建议在生产环境开启。 Q: Debugger 只能用在测试环境吗？严格来说是的。Camel 的 Debugger 依托于 CamelTestSupport 基类，本身就设计为测试工具。如果需要在运行中的路由上做调试，应使用 Tracer、Hawtio 控制台或 JMX 监控等替代方案。 快速上手步骤 引入依赖：在 pom.xml 中添加 camel-test 依赖，版本与项目中的 Camel 版本保持一致。 创建 Debugger 类：继承 CamelTestSupport，重写 createR"}},{"@type":"Question","name":"Debugger 会影响性能吗？","acceptedAnswer":{"@type":"Answer","text":"会有影响。Debugger 在每个 processor 执行前后都会触发回调，如果回调中做了大量日志输出或序列化操作，路由吞吐量会明显下降。因此 Debugger 设计上只用于本地开发和测试，不建议在生产环境开启。 Q: Debugger 只能用在测试环境吗？严格来说是的。Camel 的 Debugger 依托于 CamelTestSupport 基类，本身就设计为测试工具。如果需要在运行中的路由上做调试，应使用 Tracer、Hawtio 控制台或 JMX 监控等替代方案。 快速上手步骤 引入依赖：在 pom.xml 中添加 camel-test 依赖，版本与项目中的 Camel 版本保持一致。 创建 Debugger 类：继承 CamelTestSupport，重写 createRouteBuilder() 定义待调试路由，重写 debugBefore() 和 debugAfter() 打印消息内容和处理耗时。 配置调试路由：在 createRouteBuilder 中通过 from().to() 或 from().bean().to() 等方式定义完整的路由链路。 运行测试：直接"}},{"@type":"Question","name":"Debugger 只能用在测试环境吗？","acceptedAnswer":{"@type":"Answer","text":"严格来说是的。Camel 的 Debugger 依托于 CamelTestSupport 基类，本身就设计为测试工具。如果需要在运行中的路由上做调试，应使用 Tracer、Hawtio 控制台或 JMX 监控等替代方案。 快速上手步骤 引入依赖：在 pom.xml 中添加 camel-test 依赖，版本与项目中的 Camel 版本保持一致。 创建 Debugger 类：继承 CamelTestSupport，重写 createRouteBuilder() 定义待调试路由，重写 debugBefore() 和 debugAfter() 打印消息内容和处理耗时。 配置调试路由：在 createRouteBuilder 中通过 from().to() 或 from().bean().to() 等方式定义完整的路由链路。 运行测试：直接运行 Debugger 类，观察控制台输出，通过 debugBefore 确认消息进入状态，通过 debugAfter 对比处理变化和定位慢节点。 文章作者: 流沙"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"camel系列之camel debugger的使用","step":[{"@type":"HowToStep","position":1,"name":"","text":""},{"@type":"HowToStep","position":2,"name":"","text":""},{"@type":"HowToStep","position":3,"name":"","text":""},{"@type":"HowToStep","position":4,"name":"","text":""}]}</script>
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/1120/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/1120/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/1120/">
+<meta name="keywords" content="camel">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"消息队列","item":"https://lichuanyang.top/categories/消息队列/"},{"@type":"ListItem","position":3,"name":"camel系列之camel debugger的使用","item":"https://lichuanyang.top/posts/1120/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1120.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">camel系列之camel debugger的使用</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">camel系列之camel debugger的使用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-08-03T11:56:00.000Z" title="发表于 2017-08-03 19:56:00">2017-08-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T02:31:54.478Z" title="更新于 2026-06-27 10:31:54">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> 用Camel Debugger可以像调试普通Java程序一样在路由节点打断点</blockquote><p>Apache Camel 是一个强大的企业集成框架，基于 EIP（Enterprise Integration Patterns）实现了 200 多种组件，可以轻松连接各种数据源和中间件。但它的强大也带来一个问题：高度封装让底层细节变得不透明，一旦路由出问题，排查起来非常困难。</p>
+<p>好在 Camel 官方提供了一个 Debugger 工具，可以像调试普通 Java 程序一样在路由节点上打断点、查看消息内容。本文在<a target="_blank" rel="noopener external nofollow noreferrer" href="http://camel.apache.org/debugger.html">官方文档</a>的基础上，补充一些实用的调试技巧。</p>
+<span id="more"></span>
+
+<h2 id="为什么要用-Debugger？"><a href="#为什么要用-Debugger？" class="headerlink" title="为什么要用 Debugger？"></a>为什么要用 Debugger？</h2><p>Camel 的路由定义通常非常声明式，比如：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from(<span class="string">"file:inbox"</span>)</span><br><span class="line">    .unmarshal().json()</span><br><span class="line">    .bean(SomeTransformer.class)</span><br><span class="line">    .to(<span class="string">"activemq:queue:orders"</span>);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>看起来清晰简洁，但如果消息在某个环节被处理错了，你怎么知道是 <code>unmarshal</code> 出了问题还是 <code>SomeTransformer</code> 的 bug？这个时候 Debugger 就派上用场了。</p>
+<h2 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h2><h3 id="1-引入依赖"><a href="#1-引入依赖" class="headerlink" title="1. 引入依赖"></a>1. 引入依赖</h3><p>首先引入 <code>camel-test</code> 包：</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.camel<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>camel-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.16.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="2-创建-Debugger-类"><a href="#2-创建-Debugger-类" class="headerlink" title="2. 创建 Debugger 类"></a>2. 创建 Debugger 类</h3><p>继承 <code>CamelTestSupport</code>，这是 Camel 提供的一个方便的测试基类：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CamelDebugger</span> <span class="keyword">extends</span> <span class="title class_">CamelTestSupport</span> {</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> RoutesBuilder <span class="title function_">createRouteBuilder</span><span class="params">()</span> {</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RouteBuilder</span>() {</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">configure</span><span class="params">()</span> {</span><br><span class="line">                from(<span class="string">"direct:start"</span>)</span><br><span class="line">                    .log(<span class="string">"Received: ${body}"</span>)</span><br><span class="line">                    .bean(SomeTransformer.class)</span><br><span class="line">                    .to(<span class="string">"mock:result"</span>);</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">debugBefore</span><span class="params">(Exchange exchange, Processor processor, </span></span><br><span class="line"><span class="params">                                 ProcessorDefinition&lt;?&gt; definition, String id, String label)</span> {</span><br><span class="line">        log.info(<span class="string">"Before {}: body={}, headers={}"</span>, </span><br><span class="line">            id, exchange.getIn().getBody(), exchange.getIn().getHeaders());</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">debugAfter</span><span class="params">(Exchange exchange, Processor processor, </span></span><br><span class="line"><span class="params">                                ProcessorDefinition&lt;?&gt; definition, String id, String label, <span class="type">long</span> timeTaken)</span> {</span><br><span class="line">        log.info(<span class="string">"After {}: body={}, took {}ms"</span>, </span><br><span class="line">            id, exchange.getIn().getBody(), timeTaken);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="关键方法详解"><a href="#关键方法详解" class="headerlink" title="关键方法详解"></a>关键方法详解</h2><p><code>CamelTestSupport</code> 中与调试相关的几个关键方法：</p>
+<h3 id="createCamelContext"><a href="#createCamelContext" class="headerlink" title="createCamelContext()"></a><code>createCamelContext()</code></h3><p>自定义 CamelContext，可以配置组件、注册 bean 等。适用于需要精确控制测试环境的场景。</p>
+<h3 id="createRouteBuilder"><a href="#createRouteBuilder" class="headerlink" title="createRouteBuilder()"></a><code>createRouteBuilder()</code></h3><p>使用默认 CamelContext，只添加自己的路由。这是最简单的方式，适合大多数调试场景。</p>
+<h3 id="debugBefore-和-debugAfter"><a href="#debugBefore-和-debugAfter" class="headerlink" title="debugBefore() 和 debugAfter()"></a><code>debugBefore()</code> 和 <code>debugAfter()</code></h3><p>这两个方法是 Debugger 的核心：</p>
+<ul>
+<li><p><strong><code>debugBefore</code></strong>：在消息被每个 processor 处理<strong>之前</strong>调用。参数包括当前的 Exchange（含消息体、消息头、属性）、即将执行的 Processor、路由节点 ID 和 label。适合用来<strong>确认”进入这个节点时消息是什么状态”</strong>。</p>
+</li>
+<li><p><strong><code>debugAfter</code></strong>：在消息被处理<strong>之后</strong>调用。多了 <code>timeTaken</code> 参数，表示这个 processor 的执行耗时。适合用来<strong>对比处理前后的变化</strong>，以及<strong>定位性能瓶颈</strong>。</p>
+</li>
+</ul>
+<h2 id="实战示例：排查消息丢失"><a href="#实战示例：排查消息丢失" class="headerlink" title="实战示例：排查消息丢失"></a>实战示例：排查消息丢失</h2><p>假设你的路由中有一条消息在某个节点之后消失了，你可以这样 debug：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">debugAfter</span><span class="params">(Exchange exchange, Processor processor,</span></span><br><span class="line"><span class="params">                            ProcessorDefinition&lt;?&gt; definition, String id, String label, <span class="type">long</span> timeTaken)</span> {</span><br><span class="line">    <span class="type">Object</span> <span class="variable">body</span> <span class="operator">=</span> exchange.getIn().getBody();</span><br><span class="line">    <span class="keyword">if</span> (body == <span class="literal">null</span>) {</span><br><span class="line">        log.error(<span class="string">"⚠️ Message body is null after processor: {} (id={})"</span>, label, id);</span><br><span class="line">    }</span><br><span class="line">    <span class="comment">// 记录每个节点的耗时，超过 1 秒的告警</span></span><br><span class="line">    <span class="keyword">if</span> (timeTaken &gt; <span class="number">1000</span>) {</span><br><span class="line">        log.warn(<span class="string">"🐢 Slow processor: {} took {}ms"</span>, label, timeTaken);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="替代方案"><a href="#替代方案" class="headerlink" title="替代方案"></a>替代方案</h2><p>Debugger 不是唯一的选择，Camel 还提供了其他排查手段：</p>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>适用场景</th>
+<th>优劣</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Debugger</strong></td>
+<td>本地开发调试</td>
+<td>信息最全面，但需要启动测试</td>
+</tr>
+<tr>
+<td><strong>Tracer Interceptor</strong></td>
+<td>生产环境排查</td>
+<td>可以全局开启，但对性能有影响</td>
+</tr>
+<tr>
+<td><strong>Log EIP（<code>log:</code> 组件）</strong></td>
+<td>路由中插入临时日志</td>
+<td>最简单，但需要改路由代码</td>
+</tr>
+<tr>
+<td><strong>Hawtio 管理控制台</strong></td>
+<td>可视化监控</td>
+<td>可以看到运行状态，但调试粒度较粗</td>
+</tr>
+</tbody></table>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><p>完整的可运行示例在这里：<br><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/lcy362/CamelDemo/blob/7aef2cc7661236499896022f6976c160b73b68e7/src/main/java/com/mallow/demo/camel/debugger/CamelDebugger.java">https://github.com/lcy362/CamelDemo</a></p>
+<blockquote>
+<p>这是 Camel 系列文章之一。如果你在使用 Camel 做数据路由或系统集成，欢迎关注后续文章，或者<a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/lcy362/CamelDemo">到 GitHub 上交流</a>。</p>
+</blockquote>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="Q-什么时候用-Debugger-而不是-Tracer？"><a href="#Q-什么时候用-Debugger-而不是-Tracer？" class="headerlink" title="Q: 什么时候用 Debugger 而不是 Tracer？"></a>Q: 什么时候用 Debugger 而不是 Tracer？</h3><p>Debugger 适合<strong>本地开发调试</strong>，信息最全面，可以逐节点打断点、查看消息体、对比处理前后的变化。Tracer 适合<strong>线上生产环境排查</strong>，全局开启后可追踪每一条消息经过的完整路由路径，但会对性能有一定影响。简单选择就是：开发环境用 Debugger 精确定位问题，生产环境用 Tracer 快速了解消息流向。</p>
+<h3 id="Q-Camel-调试有哪些替代工具？"><a href="#Q-Camel-调试有哪些替代工具？" class="headerlink" title="Q: Camel 调试有哪些替代工具？"></a>Q: Camel 调试有哪些替代工具？</h3><p>除了 Debugger，Camel 还提供了 Tracer Interceptor（全局消息追踪）、Log EIP（在路由中插入临时日志）、以及 Hawtio 管理控制台（可视化监控）。此外，也可以在路由中临时添加 <code>log:</code> 或 <code>wireTap:</code> 组件来做即时排查。</p>
+<h3 id="Q-Debugger-会影响性能吗？"><a href="#Q-Debugger-会影响性能吗？" class="headerlink" title="Q: Debugger 会影响性能吗？"></a>Q: Debugger 会影响性能吗？</h3><p>会有影响。Debugger 在每个 processor 执行前后都会触发回调，如果回调中做了大量日志输出或序列化操作，路由吞吐量会明显下降。因此 Debugger 设计上只用于本地开发和测试，不建议在生产环境开启。</p>
+<h3 id="Q-Debugger-只能用在测试环境吗？"><a href="#Q-Debugger-只能用在测试环境吗？" class="headerlink" title="Q: Debugger 只能用在测试环境吗？"></a>Q: Debugger 只能用在测试环境吗？</h3><p>严格来说是的。Camel 的 Debugger 依托于 <code>CamelTestSupport</code> 基类，本身就设计为测试工具。如果需要在运行中的路由上做调试，应使用 Tracer、Hawtio 控制台或 JMX 监控等替代方案。</p>
+<h2 id="快速上手步骤"><a href="#快速上手步骤" class="headerlink" title="快速上手步骤"></a>快速上手步骤</h2><ol>
+<li><strong>引入依赖</strong>：在 <code>pom.xml</code> 中添加 <code>camel-test</code> 依赖，版本与项目中的 Camel 版本保持一致。</li>
+<li><strong>创建 Debugger 类</strong>：继承 <code>CamelTestSupport</code>，重写 <code>createRouteBuilder()</code> 定义待调试路由，重写 <code>debugBefore()</code> 和 <code>debugAfter()</code> 打印消息内容和处理耗时。</li>
+<li><strong>配置调试路由</strong>：在 <code>createRouteBuilder</code> 中通过 <code>from().to()</code> 或 <code>from().bean().to()</code> 等方式定义完整的路由链路。</li>
+<li><strong>运行测试</strong>：直接运行 Debugger 类，观察控制台输出，通过 <code>debugBefore</code> 确认消息进入状态，通过 <code>debugAfter</code> 对比处理变化和定位慢节点。</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/1120/">https://lichuanyang.top/posts/1120/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/1120.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/13749/" title="jstorm的监控metrics数据输出到第三方存储介质"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/storm-metrics.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">jstorm的监控metrics数据输出到第三方存储介质</div></div><div class="info-2"><div class="info-item-1">JStorm Metrics 体系Jstorm的UI中提供了大量非常详细的监控参数，对于我们排查问题帮助非常大，关于UI，可以参考我之前的另一篇文章： https://lichuanyang.top/posts/31996/ 。 不过，UI这种方式用起来有时可能会不太方便，比如需要查历史数据的时候。所以我们希望将监控数据输出到别的存储介质中，方便后续查询、分析。 由于jstorm的监控相比于apache-storm进行了完全的重写，所以网上查到的storm的监控输出方式并不适用于jstorm. 而jstorm除了官方文档以外实在缺少资料，官方文档又太简略，给的只是一些线索性的东西，具体还要结合这些线索去翻阅源码。所以我整理了一个jstorm监控数据输出的例子。 自定义 Metrics 上报首先需要实现MetricUploader这个接口，不过其实我们并不会实际使用这个接口里的哪个方法，主要是要去用它的TopologyMetricsRunnable这个参数，然后用这个参数去取监控信息。所以理论上只要拿到TopologyMetricsRunnable就行，并不一定非要实现Metric...</div></div></div></a><a class="pagination-related" href="/posts/15594/" title="jstorm源码解析之bolt异常处理"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/bolt-exception.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">jstorm源码解析之bolt异常处理</div></div><div class="info-2"><div class="info-item-1">问题用过storm或者jstorm的都知道，如果在bolt代码中发生了没被catch住的异常，所在worker进程会退出。本文就从源码角度分析一下具体设计，其实并不是“有异常然后进程崩了”这么简单。   实质我们先看BasicBoltExecutor的源码： 123456789101112public void execute(Tuple input) {    _collector.setContext(input);    try {        _bolt.execute(input, _collector);        _collector.getOutputter().ack(input);    } catch (FailedException e) {        if (e instanceof ReportedFailedException) {            _collector.reportError(e);        }        _collector.getOutputt...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/17762/" title="关于apache camel的消息转发效率"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/17762.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2015-08-08</div><div class="info-item-2">关于apache camel的消息转发效率</div></div><div class="info-2"><div class="info-item-1">测试场景公司使用activemq和camel做消息的分发，之前数据量不是很大，所以一直没怎么考虑效率问题，对camel的工作原理研究也不深。单是最近随着业务量的增加，camel的效率逐渐成了瓶颈，所以根据日志大概了解了camel的工作原理。虽然camel是被嵌入到activemq中，但在工作过程中，camel和activemq其实还是相对独立的。我们在camel中会配置一个到activemq的连接. http://camel.apache.org/activemq.html    关于vm这种传输方式，参考http://activemq.apache.org/vm-transport-reference.html 瓶颈分析看了下日志，发现这种配置下camel会有一个很严重的问题: camel每次执行转发操作时，都会新建一个到activemq的连接，之后再将其关闭。这严重拖慢了转发效率，因为事实上每次转发都可以使用同一个连接。 优化建议因此查了一下camel文档，找到了  http://camel.apache.org/activemq.html 。 里边有关于线程池的配置： &amp;n...</div></div></div></a></div></div><hr class="custom-hr"><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8-Debugger%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">为什么要用 Debugger？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"><span class="toc-number">2.</span> <span class="toc-text">快速上手</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="toc-number">2.1.</span> <span class="toc-text">1. 引入依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BA-Debugger-%E7%B1%BB"><span class="toc-number">2.2.</span> <span class="toc-text">2. 创建 Debugger 类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%96%B9%E6%B3%95%E8%AF%A6%E8%A7%A3"><span class="toc-number">3.</span> <span class="toc-text">关键方法详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#createCamelContext"><span class="toc-number">3.1.</span> <span class="toc-text">createCamelContext()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#createRouteBuilder"><span class="toc-number">3.2.</span> <span class="toc-text">createRouteBuilder()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#debugBefore-%E5%92%8C-debugAfter"><span class="toc-number">3.3.</span> <span class="toc-text">debugBefore() 和 debugAfter()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B%EF%BC%9A%E6%8E%92%E6%9F%A5%E6%B6%88%E6%81%AF%E4%B8%A2%E5%A4%B1"><span class="toc-number">4.</span> <span class="toc-text">实战示例：排查消息丢失</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%88"><span class="toc-number">5.</span> <span class="toc-text">替代方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81"><span class="toc-number">6.</span> <span class="toc-text">完整代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text">常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8-Debugger-%E8%80%8C%E4%B8%8D%E6%98%AF-Tracer%EF%BC%9F"><span class="toc-number">7.1.</span> <span class="toc-text">Q: 什么时候用 Debugger 而不是 Tracer？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-Camel-%E8%B0%83%E8%AF%95%E6%9C%89%E5%93%AA%E4%BA%9B%E6%9B%BF%E4%BB%A3%E5%B7%A5%E5%85%B7%EF%BC%9F"><span class="toc-number">7.2.</span> <span class="toc-text">Q: Camel 调试有哪些替代工具？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-Debugger-%E4%BC%9A%E5%BD%B1%E5%93%8D%E6%80%A7%E8%83%BD%E5%90%97%EF%BC%9F"><span class="toc-number">7.3.</span> <span class="toc-text">Q: Debugger 会影响性能吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-Debugger-%E5%8F%AA%E8%83%BD%E7%94%A8%E5%9C%A8%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%90%97%EF%BC%9F"><span class="toc-number">7.4.</span> <span class="toc-text">Q: Debugger 只能用在测试环境吗？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B%E6%AD%A5%E9%AA%A4"><span class="toc-number">8.</span> <span class="toc-text">快速上手步骤</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

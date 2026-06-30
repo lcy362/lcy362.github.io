@@ -1,0 +1,284 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>java项目低学习成本使用kubernetes的实践经验 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="创业公司低成本使用 Kubernetes 的实践经验，从项目创建到部署监控的全流程开源方案。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java项目低学习成本使用kubernetes的实践经验">
+<meta property="og:url" content="https://lichuanyang.top/posts/40964/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="创业公司低成本使用 Kubernetes 的实践经验，从项目创建到部署监控的全流程开源方案。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/k8s-kubernetes.jpg">
+<meta property="article:published_time" content="2022-01-26T07:19:32.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:44:21.600Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="持续集成">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/k8s-kubernetes.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "java项目低学习成本使用kubernetes的实践经验",
+  "url": "https://lichuanyang.top/posts/40964/",
+  "image": "https://lichuanyang.top/img/k8s-kubernetes.jpg",
+  "abstract": "基于K8s和开源工具搭建Java项目从创建到部署监控的全流程方案，自动扩缩容日均节省数百美元，用Prometheus+Grafana实现可观测性。",
+  "datePublished": "2022-01-26T07:19:32.000Z",
+  "dateModified": "2026-06-27T03:44:21.600Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/40964/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'java项目低学习成本使用kubernetes的实践经验',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/40964/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/40964/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/40964/">
+<meta name="keywords" content="kubernetes, 持续集成">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"云原生","item":"https://lichuanyang.top/categories/云原生/"},{"@type":"ListItem","position":3,"name":"java项目低学习成本使用kubernetes的实践经验","item":"https://lichuanyang.top/posts/40964/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/k8s-kubernetes.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">java项目低学习成本使用kubernetes的实践经验</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">java项目低学习成本使用kubernetes的实践经验</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-01-26T07:19:32.000Z" title="发表于 2022-01-26 15:19:32">2022-01-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T03:44:21.600Z" title="更新于 2026-06-27 11:44:21">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> 基于K8s和开源工具搭建Java项目从创建到部署监控的全流程方案，自动扩缩容日均节省数百美元，用Prometheus+Grafana实现可观测性。</blockquote><p>很多创业公司相比于大厂，一个非常重要的劣势就是基础设施不完善，没有各种各样完善的工具。因此，我打算整理一下，基于开源社区提供的能力，如何用尽量小的运维和开发成本，去搭建出一套体验良好的开发流程。</p>
+<span id="more"></span>
+
+<p>首先，我们理一下整个开发流程中的必备步骤都有哪些，我大概罗列一下，包括项目的创建、开发、code review、部署测试环境、部署灰度和线上环境、查看线上监控、日志、以及排查问题等。</p>
+<p>根据这整个流程链条，我们再来理一下为了尽可能的提升开发和运维效率，我们需要把哪些方面保障好，以及这些方面可以有什么低成本的解决方案。</p>
+<p>有几个点吧：</p>
+<ul>
+<li>快速创建一个项目，并且将必备的web、监控、日志等组件添加好；</li>
+<li>提升一些常规的代码开发，比如数据库增删改查的开发效率；</li>
+<li>简化打包到部署的流程，测试环境能自动部署更好；</li>
+<li>能够给每个服务轻松的加上一整套监控和报警，包括通用的机器、jvm、接口层面的指标，和根据业务自定义的指标；</li>
+<li>能有地方集中看各个节点的日志；</li>
+<li>必要的时候，可以在线上节点上有强力的工具帮助排查问题。</li>
+</ul>
+<p>接下来，我们就看一下这些问题分别怎么解决。</p>
+<h2 id="部署环境"><a href="#部署环境" class="headerlink" title="部署环境"></a>部署环境</h2><p>首先，在本文的标题中，其实已经假定了部署环境就是kubernetes, 所以，我先说一下为什么只有kubernetes这一个选项。随便翻开一个kubernetes的介绍资料，我们都可以看到很多它的优势说明，这里我们不多赘述。而其中最关键的，也是每个人都能切身体会到的好处，其实就是它提供了完善的自动扩缩容机制。可以非常简单的设置一个cpu消耗的期望值，k8s集群就可以根据目前cpu的负载去调整pod数量。我对比了我们启用自动扩缩容前后的数据，每天的机器成本可以相差接近600美金，占总成本的1/3还要多。</p>
+<p>由于k8s本身的运维成本是很高的，推荐直接购买云服务商的服务，无论aws还是阿里云，都提供了很完善的k8s集群功能。</p>
+<p>另外，推荐使用 kuboard (<a target="_blank" rel="noopener external nofollow noreferrer" href="https://kuboard.cn/">https://kuboard.cn/</a>) 这个工具对k8s进行管理。kuboard是一个图像化的k8s管理工具，包括部署、配置、扩容、登入pod等常见操作，都可以在图形化界面下操作，使用很方便。</p>
+<h2 id="项目开发"><a href="#项目开发" class="headerlink" title="项目开发"></a>项目开发</h2><p>一般基于spring initializr创建一个项目就可以。对于常用的日志、监控等各类配置，建议整理一份最佳实践并做一个模板项目。新项目可以基于这个模板项目来创建，可以利用mvn archetype或者类似的工具让这个过程更加顺畅。</p>
+<p>至于一些常用的数据库、缓存等基本代码，感觉spring全家桶已经足够好用了。</p>
+<p>对于code review, 我们可以使用gitlab的webhook, 当代码提交时，自动给项目组的人发通知。</p>
+<h2 id="打包-部署"><a href="#打包-部署" class="headerlink" title="打包&amp;部署"></a>打包&amp;部署</h2><p>对于springboot项目，可以用buildpacks 打成docker镜像，而不用再考虑docker file的细节。具体的buildpacks产品，我们用的是paketo buildpacks, 其他的诸如cloudfoundry,heroku也都差不多，目前没有还研究这些包有什么具体需求。</p>
+<p>接下来，我们仍然可以利用gitlab的webhook, 触发一次jenkins的构建任务。在jenkins的构建任务重，我们可以完成打包和部署到kubernetes测试集群这些操作。</p>
+<h2 id="监控-报警"><a href="#监控-报警" class="headerlink" title="监控&amp;报警"></a>监控&amp;报警</h2><p>推荐使用 prometheus + grafana 套餐即可，关于prometheus的使用，以及在springboot项目下的配置，可以参考我之前的文章  h<a href="https://lichuanyang.top/posts/28288/">ttps://lichuanyang.top/posts/28288/</a>  。</p>
+<p>在k8s上，可以装一个weave cloud agent， 然后就可以配置对prometheus接口进行自动抓取了。</p>
+<p>在grafana里，可以直接写promeql配置监控报表。 另外，grafana官网上，有大量的别人共享出来的图表，可以直接使用。</p>
+<p>在grafana里，也可以配置各种各样自定义规则的报警。如果使用飞书的话，在飞书里配置grafana助手，可以很容易的将飞书作为grafana的报警通道。</p>
+<h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><p>可以使用loki (<a target="_blank" rel="noopener external nofollow noreferrer" href="https://grafana.com/oss/loki/">https://grafana.com/oss/loki/</a>)作为日志收集、查询的工具。loki可以认为是一个轻量级的ELK, 其维护成本会比ELK低很多。</p>
+<h2 id="排查问题"><a href="#排查问题" class="headerlink" title="排查问题"></a>排查问题</h2><p>对于java的项目，使用神器arthas可以解决绝大多数问题排查的需求。对于arthas的接入，可以采用arthas springboot starter这种方式 。而对于k8s上的pod, 如果环境能够和办公环境打通，那可以利用k8s的port forward 功能，将arthas的端口转发到本地来。 当然，这样做的话，务必要控制好权限。</p>
+<h2 id="金丝雀部署"><a href="#金丝雀部署" class="headerlink" title="金丝雀部署"></a>金丝雀部署</h2><p>关于金丝雀部署的作用和实现方式，可以参考我的另一篇文章 <a href="https://lichuanyang.top/posts/30764/">https://lichuanyang.top/posts/30764/</a></p>
+<p>总结一下, 对于运维来说，只需要维护一些诸如gitlab, kuboard, prometheus, grafana, loki之类的基础设施，而且基本都是一些维护较简单的工具。在此基础上，我们辅助以合理的流程和技巧，就能实现一个非常好的开发体验。</p>
+<h2 id="原文地址-https-lichuanyang-top-posts-40964"><a href="#原文地址-https-lichuanyang-top-posts-40964" class="headerlink" title="原文地址: https://lichuanyang.top/posts/40964/"></a>原文地址: <a href="https://lichuanyang.top/posts/40964/">https://lichuanyang.top/posts/40964/</a></h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/40964/">https://lichuanyang.top/posts/40964/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/k8s-kubernetes.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/7774/" title="从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/7774.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID</div></div><div class="info-2"><div class="info-item-1">前些日子读了周志明老师的《凤凰架构》这本书，对于很多方面的技术有了更深的认知，因此打算做一些总结。今天先以讲事务的这一段做个印子，结合书中内容和个人理解，争取将本地事务的相关知识讲个命名白白。如果有讲的不对的地方，欢迎大家多多指正。   所谓事务，就是保证数据库中的数据都是符合期望的，在不断的增删改查中，数据库会不断的从一个正确的状态变化到另一个正确的状态，而不会被外界感知到不“正确”的中间状态。 举个常见的例子，就是在 A有100元，B有100元的状态下，A要给B转账10元，肯定会有A先转出10元，再转给B,这样的中间状态。事务就是，对于用户来说，只能感知到 A100 B100 和 A90 B110 这两个状态，而不会感知到过程中的A90 B100等等奇奇怪怪的状态。 这个介绍，其实也就是事务ACID特性中一致性的概念。ACID这个说法虽然很流行，但A、C、I、D之间其实并不是平等的概念，简单来说，AID是方法，C是目的。也就是说，实现了原子性、持久性、隔离性，也就实现了一致性，也就实现了事务。 接下来，我们就依次看看AID分别要如何实现。 原子性和持久性实现原子性和持久性面临...</div></div></div></a><a class="pagination-related" href="/posts/2345/" title="剧变中的2021-一个中年工程师的年终总结"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/2345.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">剧变中的2021-一个中年工程师的年终总结</div></div><div class="info-2"><div class="info-item-1">2021年对于我个人来说可以说是剧变的一年，原本准备长期发展的，工作舒适度和前景都非常高的工作，因为某些原因突然崩塌。随之而来的，关于未来往哪走，也到了一个重要的岔路口上。至少到目前为止，感觉还是做出了一些正确的选择。对于年初定下的一些个人成长上的目标，也有了不错的进展。所以，我还是带着不错的心情来做这个年终总结的。   职业回顾2021年里，最大的变化还是来自工作，由于所在的行业一夜之间直接在风口上消失，原本在一家公司长期发展的愿望落空，所以我也被迫重新开始了新的职业规划。一个关键的考量点就是要去大公司还是小公司。我在前边为什么说自己走到了一个重要的岔路口上，其实最关键的一点原因就是感觉无论做哪个选择，在这个年龄其实都不会有什么回头路了。大公司和小公司对一个资深员工的能力要求，差别实际上是非常大的。到了这个阶段，不会再有刚毕业那几年随时大小公司左右横跳的机会。 为了做这个决策，我问了自己几个问题。 在大公司，个人能力会比在小公司成长的更快吗？ 在大公司，生活是否会比小公司更舒适？ 我在将来是否还需要一份新大公司经历做背书？ 在大公司能获得更多的经济收入吗？ 经过慎重的考虑，对这...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/55227/" title="kubernetes是什么-实用向教程"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/55227.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-28</div><div class="info-item-2">kubernetes是什么-实用向教程</div></div><div class="info-2"><div class="info-item-1">这篇教程不会关注 kubernetes 的部署、架构、实现方式等内部原理，而是完全从一个使用 kubernetes 的开发人员的视角去介绍kubernetes是什么，从而帮助了解如何更好的去利用 kubernetes 的特性。   基本介绍对于kubernetes是什么，一个比较官方的定义，Kubernetes是一个开源容器编排平台，管理大规模分布式容器化软件应用，简称为k8s. 通俗一些来讲，k8s 的核心理念是以应用为中心，向下屏蔽基础设施的差异，向上通过容器镜像实现应用的标准化，帮助开发人员在仅需关注应用本身，无需考虑部署、容灾、伸缩等运维细节的情况下，开发出大规模、可靠的分布式应用。 优势如上所述，k8s的核心优势就是降低运维成本，让应用开发人员能够专注于应用本身。具体来讲，包括如下几点：  便捷的部署流程和大规模的复制分发能力：应用提供标准化的容器镜像，之后的部署发布流程都可以做到自动化；应用也无需再做更多的事情就可以实现跨平台、跨区域的部署。 服务自愈能力：自动摘除不健康的节点并做恢复。 敏捷的自动伸缩：根据设定的系统负载，做快速的自动伸缩，实现系统处理能力和成本之间...</div></div></div></a><a class="pagination-related" href="/posts/30764/" title="kubernetes环境下做金丝雀发布的一种思路"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/30764.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-23</div><div class="info-item-2">kubernetes环境下做金丝雀发布的一种思路</div></div><div class="info-2"><div class="info-item-1">金丝雀发布其实是一种非常适合在云原生体系下进行的流程，因此相信很多人有在kubernetes下做金丝雀发布的需求。通过本文，我们就介绍一种非常简单的做金丝雀发布的思路。   什么是金丝雀发布首先介绍一下金丝雀发布是什么，金丝雀这个名字，起源是，矿井工人发现，金丝雀对瓦斯气体很敏感，矿工会在下井之前，先放一只金丝雀到井中，如果金丝雀不叫了，就代表瓦斯浓度高。 在系统层面的具体含义就是，发布开始后，先启动一个新版本应用，但是并不直接将流量切过来，而是测试人员对新版本进行线上测试，启动的这个新版本应用，就是我们的金丝雀。在金丝雀上测试没有问题后，再将线上的流量切换到新版本上。 再具体点讲，可以将一个域名映射到两组服务器上，一组是正式的线上环境，另一组就可以是金丝雀环境了。 假如说我们不是用k8s做部署，而是直接部署到多台服务器上的话，金丝雀部署就很简单，任意指定一台或多台机器做金丝雀即可。 而在k8s环境下，由于k8s接管了部署的流程，我们就需要做一些别的事情来实现这个效果。 K8s 环境下的金丝雀发布方案有一种很简单的思路，就是创建两个deployment, 但是通过label关联到...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/30764/">kubernetes环境下做金丝雀发布的一种思路</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/30764/">金丝雀发布和蓝绿部署、滚动更新有什么区别？</a></li><li><a href="https://lichuanyang.top/posts/30764/">这种双 Deployment 方案的流量能精确控制吗？</a></li><li><a href="https://lichuanyang.top/posts/30764/">如果想按用户维度做灰度怎么办？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/42843/">云原生究竟是什么</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/42843/">云原生就是上 Kubernetes 吗？</a></li><li><a href="https://lichuanyang.top/posts/42843/">传统应用有必要迁移到云原生吗？</a></li><li><a href="https://lichuanyang.top/posts/42843/">容器化和虚拟化有什么区别？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/55227/">kubernetes是什么-实用向教程</a><ol class="relatedHowto-steps"><li>安装kubectl：下载并配置kubectl命令行工具，连接到K8s集群</li><li>创建第一个Deployment：编写Deployment YAML，指定镜像、端口和资源限制</li><li>暴露Service：创建Service对象，通过标签选择器关联Pod，暴露访问入口</li><li>水平伸缩：配置HPA，根据CPU或内存使用率自动调整Pod副本数</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/28288/">prometheus教程： 一篇文章讲懂prometheus</a><ol class="relatedHowto-steps"><li>安装和配置 Prometheus</li><li>配置数据采集目标</li><li>编写 PromQL 查询</li><li>对接 Grafana 可视化</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E7%8E%AF%E5%A2%83"><span class="toc-number">1.</span> <span class="toc-text">部署环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91"><span class="toc-number">2.</span> <span class="toc-text">项目开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8C%85-%E9%83%A8%E7%BD%B2"><span class="toc-number">3.</span> <span class="toc-text">打包&amp;部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7-%E6%8A%A5%E8%AD%A6"><span class="toc-number">4.</span> <span class="toc-text">监控&amp;报警</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97"><span class="toc-number">5.</span> <span class="toc-text">日志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%92%E6%9F%A5%E9%97%AE%E9%A2%98"><span class="toc-number">6.</span> <span class="toc-text">排查问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%91%E4%B8%9D%E9%9B%80%E9%83%A8%E7%BD%B2"><span class="toc-number">7.</span> <span class="toc-text">金丝雀部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E6%96%87%E5%9C%B0%E5%9D%80-https-lichuanyang-top-posts-40964"><span class="toc-number">8.</span> <span class="toc-text">原文地址: https://lichuanyang.top/posts/40964/</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

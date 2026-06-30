@@ -1,0 +1,280 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="从 redo log、undo log 到隔离级别，刨根问底讲清楚数据库事务和 ACID 的完整机制。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID">
+<meta property="og:url" content="https://lichuanyang.top/posts/7774/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="从 redo log、undo log 到隔离级别，刨根问底讲清楚数据库事务和 ACID 的完整机制。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/7774.jpg">
+<meta property="article:published_time" content="2022-02-07T08:40:02.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:44:21.592Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="ACID">
+<meta property="article:tag" content="事务隔离级别">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="数据库事务">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/7774.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID",
+  "url": "https://lichuanyang.top/posts/7774/",
+  "image": "https://lichuanyang.top/img/7774.jpg",
+  "abstract": "系统梳理redo log和undo log如何高效实现原子性与持久性，以及不同隔离级别下的加锁策略差异与性能权衡。",
+  "datePublished": "2022-02-07T08:40:02.000Z",
+  "dateModified": "2026-06-27T03:44:21.592Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/7774/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/7774/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/7774/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/7774/">
+<meta name="keywords" content="数据库事务, 数据库, ACID, 事务隔离级别">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"数据库","item":"https://lichuanyang.top/categories/数据库/"},{"@type":"ListItem","position":3,"name":"从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID","item":"https://lichuanyang.top/posts/7774/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/7774.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-02-07T08:40:02.000Z" title="发表于 2022-02-07 16:40:02">2022-02-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T03:44:21.592Z" title="更新于 2026-06-27 11:44:21">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> 系统梳理redo log和undo log如何高效实现原子性与持久性，以及不同隔离级别下的加锁策略差异与性能权衡。</blockquote><p>前些日子读了周志明老师的《凤凰架构》这本书，对于很多方面的技术有了更深的认知，因此打算做一些总结。今天先以讲事务的这一段做个印子，结合书中内容和个人理解，争取将本地事务的相关知识讲个命名白白。如果有讲的不对的地方，欢迎大家多多指正。</p>
+<span id="more"></span>
+
+<p>所谓事务，就是保证数据库中的数据都是符合期望的，在不断的增删改查中，数据库会不断的从一个正确的状态变化到另一个正确的状态，而不会被外界感知到不“正确”的中间状态。</p>
+<p>举个常见的例子，就是在 A有100元，B有100元的状态下，A要给B转账10元，肯定会有A先转出10元，再转给B,这样的中间状态。事务就是，对于用户来说，只能感知到 A100 B100 和 A90 B110 这两个状态，而不会感知到过程中的A90 B100等等奇奇怪怪的状态。</p>
+<p>这个介绍，其实也就是事务ACID特性中一致性的概念。ACID这个说法虽然很流行，但A、C、I、D之间其实并不是平等的概念，简单来说，AID是方法，C是目的。也就是说，实现了原子性、持久性、隔离性，也就实现了一致性，也就实现了事务。</p>
+<p>接下来，我们就依次看看AID分别要如何实现。</p>
+<h2 id="原子性和持久性"><a href="#原子性和持久性" class="headerlink" title="原子性和持久性"></a>原子性和持久性</h2><p>实现原子性和持久性面临的相同问题其实挺多的，所以把它们放在一起介绍。</p>
+<p>先复习一下基本概念，所谓原子性，就是事务内的操作要么都成功，要么都失败；所谓持久性，就是已经完成的操作不会丢失。</p>
+<p>值得说明的是，单纯的“实现原子性和持久性”并不存在任何难度，要讨论的问题其实是“如何更高性能的实现原子性和持久性”，（后面要说的隔离性也是一个概念，只有高性能的隔离性才有意义）。</p>
+<p>其中一个关键点在于，写磁盘是一个非常重的操作，所以通常会存在一个内存缓冲区，要写磁盘的数据会先写到缓冲区里，再择机落盘。那么假如在事务已提交而尚未落盘的这个时间点，系统出现故障，那么这部分未落盘的数据自然就会丢失，数据库也就失去了持久性。针对这个问题，一个很自然的想法就是事务提交的时候强制刷盘。这个方案可不可行？当然是可行的。但它的问题就是会影响性能。系统出故障毕竟是小概率事件，为了处理这个小概率事件，相当于所有操作都要额外付出一些代价。</p>
+<p>实际上为了解决这个问题，一个常规的处理思路就是使用一个commit Log, 也就是在实际写数据之前，先将所有要修改的信息记录在一个log里，如果出现上面描述的问题，系统重启时，会先根据commit log进行数据恢复。而由于写这份log是一个顺序写磁盘的操作，性能会远远好于随机写磁盘，所以这个方式的性能是没有问题的。在数据真正写入之后，再加一个标记，表示这条log已经完成了持久化。</p>
+<p>接下来，我们再看一下commit log是否还有优化空间？自然是有的。Commit log的一个重要缺陷就是所有真实的磁盘操作都必须发生在事务提交之后。假如说这个事务非常大，就会占用很大的内存缓冲区，这也会影响系统的性能。改进方案是 write-ahead log 这个机制，这个机制我在之前的文章(<a href="https://lichuanyang.top/posts/3914/">https://lichuanyang.top/posts/3914/</a>)里也介绍过，和commit log其实非常像，也是先顺序写一个log文件，唯一的区别就是write-ahead log允许在事务提交之前写入。mysql里的redo log，其实就是一个典型的write-ahead log实现。</p>
+<p>讲到这里，我们先暂停一下，回顾一下上面的内容，会发现上边其实基本都在说持久性，原因是对于上边的机制来说，原子性其实都是自然而然的事情，commit log写进去了，这条事务就相当于完成了；commit log没写入，这个事务就相当于不存在。但是使用了write-ahead log的话，情况就不一样了，一个事务会涉及多次磁盘写入，所以也就不满足原子性了。因此，需要引入别的机制来保证原子性，undo log就是实现这个目标的一个典型思路。当变动数据写入磁盘前，必须先记录undo log，注明修改了哪个位置的数据、从什么值改成什么值等，以便在事务回滚或者崩溃恢复时根据undo log对提前写入的数据变动进行擦除。</p>
+<p>像在mysql中，实际上也就是像我们上边讲的那样，利用redo log和undo log实现高效可靠的持久性和原子性。</p>
+<h2 id="隔离性，隔离级别"><a href="#隔离性，隔离级别" class="headerlink" title="隔离性，隔离级别"></a>隔离性，隔离级别</h2><p>如何实现不同事务之间的隔离，一个很自然的思路就是加锁，实际上常规的数据库实现也就是这么做的。一般来说，有这么几种类型的锁：读锁（也叫共享锁），写锁（也叫排他锁），范围锁。</p>
+<p>对于一条数据，只有一个事务能持有写锁；不同的事务可以同时持有读锁，数据被添加读锁后不能再添加写锁, 添加写锁后也不能再添加读锁；范围锁则是对一个范围加写锁，在这个范围内都不能写入数据。</p>
+<p>我们知道，数据库有四种常见的隔离级别：可串行化，可重复读，读已提交，读未提交。其区别其实就是加锁粒度的不同。</p>
+<p>如果我们把所有操作能加的锁都加上，实际上就是串行化的操作了。这种方式隔离性当然很好，但性能就没法说了，所以一般也不会有人使用。</p>
+<p>可重复读则是对涉及到的数据加读锁和写锁，并持有到事务结束，但不会加范围锁。这样就会出现幻读的问题，即一个事务内执行两次范围查询，如果这两次查询之间有新的数据被插入，就会导致两次范围查询的结果不一致。</p>
+<p>读已提交和可重复读的区别是他的读锁会在查询操作结束之后立刻释放掉，这样，在事务执行过程中，已经查询过的数据是可以被其他事务任意修改的，所以也就会有不可重复读的问题。</p>
+<p>读未提交级别下，则完全不会加读锁。这样造成的问题是，由于读操作时不会去申请读锁，所以反而会导致能够读到其他事务上加了写锁的数据，也就会出现脏读的问题。</p>
+<p>其实说到底，隔离性和性能就是一对相互矛盾的需求。加锁加的越多，隔离性自然越好，性能也自然越差。我们需要根据实际的使用场景来决定锁究竟要加到什么程度。</p>
+<p>而另一个思路，则是再看看有没有锁以外的方式，考虑28原则，看看有没有什么办法，牺牲20%的性能去解决80%的问题。具体来讲，涉及隔离性问题的场景，其实可以简化为一个读事务+一个写事务，和两个写事务，这两种场景。大部分场景下，当然是读+写的情况更多，所以我们找个方式去解决读+写场景下的幻读问题。相信很多人已经猜到了，这种方式就是MVCC。关于MVCC, 网上介绍资料实在太多，我们就不再赘述了。</p>
+<p>经过上面对于事务几个特性的介绍，相信大家已经对本地事务有了非常深刻的认识。如有问题，欢迎留言讨论。下一篇文章，我会继续讲一下分布式事务的相关知识，如果感兴趣，可以关注我的个人博客、知乎或者公众号追更~</p>
+<h2 id="原文地址-https-lichuanyang-top-posts-7774"><a href="#原文地址-https-lichuanyang-top-posts-7774" class="headerlink" title="原文地址: https://lichuanyang.top/posts/7774/"></a>原文地址: <a href="https://lichuanyang.top/posts/7774/">https://lichuanyang.top/posts/7774/</a></h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/7774/">https://lichuanyang.top/posts/7774/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/7774.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/27934/" title="SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/27934.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展</div></div><div class="info-2"><div class="info-item-1">本文中，我会介绍一下互联网广告的发展状态，并梳理一下互联网广告的底层逻辑，帮助大家更好的理解这个行业。   什么是广告讲互联网广告，首先要从广告本身是什么开始讲起。只有理解了广告的底层逻辑，才能更好的帮助我们理解在互联网广告中会有什么问题, 为什么会出现广告的程序化交易，adx, ssp, dsp,dmp等等各种各样不同的系统为什么会出现，以及诸如此类的等等问题。 广告这个行业其实自古就有，从远古时代小商小贩的吆喝，各种建筑物上的告示，到纸质报纸、杂志、电视等传统媒体上的广告，再到互联网广告，这个行业总是再随着社会的发展产生它自己的变化。 对于广告，先上一个非常官方、非常标准的定义：广告是由已确定的出资人通过各种媒介进行的有关产品（商品、服务和观点）的，并且通常是有偿的、综合的、劝服性的非人员的信息传播活动。 而更通俗的讲，在广告交易中，核心的参与方有三个：媒体(即供给方，Supply), 广告主（即需求方， Demand），受众（即媒体的用户）。其中，媒体和广告主是主动的参与方，受众则是被动的参与方。而广告实际上就是这三方相互博弈的一个过程。对于广告主来说，希望有更多的受众能看...</div></div></div></a><a class="pagination-related" href="/posts/40964/" title="java项目低学习成本使用kubernetes的实践经验"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/k8s-kubernetes.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">java项目低学习成本使用kubernetes的实践经验</div></div><div class="info-2"><div class="info-item-1">很多创业公司相比于大厂，一个非常重要的劣势就是基础设施不完善，没有各种各样完善的工具。因此，我打算整理一下，基于开源社区提供的能力，如何用尽量小的运维和开发成本，去搭建出一套体验良好的开发流程。   首先，我们理一下整个开发流程中的必备步骤都有哪些，我大概罗列一下，包括项目的创建、开发、code review、部署测试环境、部署灰度和线上环境、查看线上监控、日志、以及排查问题等。 根据这整个流程链条，我们再来理一下为了尽可能的提升开发和运维效率，我们需要把哪些方面保障好，以及这些方面可以有什么低成本的解决方案。 有几个点吧：  快速创建一个项目，并且将必备的web、监控、日志等组件添加好； 提升一些常规的代码开发，比如数据库增删改查的开发效率； 简化打包到部署的流程，测试环境能自动部署更好； 能够给每个服务轻松的加上一整套监控和报警，包括通用的机器、jvm、接口层面的指标，和根据业务自定义的指标； 能有地方集中看各个节点的日志； 必要的时候，可以在线上节点上有强力的工具帮助排查问题。  接下来，我们就看一下这些问题分别怎么解决。 部署环境首先，在本文的标题中，其实已经假定了部署环...</div></div></div></a></nav><hr class="custom-hr"><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/48312/">数据分析的利器-clickhouse介绍</a><ol class="relatedHowto-steps"><li>安装ClickHouse：通过官方仓库安装ClickHouse服务端和客户端</li><li>创建表：使用MergeTree引擎创建列式存储表，指定分区键和排序键</li><li>导入数据：批量导入分析数据，ClickHouse会自动生成新part并异步merge</li><li>编写查询：使用标准SQL进行OLAP分析，充分利用列式存储和向量化执行优势</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%AD%90%E6%80%A7%E5%92%8C%E6%8C%81%E4%B9%85%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">原子性和持久性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%94%E7%A6%BB%E6%80%A7%EF%BC%8C%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-number">2.</span> <span class="toc-text">隔离性，隔离级别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E6%96%87%E5%9C%B0%E5%9D%80-https-lichuanyang-top-posts-7774"><span class="toc-number">3.</span> <span class="toc-text">原文地址: https://lichuanyang.top/posts/7774/</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Running Java Programs from the Command Line by Adding Third-Party Jars to the Classpath | Mobility</title><meta name="author" content="SandGrid"><meta name="copyright" content="SandGrid"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Setting up CLASSPATH via a shell script to include third-party dependencies when running Java programs from the command line.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Running Java Programs from the Command Line by Adding Third-Party Jars to the Classpath">
+<meta property="og:url" content="https://lichuanyang.top/en/posts/65262/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="Setting up CLASSPATH via a shell script to include third-party dependencies when running Java programs from the command line.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://lichuanyang.top/en/img/65262.jpg">
+<meta property="article:published_time" content="2017-05-03T10:42:00.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:51:55.449Z">
+<meta property="article:author" content="SandGrid">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/en/img/65262.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Running Java Programs from the Command Line by Adding Third-Party Jars to the Classpath",
+  "url": "https://lichuanyang.top/en/posts/65262/",
+  "image": "https://lichuanyang.top/en/img/65262.jpg",
+  "abstract": "Introduces a lightweight approach for including third-party JARs when running Java programs from the command line, using shell scripts or -cp parameter to set classpath instead of fat jar packaging.",
+  "datePublished": "2017-05-03T10:42:00.000Z",
+  "dateModified": "2026-06-27T03:51:55.449Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "SandGrid",
+      "url": "https://lichuanyang.top/en/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/en/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/en/posts/65262/"><link rel="preconnect" href="//cdnjs.cloudflare.com"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"/><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"/><meta name="baidu-site-verification" content="code-T8LautTf5f"/><link rel="stylesheet" href="/en/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/en/',
+  algolia: undefined,
+  localSearch: {"path":"/en/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Running Java Programs from the Command Line by Adding Third-Party Jars to the Classpath',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/en/atom.xml" title="Mobility" type="application/atom+xml">
+<meta name="keywords" content="java">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/en/"},{"@type":"ListItem","position":2,"name":"Java","item":"https://lichuanyang.top/en/categories/Java/"},{"@type":"ListItem","position":3,"name":"Running Java Programs from the Command Line by Adding Third-Party Jars to the Classpath","item":"https://lichuanyang.top/en/posts/65262/"}]}</script>
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/65262/"/>
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/65262/"/>
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/65262/"/>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">85</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">128</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/en/img/65262.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/en/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/en/"><span class="site-name">Running Java Programs from the Command Line by Adding Third-Party Jars to the Classpath</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Running Java Programs from the Command Line by Adding Third-Party Jars to the Classpath</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2017-05-03T10:42:00.000Z" title="Created 2017-05-03 18:42:00">2017-05-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-06-27T03:51:55.449Z" title="Updated 2026-06-27 11:51:55">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/en/categories/java/">Java</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">511</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>3mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> Introduces a lightweight approach for including third-party JARs when running Java programs from the command line, using shell scripts or -cp parameter to set classpath instead of fat jar packaging.</blockquote><p>When running a Java program directly from the command line, if you need to include third-party jar packages, the common approach is to use Maven&#x2F;Gradle to build a fat jar (bundling all dependencies). However, in lightweight scenarios — such as writing a small script, doing quick prototype validation, or temporarily running Java code in a CI environment — manually setting the classpath is often more straightforward.</p>
+<span id="more"></span>
+
+<h2 id="What-Is-Classpath"><a href="#What-Is-Classpath" class="headerlink" title="What Is Classpath?"></a>What Is Classpath?</h2><p>Classpath is the search path the JVM uses to locate class files. When you run <code>java com.example.Main</code>, the JVM searches each entry in the classpath for <code>com/example/Main.class</code>.</p>
+<p>By default, the classpath only includes the current directory (<code>.</code>). If your program depends on other jar files, you need to add them to the classpath manually.</p>
+<h2 id="Method-1-Shell-Script-Concatenation"><a href="#Method-1-Shell-Script-Concatenation" class="headerlink" title="Method 1: Shell Script Concatenation"></a>Method 1: Shell Script Concatenation</h2><p>Write a simple startup script that manually concatenates the paths of all dependency jars:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Define CLASSPATH</span></span><br><span class="line">CLASSPATH=your-main.jar:lib/dep1.jar:lib/dep2.jar:<span class="string">&quot;<span class="variable">$CLASSPATH</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Run</span></span><br><span class="line">java -classpath <span class="string">&quot;<span class="variable">$&#123;CLASSPATH&#125;</span>&quot;</span> com.example.Main</span><br></pre></td></tr></table></figure>
+
+<p><strong>A few things to note</strong>:</p>
+<ul>
+<li><strong>Your own main class’s jar must also be included</strong> — this is easy to forget</li>
+<li><strong>Linux&#x2F;macOS use <code>:</code> as the separator</strong>, Windows uses <code>;</code>:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Linux</span></span><br><span class="line">java -classpath <span class="string">&quot;a.jar:b.jar&quot;</span> Main</span><br><span class="line"></span><br><span class="line"><span class="comment"># Windows</span></span><br><span class="line">java -classpath <span class="string">&quot;a.jar;b.jar&quot;</span> Main</span><br></pre></td></tr></table></figure></li>
+<li><strong>Quote paths that contain spaces</strong></li>
+</ul>
+<h2 id="Method-2-Wildcard-Batch-Inclusion"><a href="#Method-2-Wildcard-Batch-Inclusion" class="headerlink" title="Method 2: Wildcard Batch Inclusion"></a>Method 2: Wildcard Batch Inclusion</h2><p>If you have many jars in a <code>lib</code> directory, listing them one by one is tedious. Java 6+ supports wildcards:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -classpath <span class="string">&quot;your-main.jar:lib/*&quot;</span> com.example.Main</span><br></pre></td></tr></table></figure>
+
+<p><code>lib/*</code> automatically matches all <code>.jar</code> files under <code>lib/</code>. <strong>Note</strong>: the wildcard only matches jars, not class files or subdirectories.</p>
+<h2 id="Method-3-Auto-Generate-a-Startup-Script"><a href="#Method-3-Auto-Generate-a-Startup-Script" class="headerlink" title="Method 3: Auto-Generate a Startup Script"></a>Method 3: Auto-Generate a Startup Script</h2><p>If you use Maven, you can use the <code>maven-dependency-plugin</code> to auto-generate the classpath:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-dependency-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span><span class="tag">&lt;<span class="name">goal</span>&gt;</span>build-classpath<span class="tag">&lt;/<span class="name">goal</span>&gt;</span><span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">outputFile</span>&gt;</span>classpath.txt<span class="tag">&lt;/<span class="name">outputFile</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Then read it in your script:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CLASSPATH=$(<span class="built_in">cat</span> target/classpath.txt):target/your-app.jar</span><br><span class="line">java -classpath <span class="string">&quot;<span class="variable">$&#123;CLASSPATH&#125;</span>&quot;</span> com.example.Main</span><br></pre></td></tr></table></figure>
+
+<h2 id="When-to-Use-Manual-Classpath-vs-Fat-Jar"><a href="#When-to-Use-Manual-Classpath-vs-Fat-Jar" class="headerlink" title="When to Use Manual Classpath vs. Fat Jar?"></a>When to Use Manual Classpath vs. Fat Jar?</h2><table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Use Case</th>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Manual classpath</td>
+<td>Quick prototyping, CI scripts, small tools</td>
+<td>Simple, no extra build step</td>
+<td>Easy to get paths wrong</td>
+</tr>
+<tr>
+<td>Fat Jar (Shade&#x2F;Assembly)</td>
+<td>Production deployment</td>
+<td>Single file, runs anywhere</td>
+<td>Slow build, large file</td>
+</tr>
+<tr>
+<td>Docker image</td>
+<td>Modern standard deployment</td>
+<td>Best environment consistency</td>
+<td>Requires Docker</td>
+</tr>
+</tbody></table>
+<p>If you just want to quickly run some Java code on a server to validate an idea, manually putting together the classpath is the fastest way. But for production environments, use a fat jar or Docker image for a more standardized approach.</p>
+<h2 id="Additionally-if-you-need-more-sophisticated-dependency-management-check-out-my-earlier-post-on-building-executable-jars-with-Maven-Shade-Plugin"><a href="#Additionally-if-you-need-more-sophisticated-dependency-management-check-out-my-earlier-post-on-building-executable-jars-with-Maven-Shade-Plugin" class="headerlink" title="Additionally, if you need more sophisticated dependency management, check out my earlier post on building executable jars with Maven Shade Plugin."></a>Additionally, if you need more sophisticated dependency management, check out my earlier post on <a href="/posts/3945/">building executable jars with Maven Shade Plugin</a>.</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en">SandGrid</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en/posts/65262/">https://lichuanyang.top/en/posts/65262/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener external nofollow noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/en/img/65262.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>Subscribe to WeChat</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/upload/qrcode.bmp" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/en/posts/61645/" title="ActiveMQ Plugin Development Guide and Examples"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/61645.jpg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">ActiveMQ Plugin Development Guide and Examples</div></div><div class="info-2"><div class="info-item-1">ActiveMQ provides a plugin development mechanism (http://activemq.apache.org/developing-plugins.html) that allows you to conveniently add various custom functionalities. The effect is similar to directly modifying ActiveMQ’s source code, but using plugins is much better than modifying source code in terms of both convenience and risk. In theory, we can implement almost any functionality imaginable through this approach. Development GuideFirst, you need to add the ActiveMQ dependency to your p...</div></div></div></a><a class="pagination-related" href="/en/posts/2478/" title="Fixing the SecurityException: Invalid Signature File Digest for Manifest Main Attributes in Fat Jars"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/2478.jpg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">Fixing the SecurityException: Invalid Signature File Digest for Manifest Main Attributes in Fat Jars</div></div><div class="info-2"><div class="info-item-1">The ProblemRecently I encountered an error when trying to run a fat jar: 1234567891011121314151617181920Exception in thread &quot;main&quot; java.lang.SecurityException: Invalid signature file digest for Manifest main attributes	at sun.security.util.SignatureFileVerifier.processImpl(SignatureFileVerifier.java:287)	at sun.security.util.SignatureFileVerifier.process(SignatureFileVerifier.java:240)	at java.util.jar.JarVerifier.processEntry(JarVerifier.java:317)	at java.util.jar.JarVerifier.updat...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/en/posts/28720/" title="Comparing Java Lists Without Implementing equals"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/28720.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-04-10</div><div class="info-item-2">Comparing Java Lists Without Implementing equals</div></div><div class="info-2"><div class="info-item-1">Problem StatementIn Java, there are several ways to compare whether two Lists have the same values regardless of order, such as sorting followed by using equals, or executing containsAll in both directions, etc. All of these methods require us to implement the equals and hashCode methods for the element classes in the list. However, there are special cases where it’s not convenient for us to implement the equals method of a class — for example, when it comes from an ancient third-party JAR pa...</div></div></div></a><a class="pagination-related" href="/en/posts/57802/" title="Java Serialization Performance Comparison: kryo&#x2F;protobuf&#x2F;protostuff vs Json"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/57802.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-03-02</div><div class="info-item-2">Java Serialization Performance Comparison: kryo&#x2F;protobuf&#x2F;protostuff vs Json</div></div><div class="info-2"><div class="info-item-1">  Why Compare Serialization SolutionsFor serializing a Java object, I wanted to test the differences in time and space performance between using JSON and using general-purpose serialization tools. For JSON, I chose fastjson. For serialization tools, I used protostuff and kryo. Why not protobuf? Because for an existing Java class with hundreds of properties, creating a matching proto file feels somewhat inhumane. Protostuff is an improved version of protobuf — it can directly serialize a Java ...</div></div></div></a><a class="pagination-related" href="/en/posts/17762/" title="About Apache Camel&#39;s Message Forwarding Efficiency"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/17762.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2015-08-08</div><div class="info-item-2">About Apache Camel&#39;s Message Forwarding Efficiency</div></div><div class="info-2"><div class="info-item-1">Test ScenarioThe company uses ActiveMQ and Camel for message distribution. Previously, the data volume wasn’t very large, so we never really considered efficiency issues, and the research into Camel’s working principles wasn’t deep. However, recently, as the business volume increased, Camel’s efficiency has gradually become a bottleneck, so I got a general understanding of Camel’s working principles based on logs. Although Camel is embedded into ActiveMQ, during the working process, Camel and...</div></div></div></a><a class="pagination-related" href="/en/posts/11299/" title="Embedding Hawtio Monitoring in a Standalone Java Application"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/11299.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-04-01</div><div class="info-item-2">Embedding Hawtio Monitoring in a Standalone Java Application</div></div><div class="info-2"><div class="info-item-1">Hawtio (hawt.io) is an open-source monitoring system that provides multiple startup methods. It can run as a standalone JAR or WAR package and remotely connect to other applications for monitoring, or it can be directly embedded into our own applications.   This article introduces how to embed Hawtio in a standalone Java application, corresponding to the official documentation (http://hawt.io/getstarted/index.html) section “Using hawtio inside a stand alone Java application”. However, that se...</div></div></div></a><a class="pagination-related" href="/en/posts/2478/" title="Fixing the SecurityException: Invalid Signature File Digest for Manifest Main Attributes in Fat Jars"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/2478.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-04-27</div><div class="info-item-2">Fixing the SecurityException: Invalid Signature File Digest for Manifest Main Attributes in Fat Jars</div></div><div class="info-2"><div class="info-item-1">The ProblemRecently I encountered an error when trying to run a fat jar: 1234567891011121314151617181920Exception in thread &quot;main&quot; java.lang.SecurityException: Invalid signature file digest for Manifest main attributes	at sun.security.util.SignatureFileVerifier.processImpl(SignatureFileVerifier.java:287)	at sun.security.util.SignatureFileVerifier.process(SignatureFileVerifier.java:240)	at java.util.jar.JarVerifier.processEntry(JarVerifier.java:317)	at java.util.jar.JarVerifier.updat...</div></div></div></a><a class="pagination-related" href="/en/posts/48104/" title="Java Distributed Lock Practice for Beginners"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/java-distributed-lock.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-02-20</div><div class="info-item-2">Java Distributed Lock Practice for Beginners</div></div><div class="info-2"><div class="info-item-1">This article covers usage only, no theory. Simple and straightforward. A distributed lock is, as the name suggests, a lock for distributed systems, used in scenarios where multiple instances need coordination. For example, if a service is deployed on multiple machines and may operate on the same record in a database, a distributed lock becomes necessary. There are many ways to implement distributed locks. Generally, a lock requires an entity to represent it — when acquiring the lock, this ent...</div></div></div></a></div></div><hr class="custom-hr"/><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/en/posts/9193/">Converting Between Uppercase and Lowercase Using Bitwise Operations</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/en/posts/9193/">Is bitwise case conversion faster than the standard library? Which should I use in daily development?</a></li><li><a href="https://lichuanyang.top/en/posts/9193/">When is it actually worth using bitwise operations for case conversion?</a></li><li><a href="https://lichuanyang.top/en/posts/9193/">What happens when you apply bitwise case conversion to non-letter characters?</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/en/posts/43947/">Vaadin Framework Tutorial: A Frontend Development Guide for Java Engineers</a><ol class="relatedHowto-steps"><li>Environment Setup</li><li>Create First Vaadin Project</li><li>Write UI Components</li><li>Data Binding</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/en/posts/42764/">Dynamically Adding Appenders to Log4j</a><ol class="relatedHowto-steps"><li>Identify the Requirement</li><li>Create Appender Instance</li><li>Configure Parameters</li><li>Activate and Add to Logger</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comments</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">SandGrid</div><div class="author-info-description">Mobility | Expanding life's choices</div><div class="site-data"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">85</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">128</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="Zhihu"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Backend Dev | Architecture | AI Practice<br>Expanding choices through code</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-Is-Classpath"><span class="toc-number">1.</span> <span class="toc-text">What Is Classpath?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Method-1-Shell-Script-Concatenation"><span class="toc-number">2.</span> <span class="toc-text">Method 1: Shell Script Concatenation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Method-2-Wildcard-Batch-Inclusion"><span class="toc-number">3.</span> <span class="toc-text">Method 2: Wildcard Batch Inclusion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Method-3-Auto-Generate-a-Startup-Script"><span class="toc-number">4.</span> <span class="toc-text">Method 3: Auto-Generate a Startup Script</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#When-to-Use-Manual-Classpath-vs-Fat-Jar"><span class="toc-number">5.</span> <span class="toc-text">When to Use Manual Classpath vs. Fat Jar?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Additionally-if-you-need-more-sophisticated-dependency-management-check-out-my-earlier-post-on-building-executable-jars-with-Maven-Shade-Plugin"><span class="toc-number">6.</span> <span class="toc-text">Additionally, if you need more sophisticated dependency management, check out my earlier post on building executable jars with Maven Shade Plugin.</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/en/posts/18804/" title="Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub">Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub</a><time datetime="2026-06-26T08:18:13.000Z" title="Created 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/22470/" title="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/22470.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos"/></a><div class="content"><a class="title" href="/en/posts/22470/" title="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos">Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos</a><time datetime="2026-06-16T05:21:16.000Z" title="Created 2026-06-16 13:21:16">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/65500/" title="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/65500.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0"/></a><div class="content"><a class="title" href="/en/posts/65500/" title="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0">Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0</a><time datetime="2026-06-11T14:00:00.000Z" title="Created 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/26061.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"/></a><div class="content"><a class="title" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow">How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow</a><time datetime="2026-06-04T14:00:00.000Z" title="Created 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="How to Farm Free Tokens: Building Agent-Independent AI Workflows"/></a><div class="content"><a class="title" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows">How to Farm Free Tokens: Building Agent-Independent AI Workflows</a><time datetime="2026-06-03T14:00:00.000Z" title="Created 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By SandGrid</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">Sub-sites: <a target="_blank" rel="noopener external nofollow noreferrer" href='https://video.lichuanyang.top/'>AI Video Generator</a> &middot; <a target="_blank" rel="noopener external nofollow noreferrer" href='https://math.lichuanyang.top/'>Math Practice</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll to Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/en/js/utils.js?v=5.5.4"></script><script src="/en/js/main.js?v=5.5.4"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script>if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://dummyjson.com/quotes/random").then(e=>e.json()).then(t=>{e.innerHTML="“"+t.quote+"” — "+t.author}).catch(()=>{})}</script><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/en/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

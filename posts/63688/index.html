@@ -1,0 +1,274 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>通过mysql批量操作不生效问题聊聊java里mysql的batch | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="分析 Java 中 MySQL 批量操作不生效的常见原因，排查 batch 性能异常的完整思路。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过mysql批量操作不生效问题聊聊java里mysql的batch">
+<meta property="og:url" content="https://lichuanyang.top/posts/63688/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="分析 Java 中 MySQL 批量操作不生效的常见原因，排查 batch 性能异常的完整思路。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/63688.jpg">
+<meta property="article:published_time" content="2020-03-13T09:54:38.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:46:06.802Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="batch不生效">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/63688.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "通过mysql批量操作不生效问题聊聊java里mysql的batch",
+  "url": "https://lichuanyang.top/posts/63688/",
+  "image": "https://lichuanyang.top/img/63688.jpg",
+  "abstract": "排查Java中MySQL批量操作不生效的原因，深入分析JDBC驱动rewriteBatchedStatements参数，解决batch性能退化为逐条执行的常见问题。",
+  "datePublished": "2020-03-13T09:54:38.000Z",
+  "dateModified": "2026-06-27T03:46:06.802Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/63688/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '通过mysql批量操作不生效问题聊聊java里mysql的batch',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/63688/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/63688/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/63688/">
+<meta name="keywords" content="java, mysql, batch不生效">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"数据库","item":"https://lichuanyang.top/categories/数据库/"},{"@type":"ListItem","position":3,"name":"通过mysql批量操作不生效问题聊聊java里mysql的batch","item":"https://lichuanyang.top/posts/63688/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/63688.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">通过mysql批量操作不生效问题聊聊java里mysql的batch</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">通过mysql批量操作不生效问题聊聊java里mysql的batch</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-03-13T09:54:38.000Z" title="发表于 2020-03-13 17:54:38">2020-03-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T03:46:06.802Z" title="更新于 2026-06-27 11:46:06">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">586</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> 排查Java中MySQL批量操作不生效的原因，深入分析JDBC驱动rewriteBatchedStatements参数，解决batch性能退化为逐条执行的常见问题。</blockquote><p>众所周知，对于mysql，使用批量操作，可以大幅度提升大数据量下操作的性能。不过，在java中使用mysql时，有些细节务必注意，否则就会导致batch操作不生效，也就享受不到批量操作的性能了。</p>
+<span id="more"></span>
+
+<h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><p>前阵子，发现一条sql的性能明细不正常，几千条数据批量insert，耗时居然到了秒级。排除了服务器性能、网络的问题后，开始怀疑是代码的问题，导致batch操作没有真正生效，感觉只有一条一条去跟数据库交互的话才会出现这种性能。</p>
+<h2 id="MySQL-JDBC-Batch-原理"><a href="#MySQL-JDBC-Batch-原理" class="headerlink" title="MySQL JDBC Batch 原理"></a>MySQL JDBC Batch 原理</h2><p>调了一下代码，翻到了mysql-connector里，关键的代码是这么一块：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="built_in">this</span>.batchHasPlainStatements &amp;&amp; <span class="built_in">this</span>.connection.getRewriteBatchedStatements()) {</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (canRewriteAsMultiValueInsertAtSqlLevel()) {</span><br><span class="line">                        <span class="keyword">return</span> executeBatchedInserts(batchTimeout);</span><br><span class="line">                    }</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (<span class="built_in">this</span>.connection.versionMeetsMinimum(<span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>) &amp;&amp; !<span class="built_in">this</span>.batchHasPlainStatements &amp;&amp; <span class="built_in">this</span>.batchedArgs != <span class="literal">null</span></span><br><span class="line">                            &amp;&amp; <span class="built_in">this</span>.batchedArgs.size() &gt; <span class="number">3</span> <span class="comment">/* cost of option setting rt-wise */</span>) {</span><br><span class="line">                        <span class="keyword">return</span> executePreparedBatchAsMultiStatement(batchTimeout);</span><br><span class="line">                    }</span><br><span class="line">                }</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> executeBatchSerially(batchTimeout);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>可以看到有executeBatchedInserts和executeBatchSerially两个分支，如果执行到executeBatchSerially的话，其实就是执行了个“假的”batch, 在这个方法里会每条数据单独去跟mysql交互。</p>
+<h2 id="为什么-batch-没生效"><a href="#为什么-batch-没生效" class="headerlink" title="为什么 batch 没生效"></a>为什么 batch 没生效</h2><p>为了能顺利的执行进executeBatchedInserts， 可以看到有一些先决条件：batchHasPlainStatements， connection.getRewriteBatchedStatements()， canRewriteAsMultiValueInsertAtSqlLevel。</p>
+<p>事实上，为了能顺利的执行批量sql, mysql的驱动会对sql做一次“改写（rewrite）”，这个改写是什么意思呢？其实很简单，比如本来有一堆sql:</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert into</span> () <span class="keyword">values</span>()</span><br><span class="line"><span class="keyword">insert into</span> () <span class="keyword">values</span>()</span><br><span class="line">...</span><br><span class="line"><span class="keyword">insert into</span> () <span class="keyword">values</span>()</span><br></pre></td></tr></tbody></table></figure>
+
+<p>改写完之后，变成了这样:</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert into</span> () <span class="keyword">values</span> () () ()</span><br></pre></td></tr></tbody></table></figure>
+
+<p>变成了一条sql, 当然就是与mysql交互一次了。</p>
+<p>成功rewrite后，才能批量执行sql。上边的几个条件也基本都是为了能让sql进行改写。这里边关键的其实就是两个点，一是数据库连接层面，需要配置rewriteBatchedStatements=true， 允许对sql进行改写。第二是sql层面，得要求这个sql能被改写。我们知道，mysql有这样一种语法:</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert into</span> () <span class="keyword">set</span> x<span class="operator">=</span>x,y<span class="operator">=</span>y</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这种语法本身不属于sql标准，是mysql的“方言”，也是没有批量操作的形式的。因此，如果把sql写成这种形式，就不然没法执行真正的批量操作了。</p>
+<h2 id="原文地址-https-lichuanyang-top-posts-63688"><a href="#原文地址-https-lichuanyang-top-posts-63688" class="headerlink" title="原文地址: https://lichuanyang.top/posts/63688/"></a>原文地址: <a href="https://lichuanyang.top/posts/63688/">https://lichuanyang.top/posts/63688/</a></h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/63688/">https://lichuanyang.top/posts/63688/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/63688.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/27398/" title="聊聊程序员的职业生涯，我对程序员这个职业的理解"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/27398.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">聊聊程序员的职业生涯，我对程序员这个职业的理解</div></div><div class="info-2"><div class="info-item-1">工作这些年来，一直在思考着程序员这个职业究竟是在做什么，随着经验增多，其实也一直在刷新着认知。现在写这篇文章，一方面是为了分享，另一方面也是想留下一份记录，过两年再回头来看看自己的认知又有了什么更新。   程序员职业的本质我想从两个方面来说。一是从做的事儿上，在我看来，程序员的工作就是发现问题、分析问题、解决问题三类。事实上，世界上绝大多数工作都可以囊括进这三类事中。二是从能力上来看，我把能力分为两种：对现实世界的认知能力，和将现实世界映射成程序语言的能力。 对于三种类型的事，按发现问题，分析问题，解决问题的顺序，是从宏观到细节的区别，平时做的事，肯定是以解决问题为主，各种琐碎的事，也都是在解决问题。发现问题和分析问题对人的思维深度会有更高的要求，不过对于工作来说，我倒并不觉得这三类事有什么高下之分。如果对确定的问题，总能给出恰当的解决方案，这也是职场上非常硬核的核心竞争力。而对于两类能力，一般还是更关注第二种。但是我觉得对现实世界的认知能力，对于程序员的职业发展是非常重要的。就像抠业务，抠CRUD这事，有门槛吗?我觉得是有的，至少把业务做的很好门槛非常高。有些人总是以非常奇特的...</div></div></div></a><a class="pagination-related" href="/posts/695/" title="【实践经验】单元测试怎么写"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/695.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">【实践经验】单元测试怎么写</div></div><div class="info-2"><div class="info-item-1">之前一段时间，在尝试完善项目的单元测试，做起来才发现，其实自己对于单元测试该怎么写一直没有特别清晰的认识，因此查了一些资料, 查的过程中发现，其实每个人的看法都不尽相同。每阅读一篇文章，都是对自己认知的一次更新。本文就是结合前人的看法，和自己的实践经验，总结出一些我自己当前认知状态下认为正确的东西，分享给大家。估计也不会是最正确的，也欢迎大家留言讨论。  先说一下我们写单元测试的目的，这个是下边所有讨论的基础。单元测试的意义应当在于保障修改代码的时候，保障存量代码的正确性。也就是说，修改代码后，执行一遍已有的测试用例，能执行的话就代表之前的逻辑依然是可用的。 下面就具体列一下个人认为写单元测试应当遵守的准侧。 避免对环境的依赖单元测试不应当依赖于环境，包括对网络、db、io、数据、外部接口等的依赖。这一点应该争议不大，因为单元测试会有很多的执行场景，比如开发人员手动触发、提交代码时自动触发、打包时自动触发等，如果单元测试不能解除对环境的依赖，它的执行场景就会大大受限。 实现这一点，需要借助很多工具，例如内存数据库、redis的内嵌server, mock等待，势必会给写单元测试这...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/4433/" title="java日志系统简介: 从tomcat大量打印debug日志说起"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/4433.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-03-31</div><div class="info-item-2">java日志系统简介: 从tomcat大量打印debug日志说起</div></div><div class="info-2"><div class="info-item-1">Java 的日志框架生态可能是所有编程语言中最复杂的——不是因为它功能多复杂，而是历史原因导致了多套体系的并存和交叉。本文从一个真实的线上排查案例出发，理清 Java 日志框架的体系结构。   Java 日志体系架构目前 Java 下最主流的两套日志体系是 Log4j 和 SLF4J + Logback。 日志门面 vs 日志实现理解这个区分是搞懂 Java 日志生态的关键：    类型 角色 例子    日志门面（Facade） 只定义接口，不提供具体实现 SLF4J、Commons Logging（JCL）   日志实现 真正的日志写入逻辑 Logback、Log4j 1.x、Log4j 2、java.util.logging（JUL）   SLF4J + Logback 是典型的门面+实现分离架构：SLF4J 只包含接口（LoggerFactory、Logger），Logback 是具体实现。分离的好处是代码只依赖 SLF4J 接口，实现可以随时替换。 Log4j 1.x 则同时包含接口和实现——代码直接用 org.apache.log4j.Logger。 桥接器正是因为有...</div></div></div></a><a class="pagination-related" href="/posts/3945/" title="使用maven shade plugin 打可执行Jar包"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/3945.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-05-14</div><div class="info-item-2">使用maven shade plugin 打可执行Jar包</div></div><div class="info-2"><div class="info-item-1">Fat Jar 是什么eclipse里有一个功能叫做“打可执行(runnable) jar包”, 用这个功能可以把一个工程自身和所有依赖包打成一个fat jar，并且指定Main方法，这样直接使用java jar xxx.jar就可以运行代码了。 Maven Shade Plugin 配置但是在不使用eclipse的时候呢？其实，借助maven，我们很容易实现同样功能。maven提供了一个shade plugin,可以用来打fat jar, 同时也提供了指定main方法的功能。 12345678910111213141516171819202122232425262728&lt;project&gt;  ...  &lt;build&gt;    &lt;plugins&gt;      &lt;plugin&gt;        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;        &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;        ...</div></div></div></a><a class="pagination-related" href="/posts/5707/" title="java线程池：获取运行线程数并控制线程启动速度"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/5707.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-05-26</div><div class="info-item-2">java线程池：获取运行线程数并控制线程启动速度</div></div><div class="info-2"><div class="info-item-1">Java 的线程池用起来很方便——Executors.newFixedThreadPool(n) 一行代码搞定。但如果任务提交速度远快于执行速度，任务会在无界队列中无限堆积，最终导致 OOM。今天分享一个真实案例和几种解决方案。   问题场景假设你有一个批量处理任务：遍历一个目录下的 100 万个文件，每个文件提交一个任务去处理。每个任务需要加载一些数据到内存。 123456789ExecutorService executor = Executors.newFixedThreadPool(10);for (File file : files) {    executor.submit(() -&gt; {        // 这个任务占用大量内存        byte[] data = loadFileContent(file);        process(data);    });}  问题在于：Executors.newFixedThreadPool 使用的是无界队列（LinkedBlockingQueue），任务提交速度远大于...</div></div></div></a><a class="pagination-related" href="/posts/2478/" title="解决fatjar的 &quot;java.lang.SecurityException: Invalid signature file digest for Manifest main attributes&quot; 问题"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/2478.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-04-27</div><div class="info-item-2">解决fatjar的 "java.lang.SecurityException: Invalid signature file digest for Manifest main attributes" 问题</div></div><div class="info-2"><div class="info-item-1">问题现象最近试图运行一个fatjar的时候报错： 1234567891011121314151617181920Exception in thread "main" java.lang.SecurityException: Invalid signature file digest for Manifest main attributes	at sun.security.util.SignatureFileVerifier.processImpl(SignatureFileVerifier.java:287)	at sun.security.util.SignatureFileVerifier.process(SignatureFileVerifier.java:240)	at java.util.jar.JarVerifier.processEntry(JarVerifier.java:317)	at java.util.jar.JarVerifier.update(JarVerifier.java:228)	at java.util.jar.JarFile...</div></div></div></a><a class="pagination-related" href="/posts/57802/" title="Java kryo/protobuf/protostuff序列化 or Json 性能对比"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/57802.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-03-02</div><div class="info-item-2">Java kryo/protobuf/protostuff序列化 or Json 性能对比</div></div><div class="info-2"><div class="info-item-1">  为什么需要序列化方案对比对于一个java object的序列化，想测一下使用json和使用一般序列化工具，在时间性能、空间性能上的区别。 json选择用fastjson. 序列化工具使用了protostuff和kyro. 为什么不用protobuf呢？因为感觉对于一个已有的上百个属性的java class来说，再去新建一个匹配的proto文件有点反人类。protostuff是protobuf的改良版本，可以直接将一个java object进行序列化，使用方法与kyro有点类似，没有protobuf那么多中间过程。其他的，hession, java自带序列化之类的，据说性能比kryo和protobuf差很多，就不测了。 时间性能对比简单测了一下，发现差距还挺明显的，所以感觉也不需要做具体的评测了。把日志截一段发出来，大家感受下。 fastjson serilise cost &lt;span class="hljs-number"&gt;555805&lt;/span&gt;  &lt;span class="hljs-built_in"...</div></div></div></a><a class="pagination-related" href="/posts/65262/" title="通过加入classpath的形式实现命令行运行java程序时引入第三方jar包"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65262.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-05-03</div><div class="info-item-2">通过加入classpath的形式实现命令行运行java程序时引入第三方jar包</div></div><div class="info-2"><div class="info-item-1">在命令行直接运行 Java 程序时，如果需要引入第三方 jar 包，通常的做法是用 Maven/Gradle 打一个 fat jar（把依赖全部打包进去）。但在某些轻量场景下——比如写了一个小脚本、做快速原型验证、或者在 CI 环境中临时跑一段 Java 代码——手动设置 classpath 反而更直接。   Classpath 是什么？Classpath 是 JVM 查找类文件的搜索路径。当你写 java com.example.Main 的时候，JVM 会在 classpath 中逐条路径搜索 com/example/Main.class。 默认情况下，classpath 只包含当前目录（.）。如果程序依赖了其他 jar 包，就需要手动把它们加到 classpath 中。 方法一：Shell 脚本拼接写一个简单的启动脚本，手动拼接所有依赖 jar 的路径： 1234567#!/bin/bash# 定义 CLASSPATHCLASSPATH=your-main.jar:lib/dep1.jar:lib/dep2.jar:"$CLASSPATH"# ...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/4433/">java日志系统简介: 从tomcat大量打印debug日志说起</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/4433/">SLF4J 如何选择日志实现？有多个实现共存时会怎样？</a></li><li><a href="https://lichuanyang.top/posts/4433/">桥接器方向搞反了会有什么后果？slf4j-log4j12 和 log4j-over-slf4j 能同时用吗？</a></li><li><a href="https://lichuanyang.top/posts/4433/">2026 年推荐的 Java 日志组合是什么？Log4j 2 相比 Logback 有什么优势？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/48312/">数据分析的利器-clickhouse介绍</a><ol class="relatedHowto-steps"><li>安装ClickHouse：通过官方仓库安装ClickHouse服务端和客户端</li><li>创建表：使用MergeTree引擎创建列式存储表，指定分区键和排序键</li><li>导入数据：批量导入分析数据，ClickHouse会自动生成新part并异步merge</li><li>编写查询：使用标准SQL进行OLAP分析，充分利用列式存储和向量化执行优势</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/43947/">Vaadin框架教程：Java工程师的前端开发秘籍</a><ol class="relatedHowto-steps"><li>环境准备</li><li>创建第一个Vaadin项目</li><li>编写UI组件</li><li>数据绑定</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E7%8E%B0%E8%B1%A1"><span class="toc-number">1.</span> <span class="toc-text">问题现象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL-JDBC-Batch-%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">MySQL JDBC Batch 原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-batch-%E6%B2%A1%E7%94%9F%E6%95%88"><span class="toc-number">3.</span> <span class="toc-text">为什么 batch 没生效</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E6%96%87%E5%9C%B0%E5%9D%80-https-lichuanyang-top-posts-63688"><span class="toc-number">4.</span> <span class="toc-text">原文地址: https://lichuanyang.top/posts/63688/</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

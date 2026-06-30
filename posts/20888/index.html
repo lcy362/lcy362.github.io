@@ -1,0 +1,279 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>RPC接口将所有输入输出封装成类是合理设计吗 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="深入分析 RPC 接口设计中将输入输出封装成 request/response 类的做法，探讨何时应该封装、何时过度设计。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RPC接口将所有输入输出封装成类是合理设计吗">
+<meta property="og:url" content="https://lichuanyang.top/posts/20888/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="深入分析 RPC 接口设计中将输入输出封装成 request/response 类的做法，探讨何时应该封装、何时过度设计。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/20888.jpg">
+<meta property="article:published_time" content="2021-03-16T10:34:56.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:44:21.597Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="设计模式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/20888.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "RPC接口将所有输入输出封装成类是合理设计吗",
+  "url": "https://lichuanyang.top/posts/20888/",
+  "image": "https://lichuanyang.top/img/20888.jpg",
+  "abstract": "RPC接口输入参数过多时封装成request类是合理设计，但参数少时盲目封装会破坏接口语义、降低代码可读性，需按场景慎重选择。",
+  "datePublished": "2021-03-16T10:34:56.000Z",
+  "dateModified": "2026-06-27T03:44:21.597Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/20888/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'RPC接口将所有输入输出封装成类是合理设计吗',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"什么时候该把 RPC 输入/输出封装成 request/response 类？","acceptedAnswer":{"@type":"Answer","text":"什么时候该把 RPC 输入/输出封装成 request/response 类？"}},{"@type":"Question","name":"RPC 返回值加统一状态码和接口隔离原则冲突吗？","acceptedAnswer":{"@type":"Answer","text":"看情况。接口隔离原则（Clients should not be forced to depend upon interfaces that they do not use）的核心是不要让调用方依赖它不需要的东西。如果调用方确实需要知道失败原因（如支付接口需要区分余额不足&#x2F;风控拦截&#x2F;网络超时），统一状态码是合理的；但如果调用方只需要”查到&#x2F;查不到”的结果，强迫它处理状态码就违反了接口隔离原则。关键在于：异常原因是值得对外提供的信息，还是内部实现细节？ 先回答这个问题，再决定 response 的封装方式。 Q: 业界对 RPC 接口设计的普遍实践是什么？业界没有”绝对正确的标准”，不同场景有不同选择。Google 的 gRPC&#x2F;labcorn一直采用单 request + 单 response 消息的模式，这与其 ProtoBuf 的 IDL 驱动、跨语言代码生成、强类型校验的定位一致。而更轻量的内部 RPC（如早期的 Dubbo 接口）则倾向于直接传参以保持简洁。好的实践是根据参数数量和调用方需求做判断，而不是一刀切：参数少且语义清晰的接口直接"}},{"@type":"Question","name":"业界对 RPC 接口设计的普遍实践是什么？","acceptedAnswer":{"@type":"Answer","text":"业界没有”绝对正确的标准”，不同场景有不同选择。Google 的 gRPC&#x2F;labcorn一直采用单 request + 单 response 消息的模式，这与其 ProtoBuf 的 IDL 驱动、跨语言代码生成、强类型校验的定位一致。而更轻量的内部 RPC（如早期的 Dubbo 接口）则倾向于直接传参以保持简洁。好的实践是根据参数数量和调用方需求做判断，而不是一刀切：参数少且语义清晰的接口直接传参；参数多或需要兼容性管理的接口适度封装。 Q: 封装 request 类后如何避免语义不明确的问题？文中指出，封装后的最大问题是接口签名不再”自解释”——你无法从 query(Request request) 知道需要传什么。解决方案：1) 必须配合文档和注释说明 request 中各字段的必填&#x2F;选填&#x2F;互斥关系；2) 定义合法的字段组合，并在 request 类上做校验；3) 对升级方案做明确约定（哪些字段新增是非必填兼容的，哪些是破坏性变更需要新接口版本）；4) 如果参数不多，就不要封装——保持简单是最好的文档。文章作者: 流沙"}},{"@type":"Question","name":"封装 request 类后如何避免语义不明确的问题？","acceptedAnswer":{"@type":"Answer","text":"文中指出，封装后的最大问题是接口签名不再”自解释”——你无法从 query(Request request) 知道需要传什么。解决方案：1) 必须配合文档和注释说明 request 中各字段的必填&#x2F;选填&#x2F;互斥关系；2) 定义合法的字段组合，并在 request 类上做校验；3) 对升级方案做明确约定（哪些字段新增是非必填兼容的，哪些是破坏性变更需要新接口版本）；4) 如果参数不多，就不要封装——保持简单是最好的文档。文章作者: 流沙"}}]}</script>
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/20888/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/20888/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/20888/">
+<meta name="keywords" content="设计模式">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"架构设计","item":"https://lichuanyang.top/categories/架构设计/"},{"@type":"ListItem","position":3,"name":"RPC接口将所有输入输出封装成类是合理设计吗","item":"https://lichuanyang.top/posts/20888/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/20888.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">RPC接口将所有输入输出封装成类是合理设计吗</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">RPC接口将所有输入输出封装成类是合理设计吗</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-03-16T10:34:56.000Z" title="发表于 2021-03-16 18:34:56">2021-03-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T03:44:21.597Z" title="更新于 2026-06-27 11:44:21">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">架构设计</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> RPC接口输入参数过多时封装成request类是合理设计，但参数少时盲目封装会破坏接口语义、降低代码可读性，需按场景慎重选择。</blockquote><h2 id="问题的提出"><a href="#问题的提出" class="headerlink" title="问题的提出"></a>问题的提出</h2><p>关于rpc接口的输入和输出，一直有一种观点是将输入和输出都包装成单个request和response类。本文，我们就分析一下这种方式是否是一个合理的设计。</p>
+<!--- more -->
+
+<h2 id="输入参数封装分析"><a href="#输入参数封装分析" class="headerlink" title="输入参数封装分析"></a>输入参数封装分析</h2><p>先说输入, 这个我先说结论，当且仅当输入参数过多时，才应该做封装。其他情况下完全没有做封装的理由。</p>
+<p>对于将输入参数包装成request类的理由，无非是下边这些</p>
+<ul>
+<li>修改接口参数时保持兼容性</li>
+<li>可以定义通用的抽象request类，方便做统一管理</li>
+</ul>
+<p>首先，第一条完全就是个伪命题，第一次看到这种论断的时候，我也差一点被绕进去，但是仔细思考一下，就会发现这个完全不成立。</p>
+<p>即便使用request体的形式，如果接口提供方增加了必传的字段，调用方仍然需要增加这个参数才能调用，那相比于直接传参数，没有解决任何问题。而这种问题实际上也是无法解决的，因为就不应该让这种情况出现。接口提供方有义务保证后续的修改是向前兼容的。而对于增加的是非必传字段这种情况，即便不包装request类，也可以通过适配器的形式实现新接口并兼容老接口，后续再找机会异步的将老接口下线。</p>
+<p>第二条的话，确实存在一定意义。</p>
+<ul>
+<li>比如在抽象类里加一些统一的请求参数，这一点我认为做在框架里更合适，没有必要暴露在业务代码中</li>
+<li>再比如添加统一的参数校验，但是单纯为这种效果的话，我觉得用一个过于抽象的类是不合适的，而是应当一类相关的业务用一个抽象类，因为一类业务才会有这种需求。同时，即便不包装成request类，这类需求也没什么难做的，因为它的难度本身就不在输入结构不统一上。</li>
+</ul>
+<p>而将输入参数包装成request类的最大问题就是会破坏代码的可读性，会造成语义不明确。本身类似 queryById(long id) 这么一个方法的语义是非常明确的，扫一眼接口定义就可以看清楚输入输出。但是强行封装之后，这个接口究竟要输入什么就不是那么明确了。同时，如果request中有三个参数，是否传入任意组合都能返回结果呢？这也是靠看接口看不明白的。而正常的用参数定义的话，可以使用适配器的形式定义一系列接口，接口调用方也更容易理解。</p>
+<p>封装输入参数的唯一条件就是传入参数过多，这时候需要通过其他的方式，比如注释、文档，去约定接口的合法输入值和升级方案。</p>
+<h2 id="输出结果封装分析"><a href="#输出结果封装分析" class="headerlink" title="输出结果封装分析"></a>输出结果封装分析</h2><p>接下来说输出，将输出结果封装成一个response体，相对于封装输入参数，会合理一些，但也不能乱用。一般将输出结果封装的目的就是包一层返回状态码。</p>
+<h2 id="接口隔离原则的视角"><a href="#接口隔离原则的视角" class="headerlink" title="接口隔离原则的视角"></a>接口隔离原则的视角</h2><p>这一点实质上就是强迫调用方来了解接口的异常情况。我们知道，基本的设计原则中有一条叫「接口隔离原则」，其具体描述是 Clients should not be forced to depend upon interfaces that they do not use。对于这儿的情况要类似，如果调用方确实不关心请求成功或者失败的原因，那就不应该强迫调用方来了解这个。比如我就是要查个数，只存在查到或者查不到两种情况，并不想关心到底为什么没查到。</p>
+<p>所以，在设计接口的时候，需要慎重的考虑接口的异常原因是否是一个应当提供出去的信息，在此基础上，才能说保障response合适或者不合适。</p>
+<h2 id="结论与建议"><a href="#结论与建议" class="headerlink" title="结论与建议"></a>结论与建议</h2><p>综上所述，盲目的一味去封装所有输入和输出参数，一定是不可取的。对于何时应该做封装，何时不应该，务必要做慎重的考虑。大家有什么想法的话，也可以跟我沟通。</p>
+<p>原文地址：<a href="https://lichuanyang.top/posts/20888/">https://lichuanyang.top/posts/20888/</a></p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="Q-什么时候该把-RPC-输入-输出封装成-request-response-类？"><a href="#Q-什么时候该把-RPC-输入-输出封装成-request-response-类？" class="headerlink" title="Q: 什么时候该把 RPC 输入/输出封装成 request/response 类？"></a>Q: 什么时候该把 RPC 输入/输出封装成 request/response 类？</h3><p>输入参数：<strong>当且仅当参数过多时</strong>才应该封装。如果参数少（如 <code>queryById(long id)</code> 只有一个参数），封装成 request 类反而破坏可读性——你不能一眼看出接口需要什么参数，也无法从接口签名判断传入哪些组合是合法的。输出结果：封装的目的是<strong>包一层返回状态码</strong>，但需要慎重——如果调用方并不关心失败原因（只关心查到/查不到），就不该强迫调用方处理这层状态码。</p>
+<h3 id="Q-RPC-返回值加统一状态码和接口隔离原则冲突吗？"><a href="#Q-RPC-返回值加统一状态码和接口隔离原则冲突吗？" class="headerlink" title="Q: RPC 返回值加统一状态码和接口隔离原则冲突吗？"></a>Q: RPC 返回值加统一状态码和接口隔离原则冲突吗？</h3><p>看情况。<strong>接口隔离原则</strong>（Clients should not be forced to depend upon interfaces that they do not use）的核心是不要让调用方依赖它不需要的东西。如果调用方确实需要知道失败原因（如支付接口需要区分余额不足/风控拦截/网络超时），统一状态码是合理的；但如果调用方只需要”查到/查不到”的结果，强迫它处理状态码就违反了接口隔离原则。关键在于：<strong>异常原因是值得对外提供的信息，还是内部实现细节？</strong> 先回答这个问题，再决定 response 的封装方式。</p>
+<h3 id="Q-业界对-RPC-接口设计的普遍实践是什么？"><a href="#Q-业界对-RPC-接口设计的普遍实践是什么？" class="headerlink" title="Q: 业界对 RPC 接口设计的普遍实践是什么？"></a>Q: 业界对 RPC 接口设计的普遍实践是什么？</h3><p>业界没有”绝对正确的标准”，不同场景有不同选择。Google 的 gRPC/labcorn一直采用单 request + 单 response 消息的模式，这与其 ProtoBuf 的 IDL 驱动、跨语言代码生成、强类型校验的定位一致。而更轻量的内部 RPC（如早期的 Dubbo 接口）则倾向于直接传参以保持简洁。好的实践是<strong>根据参数数量和调用方需求做判断</strong>，而不是一刀切：参数少且语义清晰的接口直接传参；参数多或需要兼容性管理的接口适度封装。</p>
+<h3 id="Q-封装-request-类后如何避免语义不明确的问题？"><a href="#Q-封装-request-类后如何避免语义不明确的问题？" class="headerlink" title="Q: 封装 request 类后如何避免语义不明确的问题？"></a>Q: 封装 request 类后如何避免语义不明确的问题？</h3><h2 id="文中指出，封装后的最大问题是接口签名不再”自解释”——你无法从-query-Request-request-知道需要传什么。解决方案：1-必须配合文档和注释说明-request-中各字段的必填-选填-互斥关系；2-定义合法的字段组合，并在-request-类上做校验；3-对升级方案做明确约定（哪些字段新增是非必填兼容的，哪些是破坏性变更需要新接口版本）；4-如果参数不多，就不要封装——保持简单是最好的文档。"><a href="#文中指出，封装后的最大问题是接口签名不再”自解释”——你无法从-query-Request-request-知道需要传什么。解决方案：1-必须配合文档和注释说明-request-中各字段的必填-选填-互斥关系；2-定义合法的字段组合，并在-request-类上做校验；3-对升级方案做明确约定（哪些字段新增是非必填兼容的，哪些是破坏性变更需要新接口版本）；4-如果参数不多，就不要封装——保持简单是最好的文档。" class="headerlink" title="文中指出，封装后的最大问题是接口签名不再”自解释”——你无法从 query(Request request) 知道需要传什么。解决方案：1) 必须配合文档和注释说明 request 中各字段的必填/选填/互斥关系；2) 定义合法的字段组合，并在 request 类上做校验；3) 对升级方案做明确约定（哪些字段新增是非必填兼容的，哪些是破坏性变更需要新接口版本）；4) 如果参数不多，就不要封装——保持简单是最好的文档。"></a>文中指出，封装后的最大问题是接口签名不再”自解释”——你无法从 <code>query(Request request)</code> 知道需要传什么。解决方案：1) <strong>必须配合文档和注释</strong>说明 request 中各字段的必填/选填/互斥关系；2) 定义合法的字段组合，并在 request 类上做校验；3) 对升级方案做明确约定（哪些字段新增是非必填兼容的，哪些是破坏性变更需要新接口版本）；4) 如果参数不多，就不要封装——保持简单是最好的文档。</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/20888/">https://lichuanyang.top/posts/20888/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/20888.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/34931/" title="户口?大厂?高薪?生活?聊聊应届程序员的职业选择"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/34931.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">户口?大厂?高薪?生活?聊聊应届程序员的职业选择</div></div><div class="info-2"><div class="info-item-1">今天结合我的个人经历来聊一聊应届生的职业选择问题，主要针对后端开发（对岗位的选择，话题也比较大，后边有机会的话会单独开一篇文章写），我这几年的时间里历经了国企、大公司、小公司这样不同的工作环境，所以对于不同公司的情况还是比较有发言权的。   四个维度的取舍职业选择，最重要的无非就是城市和公司选择。城市选择是一件非常主观的事情，比如我，作为一个北方人，既不喜欢南方城市的气候，又想离家近，还需要大城市的机会，北京就几乎成了唯一选择。当然，给大家的建议，功利点的话，建议选择一些快速发展中的强二线城市，比如重庆、合肥，这样随着城市平台的发展，你自己身处其中，身价也会提升。 接下来，我会限定在北京的范围内，结合我自己的经历，说一下公司的选择。 户口：一线城市的入场券提到北京，一个不得不提的问题就是户口的问题。不过，我强烈不建议你依据一个户口就决定了整个人生怎么走，比如明明不想进体制内，却为了个户口就去了。务必在考虑户口问题之前，优先想好职业发展方向的问题。 很多人会纠结于体制内/体制外、大公司/小公司这些明面上的选择，但这些其实都只是表象而已，同样是体制内，也可能有天差...</div></div></div></a><a class="pagination-related" href="/posts/40071/" title="程序员做业务开发的价值"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/40071.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">程序员做业务开发的价值</div></div><div class="info-2"><div class="info-item-1">说一下我个人的经历，其实在我刚毕业的第一家公司里，做的就是底层的中间件开发。但是做的过程中，觉得并不喜欢这种远离实际业务的感觉，所以后来换工作的时候就有意的选择了业务部门。所以，今天想讲一下为什么会做这种选择。   我为什么不做底层开发首先，我想说一个很多人的认知，就是认为做底层的开发更容易学到东西，成长更快。我觉得这就是业务开发同学的臆想而已，底层开发没有大家想的那么利于学习，业务开发也没有大家想的那么不利于学习，原因我会在后边展开说。而之所以很多人有这样的认知，很大程度上是因为底层开发的招聘标准通常会高一些，所以这些人本身的学习能力和意愿就是要好一些。 其实底层开发的日常和业务开发也没有太大区别，都是在做需求。只是业务需求的来源是产品经理，底层需求的来源是其他开发，或者底层开发者本人的思考和想法。这里，我要说自己为什么不愿意做底层开发的第一个原因了，就是需求的来源不科学。首先，如果只做底层开发，而脱离了实际业务场景的话，对于技术的认知很可能是有偏差的，这样导致自己想做的一些事很可能是在自嗨，并没有实际应用价值。而如果从其他那些搜集需求呢，也会有类似的问题，业务开发的同学提出的...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/33852/" title="通过合理的设计降低软件开发复杂度"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/33852.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-04</div><div class="info-item-2">通过合理的设计降低软件开发复杂度</div></div><div class="info-2"><div class="info-item-1">对于一个程序员来说，日常最常说的词恐怕就是「复杂」了，这段代码太复杂了，这个逻辑太复杂了，所以，在这篇文章里，我们就好好掰扯掰扯「复杂」到底是怎么产生的，又要怎么去避免。   复杂度的产生我们先列一下当我们在说「复杂」的时候，到底在说什么。  没有模块划分，整个一大坨代码摊在那儿 大量的重复代码 代码整体逻辑看不懂 本来一个很简单的需求，改的时候发现这也要改，那也要改 代码没办法迁移，没办法复用 整天有莫名的bug出现 …  上边列的这些问题，其实很多之间是互为因果的，比如模块划分的不好，导致了代码逻辑看不懂，也导致了代码没法复用，代码没法复用，又导致了大量重复代码，重复代码又进一步导致代码逻辑看不懂。 所以，下面我们尝试着规整一下这些问题，看看问题到底在哪。 我觉得，首先可以把代码复杂度的问题简单分个类，一类是代码本身的问题，一类是代码对现实世界的表现力的问题。前者主要关乎代码整体的整洁程度，以及容不容易进行持续的维护；后者则主要影响代码容不容易理解，别人看代码时是否需要大量的背景知识。 对代码本身问题来说，以我的观察，导致代码过度复杂的首要原因就是模块拆分不清晰，甚至没有模块...</div></div></div></a><a class="pagination-related" href="/posts/58527/" title="设计模式的原则，设计模式究竟是什么"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/58527.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-04</div><div class="info-item-2">设计模式的原则，设计模式究竟是什么</div></div><div class="info-2"><div class="info-item-1">大家好，我是流沙。设计模式是每个程序员都会经常接触到的东西，但是相信很多人对于设计模式究竟是什么还会有些疑问。所以，我们今天就聊聊这个，主要目标是帮大家理解设计模式的作用，以及要用什么样的心态对待设计模式。   前置知识提到设计模式，其实首先需要理解清楚的是面向对象思想。相信大家即使不能非常清晰的描述出来，对面向对象也应该是比较熟悉的。 我们就快速讲一下，面向对象有四大基本特性：封装、抽象、继承、多态； 封装：仅暴露有限的接口，授权外部来访问。将逻辑集中，因此更可控；可读性、可维护性也更好；易用性也更好。 抽象：隐藏方法的具体实现，让调用者只需要关心方法提供了哪些功能，并不需要知道这些功能是如何实现的。 继承：好处就是代码复用。 多态：子类可以替换父类。提高代码的可扩展和可复用性。 什么是设计模式设计模式是针对软件开发中经常遇到的一些设计问题，根据基本的设计原则，总结出来的一套实用的解决方案或者设计思路。 可以看到，设计模式是非常偏实际应用的，相比设计原则更加具体、可执行。 因此，在了解设计模式之前，就需要了解一些基本的设计原则。这些原则才是指导我们写出好代码的关键。 那么什么是...</div></div></div></a><a class="pagination-related" href="/posts/21897/" title="设计模式备忘录"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/21897.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-08</div><div class="info-item-2">设计模式备忘录</div></div><div class="info-2"><div class="info-item-1">众所周知，对于程序员来说，设计模式是一门极其重要的学科。不过，由于设计模式的涉及面太广，也有很多非常抽象的概念，还是很难掌握的。要学习设计模式，最好还是能结合实际。每次做需求，尤其是一些复杂的需求，或者嗅到了烂代码味道的时候，就可以翻一遍设计模式，看看有什么可以应用的模式。所以，我总结了这篇文章，以尽量短的语言描述主要的设计模式，可能是定义中的关键部分，也可能是典型的应用场景，或者只是个英文单词，目的在于帮助回忆起每个设计模式的作用和应用场景。   基本设计原则要说设计模式，一定要先提一遍六大基本设计原则。说白了，设计模式就是在这些原则的基础上被提炼出来得一系列最佳实践。 单一职责原则开放封闭原则通过扩展解决问题，而不是修改已有的实现。（写代码时可以假定变化不会发生，当出现变化时，需要抽象以隔离将来的同类变化）  修改没有破坏原有的单元测试，即可认为不违反开闭原则 里氏替换原则子类应当能代替父类 依赖倒置原则高层模块不能依赖低层模块；应当依赖抽象而非实现 接口隔离原则接口尽量小 迪米特法则类间解耦 #设计模式 工厂方法模式定义一个用于创建对象的接口 抽象工厂模式创建一组相关或者相...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/58527/">设计模式的原则，设计模式究竟是什么</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/58527/">设计模式学了不用会忘怎么办？</a></li><li><a href="https://lichuanyang.top/posts/58527/">哪种设计模式最常用？</a></li><li><a href="https://lichuanyang.top/posts/58527/">设计模式和设计原则哪个更重要？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/45718/">分布式系统设计中的通用方法</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/45718/">分布式系统设计中最重要的是学什么？有哪些核心模式？</a></li><li><a href="https://lichuanyang.top/posts/45718/">CAP 理论的实践意义是什么？为什么没有 CA 系统？</a></li><li><a href="https://lichuanyang.top/posts/45718/">分布式系统初学者从哪里开始？有没有学习路线？</a></li></ul></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E7%9A%84%E6%8F%90%E5%87%BA"><span class="toc-number">1.</span> <span class="toc-text">问题的提出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E5%8F%82%E6%95%B0%E5%B0%81%E8%A3%85%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">输入参数封装分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E5%B0%81%E8%A3%85%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">输出结果封装分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99%E7%9A%84%E8%A7%86%E8%A7%92"><span class="toc-number">4.</span> <span class="toc-text">接口隔离原则的视角</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA%E4%B8%8E%E5%BB%BA%E8%AE%AE"><span class="toc-number">5.</span> <span class="toc-text">结论与建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">6.</span> <span class="toc-text">常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E6%8A%8A-RPC-%E8%BE%93%E5%85%A5-%E8%BE%93%E5%87%BA%E5%B0%81%E8%A3%85%E6%88%90-request-response-%E7%B1%BB%EF%BC%9F"><span class="toc-number">6.1.</span> <span class="toc-text">Q: 什么时候该把 RPC 输入/输出封装成 request/response 类？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-RPC-%E8%BF%94%E5%9B%9E%E5%80%BC%E5%8A%A0%E7%BB%9F%E4%B8%80%E7%8A%B6%E6%80%81%E7%A0%81%E5%92%8C%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99%E5%86%B2%E7%AA%81%E5%90%97%EF%BC%9F"><span class="toc-number">6.2.</span> <span class="toc-text">Q: RPC 返回值加统一状态码和接口隔离原则冲突吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-%E4%B8%9A%E7%95%8C%E5%AF%B9-RPC-%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E7%9A%84%E6%99%AE%E9%81%8D%E5%AE%9E%E8%B7%B5%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">6.3.</span> <span class="toc-text">Q: 业界对 RPC 接口设计的普遍实践是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-%E5%B0%81%E8%A3%85-request-%E7%B1%BB%E5%90%8E%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E8%AF%AD%E4%B9%89%E4%B8%8D%E6%98%8E%E7%A1%AE%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">6.4.</span> <span class="toc-text">Q: 封装 request 类后如何避免语义不明确的问题？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%B8%AD%E6%8C%87%E5%87%BA%EF%BC%8C%E5%B0%81%E8%A3%85%E5%90%8E%E7%9A%84%E6%9C%80%E5%A4%A7%E9%97%AE%E9%A2%98%E6%98%AF%E6%8E%A5%E5%8F%A3%E7%AD%BE%E5%90%8D%E4%B8%8D%E5%86%8D%E2%80%9D%E8%87%AA%E8%A7%A3%E9%87%8A%E2%80%9D%E2%80%94%E2%80%94%E4%BD%A0%E6%97%A0%E6%B3%95%E4%BB%8E-query-Request-request-%E7%9F%A5%E9%81%93%E9%9C%80%E8%A6%81%E4%BC%A0%E4%BB%80%E4%B9%88%E3%80%82%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9A1-%E5%BF%85%E9%A1%BB%E9%85%8D%E5%90%88%E6%96%87%E6%A1%A3%E5%92%8C%E6%B3%A8%E9%87%8A%E8%AF%B4%E6%98%8E-request-%E4%B8%AD%E5%90%84%E5%AD%97%E6%AE%B5%E7%9A%84%E5%BF%85%E5%A1%AB-%E9%80%89%E5%A1%AB-%E4%BA%92%E6%96%A5%E5%85%B3%E7%B3%BB%EF%BC%9B2-%E5%AE%9A%E4%B9%89%E5%90%88%E6%B3%95%E7%9A%84%E5%AD%97%E6%AE%B5%E7%BB%84%E5%90%88%EF%BC%8C%E5%B9%B6%E5%9C%A8-request-%E7%B1%BB%E4%B8%8A%E5%81%9A%E6%A0%A1%E9%AA%8C%EF%BC%9B3-%E5%AF%B9%E5%8D%87%E7%BA%A7%E6%96%B9%E6%A1%88%E5%81%9A%E6%98%8E%E7%A1%AE%E7%BA%A6%E5%AE%9A%EF%BC%88%E5%93%AA%E4%BA%9B%E5%AD%97%E6%AE%B5%E6%96%B0%E5%A2%9E%E6%98%AF%E9%9D%9E%E5%BF%85%E5%A1%AB%E5%85%BC%E5%AE%B9%E7%9A%84%EF%BC%8C%E5%93%AA%E4%BA%9B%E6%98%AF%E7%A0%B4%E5%9D%8F%E6%80%A7%E5%8F%98%E6%9B%B4%E9%9C%80%E8%A6%81%E6%96%B0%E6%8E%A5%E5%8F%A3%E7%89%88%E6%9C%AC%EF%BC%89%EF%BC%9B4-%E5%A6%82%E6%9E%9C%E5%8F%82%E6%95%B0%E4%B8%8D%E5%A4%9A%EF%BC%8C%E5%B0%B1%E4%B8%8D%E8%A6%81%E5%B0%81%E8%A3%85%E2%80%94%E2%80%94%E4%BF%9D%E6%8C%81%E7%AE%80%E5%8D%95%E6%98%AF%E6%9C%80%E5%A5%BD%E7%9A%84%E6%96%87%E6%A1%A3%E3%80%82"><span class="toc-number">7.</span> <span class="toc-text">文中指出，封装后的最大问题是接口签名不再”自解释”——你无法从 query(Request request) 知道需要传什么。解决方案：1) 必须配合文档和注释说明 request 中各字段的必填/选填/互斥关系；2) 定义合法的字段组合，并在 request 类上做校验；3) 对升级方案做明确约定（哪些字段新增是非必填兼容的，哪些是破坏性变更需要新接口版本）；4) 如果参数不多，就不要封装——保持简单是最好的文档。</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

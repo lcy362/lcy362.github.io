@@ -1,0 +1,323 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Mobility - 聚沙成塔，让每一步都有选择</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="聚焦后端开发与架构设计，分享 Java、消息队列、数据库、云原生、大数据、AI/LLM 等技术实践与个人成长">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mobility">
+<meta property="og:url" content="https://lichuanyang.top/page/2/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="聚焦后端开发与架构设计，分享 Java、消息队列、数据库、云原生、大数据、AI/LLM 等技术实践与个人成长">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/butterfly-icon.png">
+<meta property="article:author" content="流沙">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/butterfly-icon.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/page/2/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Mobility',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(/img/hero-banner.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">Mobility</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover left"><a href="/posts/44912/" title="知乎增强工具-评论时间精确到秒"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/44912.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="知乎增强工具-评论时间精确到秒"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/44912/" title="知乎增强工具-评论时间精确到秒">知乎增强工具-评论时间精确到秒</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-12-22T09:24:18.000Z" title="发表于 2023-12-22 17:24:18">2023-12-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/">技术杂谈</a></span></div><div class="content">知乎作为一个高质量的文字社区，评论区的讨论往往非常有深度。然而，知乎默认的评论区时间格式是个让人头疼的小问题——它只显示”3 小时前””昨天””5 天前”这种相对时间。这在日常浏览中没问题，但如果你想追踪一场讨论的时间线、对比不同评论的先后顺序，这种模糊的时间展示就完全不够用了。   痛点：相对时间的局限相对时间有几个明显的缺陷：  信息丢失：你永远不知道”3 小时前”到底是几点几分，无法在脑海中形成精确的时间锚点 跨天混乱：到了第二天，”昨天”就变成了”前天”，时间参考系一直在变 讨论追踪困难：一场技术讨论中，A 回复 B 的某个论点，但 B 的评论和 A 的回复可能都显示”2 天前”，你根本看不出谁先谁后  脚本的来历之前在小众软件上看到一个关于知乎评论区时间展示混乱的吐槽帖，有位大佬当场写了一个油猴脚本来解决这个问题。 我用了好几个月，体验非常好。直到前段时间知乎做了一轮前端更新，脚本开始出现展示混乱的问题。于是我花了一个下午研究了一下知乎的新 DOM 结构，修复了脚本的逻辑，顺便把它发布到了 GreasyFork 上——这样后续知乎再有调整，可以直接从 GreasyFor...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/55227/" title="kubernetes是什么-实用向教程"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/55227.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="kubernetes是什么-实用向教程"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/55227/" title="kubernetes是什么-实用向教程">kubernetes是什么-实用向教程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T11:06:17.000Z" title="发表于 2023-01-28 19:06:17">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a></span></div><div class="content">这篇教程不会关注 kubernetes 的部署、架构、实现方式等内部原理，而是完全从一个使用 kubernetes 的开发人员的视角去介绍kubernetes是什么，从而帮助了解如何更好的去利用 kubernetes 的特性。   基本介绍对于kubernetes是什么，一个比较官方的定义，Kubernetes是一个开源容器编排平台，管理大规模分布式容器化软件应用，简称为k8s. 通俗一些来讲，k8s 的核心理念是以应用为中心，向下屏蔽基础设施的差异，向上通过容器镜像实现应用的标准化，帮助开发人员在仅需关注应用本身，无需考虑部署、容灾、伸缩等运维细节的情况下，开发出大规模、可靠的分布式应用。 优势如上所述，k8s的核心优势就是降低运维成本，让应用开发人员能够专注于应用本身。具体来讲，包括如下几点：  便捷的部署流程和大规模的复制分发能力：应用提供标准化的容器镜像，之后的部署发布流程都可以做到自动化；应用也无需再做更多的事情就可以实现跨平台、跨区域的部署。 服务自愈能力：自动摘除不健康的节点并做恢复。 敏捷的自动伸缩：根据设定的系统负载，做快速的自动伸缩，实现系统处理能力和成本之间...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/23393/" title="怎么更科学的用知乎摸鱼"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/23393.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="怎么更科学的用知乎摸鱼"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/23393/" title="怎么更科学的用知乎摸鱼">怎么更科学的用知乎摸鱼</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-28T10:29:01.000Z" title="发表于 2022-12-28 18:29:01">2022-12-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/">技术杂谈</a></span></div><div class="content">知乎是个什么样的网站，大家都比较了解。今天我们换个角度——分享一个让”上班用知乎”这件事变得更安全、更高效的小工具。   摸鱼经济学：为什么是知乎？之前我翻了一下自己知乎账号的后台数据，发现一个很有意思的现象：PC 端的流量居然占了 40% 以上。在移动互联网时代，这个比例高得不太正常。 后来从一些其他渠道也了解到，知乎周末和节假日的流量明显不如工作日。这说明什么呢？ 上班刷知乎的你，不是一个人。 对相当一部分人来说，知乎主要的使用场景就是——上班摸鱼。而且知乎这个网站确实天然适合摸鱼：  以文字内容为主，不像短视频那样有声音、耗流量 有大量专业性内容，被老板路过看到屏幕时，可以说”我在查技术资料” 文章篇幅适中，一条时间线看几分钟，心理负担小  知乎摸鱼的三个痛点但知乎 PC 端有些设计，对摸鱼党不太友好： 1. 图片太大 知乎文章的配图经常会占满大半个屏幕。不管文章本身多正经，一张巨大的图片出现在屏幕上，旁边同事一瞥就能看到——这时候你说”我在看技术文章”就显得很没说服力。 2. 标题浮窗抢眼球 浏览知乎问题时，页面上方会有一个非常显眼的标题浮窗。它不仅占了一行空间，而且白底...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/53791/" title="读书笔记《系统之美》,如何面对现实中的复杂问题"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/53791.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="读书笔记《系统之美》,如何面对现实中的复杂问题"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/53791/" title="读书笔记《系统之美》,如何面对现实中的复杂问题">读书笔记《系统之美》,如何面对现实中的复杂问题</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-05-16T10:34:01.000Z" title="发表于 2022-05-16 18:34:01">2022-05-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/">技术杂谈</a></span></div><div class="content">这本书的作用主要是教大家面对现实中的复杂问题，如何更有效的去思考。书本身偏重系统的基本概念，这些概念其实都比较好理解。另外，作者举了非常多的例子。初读这本书时，会感觉理论和实际例子有那么些割裂。 但是后来逐渐感觉到，这个话题确实是没那么容易讲的通俗易懂的，需要读者自己付出更多的思考，才能有实质性的收获。而作者举的这些例子，就是非常好的引导读者去思考的引子。通过跟着作者一起思考这些例子，我们就可以帮助自己更好的理解书中的概念和逻辑。   所以，这篇笔记中，我主要其实就是比较机械化的把书中的一些核心概念提炼出来，同时会尝试举一些身边的例子。 而若想更好的理解书中每一部分，还是推荐去读一遍书，并且跟着作者的思路一起去好好思考那些例子的逻辑。 基本概念系统是一组相互连接的事物，在一定时间内，以特定的行为模式相互影响。 任何一个系统都包括三种构成要件：要素、连接、功能或目标。 存量是所有系统的基础，比如浴缸中的水、人口数量、书店中的书、树木的体积、银行里的钱，等等。但是，存量不一定非得是物质的，你的自信、在朋友圈中的良好口碑，或者对世界的美好希冀等，都可以是存量。 存量会随着时间的变化而不...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/45718/" title="分布式系统设计中的通用方法"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/45718.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="分布式系统设计中的通用方法"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/45718/" title="分布式系统设计中的通用方法">分布式系统设计中的通用方法</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-04-13T12:13:24.000Z" title="发表于 2022-04-13 20:13:24">2022-04-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">架构设计</a></span></div><div class="content">之前翻译过一篇关于分布式系统的文章 https://lichuanyang.top/posts/3914/ ，在各个平台都取得了不错的反响。因此，最近又重新整理了一下相关的知识，结合一些这一年多里新的理解，重新整理了下这篇文章。   首先我们需要明确本文要讨论的分布式系统是什么，简单的说，就是满足多节点和有状态这两个条件即可。多节点很好理解，有状态则是指这个系统要维护一些数据，不然的话，其实我们无脑的水平扩容就没有任何问题，也就不存在分布式系统的问题了。 常见的分布式系统， 无论是mysql, cassandra, hbase这些数据库，还是rocketmq, kafka, pulsar这样的消息队列，还是zookeeper之类的基础设施，其实都满足这两个条件。 这些分布式系统的实现通常来说主要需要关注两个方面：一是自己本身功能的实现，二是在分布式环境下保持良好的性能与稳定性；即便是两个功能完全不一样的系统，其对第二类问题的处理方式也会有很多相似之处。本文的关注重点也即在对第二类问题的处理上。 分布式系统的核心挑战接下来，我们列举一下分布式系统都有哪些常见目标，包括而不限于：  ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/11970/" title="高并发解决方案很难吗？轻松聊清楚高并发设计"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/11970.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="高并发解决方案很难吗？轻松聊清楚高并发设计"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/11970/" title="高并发解决方案很难吗？轻松聊清楚高并发设计">高并发解决方案很难吗？轻松聊清楚高并发设计</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-03-29T10:40:46.000Z" title="发表于 2022-03-29 18:40:46">2022-03-29</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">架构设计</a></span></div><div class="content">高请求并发就一定会有高并发问题吗？其实不是的。假设一个应用全部是纯内存计算，无论请求量多大，简单加机器就能线性扩展——那就不存在什么高并发问题。 高并发问题之所以存在，是因为系统中存在无法靠粗暴扩容解决的单点瓶颈。而这个瓶颈，在 90% 以上的场景中，都是数据库。   核心思路：降低单库的连接数所有高并发技术方案，归根结底都是在做同一件事——降低单个数据库实例需要承载的并发连接数。围绕这个目标，有六个层次的技术手段： 层次一：系统拆分（业务维度）最粗粒度的优化：把不同业务模块的数据库物理分开。 12345单体架构：所有业务 → 一个数据库（1000 QPS）拆分后：  用户服务 → 用户库（400 QPS）  订单服务 → 订单库（300 QPS）  商品服务 → 商品库（300 QPS）  每个业务独享自己的数据库，互不影响。拆分的难点在于分布式事务——以前一个事务搞定的事，现在跨库了。解决方案包括 Saga 模式、Seata、RocketMQ 事务消息等。 层次二：缓存（减少数据库命中率）在应用和数据库之间加一层 Redis，热数据走缓存，只有冷数据才查库。 12请求 → 缓...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/27934/" title="SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/27934.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/27934/" title="SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展">SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-03-07T08:28:58.000Z" title="发表于 2022-03-07 16:28:58">2022-03-07</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/">技术杂谈</a></span></div><div class="content">本文中，我会介绍一下互联网广告的发展状态，并梳理一下互联网广告的底层逻辑，帮助大家更好的理解这个行业。   什么是广告讲互联网广告，首先要从广告本身是什么开始讲起。只有理解了广告的底层逻辑，才能更好的帮助我们理解在互联网广告中会有什么问题, 为什么会出现广告的程序化交易，adx, ssp, dsp,dmp等等各种各样不同的系统为什么会出现，以及诸如此类的等等问题。 广告这个行业其实自古就有，从远古时代小商小贩的吆喝，各种建筑物上的告示，到纸质报纸、杂志、电视等传统媒体上的广告，再到互联网广告，这个行业总是再随着社会的发展产生它自己的变化。 对于广告，先上一个非常官方、非常标准的定义：广告是由已确定的出资人通过各种媒介进行的有关产品（商品、服务和观点）的，并且通常是有偿的、综合的、劝服性的非人员的信息传播活动。 而更通俗的讲，在广告交易中，核心的参与方有三个：媒体(即供给方，Supply), 广告主（即需求方， Demand），受众（即媒体的用户）。其中，媒体和广告主是主动的参与方，受众则是被动的参与方。而广告实际上就是这三方相互博弈的一个过程。对于广告主来说，希望有更多的受众能看...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/7774/" title="从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/7774.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/7774/" title="从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID">从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-02-07T08:40:02.000Z" title="发表于 2022-02-07 16:40:02">2022-02-07</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="content">前些日子读了周志明老师的《凤凰架构》这本书，对于很多方面的技术有了更深的认知，因此打算做一些总结。今天先以讲事务的这一段做个印子，结合书中内容和个人理解，争取将本地事务的相关知识讲个命名白白。如果有讲的不对的地方，欢迎大家多多指正。   所谓事务，就是保证数据库中的数据都是符合期望的，在不断的增删改查中，数据库会不断的从一个正确的状态变化到另一个正确的状态，而不会被外界感知到不“正确”的中间状态。 举个常见的例子，就是在 A有100元，B有100元的状态下，A要给B转账10元，肯定会有A先转出10元，再转给B,这样的中间状态。事务就是，对于用户来说，只能感知到 A100 B100 和 A90 B110 这两个状态，而不会感知到过程中的A90 B100等等奇奇怪怪的状态。 这个介绍，其实也就是事务ACID特性中一致性的概念。ACID这个说法虽然很流行，但A、C、I、D之间其实并不是平等的概念，简单来说，AID是方法，C是目的。也就是说，实现了原子性、持久性、隔离性，也就实现了一致性，也就实现了事务。 接下来，我们就依次看看AID分别要如何实现。 原子性和持久性实现原子性和持久性面临...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/40964/" title="java项目低学习成本使用kubernetes的实践经验"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/k8s-kubernetes.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="java项目低学习成本使用kubernetes的实践经验"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/40964/" title="java项目低学习成本使用kubernetes的实践经验">java项目低学习成本使用kubernetes的实践经验</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-01-26T07:19:32.000Z" title="发表于 2022-01-26 15:19:32">2022-01-26</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a></span></div><div class="content">很多创业公司相比于大厂，一个非常重要的劣势就是基础设施不完善，没有各种各样完善的工具。因此，我打算整理一下，基于开源社区提供的能力，如何用尽量小的运维和开发成本，去搭建出一套体验良好的开发流程。   首先，我们理一下整个开发流程中的必备步骤都有哪些，我大概罗列一下，包括项目的创建、开发、code review、部署测试环境、部署灰度和线上环境、查看线上监控、日志、以及排查问题等。 根据这整个流程链条，我们再来理一下为了尽可能的提升开发和运维效率，我们需要把哪些方面保障好，以及这些方面可以有什么低成本的解决方案。 有几个点吧：  快速创建一个项目，并且将必备的web、监控、日志等组件添加好； 提升一些常规的代码开发，比如数据库增删改查的开发效率； 简化打包到部署的流程，测试环境能自动部署更好； 能够给每个服务轻松的加上一整套监控和报警，包括通用的机器、jvm、接口层面的指标，和根据业务自定义的指标； 能有地方集中看各个节点的日志； 必要的时候，可以在线上节点上有强力的工具帮助排查问题。  接下来，我们就看一下这些问题分别怎么解决。 部署环境首先，在本文的标题中，其实已经假定了部署环...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/2345/" title="剧变中的2021-一个中年工程师的年终总结"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/2345.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="剧变中的2021-一个中年工程师的年终总结"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/2345/" title="剧变中的2021-一个中年工程师的年终总结">剧变中的2021-一个中年工程师的年终总结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-01-04T13:49:57.000Z" title="发表于 2022-01-04 21:49:57">2022-01-04</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/">技术杂谈</a></span></div><div class="content">2021年对于我个人来说可以说是剧变的一年，原本准备长期发展的，工作舒适度和前景都非常高的工作，因为某些原因突然崩塌。随之而来的，关于未来往哪走，也到了一个重要的岔路口上。至少到目前为止，感觉还是做出了一些正确的选择。对于年初定下的一些个人成长上的目标，也有了不错的进展。所以，我还是带着不错的心情来做这个年终总结的。   职业回顾2021年里，最大的变化还是来自工作，由于所在的行业一夜之间直接在风口上消失，原本在一家公司长期发展的愿望落空，所以我也被迫重新开始了新的职业规划。一个关键的考量点就是要去大公司还是小公司。我在前边为什么说自己走到了一个重要的岔路口上，其实最关键的一点原因就是感觉无论做哪个选择，在这个年龄其实都不会有什么回头路了。大公司和小公司对一个资深员工的能力要求，差别实际上是非常大的。到了这个阶段，不会再有刚毕业那几年随时大小公司左右横跳的机会。 为了做这个决策，我问了自己几个问题。 在大公司，个人能力会比在小公司成长的更快吗？ 在大公司，生活是否会比小公司更舒适？ 我在将来是否还需要一份新大公司经历做背书？ 在大公司能获得更多的经济收入吗？ 经过慎重的考虑，对这...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#content-inner">3</a><span class="space">…</span><a class="page-number" href="/page/10/#content-inner">10</a><a class="extend next" rel="next" href="/page/3/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/AI%E5%AE%9E%E8%B7%B5/"><span class="card-category-list-name">AI实践</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Java/"><span class="card-category-list-name">Java</span><span class="card-category-list-count">20</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/activemq%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/"><span class="card-category-list-name">activemq系列文章</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/jstorm%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"><span class="card-category-list-name">jstorm源码解析</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/redis%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">redis系列</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/"><span class="card-category-list-name">云原生</span><span class="card-category-list-count">5</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">分布式系统模式系列</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"><span class="card-category-list-name">大数据</span><span class="card-category-list-count">8</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" style="font-size: 1.1em; color: #999">软件工程</a> <a href="/tags/ssh%E5%85%8D%E5%AF%86%E7%A0%81%E7%99%BB%E5%BD%95/" style="font-size: 1.1em; color: #999">ssh免密码登录</a> <a href="/tags/%E6%B2%B9%E7%8C%B4/" style="font-size: 1.18em; color: #999ca1">油猴</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 1.1em; color: #999">算法</a> <a href="/tags/rocketMq/" style="font-size: 1.1em; color: #999">rocketMq</a> <a href="/tags/json/" style="font-size: 1.1em; color: #999">json</a> <a href="/tags/%E5%AE%89%E5%85%A8%E8%A7%84%E8%8C%83/" style="font-size: 1.1em; color: #999">安全规范</a> <a href="/tags/LDA/" style="font-size: 1.1em; color: #999">LDA</a> <a href="/tags/java/" style="font-size: 1.5em; color: #99a9bf">java</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">博客搭建</a> <a href="/tags/grafana/" style="font-size: 1.1em; color: #999">grafana</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 1.18em; color: #999ca1">持续集成</a> <a href="/tags/prompt/" style="font-size: 1.1em; color: #999">prompt</a> <a href="/tags/Obsidian/" style="font-size: 1.1em; color: #999">Obsidian</a> <a href="/tags/%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" style="font-size: 1.18em; color: #999ca1">开发规范</a> <a href="/tags/blog/" style="font-size: 1.1em; color: #999">blog</a> <a href="/tags/prometheus%E6%95%99%E7%A8%8B/" style="font-size: 1.1em; color: #999">prometheus教程</a> <a href="/tags/springboot/" style="font-size: 1.1em; color: #999">springboot</a> <a href="/tags/text-to-video/" style="font-size: 1.1em; color: #999">text-to-video</a> <a href="/tags/camel/" style="font-size: 1.18em; color: #999ca1">camel</a> <a href="/tags/lua/" style="font-size: 1.1em; color: #999">lua</a> <a href="/tags/hadoop/" style="font-size: 1.18em; color: #999ca1">hadoop</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">前端开发</a> <a href="/tags/CLI/" style="font-size: 1.1em; color: #999">CLI</a> <a href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F%E6%9E%B6%E6%9E%84/" style="font-size: 1.1em; color: #999">云原生架构</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 1.18em; color: #999ca1">多线程</a> <a href="/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/" style="font-size: 1.34em; color: #99a3b0">个人成长</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%86%99/" style="font-size: 1.1em; color: #999">单元测试怎么写</a> <a href="/tags/ssh%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95/" style="font-size: 1.1em; color: #999">ssh自动登录</a> <a href="/tags/javaInteger%E7%BC%93%E5%AD%98/" style="font-size: 1.1em; color: #999">javaInteger缓存</a> <a href="/tags/LLM/" style="font-size: 1.34em; color: #99a3b0">LLM</a> <a href="/tags/%E7%9F%A5%E4%B9%8E/" style="font-size: 1.26em; color: #999fa8">知乎</a> <a href="/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/" style="font-size: 1.1em; color: #999">独立博客</a> <a href="/tags/clickhouse%E4%BB%8B%E7%BB%8D/" style="font-size: 1.1em; color: #999">clickhouse介绍</a> <a href="/tags/prometheus/" style="font-size: 1.1em; color: #999">prometheus</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%8Cskiplist/" style="font-size: 1.1em; color: #999">数据结构，skiplist</a> <a href="/tags/%E6%97%A5%E5%BF%97/" style="font-size: 1.26em; color: #999fa8">日志</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1/" style="font-size: 1.1em; color: #999">数据库事务</a> <a href="/tags/activemq/" style="font-size: 1.42em; color: #99a6b7">activemq</a> <a href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/" style="font-size: 1.18em; color: #999ca1">云原生</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      <a class="card-more-btn" href="/archives/" title="查看更多">
+            <i class="fas fa-angle-right"></i>
+          </a>
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/06/">
+            <span class="card-archive-list-date">
+              六月 2026
+            </span>
+            <span class="card-archive-list-count">5</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/05/">
+            <span class="card-archive-list-date">
+              五月 2026
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2024/03/">
+            <span class="card-archive-list-date">
+              三月 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2024/01/">
+            <span class="card-archive-list-date">
+              一月 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2023/12/">
+            <span class="card-archive-list-date">
+              十二月 2023
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2023/01/">
+            <span class="card-archive-list-date">
+              一月 2023
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2022/12/">
+            <span class="card-archive-list-date">
+              十二月 2022
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2022/05/">
+            <span class="card-archive-list-date">
+              五月 2022
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">93</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">131.6k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastpushdate="2026-06-30T05:40:52.198Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>window.typedJSFn = {
+  init: str => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, null))
+  },
+  run: subtitleType => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        btf.getScript('https://cdn.jsdelivr.net/npm/typed.js@3.0.0/dist/typed.umd.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
+    }
+  },
+  processSubtitle: (content, extraContents = []) => {
+    if (true) {
+      const sub = [].slice()
+
+      if (extraContents.length > 0) {
+        sub.unshift(...extraContents)
+      }
+
+      if (typeof content === 'string') {
+        sub.unshift(content)
+      } else if (Array.isArray(content)) {
+        sub.unshift(...content)
+      }
+
+      sub.length > 0 && typedJSFn.init(sub)
+    } else {
+      document.getElementById('subtitle').textContent = typeof content === 'string' ? content :
+        (Array.isArray(content) && content.length > 0 ? content[0] : '')
+    }
+  }
+}
+btf.addGlobalFn('pjaxSendOnce', () => { typed.destroy() }, 'typedDestroy')
+;
+function subtitleType () {
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+      const from = '出自 ' + data.from
+      typedJSFn.processSubtitle(data.hitokoto, [from])
+    })
+    .catch(err => {
+      console.error('Failed to get the Hitokoto API:', err)
+      typedJSFn.processSubtitle([])
+    })
+}
+typedJSFn.run(subtitleType)
+;
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

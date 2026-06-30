@@ -1,0 +1,300 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据分析的利器-clickhouse介绍 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="ClickHouse 实时分析数据库入门介绍，从 Yandex 的业务需求出发讲解 ClickHouse 的设计背景和核心特性。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据分析的利器-clickhouse介绍">
+<meta property="og:url" content="https://lichuanyang.top/posts/48312/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="ClickHouse 实时分析数据库入门介绍，从 Yandex 的业务需求出发讲解 ClickHouse 的设计背景和核心特性。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/48312.jpg">
+<meta property="article:published_time" content="2018-11-14T13:59:31.000Z">
+<meta property="article:modified_time" content="2026-06-27T02:31:54.491Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="clickhouse">
+<meta property="article:tag" content="clickhouse介绍">
+<meta property="article:tag" content="大数据">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/48312.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "数据分析的利器-clickhouse介绍",
+  "url": "https://lichuanyang.top/posts/48312/",
+  "image": "https://lichuanyang.top/img/48312.jpg",
+  "abstract": "ClickHouse是OLAP领域的性能怪兽，列式存储+向量化执行让聚合查询飞快",
+  "datePublished": "2018-11-14T13:59:31.000Z",
+  "dateModified": "2026-06-27T02:31:54.491Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/48312/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据分析的利器-clickhouse介绍',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"数据分析的利器-clickhouse介绍","step":[{"@type":"HowToStep","position":1,"name":"","text":""},{"@type":"HowToStep","position":2,"name":"","text":""},{"@type":"HowToStep","position":3,"name":"","text":""},{"@type":"HowToStep","position":4,"name":"","text":""},{"@type":"HowToStep","position":5,"name":"","text":""}]}</script>
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/48312/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/48312/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/48312/">
+<meta name="keywords" content="大数据, clickhouse, clickhouse介绍">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"数据库","item":"https://lichuanyang.top/categories/数据库/"},{"@type":"ListItem","position":3,"name":"数据分析的利器-clickhouse介绍","item":"https://lichuanyang.top/posts/48312/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/48312.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">数据分析的利器-clickhouse介绍</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">数据分析的利器-clickhouse介绍</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-11-14T13:59:31.000Z" title="发表于 2018-11-14 21:59:31">2018-11-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T02:31:54.491Z" title="更新于 2026-06-27 10:31:54">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> ClickHouse是OLAP领域的性能怪兽，列式存储+向量化执行让聚合查询飞快</blockquote><p>Clickhouse是Yandex开源的一个用于实时数据分析的数据库，一开始就用在yandex内部的多个数据分析业务上。要介绍clickhouse，还是需要先介绍一下yandex。Clickhouse为什么会出现，其实和yandex的业务关系非常大。Yandex是俄罗斯最大的搜索引擎，会有很多数据分析的业务，其中数据量最大的业务，就是Yandex.Metrica，这是一个和百度统计类似的网站数据分析服务，数据量也仅次于google analysis。自从Clickhouse开源后，在国内外的很多公司的线上业务都已经开始使用。 因此，写这篇clickhouse教程，对clickhouse做一个基础的介绍。</p>
+<span id="more"></span>
+
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Clickhouse是极其适合OLAP（联机分析处理）问题的一个数据库。这类问题有如下一些特点：</p>
+<ul>
+<li>请求以读为主，数据添加、更新一般以批量的形式进行；</li>
+<li>表可以很宽，但是实际查询时只会用到有限的几列；</li>
+<li>列值较小，一般是数字或者短字符串;</li>
+<li>查询结果集的大小显著小于源数据；</li>
+<li>事务处理需求较弱</li>
+</ul>
+<p>根据clickhouse提供的性能测试结果，clickhouse的性能要大大领先于所有同类产品。</p>
+<p>针对这类问题，用到的最核心的思路就是列式存储。目前常用的数据库，像MySQL等，都是行式存储。而列式存储，简单的说就是把同一列的数据存储在一起，像下图这样。</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/clickhouse/column.png" alt="列式存储说明"></p>
+<p>相对行存储， 列存储查询时只会读取涉及到的列，减少io开销；任何一列都可以作为索引；但是数据写入会相对麻烦一些。对比前面我们介绍的OLAP问题的特点，可以看到，列式存储是及其适合这种在线数据分析的。</p>
+<h2 id="ClickHouse的存储引擎"><a href="#ClickHouse的存储引擎" class="headerlink" title="ClickHouse的存储引擎"></a>ClickHouse的存储引擎</h2><p>ClickHouse中提供了很多种存储引擎，不过90%以上的情况下用MergeTree这个引擎就可以了。下面详细介绍一下这个引擎。</p>
+<p>简单来说，mergeTree有这么几个特点：</p>
+<ul>
+<li>分块(part)存储(一般按日期)；</li>
+<li>part内按主键排序，并分成多个block; </li>
+<li>插入时生成新的part;</li>
+<li>异步merge</li>
+</ul>
+<p>首先来看一下mergeTree的文件结构。(本节的图片都来自clickhouse中文社区（<a target="_blank" rel="noopener external nofollow noreferrer" href="http://clickhouse.com.cn/%EF%BC%89%E5%86%85%E6%9D%A5%E8%87%AA%E6%96%B0%E6%B5%AA%E9%AB%98%E9%B9%8F%E8%80%81%E5%B8%88%E7%9A%84%E5%88%86%E4%BA%AB">http://clickhouse.com.cn/）内来自新浪高鹏老师的分享</a>)<br><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/clickhouse/folder.png"><br>其中20171001….这个目录就是代表一个part，下面这些文件，columns.txt记录列信息；每一列有一个bin文件和mrk文件, 其中bin文件是实际数据，primary.idx存储主键信息，结构与mrk一样，类似于稀疏索引。</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/clickhouse/mergetree.jpg" alt="具体存储结构"></p>
+<p>这里展示了mrk文件和primary文件的具体结构，可以看到，数据是按照主键排序的，并且会每隔一定大小分隔出很多个block。每个block中也会抽出一个数据作为索引，放到primary.idx和各列的mrk文件中。</p>
+<p>而利用mergetree进行查询时，最关键的步骤就是定位block，这里会根据查询的列是否在主键内有不同的方式。根据主键查询时性能会较好，但是非主键查询时，由于按列存储的关系，虽然会做一次全扫描，性能也没有那么差。所以索引在clickhouse里并不像mysql那么关键。实际使用时一般需要添加按日期的查询条件，保障非主键查询时的性能。</p>
+<p>找到对应的block之后，就是在block内查找数据，获取需要的行，再拼装需要的其他列数据。</p>
+<h2 id="其他特性"><a href="#其他特性" class="headerlink" title="其他特性"></a>其他特性</h2><h3 id="数据压缩"><a href="#数据压缩" class="headerlink" title="数据压缩"></a>数据压缩</h3><p>一些面向列的DBMS（例如InfiniDB CE和MonetDB）没有使用数据压缩。但是，对于clickhouse的性能提升，数据压缩起到了很大作用。对于列式存储来说。相同的字段存储在一起，类型一致，数据类似，更方便进行压缩。clickhouse支持LZ4和ZSTD等压缩算法。</p>
+<h3 id="基于磁盘存储"><a href="#基于磁盘存储" class="headerlink" title="基于磁盘存储"></a>基于磁盘存储</h3><p>clickhouse支持普通磁盘；因此在成本上有较大优势。<br>提供了针对raid, ssd,大内存等的配置，如果有的话，也能加以利用。</p>
+<p>数据按主键顺序存储，因此可以实现延时极低的查询。</p>
+<h3 id="向量化引擎"><a href="#向量化引擎" class="headerlink" title="向量化引擎"></a>向量化引擎</h3><p>现代CPU中有一种叫SIMD的机制，即Single Instruction, Multiple Data，一条指令操作多个数据。对于列式存储的数据，可以很方便的利用这一机制，更好的发挥cpu的性能。</p>
+<h3 id="多核，多服务器并行处理"><a href="#多核，多服务器并行处理" class="headerlink" title="多核，多服务器并行处理"></a>多核，多服务器并行处理</h3><p>在clickHouse中，数据会存储到不同的分片上。查询会在多个分片上并行执行。</p>
+<p>而在每台服务器上，也会多核并行处理，充分利用单机性能。</p>
+<h3 id="支持数据实时写入"><a href="#支持数据实时写入" class="headerlink" title="支持数据实时写入"></a>支持数据实时写入</h3><p>mergetree引擎下,新插入数据后，会先形成新的part, 这个时候数据就已经可以被查到，因此从数据写入到可以被查询的延时是很小的。后续不同part会继续异步进行merge, 以提高存储效率</p>
+<h3 id="数据复制"><a href="#数据复制" class="headerlink" title="数据复制"></a>数据复制</h3><p>clickHouse是基于zookeeper的主主复制。写入任何可用的副本后，数据将分发到所有剩余的副本。复制时是按块进行，复制失败的话可以直接重试。系统在不同的副本上保持相同的数据。</p>
+<p>此外，相对其他列存储数据库，clickhouse对sql语法的支持非常好，包括group by, order by, in, join等常用sql语句都支持。</p>
+<p>原文地址：<a href="https://lichuanyang.top/posts/48312/">https://lichuanyang.top/posts/48312/</a></p>
+<h2 id="快速上手步骤"><a href="#快速上手步骤" class="headerlink" title="快速上手步骤"></a>快速上手步骤</h2><ol>
+<li><strong>安装 ClickHouse</strong>：以 Ubuntu 为例，<code>sudo apt-get install clickhouse-server clickhouse-client</code>，启动服务后使用 <code>clickhouse-client</code> 连接。</li>
+<li><strong>创建表</strong>：使用 MergeTree 引擎建表，指定 <code>ORDER BY</code>（排序键）和 <code>PARTITION BY</code>（分区键，通常按日期），列按需定义，无需像 MySQL 那样为每列建索引。</li>
+<li><strong>导入数据</strong>：通过 <code>clickhouse-client --query "INSERT INTO table FORMAT CSV" &lt; data.csv</code> 或使用 <code>clickhouse-local</code> 工具批量导入。数据写入后立即可查，后台自动 merge。</li>
+<li><strong>编写查询</strong>：使用标准 SQL 进行分析，ClickHouse 对 <code>GROUP BY</code>、<code>ORDER BY</code>、<code>JOIN</code> 等均有良好支持。建议查询时加上日期过滤条件以提升非主键查询性能。</li>
+<li><strong>对比 MySQL 性能</strong>：将相同数据导入 MySQL 和 ClickHouse，运行相同的聚合分析查询，感受列式存储在 OLAP 场景下的数量级性能差异。</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/48312/">https://lichuanyang.top/posts/48312/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/48312.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/32580/" title="关于rocketmq的readQueue和writeQueue"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/32580.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">关于rocketmq的readQueue和writeQueue</div></div><div class="info-2"><div class="info-item-1">RocketMQ 的 MessageQueue 有一个独特设计：将队列拆分为 readQueueNums（读队列数）和 writeQueueNums（写队列数）。这两个值在绝大多数情况下必须相等，一旦不等就会产生严重问题——那为什么要拆开？答案在于平滑扩缩容。   MessageQueue 是什么？在 RocketMQ 中，Topic 是消息的逻辑分类，而 MessageQueue 是 Topic 的物理分片，类似于 Kafka 的 Partition。关键约束：Consumer 的数量不能超过 Queue 的数量——因为每个 Queue 同一时间只能被一个 Consumer 消费。 正常状态下：readQueue = writeQueue正常情况下，readQueueNums == writeQueueNums，生产者向所有 Queue 写入消息，消费者从所有 Queue 读取消息，一切正常。 但如果两者不一致：    状态 后果    writeQueue &gt; readQueue 部分 Queue 有写无读 → 消息永远不会被消费，积压   readQueue...</div></div></div></a><a class="pagination-related" href="/posts/9193/" title="通过位运算转换大小写"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/9193.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">通过位运算转换大小写</div></div><div class="info-2"><div class="info-item-1">位运算是计算机科学中最基础也最高效的操作之一。今天介绍一个经典的位运算应用：用一行代码完成英文字母的大小写转换。   为什么需要位运算做大小写转换？你可能第一反应是：Java 不是有 Character.toUpperCase() 和 Character.toLowerCase() 吗？为什么要自己写？ 确实，99% 的场景下你应该用标准库。但了解这个技巧有几个价值：  面试中的常见考点：很多算法面试会考察这种位运算思维 理解计算机底层：知道 ASCII 码的设计精妙之处 嵌入式/底层开发：在没有标准库的环境下，这就是实际操作 代码简洁：ch ^= 32 比 Character.isUpperCase(ch) ? Character.toLowerCase(ch) : ch 优雅得多  ASCII 码的巧妙设计要理解这个技巧，先看英文字母在 ASCII 表中的编码：    字母 十进制 十六进制 二进制    A 65 0x41 0100 0001   a 97 0x61 0110 0001   B 66 0x42 0100 0010   b 98 0x62 0110 ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/25187/" title="wordcount代码"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/25187.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2012-10-28</div><div class="info-item-2">wordcount代码</div></div><div class="info-2"><div class="info-item-1">概述参考http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html &nbsp; package org.apache.hadoop.examples; import java.io.IOException; import java.util.StringTokenizer; import org.apache.hadoop.conf.Configuration; import org.apache.hadoop.fs.Path; import org.apache.hadoop.io.IntWritable; import org.apache.hadoop.io.Text; import org.apache.hadoop.mapreduce.Job; import org.apache.hadoop.mapreduce.Mapper; import org.apache.hadoop.mapreduce.Reducer; import org.apache.hadoop.mapreduce.lib.inpu...</div></div></div></a><a class="pagination-related" href="/posts/35575/" title="hadoop基本的学习资料"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/hadoop.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2012-10-28</div><div class="info-item-2">hadoop基本的学习资料</div></div><div class="info-2"><div class="info-item-1"> ⚠️ 这是一篇 2012 年的学习笔记。Hadoop 生态在过去十几年发生了巨大变化，下面的链接已非常陈旧。我保留了原始内容作为历史记录，并补充了 2026 年的学习建议。    为什么 2026 年还要了解 Hadoop？可能你会问：现在都用 Spark、Flink、数据湖了，为什么还要学 Hadoop？ 答案很简单：HDFS 和 YARN 仍然是大数据基础设施的底座。Spark 默认跑在 YARN 上，Hive 的表数据存在 HDFS 里，甚至很多云原生数据平台底层还是 HDFS 兼容存储。理解 Hadoop 的核心设计（分布式文件系统、计算资源调度、数据本地性），能帮你更好地理解上层框架的设计决策。 2026 年推荐的学习路径入门：理解核心概念 HDFS：分布式文件系统的基本原理——NameNode/DataNode 架构、数据块（block）、副本机制、机架感知 MapReduce：了解 map-shuffle-reduce 的计算模型，理解为什么它适合批处理但不适合迭代计算 YARN：资源管理和调度框架，理解 ApplicationMaster 和 Cont...</div></div></div></a><a class="pagination-related" href="/posts/63299/" title="一篇不错的lda模型入门文档"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/63299.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2012-12-02</div><div class="info-item-2">一篇不错的lda模型入门文档</div></div><div class="info-2"><div class="info-item-1">转自http://leyew.blog.51cto.com/5043877/860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0 前几天开始学习lda,走了不少弯路，对lda仍然是一头雾水。看了这篇文档以后总算明白lda是干啥的了 &nbsp; LDA（Latent Dirichlet Allocation）学习笔记最近在看LDA算法，经过了几天挣扎，总算大致了解了这个算法的整体框架和流程。 示例LDA要干的事情简单来说就是为一堆文档进行聚类（所以是非监督学习），一种topic就是一类，要聚成的topic数目是事先指定的。聚类的结果是一个概率，而不是布尔型的100%属于某个类。国外有个博客[1]上有一个清晰的例子，直接引用：  Suppose you have the following set of sentences:  I like to eat broccoli and bananas. I ate a banana and spinach smoothie for breakfast. Chinchil...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/35575/">hadoop基本的学习资料</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/35575/">2026 年还要学 Hadoop 吗？</a></li><li><a href="https://lichuanyang.top/posts/35575/">学 Hadoop 从哪开始？</a></li><li><a href="https://lichuanyang.top/posts/35575/">学过时技术有价值吗？</a></li></ul></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ClickHouse%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="toc-number">2.</span> <span class="toc-text">ClickHouse的存储引擎</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%89%B9%E6%80%A7"><span class="toc-number">3.</span> <span class="toc-text">其他特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9"><span class="toc-number">3.1.</span> <span class="toc-text">数据压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E7%A3%81%E7%9B%98%E5%AD%98%E5%82%A8"><span class="toc-number">3.2.</span> <span class="toc-text">基于磁盘存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E9%87%8F%E5%8C%96%E5%BC%95%E6%93%8E"><span class="toc-number">3.3.</span> <span class="toc-text">向量化引擎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%A0%B8%EF%BC%8C%E5%A4%9A%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86"><span class="toc-number">3.4.</span> <span class="toc-text">多核，多服务器并行处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E6%95%B0%E6%8D%AE%E5%AE%9E%E6%97%B6%E5%86%99%E5%85%A5"><span class="toc-number">3.5.</span> <span class="toc-text">支持数据实时写入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6"><span class="toc-number">3.6.</span> <span class="toc-text">数据复制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B%E6%AD%A5%E9%AA%A4"><span class="toc-number">4.</span> <span class="toc-text">快速上手步骤</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

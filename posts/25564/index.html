@@ -1,0 +1,278 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>redis的对象 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Redis 对象系统源码解析，介绍字符串、列表、哈希、集合、有序集合等对象的底层实现方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis的对象">
+<meta property="og:url" content="https://lichuanyang.top/posts/25564/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="Redis 对象系统源码解析，介绍字符串、列表、哈希、集合、有序集合等对象的底层实现方式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/25564.jpg">
+<meta property="article:published_time" content="2020-08-08T07:05:48.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:44:21.594Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/25564.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "redis的对象",
+  "url": "https://lichuanyang.top/posts/25564/",
+  "image": "https://lichuanyang.top/img/25564.jpg",
+  "abstract": "深入解析Redis六种对象的底层编码选择策略，展示其如何根据不同数据规模和场景在内存效率与性能之间做极致优化权衡。",
+  "datePublished": "2020-08-08T07:05:48.000Z",
+  "dateModified": "2026-06-27T03:44:21.594Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/25564/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'redis的对象',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/25564/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/25564/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/25564/">
+<meta name="keywords" content="redis">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"redis系列","item":"https://lichuanyang.top/categories/redis系列/"},{"@type":"ListItem","position":3,"name":"redis的对象","item":"https://lichuanyang.top/posts/25564/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/25564.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">redis的对象</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">redis的对象</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-08-08T07:05:48.000Z" title="发表于 2020-08-08 15:05:48">2020-08-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T03:44:21.594Z" title="更新于 2026-06-27 11:44:21">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/redis%E7%B3%BB%E5%88%97/">redis系列</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> 深入解析Redis六种对象的底层编码选择策略，展示其如何根据不同数据规模和场景在内存效率与性能之间做极致优化权衡。</blockquote><p><a href="https://lichuanyang.top/posts/22179/">在上一篇文章中</a>，介绍了redis的底层定义的一些数据结构。接下来，在本文中，我们就结合redis提供的对象，看看这些数据结构是如何使用的。</p>
+<span id="more"></span>
+
+<p>Redis中主要包括这些对象：字符串、列表、哈希、集合、有序集合、HyperLogLog、GEO等，本文会主要介绍这些对象是如何实现的，对于其命令，可以参考<a target="_blank" rel="noopener external nofollow noreferrer" href="https://redis.io/commands">redis官网</a>中对每个命令的说明，这里就不一个一个列了。</p>
+<p>在介绍具体的对象之前，先看一下redis中对于对象本身的定义。</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">redisObject</span> {</span></span><br><span class="line">    <span class="type">unsigned</span> type:<span class="number">4</span>;</span><br><span class="line">    <span class="type">unsigned</span> encoding:<span class="number">4</span>;</span><br><span class="line">    <span class="type">unsigned</span> lru:LRU_BITS; <span class="comment">/* LRU time (relative to global lru_clock) or</span></span><br><span class="line"><span class="comment">                            * LFU data (least significant 8 bits frequency</span></span><br><span class="line"><span class="comment">                            * and most significant 16 bits access time). */</span></span><br><span class="line">    <span class="type">int</span> refcount;</span><br><span class="line">    <span class="type">void</span> *ptr;</span><br><span class="line">} robj;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在一个redisObject中，prt字段就是数据的实际内容，这里的存储会应用之前讲的redis的底层数据结构。可以看到，ptr是作为引用出现在redisObject中，也就是说，redisObject本身和实际数据本身内存可能不在一起。</p>
+<p>通过 OBJECT ENCODING KEY 这个命令，可以查看一个key底层实际使用的数据结构。</p>
+<p>接下来，我们就具体讲一下各个对象。</p>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>字符串可以说是redis中最基本的一个对象类型了，set 一个普通的key,value,使用的就是字符串对象。字符串对象根据具体情况，会使用int, embstr, raw三种类型的底层编码方式。其中int很好理解，在字符串的值是数字时，就会使用int存储。embstr和raw的底层结构都是简单动态字符串（SDS）,区别在于，embstr中，redisObject和实际存储的SDS在连续的内存空间上。embstr的使用场景是字符串小于等于39字节（如无特别说明，本文中的数值都是使用redis的默认配置），大于39字节时，则使用raw编码。</p>
+<h2 id="列表对象"><a href="#列表对象" class="headerlink" title="列表对象"></a>列表对象</h2><p>即list, redis中的list是一个双向队列，提供左右两侧的push,pop操作，range操作等。</p>
+<p>list的底层实现可以是ziplist或者链表。上一篇文章中，我们介绍了ziplist是一种针对小数据集的，非常高效的数据结构。因此，在使用时，很自然的可以想到，小的list就会用ziplist实现，大的list则用链表实现。对于什么样的列表才算小，redis里使用两个判断标准，一是list中每个元素的最大长度，对应配置list-max-ziplist-value, 二是list中的元素数，对应配置list-max-ziplist-entries。</p>
+<p>list的实际应用场景其实就是对双向队列的利用场景，比如微信朋友圈的时间线就可以通过list实现。有时候，也会拿redis的list用作消息队列。</p>
+<h2 id="哈希"><a href="#哈希" class="headerlink" title="哈希"></a>哈希</h2><p>即我们通常所说的map,与列表对象list, 哈希也会根据数据集的大小选用两个不同的底层结构，分别是ziplist和hashTable(底层是字典)。</p>
+<p>这里可以引申出一个小技巧，当我们需要在redis中存储object时，可以使用hash，而非序列化成字符串存储。因为对于一个正常的object来说，是会被通过ziplist存储的。这样，就通过非常小的资源开销实现了对单个字段的get/set.</p>
+<h2 id="集合对象"><a href="#集合对象" class="headerlink" title="集合对象"></a>集合对象</h2><p>即set, 对应redis中的S系列命令，如SADD,SMEMBERS等，也就是元素不重复的”集合”。同样的，redis的集合也有两种实现方式，分别是intset和hashTable.</p>
+<p>redis的集合提供了非常方便的求交集、并集、差集等的方法，可以用在查询共同好友等场景中。</p>
+<h2 id="有序集合"><a href="#有序集合" class="headerlink" title="有序集合"></a>有序集合</h2><p>对应redis中的Z系列命令，如ZADD,ZRANK等，底层的实现对应ziplist或者skiplist。期数，看完上一篇文章中对于这两个数据结构的介绍，我们是可以很容易的理解redis是如何实现有序集合的。</p>
+<p>有序集合也是一种很常用的对象，可以用在排行榜、topK等问题中。</p>
+<h2 id="HyperLogLog"><a href="#HyperLogLog" class="headerlink" title="HyperLogLog"></a>HyperLogLog</h2><p>redis中的hyperLogLog是一个用于基数统计的结构，即统计不重复元素的个数。它的实现是基于概率算法，通过一定概率的误差，在对空间使用非常小的情况下，实现对大数据量的统计。其具体算法非常精妙，我后边会单开一篇文章介绍。这里就先介绍下它的效果，HyperLogLog可以使用12k的空间统计2的64次方的数据，标准误差在0.81%。</p>
+<p>Redis中使用HyperLogLog非常简单，只包含三条命令，PFADD添加元素，PFCOUNT获取当前基数，PFMERGE对多个HyperLogLog进行合并。</p>
+<h2 id="GEO"><a href="#GEO" class="headerlink" title="GEO"></a>GEO</h2><p>顾名思义，redis中的geo就是一种用来处理位置相关信息的结构。redis中的geo对象提供了添加、查看位置信息，计算两个位置间的距离，查找范围内的元素这些功能。</p>
+<p>Geo的底层基于zset实现。其核心处理在于通过GeoHash算法将二维的经纬度编码成一维的hash值，同时还能保住经纬度本身越接近的值，hash值也越接近。GeoHash的细节我们也在后续文章中专门做介绍。经过GeoHash做编码后，就可以利用zset本身的功能来做范围查找等事情了。</p>
+<p>现在很多互联网服务的位置服务会选择使用redis来实现，比如附近的人，附近的餐厅。</p>
+<p>通过上边的介绍，希望可以帮助大家更好的理解和使用redis。可以看到，redis里针对一些特定情况，进行了非常极致的内存优化，而我们在使用时，就要考虑如何更好的去利用这些优化。</p>
+<p>原文地址： <a href="https://lichuanyang.top/posts/25564/">https://lichuanyang.top/posts/25564/</a></p>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/25564/">https://lichuanyang.top/posts/25564/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/25564.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/3914/" title="[翻译][关于分布式架构和系统设计]分布式系统的模式-综述"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/3914.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">[翻译][关于分布式架构和系统设计]分布式系统的模式-综述</div></div><div class="info-2"><div class="info-item-1">（最近把这篇文章重新整理了下，欢迎阅读最新版 https://lichuanyang.top/posts/45718/） 本文翻译自https://martinfowler.com/articles/patterns-of-distributed-systems/ ，原作者对目前各类企业级架构中使用的多种分布式系统进行了总结，从中提取出了一些通用的“模式”(pattern)。本文作为系列文章的第一篇，介绍了分布式系统的特点和一些常见问题。 建议好好阅读一下本文以及英文原文，对于分布式系统设计和分布式架构理念，会有非常大的帮助。   What this is about分布式系统给程序设计带来了特殊的挑战。 它们通常要求我们拥有多个数据副本，这些副本需要保持同步。 但是我们无法期望各节点能永远可靠地工作，同时，网络延迟也很容易导致不一致的现象出现。 尽管如此，许多组织仍依赖一系列核心的分布式系统来处理数据存储，消息传递，系统管理和计算等。 这些系统面临很多共同的问题，这些问题也可以通过类似的方案来解决。 本文将这些解决方案定义为模式，通过这些模式，我们对于如何更好地理解，交流和教授...</div></div></div></a><a class="pagination-related" href="/posts/22179/" title="redis里的数据结构"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22179.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">redis里的数据结构</div></div><div class="info-2"><div class="info-item-1">Redis作为当前使用非常广泛的内存数据库，在代码层面做了很多极致的优化，已获取更好的性能。其中重要的一部分，就是对于底层数据结构的使用。Redis会根据数据量、数据大小等来优化对于不同结构的使用，从而获得更佳的运行效率和内存占用。Redis的核心数据结构包括简单动态字符串、列表、字典、跳跃表、整数集合、压缩列表。 接下来，我们就依次讲讲这些数据结构。   简单动态字符串（SDS）Redis是用C语言实现的。先复习一下C，C里的字符串中不记录字符串长度，以空字符标记结尾。这样会显而易见的带来三个问题：1.获取字符串长度需要O(n)的复杂度；2.操作不慎会导致缓冲区溢出，例如内存中紧邻的两个字符串，如果对前一个调用strcat拼接其他字符串，就会造成溢出；3. 一些特殊内容，如图像、音频等转成二进制时，难免其中夹杂空字符等特殊字符，这样就无法被C字符串存储了，即C字符串不具备二进制安全性。 而这几点，对于Redis的应用场景来说，影响其实都是非常大的。因此，在redis中定义了一个新的结构，用来保存字符串，即SDS。 SDS的核心思想就是额外使用一个字段记录字符串的长度，这样，上面...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/48104/" title="java分布式锁入门实战"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/java-distributed-lock.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-02-20</div><div class="info-item-2">java分布式锁入门实战</div></div><div class="info-2"><div class="info-item-1">这篇文章只讲使用，不讲原理，简单粗暴。 分布式锁，顾名思义，就是分布式的锁，应用于一些分布式系统中。例如，有一个服务部在数太机器上，然后有可能操作数据库中的同一条记录。这时，就需要分布式锁。 分布式锁实现的方式很多，一般来说需要一个实体来代表一个锁，占用锁时就新建这个实体，锁释放时也对应将相应实体删除。同时，一般还需要一个锁超时过期的策略，避免一些异常情况造成锁无法被释放。 zookeeper和redis都是常用的实现分布式锁的方式。接下来就简单介绍一下这两种方式的使用。 基于zookeeper的分布式锁使用zookeeper的话，建议直接使用curator客户端.         &lt;span class="hljs-tag"&gt;&amp;lt;&lt;span class="hljs-title"&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;             &lt;span class="hljs-tag"&gt;&amp;lt;&lt;span c...</div></div></div></a><a class="pagination-related" href="/posts/9329/" title="通过实际操作理解redis cluster原理"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/redis-cluster.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-04-14</div><div class="info-item-2">通过实际操作理解redis cluster原理</div></div><div class="info-2"><div class="info-item-1">Redis 集群是redis官方提供的一种集群方案，从3.0开始提供稳定版，应用也已经比较广泛，也经受住了时间考验，个人感觉完全可以取代codis,tweemproxy等集群方案。 cluster原理介绍cluster是使用数据分片的形式实现的，一个 Redis cluster集群包含 16384 个哈希槽, 任意一个key都可以通过 CRC16(key) % 16384 这个公式计算出应当属于哪个槽。每个槽应当落在哪个节点上，也是事先定好。这样，进行任一操作时，首先会根据key计算出对应的节点，然后操作相应的节点就可以了。 所以说，其实cluster跟单点相比，只是多了一个给key计算sharding值的过程，并没有增加多少复杂度，完全可以放心使用。 在这样的设计下，一些对节点的操作也很方便，操作过程中对client端也不会有影响。1. 增加节点：将原有节点的某些slot转移到新节点上2. 删除节点: 将节点上的槽转移到其他节点上以后，移除空节点3. 节点故障：落到故障节点上的操作会失败，而集群其他部分可以正常访问，这样就不会出现一致性哈希方案的“雪崩”问题。单点的故障也可以通...</div></div></div></a><a class="pagination-related" href="/posts/37583/" title="redis cluster的数据迁移"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/37583.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-24</div><div class="info-item-2">redis cluster的数据迁移</div></div><div class="info-2"><div class="info-item-1">在之前的一篇文章通过实际操作理解redis cluster原理中，我们简单介绍过redis cluster的设计原理。redis cluster中的数据是根据一定规则分配到16384个slot中，这些slot又根据配置对应到不同的节点上。我们知道，在集群稳定运行后，仍然可以以slot为单位转移数据，不过对于具体的转移过程，包括转移过程中集群的可用性等问题，一直不是太确定，所以这次详细了解了一下。   整体流程redis官方文档中提供的数据迁移办法是借助redis-trib脚本，其实严格来说，这个redis-trib并不是redis本体的一部分，它只是官方按照redis设计规范实现的一套脚本集合，帮助用户更方便的使用redis-cluster。 实际上，我们完全可以脱离这个脚本来使用cluster, 或者用其他方式实现这套逻辑，比如搜狐tv的redis运维工具cachecloud里，就用java实现了整套逻辑。 我们可以参考redis-trip或者cachecloud的代码来了解cluster数据迁移的流程，主要分为如下几部:  设定迁移中的节点状态，比如要把slot x的数据从节...</div></div></div></a><a class="pagination-related" href="/posts/22179/" title="redis里的数据结构"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22179.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-11</div><div class="info-item-2">redis里的数据结构</div></div><div class="info-2"><div class="info-item-1">Redis作为当前使用非常广泛的内存数据库，在代码层面做了很多极致的优化，已获取更好的性能。其中重要的一部分，就是对于底层数据结构的使用。Redis会根据数据量、数据大小等来优化对于不同结构的使用，从而获得更佳的运行效率和内存占用。Redis的核心数据结构包括简单动态字符串、列表、字典、跳跃表、整数集合、压缩列表。 接下来，我们就依次讲讲这些数据结构。   简单动态字符串（SDS）Redis是用C语言实现的。先复习一下C，C里的字符串中不记录字符串长度，以空字符标记结尾。这样会显而易见的带来三个问题：1.获取字符串长度需要O(n)的复杂度；2.操作不慎会导致缓冲区溢出，例如内存中紧邻的两个字符串，如果对前一个调用strcat拼接其他字符串，就会造成溢出；3. 一些特殊内容，如图像、音频等转成二进制时，难免其中夹杂空字符等特殊字符，这样就无法被C字符串存储了，即C字符串不具备二进制安全性。 而这几点，对于Redis的应用场景来说，影响其实都是非常大的。因此，在redis中定义了一个新的结构，用来保存字符串，即SDS。 SDS的核心思想就是额外使用一个字段记录字符串的长度，这样，上面...</div></div></div></a><a class="pagination-related" href="/posts/63756/" title="使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/63756.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2017-04-06</div><div class="info-item-2">使用lua脚本和jedis实现redis的hmsetnx命令，操作hash表时不覆盖原有数据</div></div><div class="info-2"><div class="info-item-1">Redis 的 Hash 操作中，HSETNX 可以保证只在 field 不存在时才写入，但 HMSET（批量设置多个 field）却没有对应的 HMSETNX 命令。如果你需要批量初始化缓存且不覆盖已有数据，每次发 N 个 HSETNX 命令会产生 N 次网络往返，这在批量场景下性能很差。 用 Lua 脚本可以完美解决这个问题——把逻辑放到 Redis 服务端执行，只需要一次网络往返。   问题背景假设你有一个用户配置的缓存场景：新用户首次访问时，需要初始化一组默认配置到 Redis Hash 中。但如果用户已经有了部分配置，不应该覆盖。 用 HSETNX 逐个设置当然可以，但如果有 20 个配置项，就是 20 次 Redis 往返。在高并发下，这会成为瓶颈。 而 HMSET 一次可以设多个 field，但它会无条件覆盖已有值——这不符合需求。 Lua 脚本方案12345678910local keyfor i, j in ipairs(ARGV)do    if i % 2 == 0 then        redis.call('hsetnx', KEY...</div></div></div></a></div></div><hr class="custom-hr"><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.</span> <span class="toc-text">字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.</span> <span class="toc-text">列表对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%88%E5%B8%8C"><span class="toc-number">3.</span> <span class="toc-text">哈希</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E5%AF%B9%E8%B1%A1"><span class="toc-number">4.</span> <span class="toc-text">集合对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88"><span class="toc-number">5.</span> <span class="toc-text">有序集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HyperLogLog"><span class="toc-number">6.</span> <span class="toc-text">HyperLogLog</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GEO"><span class="toc-number">7.</span> <span class="toc-text">GEO</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Tag: transaction-isolation-levels | Mobility</title><meta name="author" content="SandGrid"><meta name="copyright" content="SandGrid"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Backend development and architecture design blog covering Java, message queues, databases, cloud native, big data, AI&#x2F;LLM practices and personal growth">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mobility">
+<meta property="og:url" content="https://lichuanyang.top/en/tags/transaction-isolation-levels/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="Backend development and architecture design blog covering Java, message queues, databases, cloud native, big data, AI&#x2F;LLM practices and personal growth">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://lichuanyang.top/en/img/butterfly-icon.png">
+<meta property="article:author" content="SandGrid">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/en/img/butterfly-icon.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/en/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/en/tags/transaction-isolation-levels/"><link rel="preconnect" href="//cdnjs.cloudflare.com"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"/><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"/><meta name="baidu-site-verification" content="code-T8LautTf5f"/><link rel="stylesheet" href="/en/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/en/',
+  algolia: undefined,
+  localSearch: {"path":"/en/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Tag: transaction-isolation-levels',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'tag'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/en/atom.xml" title="Mobility" type="application/atom+xml">
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">85</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">128</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/en/"><span class="site-name">Mobility</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">transaction-isolation-levels</h1></div></header><main class="layout" id="content-inner"><div id="tag"><div class="article-sort-title">Tag - transaction-isolation-levels</div><div class="article-sort"><div class="article-sort-item year">2022</div><div class="article-sort-item"><a class="article-sort-item-img" href="/en/posts/7774/" title="From Redo Log and Undo Log to Isolation Levels: A Deep Dive into Database Transactions and ACID"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/7774.jpg" alt="From Redo Log and Undo Log to Isolation Levels: A Deep Dive into Database Transactions and ACID" onerror="this.onerror=null;this.src='/en/img/404.jpg'"></a><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2022-02-07T08:40:02.000Z" title="Created 2022-02-07 16:40:02">2022-02-07</time></div><a class="article-sort-item-title" href="/en/posts/7774/" title="From Redo Log and Undo Log to Isolation Levels: A Deep Dive into Database Transactions and ACID">From Redo Log and Undo Log to Isolation Levels: A Deep Dive into Database Transactions and ACID</a></div></div></div><nav id="pagination"><div class="pagination"></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">SandGrid</div><div class="author-info-description">Mobility | Expanding life's choices</div><div class="site-data"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">85</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">128</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="Zhihu"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Backend Dev | Architecture | AI Practice<br>Expanding choices through code</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/en/posts/18804/" title="Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub">Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub</a><time datetime="2026-06-26T08:18:13.000Z" title="Created 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/22470/" title="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/22470.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos"/></a><div class="content"><a class="title" href="/en/posts/22470/" title="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos">Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos</a><time datetime="2026-06-16T05:21:16.000Z" title="Created 2026-06-16 13:21:16">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/65500/" title="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/65500.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0"/></a><div class="content"><a class="title" href="/en/posts/65500/" title="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0">Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0</a><time datetime="2026-06-11T14:00:00.000Z" title="Created 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/26061.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"/></a><div class="content"><a class="title" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow">How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow</a><time datetime="2026-06-04T14:00:00.000Z" title="Created 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="How to Farm Free Tokens: Building Agent-Independent AI Workflows"/></a><div class="content"><a class="title" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows">How to Farm Free Tokens: Building Agent-Independent AI Workflows</a><time datetime="2026-06-03T14:00:00.000Z" title="Created 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>Categories</span>
+            <a class="card-more-btn" href="/en/categories/" title="View More">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/en/categories/ai-practice/"><span class="card-category-list-name">AI Practice</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/en/categories/activemq-series/"><span class="card-category-list-name">ActiveMQ Series</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/en/categories/algorithm/"><span class="card-category-list-name">Algorithm</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/en/categories/architecture-design/"><span class="card-category-list-name">Architecture Design</span><span class="card-category-list-count">5</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/en/categories/big-data/"><span class="card-category-list-name">Big Data</span><span class="card-category-list-count">8</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/en/categories/book-notes/"><span class="card-category-list-name">Book Notes</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/en/categories/cloud-native/"><span class="card-category-list-name">Cloud Native</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/en/categories/database/"><span class="card-category-list-name">Database</span><span class="card-category-list-count">4</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>Tags</span></div><div class="card-tag-cloud"><a href="/en/tags/activemq/" style="font-size: 1.5em; color: #99a9bf">activemq</a> <a href="/en/tags/book-reflections/" style="font-size: 1.26em; color: #999fa8">book-reflections</a> <a href="/en/tags/computational-advertising/" style="font-size: 1.1em; color: #999">computational-advertising</a> <a href="/en/tags/ssh-auto-login/" style="font-size: 1.1em; color: #999">ssh-auto-login</a> <a href="/en/tags/design-patterns/" style="font-size: 1.26em; color: #999fa8">design-patterns</a> <a href="/en/tags/free-tools/" style="font-size: 1.1em; color: #999">free-tools</a> <a href="/en/tags/monitoring/" style="font-size: 1.34em; color: #99a3b0">monitoring</a> <a href="/en/tags/prompt-engineering/" style="font-size: 1.1em; color: #999">prompt-engineering</a> <a href="/en/tags/frontend-development/" style="font-size: 1.1em; color: #999">frontend-development</a> <a href="/en/tags/clickhouse/" style="font-size: 1.1em; color: #999">clickhouse</a> <a href="/en/tags/grafana/" style="font-size: 1.1em; color: #999">grafana</a> <a href="/en/tags/vercel/" style="font-size: 1.1em; color: #999">vercel</a> <a href="/en/tags/internet-advertising/" style="font-size: 1.1em; color: #999">internet-advertising</a> <a href="/en/tags/hawtio/" style="font-size: 1.1em; color: #999">hawtio</a> <a href="/en/tags/maven/" style="font-size: 1.18em; color: #999ca1">maven</a> <a href="/en/tags/distributed-systems/" style="font-size: 1.18em; color: #999ca1">distributed-systems</a> <a href="/en/tags/logical-thinking/" style="font-size: 1.1em; color: #999">logical-thinking</a> <a href="/en/tags/llm/" style="font-size: 1.34em; color: #99a3b0">llm</a> <a href="/en/tags/career-development/" style="font-size: 1.1em; color: #999">career-development</a> <a href="/en/tags/tech-talks/" style="font-size: 1.1em; color: #999">tech-talks</a> <a href="/en/tags/json/" style="font-size: 1.1em; color: #999">json</a> <a href="/en/tags/i18n/" style="font-size: 1.1em; color: #999">i18n</a> <a href="/en/tags/database-transactions/" style="font-size: 1.1em; color: #999">database-transactions</a> <a href="/en/tags/distributed-system-design/" style="font-size: 1.18em; color: #999ca1">distributed-system-design</a> <a href="/en/tags/agnes-free-model/" style="font-size: 1.1em; color: #999">agnes free model</a> <a href="/en/tags/book-notes/" style="font-size: 1.1em; color: #999">book-notes</a> <a href="/en/tags/kafka/" style="font-size: 1.18em; color: #999ca1">kafka</a> <a href="/en/tags/jstorm/" style="font-size: 1.42em; color: #99a6b7">jstorm</a> <a href="/en/tags/design-pattern/" style="font-size: 1.1em; color: #999">design-pattern</a> <a href="/en/tags/agnes/" style="font-size: 1.1em; color: #999">agnes</a> <a href="/en/tags/continuous-integration/" style="font-size: 1.18em; color: #999ca1">continuous-integration</a> <a href="/en/tags/iterm2/" style="font-size: 1.1em; color: #999">iterm2</a> <a href="/en/tags/ssh-passwordless-login/" style="font-size: 1.1em; color: #999">ssh-passwordless-login</a> <a href="/en/tags/data-structures/" style="font-size: 1.1em; color: #999">data-structures</a> <a href="/en/tags/vimax/" style="font-size: 1.1em; color: #999">ViMax</a> <a href="/en/tags/knowledge-management/" style="font-size: 1.18em; color: #999ca1">knowledge-management</a> <a href="/en/tags/obsidian/" style="font-size: 1.1em; color: #999">Obsidian</a> <a href="/en/tags/storm/" style="font-size: 1.42em; color: #99a6b7">storm</a> <a href="/en/tags/security-standards/" style="font-size: 1.1em; color: #999">security-standards</a> <a href="/en/tags/distributed/" style="font-size: 1.1em; color: #999">distributed</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>Archives</span>
+      <a class="card-more-btn" href="/en/archives/"
+            title="View More">
+            <i class="fas fa-angle-right"></i>
+          </a>
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/en/archives/2026/06/">
+            <span class="card-archive-list-date">
+              June 2026
+            </span>
+            <span class="card-archive-list-count">5</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/en/archives/2026/05/">
+            <span class="card-archive-list-date">
+              May 2026
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/en/archives/2024/03/">
+            <span class="card-archive-list-date">
+              March 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/en/archives/2024/01/">
+            <span class="card-archive-list-date">
+              January 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/en/archives/2023/12/">
+            <span class="card-archive-list-date">
+              December 2023
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/en/archives/2022/12/">
+            <span class="card-archive-list-date">
+              December 2022
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/en/archives/2022/05/">
+            <span class="card-archive-list-date">
+              May 2022
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/en/archives/2022/04/">
+            <span class="card-archive-list-date">
+              April 2022
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Website Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article Count :</div><div class="item-count">85</div></div><div class="webinfo-item"><div class="item-name">Total Word Count :</div><div class="item-count">78.6k</div></div><div class="webinfo-item"><div class="item-name">Unique Visitors :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Page Views :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Update :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-06-30T05:41:02.758Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By SandGrid</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">Sub-sites: <a target="_blank" rel="noopener external nofollow noreferrer" href='https://video.lichuanyang.top/'>AI Video Generator</a> &middot; <a target="_blank" rel="noopener external nofollow noreferrer" href='https://math.lichuanyang.top/'>Math Practice</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/en/js/utils.js?v=5.5.4"></script><script src="/en/js/main.js?v=5.5.4"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script>if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://dummyjson.com/quotes/random").then(e=>e.json()).then(t=>{e.innerHTML="“"+t.quote+"” — "+t.author}).catch(()=>{})}</script><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/en/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

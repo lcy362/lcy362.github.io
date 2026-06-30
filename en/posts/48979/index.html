@@ -1,0 +1,394 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Automating Hexo Theme Migration with AI Agent: From Next to Butterfly | Mobility</title><meta name="author" content="SandGrid"><meta name="copyright" content="SandGrid"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="The Problem: A Tedious Task No One Wants to DoRecently, I decided to migrate my Hexo blog from the Next theme to Butterfly. Sounds simple, right? If you’ve ever done a Hexo theme migration, you know i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Automating Hexo Theme Migration with AI Agent: From Next to Butterfly">
+<meta property="og:url" content="https://lichuanyang.top/en/posts/48979/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="The Problem: A Tedious Task No One Wants to DoRecently, I decided to migrate my Hexo blog from the Next theme to Butterfly. Sounds simple, right? If you’ve ever done a Hexo theme migration, you know i">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://lichuanyang.top/en/img/48979.jpg">
+<meta property="article:published_time" content="2026-05-28T14:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:23:24.830Z">
+<meta property="article:author" content="SandGrid">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="ai Agent">
+<meta property="article:tag" content="automation">
+<meta property="article:tag" content="blog">
+<meta property="article:tag" content="developer-tools">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="llm">
+<meta property="article:tag" content="prompt-engineering">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/en/img/48979.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Automating Hexo Theme Migration with AI Agent: From Next to Butterfly",
+  "url": "https://lichuanyang.top/en/posts/48979/",
+  "image": "https://lichuanyang.top/en/img/48979.jpg",
+  "abstract": "AI-powered Hexo theme migration from Next to Butterfly",
+  "datePublished": "2026-05-28T14:00:00.000Z",
+  "dateModified": "2026-06-27T03:23:24.830Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "SandGrid",
+      "url": "https://lichuanyang.top/en/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/en/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/en/posts/48979/"><link rel="preconnect" href="//cdnjs.cloudflare.com"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"/><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"/><meta name="baidu-site-verification" content="code-T8LautTf5f"/><link rel="stylesheet" href="/en/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/en/',
+  algolia: undefined,
+  localSearch: {"path":"/en/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Automating Hexo Theme Migration with AI Agent: From Next to Butterfly',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/en/atom.xml" title="Mobility" type="application/atom+xml">
+<meta name="keywords" content="hexo, blog, ai, ai Agent, automation, llm, developer-tools, prompt-engineering">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/en/"},{"@type":"ListItem","position":2,"name":"AI Practice","item":"https://lichuanyang.top/en/categories/AI-Practice/"},{"@type":"ListItem","position":3,"name":"Automating Hexo Theme Migration with AI Agent: From Next to Butterfly","item":"https://lichuanyang.top/en/posts/48979/"}]}</script>
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/48979/"/>
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/48979/"/>
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/48979/"/>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">85</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">128</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/en/img/48979.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/en/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/en/"><span class="site-name">Automating Hexo Theme Migration with AI Agent: From Next to Butterfly</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Automating Hexo Theme Migration with AI Agent: From Next to Butterfly</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2026-05-28T14:00:00.000Z" title="Created 2026-05-28 22:00:00">2026-05-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-06-27T03:23:24.830Z" title="Updated 2026-06-27 11:23:24">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/en/categories/ai-practice/">AI Practice</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">912</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>5mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> AI-powered Hexo theme migration from Next to Butterfly</blockquote><h2 id="The-Problem-A-Tedious-Task-No-One-Wants-to-Do"><a href="#The-Problem-A-Tedious-Task-No-One-Wants-to-Do" class="headerlink" title="The Problem: A Tedious Task No One Wants to Do"></a>The Problem: A Tedious Task No One Wants to Do</h2><p>Recently, I decided to migrate my Hexo blog from the Next theme to Butterfly. Sounds simple, right?</p>
+<p>If you’ve ever done a Hexo theme migration, you know it’s anything but simple:</p>
+<ol>
+<li><strong>Config files are 1000+ lines long</strong>, requiring line-by-line comparison between old and new theme formats</li>
+<li><strong>Feature mapping is complex</strong>: Next’s <code>leancloud_visitors</code> maps to Butterfly’s <code>busuanzi</code>, Next’s <code>reading_progress</code> maps to Butterfly’s <code>preloader</code></li>
+<li><strong>Two sites need syncing</strong>: Both Chinese and English sites need updates, with slightly different configs</li>
+<li><strong>Font Awesome version conflicts</strong>: Butterfly defaults to FA 7.1.0, which doesn’t exist on cdnjs</li>
+<li><strong>YAML format sensitivity</strong>: Indentation and line endings can break everything</li>
+</ol>
+<p>Manually, this would take an entire day and be error-prone. So I tried something different: <strong>letting an AI Agent handle the entire task</strong>.</p>
+<h2 id="The-Solution-AI-Agent-Driven-Migration"><a href="#The-Solution-AI-Agent-Driven-Migration" class="headerlink" title="The Solution: AI Agent-Driven Migration"></a>The Solution: AI Agent-Driven Migration</h2><p>I used <strong>Hermes Agent</strong>, an AI-powered development assistant, to automate the entire migration process.</p>
+<h3 id="What-the-AI-Agent-Did"><a href="#What-the-AI-Agent-Did" class="headerlink" title="What the AI Agent Did"></a>What the AI Agent Did</h3><p>The AI Agent autonomously completed these steps:</p>
+<ol>
+<li><strong>Environment Analysis</strong>: Checked current Hexo version (7.0.0), Node.js version (v24.14.0), and config differences between two sites</li>
+<li><strong>Version Research</strong>: Queried GitHub API for the latest Hexo version (8.1.2) and breaking changes</li>
+<li><strong>Dependency Upgrade</strong>: Batch-updated hexo and all plugins to latest versions</li>
+<li><strong>Theme Comparison</strong>: Analyzed feature coverage between Next and Butterfly, generating a comparison table</li>
+<li><strong>Config Migration</strong>: Mapped 1000+ lines of Next config to Butterfly format</li>
+<li><strong>Bug Detection</strong>:<ul>
+<li>Discovered FA 7.1.0 returns 404 on cdnjs, downgraded to 6.7.2</li>
+<li>Found Zhihu icon needs <code>fab</code> prefix (brand icon)</li>
+<li>Detected English site menu path error</li>
+<li>Recovered lost GA, Baidu Analytics, and site verification configs</li>
+</ul>
+</li>
+<li><strong>Testing</strong>: Build tests, local preview server, HTML output verification</li>
+<li><strong>Code Commits</strong>: Auto-generated commit messages and pushed to GitHub</li>
+</ol>
+<h3 id="Key-Technical-Insights"><a href="#Key-Technical-Insights" class="headerlink" title="Key Technical Insights"></a>Key Technical Insights</h3><h4 id="1-Font-Awesome-Version-Compatibility"><a href="#1-Font-Awesome-Version-Compatibility" class="headerlink" title="1. Font Awesome Version Compatibility"></a>1. Font Awesome Version Compatibility</h4><p>This was the most subtle bug. Butterfly’s <code>plugins.yml</code> configured FA 7.1.0:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">fontawesome:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&#x27;@fortawesome/fontawesome-free&#x27;</span></span><br><span class="line">  <span class="attr">version:</span> <span class="number">7.1</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+
+<p>But this version doesn’t exist on cdnjs! All brand icons (GitHub, StackOverflow, Zhihu) failed to load.</p>
+<p>The AI Agent diagnosed this by:</p>
+<ul>
+<li>Inspecting generated HTML, finding FA 7.1.0 reference</li>
+<li>Querying cdnjs API, confirming 404 for version 7.1.0</li>
+<li>Testing FA 6.7.2, verifying all required icons exist</li>
+<li>Overriding CDN address in config</li>
+</ul>
+<h4 id="2-YAML-Config-Migration-Pitfalls"><a href="#2-YAML-Config-Migration-Pitfalls" class="headerlink" title="2. YAML Config Migration Pitfalls"></a>2. YAML Config Migration Pitfalls</h4><p>Hexo config files use YAML format, which is sensitive to indentation and line endings:</p>
+<ul>
+<li><strong>CRLF vs LF</strong>: Butterfly’s default config uses CRLF line endings, causing sed pattern matching to fail</li>
+<li><strong>Duplicate keys</strong>: The patch tool created duplicate <code>scroll_percent</code> entries</li>
+<li><strong>Lost values</strong>: Incorrect YAML indentation caused config values to not be written</li>
+</ul>
+<p>These issues were resolved by using Python to directly manipulate file content.</p>
+<h4 id="3-Multi-Site-Synchronization"><a href="#3-Multi-Site-Synchronization" class="headerlink" title="3. Multi-Site Synchronization"></a>3. Multi-Site Synchronization</h4><p>The Chinese and English sites share most config, but have key differences:</p>
+<ul>
+<li>English site needs <code>language: en</code></li>
+<li>English site menu needs to point to Chinese site</li>
+<li>English site Valine placeholder needs English text</li>
+</ul>
+<p>The AI Agent automatically identified and handled these differences.</p>
+<h2 id="Results-Comparison"><a href="#Results-Comparison" class="headerlink" title="Results Comparison"></a>Results Comparison</h2><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Manual</th>
+<th>AI Agent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Time</td>
+<td>4-8 hours</td>
+<td>30 minutes</td>
+</tr>
+<tr>
+<td>Error Rate</td>
+<td>High (easy to miss configs)</td>
+<td>Low (systematic checking)</td>
+</tr>
+<tr>
+<td>Debugging</td>
+<td>Manual Google searches</td>
+<td>Auto root cause analysis</td>
+</tr>
+<tr>
+<td>Commits</td>
+<td>Manual commit messages</td>
+<td>Auto-generated</td>
+</tr>
+</tbody></table>
+<h2 id="Why-AI-Agents-Excel-at-This"><a href="#Why-AI-Agents-Excel-at-This" class="headerlink" title="Why AI Agents Excel at This"></a>Why AI Agents Excel at This</h2><p>This experience showed me why <strong>AI Agents are perfect for tedious, repetitive work</strong>:</p>
+<h3 id="1-Systematic-Thinking"><a href="#1-Systematic-Thinking" class="headerlink" title="1. Systematic Thinking"></a>1. Systematic Thinking</h3><p>AI Agents don’t work like humans who “fix things as they see them.” They:</p>
+<ul>
+<li>Analyze current state first</li>
+<li>Create a complete plan</li>
+<li>Execute step by step with verification</li>
+<li>Fix issues as they arise</li>
+</ul>
+<h3 id="2-Cross-Domain-Knowledge"><a href="#2-Cross-Domain-Knowledge" class="headerlink" title="2. Cross-Domain Knowledge"></a>2. Cross-Domain Knowledge</h3><p>Theme migration spans multiple technical domains:</p>
+<ul>
+<li>Hexo configuration</li>
+<li>Font Awesome version management</li>
+<li>YAML format handling</li>
+<li>Git workflows</li>
+<li>Frontend resource loading</li>
+</ul>
+<p>AI Agents can freely switch between these domains, while human developers typically only master one or two.</p>
+<h3 id="3-Persistent-Attention"><a href="#3-Persistent-Attention" class="headerlink" title="3. Persistent Attention"></a>3. Persistent Attention</h3><p>Humans lose focus when processing 1000+ line config files, leading to oversights. AI Agents don’t get tired—every config item gets checked.</p>
+<h3 id="4-Automated-Verification"><a href="#4-Automated-Verification" class="headerlink" title="4. Automated Verification"></a>4. Automated Verification</h3><p>AI Agents don’t just modify configs—they also:</p>
+<ul>
+<li>Run build tests</li>
+<li>Start local servers for verification</li>
+<li>Check HTML output</li>
+<li>Confirm critical configs are active</li>
+</ul>
+<h2 id="Best-Use-Cases"><a href="#Best-Use-Cases" class="headerlink" title="Best Use Cases"></a>Best Use Cases</h2><p>Based on this experience, <strong>AI Agents are ideal for</strong>:</p>
+<ol>
+<li><strong>Config Migration</strong>: Converting configs between different systems</li>
+<li><strong>Dependency Upgrades</strong>: Batch-updating multiple packages with compatibility handling</li>
+<li><strong>Code Refactoring</strong>: Large-scale code format adjustments</li>
+<li><strong>Documentation</strong>: Integrating information from multiple sources</li>
+<li><strong>Environment Setup</strong>: New project initialization</li>
+</ol>
+<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><p>AI Agents have limitations too:</p>
+<ol>
+<li><strong>Creative Work</strong>: UI design, copywriting still need human direction</li>
+<li><strong>Business Decisions</strong>: Whether to upgrade, which theme to choose—these need human judgment</li>
+<li><strong>Complex Debugging</strong>: Some runtime issues require human intervention</li>
+</ol>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>This practice of using an AI Agent to complete Hexo theme migration made me see the huge potential of <strong>LLMs (Large Language Models) in software engineering</strong>.</p>
+<p>AI Agents don’t replace developers—they enhance our capabilities. They free us from tedious, repetitive work so we can focus on more valuable things.</p>
+<p>If you have similar “grunt work,” try letting an AI Agent help. You’ll find that <strong>AI-assisted development</strong> is not the future—it’s the present.</p>
+<h2 id="Tech-Stack"><a href="#Tech-Stack" class="headerlink" title="Tech Stack"></a>Tech Stack</h2><ul>
+<li><strong>AI Agent</strong>: Hermes Agent</li>
+<li><strong>LLM</strong>: DeepSeek V4 Pro &#x2F; MiMo v2.5</li>
+<li><strong>Static Site Generator</strong>: Hexo 8.1.2</li>
+<li><strong>Theme</strong>: Butterfly 5.5.4</li>
+<li><strong>Icon Library</strong>: Font Awesome 6.7.2</li>
+<li><strong>Comment System</strong>: Valine (LeanCloud)</li>
+<li><strong>Analytics</strong>: Google Analytics &#x2F; Baidu Analytics</li>
+</ul>
+<hr>
+<p><em>This article was written with AI Agent assistance, documenting a real theme migration practice.</em></p>
+<p>Source: <a href="https://lichuanyang.top/en/posts/48979/">https://lichuanyang.top/en/posts/48979/</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en">SandGrid</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en/posts/48979/">https://lichuanyang.top/en/posts/48979/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener external nofollow noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/en/img/48979.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>Subscribe to WeChat</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/upload/qrcode.bmp" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/ai-agent-workflow.jpg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">How to Farm Free Tokens: Building Agent-Independent AI Workflows</div></div><div class="info-2"><div class="info-item-1">What’s the biggest—or perhaps only—pain point of using AI right now? Probably the bill. Claude, Codex, Cursor, Qoder, MiMo, MiniMax—their basic plans all start around $20&#x2F;month, and you still have to watch your usage. If you want unlimited access, it gets even more expensive. Meanwhile, lots of platforms offer free trials or permanently free models. For instance, OpenCode’s DeepSeek Flash has been free for a while. So how do we actually make the most of these free models? I’ve been using...</div></div></div></a><a class="pagination-related" href="/en/posts/39648/" title="How I Recovered My Blog After Vercel Banned 163 Email"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/39648.jpg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">How I Recovered My Blog After Vercel Banned 163 Email</div></div><div class="info-2"><div class="info-item-1">A few days ago, I wrote a new article and deployed it to Vercel as usual, but the pipeline threw an error. At first I thought it was a build issue, and after messing around for a while I realized something was wrong — it was the Vercel account itself. The account registered with a 163 email couldn’t log in at all. Later I found out that Vercel had banned the entire 163.com email root domain.   What is Vercel?If you’re into independent blogging, you’ve probably heard of or are currently using ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/en/posts/40400/" title="An Easy Way to Build a Multi-Language Blog with Hexo"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/hexo-multi-language.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-01-23</div><div class="info-item-2">An Easy Way to Build a Multi-Language Blog with Hexo</div></div><div class="info-2"><div class="info-item-1">Common Multi-language Blog SolutionsThe simplest way to use hexo to build a multilingual website is to directly build two independent sites and make a jump link to each other.  Here’s how to implement it. Solution ComparisonSuppose I now have a Chinese blog and plan to add an English site Hexo Dual-site Implementation Details Copy the entire blog directory as the English blog directory. For example, my blog root directory is called blog.source, and copy a blog.source.en. After this, if source...</div></div></div></a><a class="pagination-related" href="/en/posts/39648/" title="How I Recovered My Blog After Vercel Banned 163 Email"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/39648.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-11</div><div class="info-item-2">How I Recovered My Blog After Vercel Banned 163 Email</div></div><div class="info-2"><div class="info-item-1">A few days ago, I wrote a new article and deployed it to Vercel as usual, but the pipeline threw an error. At first I thought it was a build issue, and after messing around for a while I realized something was wrong — it was the Vercel account itself. The account registered with a 163 email couldn’t log in at all. Later I found out that Vercel had banned the entire 163.com email root domain.   What is Vercel?If you’re into independent blogging, you’ve probably heard of or are currently using ...</div></div></div></a><a class="pagination-related" href="/en/posts/64/" title="Using LLM to Manage Security Development Standards - An llm-wiki Practice"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/64.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-11</div><div class="info-item-2">Using LLM to Manage Security Development Standards - An llm-wiki Practice</div></div><div class="info-2"><div class="info-item-1">When I was organizing our team’s security development standards recently, I encountered an old problem: security documentation keeps piling up, but when you actually need it, you can’t find it. Every time a new team member joins, they have to dig through various documents to piece together the complete security standards. Every time we have a security incident, the lessons learned are scattered everywhere, and we end up rediscovering the same issues next time. I’ve tried managing this with Co...</div></div></div></a><a class="pagination-related" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/26061.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-04</div><div class="info-item-2">How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow</div></div><div class="info-2"><div class="info-item-1">Last post ended with this: Agents are just tools. Documentation is the core. After that went up, someone asked: sure, but how do you actually manage all those docs? You can’t just copy-paste them into every project, can you? Nope, you can’t. So I built a tool to solve exactly that — pks (Personal Skills Manager). 408 lines of pure bash, zero dependencies. It does one thing: packages your AI workflow docs as skills, installs them into projects on demand, and locks you into no Agent platform.  ...</div></div></div></a><a class="pagination-related" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/ai-agent-workflow.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-03</div><div class="info-item-2">How to Farm Free Tokens: Building Agent-Independent AI Workflows</div></div><div class="info-2"><div class="info-item-1">What’s the biggest—or perhaps only—pain point of using AI right now? Probably the bill. Claude, Codex, Cursor, Qoder, MiMo, MiniMax—their basic plans all start around $20&#x2F;month, and you still have to watch your usage. If you want unlimited access, it gets even more expensive. Meanwhile, lots of platforms offer free trials or permanently free models. For instance, OpenCode’s DeepSeek Flash has been free for a while. So how do we actually make the most of these free models? I’ve been using...</div></div></div></a></div></div><hr class="custom-hr"/><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/en/posts/26061/">How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/en/posts/26061/">What's the difference between Skills management and Agent management?</a></li><li><a href="https://lichuanyang.top/en/posts/26061/">How is cross-platform compatibility maintained?</a></li><li><a href="https://lichuanyang.top/en/posts/26061/">How does pks differ from configuring skills directly in an Agent?</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/en/posts/26060/">How to Farm Free Tokens: Building Agent-Independent AI Workflows</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/en/posts/26060/">What's the relationship between Agents and Skills?</a></li><li><a href="https://lichuanyang.top/en/posts/26060/">What's the most effective way to optimize token usage?</a></li><li><a href="https://lichuanyang.top/en/posts/26060/">Which is a better investment — maintaining docs or subscribing to an Agent?</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/en/posts/65500/">Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0</a><ol class="relatedHowto-steps"><li>Setup</li><li>Call Agnes API</li><li>Customize ViMax config</li><li>Generate video</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/en/posts/39648/">How I Recovered My Blog After Vercel Banned 163 Email</a><ol class="relatedHowto-steps"><li>Identify the Problem</li><li>Investigate the Cause</li><li>Migrate Email Verification</li><li>Redeploy</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comments</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">SandGrid</div><div class="author-info-description">Mobility | Expanding life's choices</div><div class="site-data"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">85</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">128</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="Zhihu"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Backend Dev | Architecture | AI Practice<br>Expanding choices through code</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-Problem-A-Tedious-Task-No-One-Wants-to-Do"><span class="toc-number">1.</span> <span class="toc-text">The Problem: A Tedious Task No One Wants to Do</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#The-Solution-AI-Agent-Driven-Migration"><span class="toc-number">2.</span> <span class="toc-text">The Solution: AI Agent-Driven Migration</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What-the-AI-Agent-Did"><span class="toc-number">2.1.</span> <span class="toc-text">What the AI Agent Did</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Key-Technical-Insights"><span class="toc-number">2.2.</span> <span class="toc-text">Key Technical Insights</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Font-Awesome-Version-Compatibility"><span class="toc-number">2.2.1.</span> <span class="toc-text">1. Font Awesome Version Compatibility</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-YAML-Config-Migration-Pitfalls"><span class="toc-number">2.2.2.</span> <span class="toc-text">2. YAML Config Migration Pitfalls</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Multi-Site-Synchronization"><span class="toc-number">2.2.3.</span> <span class="toc-text">3. Multi-Site Synchronization</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Results-Comparison"><span class="toc-number">3.</span> <span class="toc-text">Results Comparison</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-AI-Agents-Excel-at-This"><span class="toc-number">4.</span> <span class="toc-text">Why AI Agents Excel at This</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Systematic-Thinking"><span class="toc-number">4.1.</span> <span class="toc-text">1. Systematic Thinking</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Cross-Domain-Knowledge"><span class="toc-number">4.2.</span> <span class="toc-text">2. Cross-Domain Knowledge</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Persistent-Attention"><span class="toc-number">4.3.</span> <span class="toc-text">3. Persistent Attention</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Automated-Verification"><span class="toc-number">4.4.</span> <span class="toc-text">4. Automated Verification</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Best-Use-Cases"><span class="toc-number">5.</span> <span class="toc-text">Best Use Cases</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Limitations"><span class="toc-number">6.</span> <span class="toc-text">Limitations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conclusion"><span class="toc-number">7.</span> <span class="toc-text">Conclusion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tech-Stack"><span class="toc-number">8.</span> <span class="toc-text">Tech Stack</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/en/posts/18804/" title="Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub">Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub</a><time datetime="2026-06-26T08:18:13.000Z" title="Created 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/22470/" title="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/22470.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos"/></a><div class="content"><a class="title" href="/en/posts/22470/" title="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos">Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos</a><time datetime="2026-06-16T05:21:16.000Z" title="Created 2026-06-16 13:21:16">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/65500/" title="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/65500.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0"/></a><div class="content"><a class="title" href="/en/posts/65500/" title="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0">Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0</a><time datetime="2026-06-11T14:00:00.000Z" title="Created 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/26061.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"/></a><div class="content"><a class="title" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow">How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow</a><time datetime="2026-06-04T14:00:00.000Z" title="Created 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="How to Farm Free Tokens: Building Agent-Independent AI Workflows"/></a><div class="content"><a class="title" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows">How to Farm Free Tokens: Building Agent-Independent AI Workflows</a><time datetime="2026-06-03T14:00:00.000Z" title="Created 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By SandGrid</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">Sub-sites: <a target="_blank" rel="noopener external nofollow noreferrer" href='https://video.lichuanyang.top/'>AI Video Generator</a> &middot; <a target="_blank" rel="noopener external nofollow noreferrer" href='https://math.lichuanyang.top/'>Math Practice</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll to Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/en/js/utils.js?v=5.5.4"></script><script src="/en/js/main.js?v=5.5.4"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script>if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://dummyjson.com/quotes/random").then(e=>e.json()).then(t=>{e.innerHTML="“"+t.quote+"” — "+t.author}).catch(()=>{})}</script><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/en/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

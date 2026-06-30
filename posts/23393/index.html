@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>怎么更科学的用知乎摸鱼 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="分享一个优化知乎 PC 端使用体验的油猴脚本，让上班摸鱼更高效。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="怎么更科学的用知乎摸鱼">
+<meta property="og:url" content="https://lichuanyang.top/posts/23393/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="分享一个优化知乎 PC 端使用体验的油猴脚本，让上班摸鱼更高效。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/23393.jpg">
+<meta property="article:published_time" content="2022-12-28T10:29:01.000Z">
+<meta property="article:modified_time" content="2026-06-27T00:26:38.323Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="Tampermonkey">
+<meta property="article:tag" content="油猴">
+<meta property="article:tag" content="知乎">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/23393.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "怎么更科学的用知乎摸鱼",
+  "url": "https://lichuanyang.top/posts/23393/",
+  "image": "https://lichuanyang.top/img/23393.jpg",
+  "datePublished": "2022-12-28T10:29:01.000Z",
+  "dateModified": "2026-06-27T00:26:38.323Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/23393/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '怎么更科学的用知乎摸鱼',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/23393/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/23393/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/23393/">
+<meta name="keywords" content="知乎, 油猴, Tampermonkey">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"技术杂谈","item":"https://lichuanyang.top/categories/技术杂谈/"},{"@type":"ListItem","position":3,"name":"怎么更科学的用知乎摸鱼","item":"https://lichuanyang.top/posts/23393/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/23393.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">怎么更科学的用知乎摸鱼</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">怎么更科学的用知乎摸鱼</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-28T10:29:01.000Z" title="发表于 2022-12-28 18:29:01">2022-12-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T00:26:38.323Z" title="更新于 2026-06-27 08:26:38">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/">技术杂谈</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">939</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>知乎是个什么样的网站，大家都比较了解。今天我们换个角度——分享一个让”上班用知乎”这件事变得更安全、更高效的小工具。</p>
+<span id="more"></span>
+
+<h2 id="摸鱼经济学：为什么是知乎？"><a href="#摸鱼经济学：为什么是知乎？" class="headerlink" title="摸鱼经济学：为什么是知乎？"></a>摸鱼经济学：为什么是知乎？</h2><p>之前我翻了一下自己知乎账号的后台数据，发现一个很有意思的现象：<strong>PC 端的流量居然占了 40% 以上</strong>。在移动互联网时代，这个比例高得不太正常。</p>
+<p>后来从一些其他渠道也了解到，知乎周末和节假日的流量明显不如工作日。这说明什么呢？</p>
+<p><strong>上班刷知乎的你，不是一个人。</strong></p>
+<p>对相当一部分人来说，知乎主要的使用场景就是——上班摸鱼。而且知乎这个网站确实天然适合摸鱼：</p>
+<ul>
+<li><strong>以文字内容为主</strong>，不像短视频那样有声音、耗流量</li>
+<li><strong>有大量专业性内容</strong>，被老板路过看到屏幕时，可以说”我在查技术资料”</li>
+<li><strong>文章篇幅适中</strong>，一条时间线看几分钟，心理负担小</li>
+</ul>
+<h2 id="知乎摸鱼的三个痛点"><a href="#知乎摸鱼的三个痛点" class="headerlink" title="知乎摸鱼的三个痛点"></a>知乎摸鱼的三个痛点</h2><p>但知乎 PC 端有些设计，对摸鱼党不太友好：</p>
+<p><strong>1. 图片太大</strong></p>
+<p>知乎文章的配图经常会占满大半个屏幕。不管文章本身多正经，一张巨大的图片出现在屏幕上，旁边同事一瞥就能看到——这时候你说”我在看技术文章”就显得很没说服力。</p>
+<p><strong>2. 标题浮窗抢眼球</strong></p>
+<p>浏览知乎问题时，页面上方会有一个非常显眼的标题浮窗。它不仅占了一行空间，而且白底黑字特别突出，路人一眼就知道你在看知乎。</p>
+<p><strong>3. Logo 高调</strong></p>
+<p>知乎的 logo 统一放在页面左上角，任何时候截图或别人瞄一眼屏幕，品牌辨识度拉满。</p>
+<h2 id="脚本解决方案"><a href="#脚本解决方案" class="headerlink" title="脚本解决方案"></a>脚本解决方案</h2><p>我写了一个油猴脚本，针对性解决了这三个问题：</p>
+<ul>
+<li><strong>限制图片尺寸</strong>：最大宽度设为 300px，所有文章配图变成小图，不抢眼</li>
+<li><strong>隐藏标题浮窗</strong>：问题页面的标题浮窗直接移除</li>
+<li><strong>去掉知乎 Logo</strong>：页面左上角的知乎 logo 一并隐藏</li>
+</ul>
+<p>这样一来，知乎页面看起来就像一个普通的文字阅读器——干净、低调，非常适合在办公室环境中使用。</p>
+<h2 id="安装和使用"><a href="#安装和使用" class="headerlink" title="安装和使用"></a>安装和使用</h2><p>脚本已发布在 GreasyFork：</p>
+<p><strong><a target="_blank" rel="noopener external nofollow noreferrer" href="https://greasyfork.org/zh-CN/scripts/483047-%E6%91%B8%E9%B1%BC%E5%8A%A9%E6%89%8B-%E7%9F%A5%E4%B9%8E">安装地址</a></strong></p>
+<p>安装前提是浏览器中已安装 Tampermonkey（油猴）扩展。安装脚本后自动生效，无需配置。</p>
+<h2 id="技术实现"><a href="#技术实现" class="headerlink" title="技术实现"></a>技术实现</h2><p>脚本的实现其实非常简单，核心就是通过 <code>GM_addStyle</code> 注入自定义 CSS：</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 限制图片最大宽度</span></span><br><span class="line"><span class="title function_">GM_addStyle</span>(<span class="string">'.RichContent img { max-width: 300px !important; }'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 隐藏标题浮窗</span></span><br><span class="line"><span class="title function_">GM_addStyle</span>(<span class="string">'.QuestionHeader { display: none !important; }'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 去除 Logo</span></span><br><span class="line"><span class="title function_">GM_addStyle</span>(<span class="string">'.AppHeader-logo { display: none !important; }'</span>);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>本质上就是几行 CSS——但效果出奇的好。油猴脚本的妙处也正在于此：很多时候你不用写复杂的逻辑，只靠注入 CSS 就能显著改变网页的视觉体验。</p>
+<h2 id="和”知乎增强工具”的区别"><a href="#和”知乎增强工具”的区别" class="headerlink" title="和”知乎增强工具”的区别"></a>和”知乎增强工具”的区别</h2><p>我之前还写过一个<a href="/posts/44912/">知乎增强工具</a>，那个脚本侧重于<strong>信息增强</strong>——把评论区时间精确到秒。而这个脚本侧重于<strong>视觉优化</strong>——让知乎在办公场景下看起来更像一个正经的阅读工具。</p>
+<p>两个脚本可以同时安装，互不冲突。</p>
+<p>大家如果对知乎使用有什么其他痛点，欢迎留言提。也欢迎去看看我另一个<a href="/posts/44912/">知乎增强工具</a>，评论区时间精确到秒，很适合追踪技术讨论的时间线。</p>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/23393/">https://lichuanyang.top/posts/23393/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/23393.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/55227/" title="kubernetes是什么-实用向教程"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/55227.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">kubernetes是什么-实用向教程</div></div><div class="info-2"><div class="info-item-1">这篇教程不会关注 kubernetes 的部署、架构、实现方式等内部原理，而是完全从一个使用 kubernetes 的开发人员的视角去介绍kubernetes是什么，从而帮助了解如何更好的去利用 kubernetes 的特性。   基本介绍对于kubernetes是什么，一个比较官方的定义，Kubernetes是一个开源容器编排平台，管理大规模分布式容器化软件应用，简称为k8s. 通俗一些来讲，k8s 的核心理念是以应用为中心，向下屏蔽基础设施的差异，向上通过容器镜像实现应用的标准化，帮助开发人员在仅需关注应用本身，无需考虑部署、容灾、伸缩等运维细节的情况下，开发出大规模、可靠的分布式应用。 优势如上所述，k8s的核心优势就是降低运维成本，让应用开发人员能够专注于应用本身。具体来讲，包括如下几点：  便捷的部署流程和大规模的复制分发能力：应用提供标准化的容器镜像，之后的部署发布流程都可以做到自动化；应用也无需再做更多的事情就可以实现跨平台、跨区域的部署。 服务自愈能力：自动摘除不健康的节点并做恢复。 敏捷的自动伸缩：根据设定的系统负载，做快速的自动伸缩，实现系统处理能力和成本之间...</div></div></div></a><a class="pagination-related" href="/posts/53791/" title="读书笔记《系统之美》,如何面对现实中的复杂问题"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/53791.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">读书笔记《系统之美》,如何面对现实中的复杂问题</div></div><div class="info-2"><div class="info-item-1">这本书的作用主要是教大家面对现实中的复杂问题，如何更有效的去思考。书本身偏重系统的基本概念，这些概念其实都比较好理解。另外，作者举了非常多的例子。初读这本书时，会感觉理论和实际例子有那么些割裂。 但是后来逐渐感觉到，这个话题确实是没那么容易讲的通俗易懂的，需要读者自己付出更多的思考，才能有实质性的收获。而作者举的这些例子，就是非常好的引导读者去思考的引子。通过跟着作者一起思考这些例子，我们就可以帮助自己更好的理解书中的概念和逻辑。   所以，这篇笔记中，我主要其实就是比较机械化的把书中的一些核心概念提炼出来，同时会尝试举一些身边的例子。 而若想更好的理解书中每一部分，还是推荐去读一遍书，并且跟着作者的思路一起去好好思考那些例子的逻辑。 基本概念系统是一组相互连接的事物，在一定时间内，以特定的行为模式相互影响。 任何一个系统都包括三种构成要件：要素、连接、功能或目标。 存量是所有系统的基础，比如浴缸中的水、人口数量、书店中的书、树木的体积、银行里的钱，等等。但是，存量不一定非得是物质的，你的自信、在朋友圈中的良好口碑，或者对世界的美好希冀等，都可以是存量。 存量会随着时间的变化而不...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/44912/" title="知乎增强工具-评论时间精确到秒"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/44912.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-22</div><div class="info-item-2">知乎增强工具-评论时间精确到秒</div></div><div class="info-2"><div class="info-item-1">知乎作为一个高质量的文字社区，评论区的讨论往往非常有深度。然而，知乎默认的评论区时间格式是个让人头疼的小问题——它只显示”3 小时前””昨天””5 天前”这种相对时间。这在日常浏览中没问题，但如果你想追踪一场讨论的时间线、对比不同评论的先后顺序，这种模糊的时间展示就完全不够用了。   痛点：相对时间的局限相对时间有几个明显的缺陷：  信息丢失：你永远不知道”3 小时前”到底是几点几分，无法在脑海中形成精确的时间锚点 跨天混乱：到了第二天，”昨天”就变成了”前天”，时间参考系一直在变 讨论追踪困难：一场技术讨论中，A 回复 B 的某个论点，但 B 的评论和 A 的回复可能都显示”2 天前”，你根本看不出谁先谁后  脚本的来历之前在小众软件上看到一个关于知乎评论区时间展示混乱的吐槽帖，有位大佬当场写了一个油猴脚本来解决这个问题。 我用了好几个月，体验非常好。直到前段时间知乎做了一轮前端更新，脚本开始出现展示混乱的问题。于是我花了一个下午研究了一下知乎的新 DOM 结构，修复了脚本的逻辑，顺便把它发布到了 GreasyFork 上——这样后续知乎再有调整，可以直接从 GreasyFor...</div></div></div></a><a class="pagination-related" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-26</div><div class="info-item-2">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</div></div><div class="info-2"><div class="info-item-1">前段时间，偶然看到karpathy大神提出的llm-wiki, 有种相见恨晚的感觉。我一直是很喜欢写些东西的，但是写完之后，问题就是大量内容散落在各个地方，一直没有精力对它们进行有效的管理。而看到了llm-wiki后，我就意识到，之前写的那些东西，要开始发挥作用了。   为什么需要知识中枢首先, llm-wiki是什么。 llm-wiki 是 Andrej Karpathy 在 最近提出的一个概念：把你过往积累的所有文字材料——笔记、博客、读书摘录、工作日志——作为”语料库”，让 LLM 自动从中提取概念、建立页面、编织交叉引用，最终形成一个结构化的、可持续迭代的个人 Wiki。 它的核心前提很简单：每个人在日常工作和学习中已经产生了大量有结构、有见解的文字，只是它们散落在各处，缺乏关联。llm-wiki 要做的就是用一个 LLM 驱动的流程，把这些散落的珍珠串起来。你负责持续产生和收集内容，LLM 负责组织和管理。 和传统的手动 Wiki 维护不同——建页面、写摘要、加链接，枯燥且难以坚持——llm-wiki 把组织成本降到了几乎为零。你只需要告诉 LLM 你的知识库结构和维护...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/18804/">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/18804/">Obsidian 适合程序员做知识管理吗？</a></li><li><a href="https://lichuanyang.top/posts/18804/">LLM Wiki 需要 GPU 吗？</a></li><li><a href="https://lichuanyang.top/posts/18804/">llm-wiki 和传统 Wiki 有什么区别？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/2345/">剧变中的2021-一个中年工程师的年终总结</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/2345/">中年工程师的出路在哪？</a></li><li><a href="https://lichuanyang.top/posts/2345/">技术人如何应对行业变化？</a></li><li><a href="https://lichuanyang.top/posts/2345/">大公司还是小公司更适合资深工程师？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/3513/">读书笔记 稻盛和夫《干法》-思考应该怎样去工作</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/3513/">程序员需要读《干法》这种书吗？</a></li><li><a href="https://lichuanyang.top/posts/3513/">工作是为了什么？</a></li><li><a href="https://lichuanyang.top/posts/3513/">如何喜欢上自己不喜欢的工作？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/34931/">户口?大厂?高薪?生活?聊聊应届程序员的职业选择</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/34931/">一线城市户口还值不值得争取？2021 年的户口价值发生了什么变化？</a></li><li><a href="https://lichuanyang.top/posts/34931/">大厂还是小厂？应届生第一份工作选什么最重要？</a></li><li><a href="https://lichuanyang.top/posts/34931/">想鱼与熊掌兼得（高薪 + 不加班 + 氛围好）可能吗？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/18804/">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><ol class="relatedHowto-steps"><li>安装Obsidian：下载Obsidian客户端，创建Vault知识库</li><li>配置LLM Wiki：编写AGENTS.md，定义摄入、审计等wiki维护规则，让AI自动组织知识</li><li>接入微信读书：调用微信读书Agent API，同步书籍划线和笔记到Obsidian</li><li>导入知乎：使用Playwright自动化脚本抓取知乎回答和文章</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/39648/">Vercel封禁163邮箱后，我是怎么恢复博客的</a><ol class="relatedHowto-steps"><li>发现问题</li><li>排查原因</li><li>迁移邮箱验证</li><li>重新部署</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/20763/">iterm2配置ssh书签, 实现记住密码和自动登录</a><ol class="relatedHowto-steps"><li>生成SSH密钥</li><li>配置iTerm2 Profile</li><li>添加书签</li><li>验证自动登录</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%B8%E9%B1%BC%E7%BB%8F%E6%B5%8E%E5%AD%A6%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E7%9F%A5%E4%B9%8E%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">摸鱼经济学：为什么是知乎？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A5%E4%B9%8E%E6%91%B8%E9%B1%BC%E7%9A%84%E4%B8%89%E4%B8%AA%E7%97%9B%E7%82%B9"><span class="toc-number">2.</span> <span class="toc-text">知乎摸鱼的三个痛点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">3.</span> <span class="toc-text">脚本解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">安装和使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.</span> <span class="toc-text">技术实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%92%8C%E2%80%9D%E7%9F%A5%E4%B9%8E%E5%A2%9E%E5%BC%BA%E5%B7%A5%E5%85%B7%E2%80%9D%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">6.</span> <span class="toc-text">和”知乎增强工具”的区别</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

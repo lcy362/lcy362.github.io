@@ -1,0 +1,287 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="从广告的本质出发，系统梳理互联网广告的发展脉络，讲清楚 SSP、DSP、RTB、ADX 等核心概念及程序化交易的底层逻辑。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展">
+<meta property="og:url" content="https://lichuanyang.top/posts/27934/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="从广告的本质出发，系统梳理互联网广告的发展脉络，讲清楚 SSP、DSP、RTB、ADX 等核心概念及程序化交易的底层逻辑。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/27934.jpg">
+<meta property="article:published_time" content="2022-03-07T08:28:58.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:57:07.064Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="RTB">
+<meta property="article:tag" content="互联网广告">
+<meta property="article:tag" content="计算广告">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/27934.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展",
+  "url": "https://lichuanyang.top/posts/27934/",
+  "image": "https://lichuanyang.top/img/27934.jpg",
+  "abstract": "从广告三方博弈（媒体、广告主、受众）出发，梳理互联网广告发展脉络，讲清 SSP、DSP、RTB、ADX 等程序化交易核心概念。",
+  "datePublished": "2022-03-07T08:28:58.000Z",
+  "dateModified": "2026-06-27T03:57:07.064Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/27934/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/27934/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/27934/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/27934/">
+<meta name="keywords" content="计算广告, 互联网广告, RTB">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"技术杂谈","item":"https://lichuanyang.top/categories/技术杂谈/"},{"@type":"ListItem","position":3,"name":"SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展","item":"https://lichuanyang.top/posts/27934/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/27934.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">SSP、DSP、RTB、ADX都是什么？讲讲互联网广告的概念与发展</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-03-07T08:28:58.000Z" title="发表于 2022-03-07 16:28:58">2022-03-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T03:57:07.064Z" title="更新于 2026-06-27 11:57:07">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/">技术杂谈</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> 从广告三方博弈（媒体、广告主、受众）出发，梳理互联网广告发展脉络，讲清 SSP、DSP、RTB、ADX 等程序化交易核心概念。</blockquote><p>本文中，我会介绍一下互联网广告的发展状态，并梳理一下互联网广告的底层逻辑，帮助大家更好的理解这个行业。</p>
+<span id="more"></span>
+
+<h2 id="什么是广告"><a href="#什么是广告" class="headerlink" title="什么是广告"></a>什么是广告</h2><p>讲互联网广告，首先要从广告本身是什么开始讲起。只有理解了广告的底层逻辑，才能更好的帮助我们理解在互联网广告中会有什么问题, 为什么会出现广告的程序化交易，adx, ssp, dsp,dmp等等各种各样不同的系统为什么会出现，以及诸如此类的等等问题。</p>
+<p>广告这个行业其实自古就有，从远古时代小商小贩的吆喝，各种建筑物上的告示，到纸质报纸、杂志、电视等传统媒体上的广告，再到互联网广告，这个行业总是再随着社会的发展产生它自己的变化。</p>
+<p>对于广告，先上一个非常官方、非常标准的定义：广告是由已确定的出资人通过各种媒介进行的有关产品（商品、服务和观点）的，并且通常是有偿的、综合的、劝服性的非人员的信息传播活动。</p>
+<p>而更通俗的讲，在广告交易中，核心的参与方有三个：媒体(即供给方，Supply), 广告主（即需求方， Demand），受众（即媒体的用户）。其中，媒体和广告主是主动的参与方，受众则是被动的参与方。而广告实际上就是这三方相互博弈的一个过程。对于广告主来说，希望有更多的受众能看到广告，并且从广告中获取更高的转化；对于媒体来说，希望在获得最大的广告利润的同时，又能减少对用户的打扰；而对受众，也就是普通用户，则是希望不被自己不想看到的广告打扰。</p>
+<p>接下来我们分析一下这个流程里的博弈点。众所周知，如果一件事对于各参与方是零和博弈的话，这件事情就难免陷入到恶性竞争中，必定是难以发展的。而广告行业既然能持续健康的发展，主要是靠对广告生态之外产生的影响，所以我们就分析一下有哪些对广告生态外的影响因素。</p>
+<p>我们先拆解下各方都有哪些考虑指标，对于媒体，主要就是广告收益和自己产品的留存，对于广告主，则是广告费用和通过广告获得的收益，受众作为被动参与者，在整个过程中能做的不多，只能用脚投票，离开广告太烂的产品。这里边，在整个广告生态之外的，就是广告主通过广告获得的收益，和减少广告对受众造成的打扰，两个方面。事实上，对这两点的提升也就是整个广告行业不断发展的源动力。</p>
+<p>理解了这一点，能帮助我们更好的理解互联网广告的发展历程。</p>
+<h2 id="互联网广告的发展历程"><a href="#互联网广告的发展历程" class="headerlink" title="互联网广告的发展历程"></a>互联网广告的发展历程</h2><h2 id="互联网广告的早期发展"><a href="#互联网广告的早期发展" class="headerlink" title="互联网广告的早期发展"></a>互联网广告的早期发展</h2><p>最早的互联网广告，实质上就是把传统媒体的广告形式直接搬到线上来。比如说一份报纸里，会有一个区域专门用来放广告。像我们早些年在搜狐、新浪这些网站上看到的广告，也都是这种形式。广告主直接购买网页上的某个区域，固定的显示某些广告内容。</p>
+<p>接下来，有些人会逐渐注意到互联网广告和传统媒体的一个关键区别：互联网广告的内容是可以因人而异的。已经印刷出去的报纸，所有人看到的都一样，而对于网站来说，完全可以做到对不同人群，比如男性和女性展示不同的广告。而媒体只需向广告主保证投放量，以及投放量不能完成时的一些赔偿方式。这就是合约广告。</p>
+<p>合约广告的一个很自然的发展趋势就是定向越来越精细，诸如性别、年龄、地域、兴趣爱好等，都可以成为合约条件的一部分。同时，参与进来的广告主越来越多。这两方面的因素都会导致履约的难度急剧上升。同时，这么复杂的逻辑下，媒体也会觉得自己很多流量没有卖出最高价。</p>
+<p>在这种情况下，新的广告形式应运而生，也就是竞价广告。供给方不再以合约的方式给出量的保证，只保证单位流量的成本；每一次广告展示都按照收益最高的原则来决策。这样，广告就逐渐发展成了类似「流量交易」这种模式,  形成了程序化广告交易这种模式。</p>
+<h2 id="程序化交易广告"><a href="#程序化交易广告" class="headerlink" title="程序化交易广告"></a>程序化交易广告</h2><p>在竞价广告的场景下，没有了合约的约束，大量媒体、广告主进入了一个多方博弈的环境，交易过程也就越来越复杂，产生了诸如RTB(real time bidding，实时竞价)这样的交易方式。程序化广告交易正是在这种情况下产生的。</p>
+<p>同时，随着技术的发展，更多的数据、深入的计算与预测成为可能，广告主、媒体以及相关的广告代理等各个参与方也都需要更加丰富的功能。我们标题上提到的ssp,adx, dsp, rtb这些名词，也都是在这种情况下，逐步发展成为广告业态中非常重要的系统。</p>
+<p>总体来说，程序化广告交易和股票交易等实时交易的场景都非常类似，都是存在一个交易场（ADX）, 买方（广告主）和卖方（媒体），各自在其中实时的做买卖决策。唯一一个重要的区别是，对于媒体来说，没有择时的机会，流量来了只能立刻卖出去，没有办法攒起来等一个好时机。可以说，这一点正是广告相关各项技术发展的出发点。</p>
+<h2 id="互联网广告的关键问题和组成部分"><a href="#互联网广告的关键问题和组成部分" class="headerlink" title="互联网广告的关键问题和组成部分"></a>互联网广告的关键问题和组成部分</h2><p>前面说了，互联网广告发展的源动力有两点，一是提升广告主通过广告获得的收益，二是减少广告对受众造成的打扰。这两点关系到的是广告的有效性，所以我们分析一下广告有效性有哪些影响因素。</p>
+<p>一个广告的生命周期大概可以拆解成这么几步：</p>
+<p>曝光-关注-理解-接受-保持-决策</p>
+<p>简单的说，就是广告先要展示出来，然后能被受众看到，并且理解广告想传达的信息，进一步，能接受这个信息，并且保持一段时间，最终完成对广告所宣传的产品决策（下载、购买、付费等）。</p>
+<p>接下来，我们梳理一下每一步的具体影响，以及互联网技术能对其起到什么作用。</p>
+<p>曝光：这一阶段主要取决于广告位的物理熟悉，比如一个app开屏位置的广告，和某个隐藏的很深的页面上的一条广告，其有效性必然差别很大。这一点，在现实世界的广告中也是一样的，也没有太多技术上可优化的空间。</p>
+<p>关注：即让用户的注意力能够到这条广告上。值得注意的事，「看到」并不等于「关注到」，如果产品设计不合理，很容易导致用户对眼前的东西视而不见。比如说，用户到某个页面上是非常明确的要执行完一个流程的，比如要下载个东西，那么，你在他下载过程中强行插入一条广告，很可能会导致用户完全忽视掉它。所以，这一点和产品设计关系非常大。另外，这也是一个技术能发挥重要作用的阶段。通过搭建DMP平台，结合各种机器学习算法，将广告投放给更有可能感兴趣的用户，从而提升广告的有效性。</p>
+<p>理解：这一步影响最大的是广告素材，素材内容设计的好，就能让用户更好的理解。</p>
+<p>接受：这一点说白了就是能不能让用户认可你的广告给出来的信息或观点，这个一方面与素材是否专业有关，另一方面和媒体的自身属性也有很大关系，比如丁香医生和某莆田医院官网上放同样的信息，其有效性也必然是大为不同的。</p>
+<p>保持和关注：这两步其实逐渐就脱离了广告业态的范围，不过通过一些优质的素材设计、合适的场景、精准的人群投放，还是可以为最终转化做好铺垫的。</p>
+<p>此外，在其中这些技术无法直接干预的阶段，提供更完善的数据、更方便的测试方法，也是能给广告效果带来很大帮助的。</p>
+<p>接下来，我们再分别从媒体和广告主出发，看看他们各自有什么需求, 以及简单看看ssp, dsp这些平台是怎么做的。由于篇幅限制，这一部分先不详细展开，如果感兴趣的话，我们后边再逐一展开介绍。</p>
+<p>服务媒体的平台即常说的SSP, 其主要功能就是帮助媒体提升营收。里边一些基本的功能，比如让媒体配置一个广告位，以及广告位的长宽等信息。 对于提升营收，主要也就是通过合适的人群与广告匹配，优化定价策略等方式，同时设法控制网络等IT成本来进行。</p>
+<p>与SSP相对的DSP, 就是服务广告主这一侧的平台。DSP的基本功能就是让广告主设置投放计划，比如在多长时间内，向什么样特征的用户，投放总预算多少的广告。而平台发挥的价值主要是帮助广告主花更少的钱获取更好的广告效果。</p>
+<p>直到今天，广告生态中涉及到的每一个模块其实都还在持续不断的迭代中，但万变不离其宗，关键的动力其实就是让广告投放的效果更好，用户也能获得更好的浏览广告的体验。只有这样，整个行业才能朝着健康的方向去发展。</p>
+<p>原文地址：<a href="https://lichuanyang.top/posts/27934/---">https://lichuanyang.top/posts/27934/---</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/27934/">https://lichuanyang.top/posts/27934/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/27934.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/11970/" title="高并发解决方案很难吗？轻松聊清楚高并发设计"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/11970.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">高并发解决方案很难吗？轻松聊清楚高并发设计</div></div><div class="info-2"><div class="info-item-1">高请求并发就一定会有高并发问题吗？其实不是的。假设一个应用全部是纯内存计算，无论请求量多大，简单加机器就能线性扩展——那就不存在什么高并发问题。 高并发问题之所以存在，是因为系统中存在无法靠粗暴扩容解决的单点瓶颈。而这个瓶颈，在 90% 以上的场景中，都是数据库。   核心思路：降低单库的连接数所有高并发技术方案，归根结底都是在做同一件事——降低单个数据库实例需要承载的并发连接数。围绕这个目标，有六个层次的技术手段： 层次一：系统拆分（业务维度）最粗粒度的优化：把不同业务模块的数据库物理分开。 12345单体架构：所有业务 → 一个数据库（1000 QPS）拆分后：  用户服务 → 用户库（400 QPS）  订单服务 → 订单库（300 QPS）  商品服务 → 商品库（300 QPS）  每个业务独享自己的数据库，互不影响。拆分的难点在于分布式事务——以前一个事务搞定的事，现在跨库了。解决方案包括 Saga 模式、Seata、RocketMQ 事务消息等。 层次二：缓存（减少数据库命中率）在应用和数据库之间加一层 Redis，热数据走缓存，只有冷数据才查库。 12请求 → 缓...</div></div></div></a><a class="pagination-related" href="/posts/7774/" title="从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/7774.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">从redolog,undolog到隔离级别，刨根问底，讲清楚事务和ACID</div></div><div class="info-2"><div class="info-item-1">前些日子读了周志明老师的《凤凰架构》这本书，对于很多方面的技术有了更深的认知，因此打算做一些总结。今天先以讲事务的这一段做个印子，结合书中内容和个人理解，争取将本地事务的相关知识讲个命名白白。如果有讲的不对的地方，欢迎大家多多指正。   所谓事务，就是保证数据库中的数据都是符合期望的，在不断的增删改查中，数据库会不断的从一个正确的状态变化到另一个正确的状态，而不会被外界感知到不“正确”的中间状态。 举个常见的例子，就是在 A有100元，B有100元的状态下，A要给B转账10元，肯定会有A先转出10元，再转给B,这样的中间状态。事务就是，对于用户来说，只能感知到 A100 B100 和 A90 B110 这两个状态，而不会感知到过程中的A90 B100等等奇奇怪怪的状态。 这个介绍，其实也就是事务ACID特性中一致性的概念。ACID这个说法虽然很流行，但A、C、I、D之间其实并不是平等的概念，简单来说，AID是方法，C是目的。也就是说，实现了原子性、持久性、隔离性，也就实现了一致性，也就实现了事务。 接下来，我们就依次看看AID分别要如何实现。 原子性和持久性实现原子性和持久性面临...</div></div></div></a></nav><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/18804/">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/18804/">Obsidian 适合程序员做知识管理吗？</a></li><li><a href="https://lichuanyang.top/posts/18804/">LLM Wiki 需要 GPU 吗？</a></li><li><a href="https://lichuanyang.top/posts/18804/">llm-wiki 和传统 Wiki 有什么区别？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/2345/">剧变中的2021-一个中年工程师的年终总结</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/2345/">中年工程师的出路在哪？</a></li><li><a href="https://lichuanyang.top/posts/2345/">技术人如何应对行业变化？</a></li><li><a href="https://lichuanyang.top/posts/2345/">大公司还是小公司更适合资深工程师？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/3513/">读书笔记 稻盛和夫《干法》-思考应该怎样去工作</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/3513/">程序员需要读《干法》这种书吗？</a></li><li><a href="https://lichuanyang.top/posts/3513/">工作是为了什么？</a></li><li><a href="https://lichuanyang.top/posts/3513/">如何喜欢上自己不喜欢的工作？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/34931/">户口?大厂?高薪?生活?聊聊应届程序员的职业选择</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/34931/">一线城市户口还值不值得争取？2021 年的户口价值发生了什么变化？</a></li><li><a href="https://lichuanyang.top/posts/34931/">大厂还是小厂？应届生第一份工作选什么最重要？</a></li><li><a href="https://lichuanyang.top/posts/34931/">想鱼与熊掌兼得（高薪 + 不加班 + 氛围好）可能吗？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/18804/">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><ol class="relatedHowto-steps"><li>安装Obsidian：下载Obsidian客户端，创建Vault知识库</li><li>配置LLM Wiki：编写AGENTS.md，定义摄入、审计等wiki维护规则，让AI自动组织知识</li><li>接入微信读书：调用微信读书Agent API，同步书籍划线和笔记到Obsidian</li><li>导入知乎：使用Playwright自动化脚本抓取知乎回答和文章</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/39648/">Vercel封禁163邮箱后，我是怎么恢复博客的</a><ol class="relatedHowto-steps"><li>发现问题</li><li>排查原因</li><li>迁移邮箱验证</li><li>重新部署</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/20763/">iterm2配置ssh书签, 实现记住密码和自动登录</a><ol class="relatedHowto-steps"><li>生成SSH密钥</li><li>配置iTerm2 Profile</li><li>添加书签</li><li>验证自动登录</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%B9%BF%E5%91%8A"><span class="toc-number">1.</span> <span class="toc-text">什么是广告</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E5%B9%BF%E5%91%8A%E7%9A%84%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">互联网广告的发展历程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E5%B9%BF%E5%91%8A%E7%9A%84%E6%97%A9%E6%9C%9F%E5%8F%91%E5%B1%95"><span class="toc-number">3.</span> <span class="toc-text">互联网广告的早期发展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%BF%E5%91%8A"><span class="toc-number">4.</span> <span class="toc-text">程序化交易广告</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E5%B9%BF%E5%91%8A%E7%9A%84%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%92%8C%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86"><span class="toc-number">5.</span> <span class="toc-text">互联网广告的关键问题和组成部分</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

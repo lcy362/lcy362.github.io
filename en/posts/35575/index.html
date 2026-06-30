@@ -1,0 +1,307 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Hadoop Basic Learning Resources | Mobility</title><meta name="author" content="SandGrid"><meta name="copyright" content="SandGrid"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Hadoop learning resources collection, including detailed WordCount execution process explanation, HDFS command introduction, and other introductory resources.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop Basic Learning Resources">
+<meta property="og:url" content="https://lichuanyang.top/en/posts/35575/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="Hadoop learning resources collection, including detailed WordCount execution process explanation, HDFS command introduction, and other introductory resources.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://lichuanyang.top/en/img/hadoop.jpg">
+<meta property="article:published_time" content="2012-10-28T10:05:00.000Z">
+<meta property="article:modified_time" content="2026-06-27T02:40:58.911Z">
+<meta property="article:author" content="SandGrid">
+<meta property="article:tag" content="big-data">
+<meta property="article:tag" content="hadoop">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/en/img/hadoop.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Hadoop Basic Learning Resources",
+  "url": "https://lichuanyang.top/en/posts/35575/",
+  "image": "https://lichuanyang.top/en/img/hadoop.jpg",
+  "abstract": "Focus on HDFS and YARN for 2026 Hadoop learning; use Spark for applications",
+  "datePublished": "2012-10-28T10:05:00.000Z",
+  "dateModified": "2026-06-27T02:40:58.911Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "SandGrid",
+      "url": "https://lichuanyang.top/en/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/en/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/en/posts/35575/"><link rel="preconnect" href="//cdnjs.cloudflare.com"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"/><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"/><meta name="baidu-site-verification" content="code-T8LautTf5f"/><link rel="stylesheet" href="/en/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/en/',
+  algolia: undefined,
+  localSearch: {"path":"/en/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hadoop Basic Learning Resources',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/en/atom.xml" title="Mobility" type="application/atom+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I still need to learn Hadoop in 2026?","acceptedAnswer":{"@type":"Answer","text":"Yes, but you don’t need to go as far as writing MapReduce programs. HDFS and YARN remain the foundation of big data infrastructure — Spark runs on YARN by default, Hive data lives in HDFS, and even many cloud-native data platforms use HDFS-compatible storage under the hood. Understanding core concepts like distributed file systems, resource scheduling, and data locality helps you better grasp the design decisions of upper-layer frameworks. Q: Where should I start with Hadoop?I recommend a three-"}},{"@type":"Question","name":"Where should I start with Hadoop?","acceptedAnswer":{"@type":"Answer","text":"I recommend a three-step approach: Stage 1 — Foundations: understand HDFS (NameNode&#x2F;DataNode architecture, replication) and YARN (resource management) at the conceptual level. Stage 2 — Practice: jump straight into Spark for data processing rather than grinding through MapReduce programming. Stage 3 — Going deeper: learn about the architectural evolution from Hadoop 1.x → 2.x → 3.x, understanding why features like Erasure Coding and NameNode Federation were introduced. Q: Is there value in "}},{"@type":"Question","name":"Is there value in learning outdated technologies?","acceptedAnswer":{"@type":"Answer","text":"Yes, but distinguish between “learning the principles” and “learning the operations.” Operational details from ten years ago do become obsolete (like version-specific API calls), but design principles often stand the test of time. MapReduce’s shuffle model still exists in Spark today. HDFS’s replication mechanism and rack-awareness design can be seen echoed in cloud storage architectures. The key is to extract timeless design insights from dated implementations. Q: With Spark around, do I still "}},{"@type":"Question","name":"With Spark around, do I still need MapReduce?","acceptedAnswer":{"@type":"Answer","text":"You don’t need to learn MapReduce programming specifically, but understanding its computation model is worthwhile. MapReduce’s map-shuffle-reduce pipeline, data locality optimizations, and fault tolerance mechanisms — these ideas are carried forward and improved in Spark. Understanding why MapReduce was slow is the best way to truly grasp how Spark achieves speed through in-memory computation, DAG scheduling, and RDD lineage. Each of these optimizations is a direct response to MapReduce’s shortc"}}]}</script>
+<meta name="keywords" content="big-data, hadoop">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/en/"},{"@type":"ListItem","position":2,"name":"Big Data","item":"https://lichuanyang.top/en/categories/Big-Data/"},{"@type":"ListItem","position":3,"name":"Hadoop Basic Learning Resources","item":"https://lichuanyang.top/en/posts/35575/"}]}</script>
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/35575/"/>
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/35575/"/>
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/35575/"/>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">85</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">128</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/en/img/hadoop.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/en/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/en/"><span class="site-name">Hadoop Basic Learning Resources</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Hadoop Basic Learning Resources</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2012-10-28T10:05:00.000Z" title="Created 2012-10-28 18:05:00">2012-10-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-06-27T02:40:58.911Z" title="Updated 2026-06-27 10:40:58">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/en/categories/big-data/">Big Data</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">739</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>4mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> Focus on HDFS and YARN for 2026 Hadoop learning; use Spark for applications</blockquote><blockquote>
+<p>⚠️ These are study notes from <strong>2012</strong>. The Hadoop ecosystem has changed dramatically over the past decade. The links below are very outdated. I’ve preserved the original content as a historical record and added 2026-era learning recommendations.</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="Why-Learn-About-Hadoop-in-2026"><a href="#Why-Learn-About-Hadoop-in-2026" class="headerlink" title="Why Learn About Hadoop in 2026?"></a>Why Learn About Hadoop in 2026?</h2><p>You might wonder: with Spark, Flink, and data lakes everywhere, why bother with Hadoop?</p>
+<p>The answer is simple: <strong>HDFS and YARN remain the foundation of big data infrastructure</strong>. Spark runs on YARN by default, Hive table data lives in HDFS, and even many cloud-native data platforms use HDFS-compatible storage under the hood. Understanding Hadoop’s core design — distributed file systems, compute resource scheduling, data locality — helps you better grasp the design decisions of upper-layer frameworks.</p>
+<h2 id="Recommended-Learning-Path-for-2026"><a href="#Recommended-Learning-Path-for-2026" class="headerlink" title="Recommended Learning Path for 2026"></a>Recommended Learning Path for 2026</h2><h3 id="Getting-Started-Core-Concepts"><a href="#Getting-Started-Core-Concepts" class="headerlink" title="Getting Started: Core Concepts"></a>Getting Started: Core Concepts</h3><ol>
+<li><strong>HDFS</strong>: Understand the fundamentals of a distributed file system — NameNode&#x2F;DataNode architecture, data blocks, replication, rack awareness</li>
+<li><strong>MapReduce</strong>: Learn the map-shuffle-reduce computation model and understand why it excels at batch processing but struggles with iterative workloads</li>
+<li><strong>YARN</strong>: Resource management and scheduling — the concepts of ApplicationMaster and Container</li>
+</ol>
+<p>Recommended reading: <a target="_blank" rel="noopener external nofollow noreferrer" href="https://hadoop.apache.org/docs/stable/">Hadoop Official Documentation</a> (latest 3.x release)</p>
+<h3 id="Leveling-Up-From-Theory-to-Practice"><a href="#Leveling-Up-From-Theory-to-Practice" class="headerlink" title="Leveling Up: From Theory to Practice"></a>Leveling Up: From Theory to Practice</h3><p>Rather than writing raw MapReduce programs from scratch, I recommend jumping straight into Spark:</p>
+<ul>
+<li><strong>Spark</strong>: Faster than MapReduce, with a much friendlier API. Supports SQL&#x2F;DataFrame&#x2F;Streaming&#x2F;MLlib across multiple paradigms</li>
+<li><strong>Hive</strong>: SQL on Hadoop — transforms SQL queries into distributed compute jobs, ideal for analytics use cases</li>
+</ul>
+<h3 id="Going-Deeper-Architectural-Evolution"><a href="#Going-Deeper-Architectural-Evolution" class="headerlink" title="Going Deeper: Architectural Evolution"></a>Going Deeper: Architectural Evolution</h3><p>A few key changes across Hadoop 1.x → 2.x → 3.x are worth understanding:</p>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Major Changes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.x</td>
+<td>Basic HDFS + MapReduce, single NameNode (single point of failure)</td>
+</tr>
+<tr>
+<td>2.x</td>
+<td>Introduced YARN (resource management decoupled), NameNode HA, Federation</td>
+</tr>
+<tr>
+<td>3.x</td>
+<td>Erasure Coding (storage savings), YARN Timeline Service v2, GPU scheduling support</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="📚-Original-Notes-Compiled-in-2012"><a href="#📚-Original-Notes-Compiled-in-2012" class="headerlink" title="📚 Original Notes (Compiled in 2012)"></a>📚 Original Notes (Compiled in 2012)</h2><p>The following links were collected when I first started learning Hadoop. Most of them are likely broken or outdated — kept here for historical reference only:</p>
+<ul>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html">WordCount Execution Process Detailed Explanation</a> — The classic entry point for understanding MapReduce</li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="http://www.cnblogs.com/gpcuster/archive/2010/06/04/1751538.html">HDFS Command Introduction</a> — Basic file operation commands</li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="http://hi.baidu.com/gkf8605/item/d6b8af09c3463512eafe38b1">HDFS Commands (another reference)</a> — Supplementary command reference</li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="http://www.cnblogs.com/forfuture1978/archive/2010/11/14/1877086.html">MapReduce Introduction</a> — MapReduce programming model basics</li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="http://hadoop.apache.org/docs/r0.20.2/api/index.html">Hadoop 0.20.2 API</a> — API docs for version 0.20.2</li>
+</ul>
+<blockquote>
+<p>Back in 2012, when I first encountered Hadoop, there was no Spark, no data lakes, no Kubernetes. MapReduce <em>was</em> big data processing in its entirety — even Hive was in its early days. Technology always advances faster than expected, but the fundamentals are always worth learning.</p>
+</blockquote>
+<h2 id="Frequently-Asked-Questions"><a href="#Frequently-Asked-Questions" class="headerlink" title="Frequently Asked Questions"></a>Frequently Asked Questions</h2><h3 id="Q-Do-I-still-need-to-learn-Hadoop-in-2026"><a href="#Q-Do-I-still-need-to-learn-Hadoop-in-2026" class="headerlink" title="Q: Do I still need to learn Hadoop in 2026?"></a>Q: Do I still need to learn Hadoop in 2026?</h3><p>Yes, but you don’t need to go as far as writing MapReduce programs. HDFS and YARN remain the foundation of big data infrastructure — Spark runs on YARN by default, Hive data lives in HDFS, and even many cloud-native data platforms use HDFS-compatible storage under the hood. Understanding core concepts like distributed file systems, resource scheduling, and data locality helps you better grasp the design decisions of upper-layer frameworks.</p>
+<h3 id="Q-Where-should-I-start-with-Hadoop"><a href="#Q-Where-should-I-start-with-Hadoop" class="headerlink" title="Q: Where should I start with Hadoop?"></a>Q: Where should I start with Hadoop?</h3><p>I recommend a three-step approach: <strong>Stage 1 — Foundations</strong>: understand HDFS (NameNode&#x2F;DataNode architecture, replication) and YARN (resource management) at the conceptual level. <strong>Stage 2 — Practice</strong>: jump straight into Spark for data processing rather than grinding through MapReduce programming. <strong>Stage 3 — Going deeper</strong>: learn about the architectural evolution from Hadoop 1.x → 2.x → 3.x, understanding why features like Erasure Coding and NameNode Federation were introduced.</p>
+<h3 id="Q-Is-there-value-in-learning-outdated-technologies"><a href="#Q-Is-there-value-in-learning-outdated-technologies" class="headerlink" title="Q: Is there value in learning outdated technologies?"></a>Q: Is there value in learning outdated technologies?</h3><p>Yes, but distinguish between “learning the principles” and “learning the operations.” Operational details from ten years ago do become obsolete (like version-specific API calls), but design principles often stand the test of time. MapReduce’s shuffle model still exists in Spark today. HDFS’s replication mechanism and rack-awareness design can be seen echoed in cloud storage architectures. The key is to extract timeless design insights from dated implementations.</p>
+<h3 id="Q-With-Spark-around-do-I-still-need-MapReduce"><a href="#Q-With-Spark-around-do-I-still-need-MapReduce" class="headerlink" title="Q: With Spark around, do I still need MapReduce?"></a>Q: With Spark around, do I still need MapReduce?</h3><h2 id="You-don’t-need-to-learn-MapReduce-programming-specifically-but-understanding-its-computation-model-is-worthwhile-MapReduce’s-map-shuffle-reduce-pipeline-data-locality-optimizations-and-fault-tolerance-mechanisms-—-these-ideas-are-carried-forward-and-improved-in-Spark-Understanding-why-MapReduce-was-slow-is-the-best-way-to-truly-grasp-how-Spark-achieves-speed-through-in-memory-computation-DAG-scheduling-and-RDD-lineage-Each-of-these-optimizations-is-a-direct-response-to-MapReduce’s-shortcomings"><a href="#You-don’t-need-to-learn-MapReduce-programming-specifically-but-understanding-its-computation-model-is-worthwhile-MapReduce’s-map-shuffle-reduce-pipeline-data-locality-optimizations-and-fault-tolerance-mechanisms-—-these-ideas-are-carried-forward-and-improved-in-Spark-Understanding-why-MapReduce-was-slow-is-the-best-way-to-truly-grasp-how-Spark-achieves-speed-through-in-memory-computation-DAG-scheduling-and-RDD-lineage-Each-of-these-optimizations-is-a-direct-response-to-MapReduce’s-shortcomings" class="headerlink" title="You don’t need to learn MapReduce programming specifically, but understanding its computation model is worthwhile. MapReduce’s map-shuffle-reduce pipeline, data locality optimizations, and fault tolerance mechanisms — these ideas are carried forward and improved in Spark. Understanding why MapReduce was slow is the best way to truly grasp how Spark achieves speed through in-memory computation, DAG scheduling, and RDD lineage. Each of these optimizations is a direct response to MapReduce’s shortcomings."></a>You don’t need to learn MapReduce programming specifically, but understanding its computation model is worthwhile. MapReduce’s map-shuffle-reduce pipeline, data locality optimizations, and fault tolerance mechanisms — these ideas are carried forward and improved in Spark. Understanding <em>why</em> MapReduce was slow is the best way to truly grasp <em>how</em> Spark achieves speed through in-memory computation, DAG scheduling, and RDD lineage. Each of these optimizations is a direct response to MapReduce’s shortcomings.</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en">SandGrid</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en/posts/35575/">https://lichuanyang.top/en/posts/35575/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener external nofollow noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/en/img/hadoop.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>Subscribe to WeChat</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/upload/qrcode.bmp" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/en/posts/25187/" title="WordCount Code"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/25187.jpg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">WordCount Code</div></div><div class="info-2"><div class="info-item-1">OverviewReference: http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html &nbsp; 12345678910111213141516171819202122232425262728package org.apache.hadoop.examples;import java.io.IOException;import java.util.StringTokenizer;import org.apache.hadoop.conf.Configuration;import org.apache.hadoop.fs.Path;import org.apache.hadoop.io.IntWritable;import org.apache.hadoop.io.Text;import org.apache.hadoop.mapreduce.Job;import org.apache.hadoop.mapreduce.Mapper;import org.apache.hadoop.mapreduce...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/en/posts/25187/" title="WordCount Code"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/25187.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2012-10-28</div><div class="info-item-2">WordCount Code</div></div><div class="info-2"><div class="info-item-1">OverviewReference: http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html &nbsp; 12345678910111213141516171819202122232425262728package org.apache.hadoop.examples;import java.io.IOException;import java.util.StringTokenizer;import org.apache.hadoop.conf.Configuration;import org.apache.hadoop.fs.Path;import org.apache.hadoop.io.IntWritable;import org.apache.hadoop.io.Text;import org.apache.hadoop.mapreduce.Job;import org.apache.hadoop.mapreduce.Mapper;import org.apache.hadoop.mapreduce...</div></div></div></a><a class="pagination-related" href="/en/posts/48312/" title="A Powerful Tool for Data Analytics: Introduction to ClickHouse"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/48312.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2018-11-14</div><div class="info-item-2">A Powerful Tool for Data Analytics: Introduction to ClickHouse</div></div><div class="info-2"><div class="info-item-1">ClickHouse is an open-source database for real-time data analytics developed by Yandex, initially used in multiple data analytics projects internally at Yandex. To introduce ClickHouse, we first need to introduce Yandex. ClickHouse’s emergence is closely related to Yandex’s business needs. Yandex is Russia’s largest search engine, with many data analytics projects. The largest of these by data volume is Yandex.Metrica, a website analytics service similar to Baidu Analytics, with data volume s...</div></div></div></a><a class="pagination-related" href="/en/posts/63299/" title="A Great Introduction to the LDA Model"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/63299.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2012-12-02</div><div class="info-item-2">A Great Introduction to the LDA Model</div></div><div class="info-2"><div class="info-item-1">Reposted from http://leyew.blog.51cto.com/5043877/860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0 A few days ago I started learning LDA, took many detours, and was still completely confused about LDA. After reading this document, I finally understood what LDA is for. &nbsp; LDA (Latent Dirichlet Allocation) Learning NotesI’ve been studying the LDA algorithm recently, and after a few days of struggle, I’ve finally gained a rough understanding of the overall framework and process o...</div></div></div></a></div></div><hr class="custom-hr"/><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/en/posts/13749/">Exporting JStorm Monitoring Metrics to Third-Party Storage</a><ol class="relatedHowto-steps"><li>Implement MetricUploader</li><li>Configure metrics</li><li>Test</li><li>Connect Grafana</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/en/posts/48312/">A Powerful Tool for Data Analytics: Introduction to ClickHouse</a><ol class="relatedHowto-steps"><li>Install ClickHouse</li><li>Create table</li><li>Import data</li><li>Write queries</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comments</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">SandGrid</div><div class="author-info-description">Mobility | Expanding life's choices</div><div class="site-data"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">85</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">128</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="Zhihu"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Backend Dev | Architecture | AI Practice<br>Expanding choices through code</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-Learn-About-Hadoop-in-2026"><span class="toc-number">1.</span> <span class="toc-text">Why Learn About Hadoop in 2026?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Recommended-Learning-Path-for-2026"><span class="toc-number">2.</span> <span class="toc-text">Recommended Learning Path for 2026</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Getting-Started-Core-Concepts"><span class="toc-number">2.1.</span> <span class="toc-text">Getting Started: Core Concepts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Leveling-Up-From-Theory-to-Practice"><span class="toc-number">2.2.</span> <span class="toc-text">Leveling Up: From Theory to Practice</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Going-Deeper-Architectural-Evolution"><span class="toc-number">2.3.</span> <span class="toc-text">Going Deeper: Architectural Evolution</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%9A-Original-Notes-Compiled-in-2012"><span class="toc-number">3.</span> <span class="toc-text">📚 Original Notes (Compiled in 2012)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Frequently-Asked-Questions"><span class="toc-number">4.</span> <span class="toc-text">Frequently Asked Questions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-Do-I-still-need-to-learn-Hadoop-in-2026"><span class="toc-number">4.1.</span> <span class="toc-text">Q: Do I still need to learn Hadoop in 2026?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-Where-should-I-start-with-Hadoop"><span class="toc-number">4.2.</span> <span class="toc-text">Q: Where should I start with Hadoop?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-Is-there-value-in-learning-outdated-technologies"><span class="toc-number">4.3.</span> <span class="toc-text">Q: Is there value in learning outdated technologies?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-With-Spark-around-do-I-still-need-MapReduce"><span class="toc-number">4.4.</span> <span class="toc-text">Q: With Spark around, do I still need MapReduce?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#You-don%E2%80%99t-need-to-learn-MapReduce-programming-specifically-but-understanding-its-computation-model-is-worthwhile-MapReduce%E2%80%99s-map-shuffle-reduce-pipeline-data-locality-optimizations-and-fault-tolerance-mechanisms-%E2%80%94-these-ideas-are-carried-forward-and-improved-in-Spark-Understanding-why-MapReduce-was-slow-is-the-best-way-to-truly-grasp-how-Spark-achieves-speed-through-in-memory-computation-DAG-scheduling-and-RDD-lineage-Each-of-these-optimizations-is-a-direct-response-to-MapReduce%E2%80%99s-shortcomings"><span class="toc-number">5.</span> <span class="toc-text">You don’t need to learn MapReduce programming specifically, but understanding its computation model is worthwhile. MapReduce’s map-shuffle-reduce pipeline, data locality optimizations, and fault tolerance mechanisms — these ideas are carried forward and improved in Spark. Understanding why MapReduce was slow is the best way to truly grasp how Spark achieves speed through in-memory computation, DAG scheduling, and RDD lineage. Each of these optimizations is a direct response to MapReduce’s shortcomings.</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/en/posts/18804/" title="Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub">Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub</a><time datetime="2026-06-26T08:18:13.000Z" title="Created 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/22470/" title="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/22470.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos"/></a><div class="content"><a class="title" href="/en/posts/22470/" title="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos">Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos</a><time datetime="2026-06-16T05:21:16.000Z" title="Created 2026-06-16 13:21:16">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/65500/" title="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/65500.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0"/></a><div class="content"><a class="title" href="/en/posts/65500/" title="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0">Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0</a><time datetime="2026-06-11T14:00:00.000Z" title="Created 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/26061.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"/></a><div class="content"><a class="title" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow">How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow</a><time datetime="2026-06-04T14:00:00.000Z" title="Created 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="How to Farm Free Tokens: Building Agent-Independent AI Workflows"/></a><div class="content"><a class="title" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows">How to Farm Free Tokens: Building Agent-Independent AI Workflows</a><time datetime="2026-06-03T14:00:00.000Z" title="Created 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By SandGrid</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">Sub-sites: <a target="_blank" rel="noopener external nofollow noreferrer" href='https://video.lichuanyang.top/'>AI Video Generator</a> &middot; <a target="_blank" rel="noopener external nofollow noreferrer" href='https://math.lichuanyang.top/'>Math Practice</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll to Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/en/js/utils.js?v=5.5.4"></script><script src="/en/js/main.js?v=5.5.4"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script>if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://dummyjson.com/quotes/random").then(e=>e.json()).then(t=>{e.innerHTML="“"+t.quote+"” — "+t.author}).catch(()=>{})}</script><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/en/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

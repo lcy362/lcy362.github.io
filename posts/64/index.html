@@ -1,0 +1,390 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>用LLM管理安全开发规范：一次llm-wiki实践 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="用 LLM 管理团队安全开发规范的实践，基于 Karpathy 的 llm-wiki 思路解决规范文档散落的问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用LLM管理安全开发规范：一次llm-wiki实践">
+<meta property="og:url" content="https://lichuanyang.top/posts/64/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="用 LLM 管理团队安全开发规范的实践，基于 Karpathy 的 llm-wiki 思路解决规范文档散落的问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/64.jpg">
+<meta property="article:published_time" content="2026-05-11T07:38:16.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:42:25.683Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="wiki">
+<meta property="article:tag" content="安全规范">
+<meta property="article:tag" content="实践">
+<meta property="article:tag" content="知识管理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/64.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "用LLM管理安全开发规范：一次llm-wiki实践",
+  "url": "https://lichuanyang.top/posts/64/",
+  "image": "https://lichuanyang.top/img/64.jpg",
+  "abstract": "基于 Karpathy 的 llm-wiki 三层架构思路，用 LLM 将散落的安全开发规范编译为结构化 Wiki，实现持续更新与精准问答。",
+  "datePublished": "2026-05-11T07:38:16.000Z",
+  "dateModified": "2026-06-27T03:42:25.683Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/64/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '用LLM管理安全开发规范：一次llm-wiki实践',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"LLM 生成的代码或规范文档安全吗？会不会引入新的安全风险？","acceptedAnswer":{"@type":"Answer","text":"llm-wiki 方案中，LLM 的角色是”编译器”而非”独立决策者”——它将原始的安全规范文档提取、结构化、交叉引用，最终生成的规范文档来源于团队已有的安全知识，并不是 LLM 凭空创造的。真正需要关注的风险点是：1) 原始素材本身是否正确（LLM 不会替你验证这一点）；2) LLM 可能会遗漏某些安全条款（因此需要人工审核）。LLM 本身不会主动引入安全漏洞，但过度信赖未经审核的 LLM 输出才是真正的风险。 Q: 用 LLM 管理规范后，如何审核和保证质量？文中总结了三层质量保障机制：1) CLAUDE.md 规范约束：通过结构化的模板要求（如安全故障案例必须包含漏洞类型、攻击向量、影响范围、修复方案、预防措施），让 LLM 有章可循；2) 多轮迭代：初版 Wiki 不会完美，作者用了 5-6 轮迭代让 LLM 修正交叉引用、补充遗漏概念；3) 定期 Lint 检查：每周检查断裂链接、孤儿页面、单向链接等结构问题。最可靠的是人工最终校验——LLM 降低维护成本，但不替代人工把关。 Q: llm-wiki 方案和传统 lint 工具（SonarQube、ESLint 等）有何不同？"}},{"@type":"Question","name":"用 LLM 管理规范后，如何审核和保证质量？","acceptedAnswer":{"@type":"Answer","text":"文中总结了三层质量保障机制：1) CLAUDE.md 规范约束：通过结构化的模板要求（如安全故障案例必须包含漏洞类型、攻击向量、影响范围、修复方案、预防措施），让 LLM 有章可循；2) 多轮迭代：初版 Wiki 不会完美，作者用了 5-6 轮迭代让 LLM 修正交叉引用、补充遗漏概念；3) 定期 Lint 检查：每周检查断裂链接、孤儿页面、单向链接等结构问题。最可靠的是人工最终校验——LLM 降低维护成本，但不替代人工把关。 Q: llm-wiki 方案和传统 lint 工具（SonarQube、ESLint 等）有何不同？两者是互补关系，解决不同层次的问题。传统 lint 工具是规则引擎——检查代码是否违反预定义规则（如 SQL 注入、XSS），工作在代码层面，规则固定。llm-wiki 是知识管理工具——解决规范文档散落、新人学习成本高、故障经验无法沉淀复用的问题，工作在知识层面。理想状态下，llm-wiki 产出的规范可以作为 lint 规则的来源，而 lint 工具则自动化地检查代码是否遵守这些规范。 Q: 三层架构（raw&#x2F;wiki&#x2F;output）为什么"}},{"@type":"Question","name":"llm-wiki 方案和传统 lint 工具（SonarQube、ESLint 等）有何不同？","acceptedAnswer":{"@type":"Answer","text":"两者是互补关系，解决不同层次的问题。传统 lint 工具是规则引擎——检查代码是否违反预定义规则（如 SQL 注入、XSS），工作在代码层面，规则固定。llm-wiki 是知识管理工具——解决规范文档散落、新人学习成本高、故障经验无法沉淀复用的问题，工作在知识层面。理想状态下，llm-wiki 产出的规范可以作为 lint 规则的来源，而 lint 工具则自动化地检查代码是否遵守这些规范。 Q: 三层架构（raw&#x2F;wiki&#x2F;output）为什么重要？混在一起会怎样？三层架构的核心是保持知识流向的单向性：raw 是原始素材（不可修改，保持原貌），wiki 是 LLM 维护的结构化中间层（可迭代优化），output 是面向人类的最终产出（直接可读）。混在一起的后果：1) 原始素材和加工产物无法区分，出问题时难以溯源；2) 修改 output 后 wiki 层过时，LLM 下次查询会给出矛盾信息；3) 维护成本回归传统模式——每次更新都要同时改多个地方。作者强调”保持三层架构的纯净”是方案可持续的关键。文章作者: 流沙"}},{"@type":"Question","name":"三层架构（raw/wiki/output）为什么重要？混在一起会怎样？","acceptedAnswer":{"@type":"Answer","text":"三层架构（raw/wiki/output）为什么重要？混在一起会怎样？"}}]}</script>
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/64/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/64/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/64/">
+<meta name="keywords" content="LLM, 知识管理, 安全规范, wiki, 实践">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"AI实践","item":"https://lichuanyang.top/categories/AI实践/"},{"@type":"ListItem","position":3,"name":"用LLM管理安全开发规范：一次llm-wiki实践","item":"https://lichuanyang.top/posts/64/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/64.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">用LLM管理安全开发规范：一次llm-wiki实践</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">用LLM管理安全开发规范：一次llm-wiki实践</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-11T07:38:16.000Z" title="发表于 2026-05-11 15:38:16">2026-05-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T03:42:25.683Z" title="更新于 2026-06-27 11:42:25">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI%E5%AE%9E%E8%B7%B5/">AI实践</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> 基于 Karpathy 的 llm-wiki 三层架构思路，用 LLM 将散落的安全开发规范编译为结构化 Wiki，实现持续更新与精准问答。</blockquote><p>最近在整理团队的安全开发规范时，遇到了一个老问题：安全规范文档越积越多，但真正用的时候却找不到。每次新人入职，都要翻遍各种文档才能拼凑出完整的安全规范；每次出安全故障，事后总结的经验也散落在各处，下次遇到类似问题还得重新排查。</p>
+<p>我试过用Confluence、Notion、甚至Git仓库的README来管理，但效果都不理想。直到看到了Karpathy提的llm-wiki思路，才觉得这可能是个突破口。</p>
+<span id="more"></span>
+
+<h2 id="Karpathy的llm-wiki是什么？"><a href="#Karpathy的llm-wiki是什么？" class="headerlink" title="Karpathy的llm-wiki是什么？"></a>Karpathy的llm-wiki是什么？</h2><p>Karpathy在<a target="_blank" rel="noopener external nofollow noreferrer" href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Gist</a>里提了个想法：让LLM维护一个Wiki中间层。原话是”the wiki is a persistent, compounding artifact”——这个Wiki层就像个编译器，把原始文档编译成结构化数据，这样LLM每次回答问题时就不用从头在原始文档里”找”信息，直接查Wiki就行。</p>
+<p>我觉得这个思路特别妙。传统文档管理是”存”和”找”，而llm-wiki是”编译”和”查询”。原始文档可能很乱、有重复、甚至有矛盾，但Wiki层是干净、结构化、有交叉引用的。</p>
+<p>举个例子：我们团队有十几份安全开发规范文档，从输入验证到渗透测试都有，还有近十份安全故障复盘报告。这些文档格式不一，有的在Word里，有的在Markdown里，有的甚至只是Slack聊天记录。如果让LLM直接处理这些原始材料，效率会很低。但如果先”编译”成Wiki，效果就完全不一样了。</p>
+<h2 id="我的实现过程"><a href="#我的实现过程" class="headerlink" title="我的实现过程"></a>我的实现过程</h2><h3 id="第一步：生成CLAUDE-md"><a href="#第一步：生成CLAUDE-md" class="headerlink" title="第一步：生成CLAUDE.md"></a>第一步：生成CLAUDE.md</h3><p>我首先把Karpathy的Gist链接丢给Claude，让它基于这个思路生成一份CLAUDE.md文件。这个文件相当于给LLM的”操作手册”，告诉它如何维护Wiki。</p>
+<p>生成的CLAUDE.md包含了几个关键部分：</p>
+<ul>
+<li>三层架构说明（raw → wiki → output）</li>
+<li>Wiki页面规范（frontmatter格式、交叉引用规则）</li>
+<li>摄入工作流（如何处理新素材）</li>
+<li>查询工作流（如何回答用户问题）</li>
+<li>Lint检查（如何保证Wiki健康）</li>
+</ul>
+<p>实际用下来，我发现模型生成的结果基本可用，没有做太多微调。只是另外让AI生成了output层，用于存放最终的规范文档。这样三层架构就完整了：raw放原始素材，wiki放结构化Wiki，output放最终输出。</p>
+<h3 id="第二步：收集和整理原始素材"><a href="#第二步：收集和整理原始素材" class="headerlink" title="第二步：收集和整理原始素材"></a>第二步：收集和整理原始素材</h3><p>这是最耗时的一步。我把散落在各处的安全开发规范文档和故障案例都收集起来，统一放到raw/sources/目录下。为了保持原貌，我没有修改这些文件的内容，也没有统一格式——PDF、Word、PPT、Markdown等各种格式直接放到raw层就行，模型都可以处理。</p>
+<p>具体来说，我收集了：</p>
+<ul>
+<li>十几份安全开发规范文档：涵盖输入验证、SQL注入防护、XSS防护、CSRF防护、敏感数据保护、日志安全等</li>
+<li>近十份安全故障复盘报告：包括SQL注入漏洞、越权访问、敏感信息泄露、会话劫持等真实案例</li>
+<li>几份安全架构方案文档：涉及零信任架构、安全编码指南、渗透测试流程等</li>
+</ul>
+<p>这些素材质量参差不齐。有的写得很规范，有清晰的标题和列表；有的就是随手记的笔记，甚至还有截图。但没关系，llm-wiki的妙处就在于它能处理这种”脏数据”。</p>
+<h3 id="第三步：让LLM生成Wiki层"><a href="#第三步：让LLM生成Wiki层" class="headerlink" title="第三步：让LLM生成Wiki层"></a>第三步：让LLM生成Wiki层</h3><p>有了CLAUDE.md和原始素材，就可以让LLM开始工作了。我这里用的是Claude，主要是因为它的上下文窗口足够大，能一次性处理较多内容。</p>
+<p>具体操作是这样的：</p>
+<ol>
+<li>把CLAUDE.md作为系统提示词</li>
+<li>告诉LLM：”请按照CLAUDE.md中的规范，处理raw/sources/目录下的所有素材，生成wiki层”</li>
+<li>LLM会依次读取每个原始文件，提取关键信息，生成对应的Wiki页面</li>
+</ol>
+<p>这个过程不是一次就能完成的。LLM生成的初版Wiki会有一些问题：</p>
+<ul>
+<li>交叉引用不够充分</li>
+<li>有些概念没有被提取成独立页面</li>
+<li>页面之间的逻辑关系不够清晰</li>
+</ul>
+<p>所以需要多轮迭代。我会检查生成的Wiki，指出问题，让LLM修正。比如：<br>“这个故障案例里提到了’连接池配置不当’，但为什么没有对应的concept页面？请创建一个[[connection-pool-best-practices]]页面，并在故障案例里引用它。”</p>
+<p>经过5-6轮迭代，Wiki层才逐渐成型。</p>
+<h3 id="第四步：生成最终规范文档"><a href="#第四步：生成最终规范文档" class="headerlink" title="第四步：生成最终规范文档"></a>第四步：生成最终规范文档</h3><p>Wiki层准备好后，就可以生成最终的规范文档了。我让LLM基于Wiki层，生成一份面向开发者的、可直接阅读的规范文档。</p>
+<p>这里有个设计决策：最终文档是放在output/目录下，而不是直接修改原始素材。这样保持了三层架构的清晰性：</p>
+<ul>
+<li>raw/：原始素材，不可修改</li>
+<li>wiki/：结构化Wiki，LLM维护</li>
+<li>output/：最终输出，人类阅读</li>
+</ul>
+<p>生成的规范文档有几个特点：</p>
+<ol>
+<li>每个规范条目都有”为什么”——不只是说”要这样做”，还解释”为什么要这样做”</li>
+<li>相关的故障案例会作为”反面教材”链接在旁边</li>
+<li>有交叉引用，比如”数据库连接池配置”会链接到”连接池最佳实践”这个concept页面</li>
+</ol>
+<h2 id="实际效果"><a href="#实际效果" class="headerlink" title="实际效果"></a>实际效果</h2><h3 id="阅读体验"><a href="#阅读体验" class="headerlink" title="阅读体验"></a>阅读体验</h3><p>最终的规范文档可以直接用Obsidian打开阅读。因为是Markdown格式，支持：</p>
+<ul>
+<li>代码块高亮</li>
+<li>内部链接跳转（点击就能跳转到相关概念或故障案例）</li>
+<li>标签筛选（比如筛选所有#安全相关的规范）</li>
+</ul>
+<p>更重要的是，每条安全规范都关联着真实的故障案例。比如在”SQL注入防护”这条规范旁边，就链接着[[sql-injection-vulnerability-incident]]这个故障案例，详细描述了漏洞是怎么产生的、造成了什么影响、怎么修复的。这样开发者不仅能知道”要怎么做”，还能看到”不这么做会出什么问题”。</p>
+<p>比起以前散落在各处的文档，阅读体验好了不止一个量级。</p>
+<h3 id="LLM问答"><a href="#LLM问答" class="headerlink" title="LLM问答"></a>LLM问答</h3><p>更强大的是LLM问答能力。因为有了Wiki层，LLM回答问题时特别准。比如我问：<br>“数据库批量更新时要注意什么？”</p>
+<p>LLM会：</p>
+<ol>
+<li>先在Wiki里找到[[batch-operation-security]]这个concept页面</li>
+<li>结合[[sql-injection-batch-incident]]这个故障案例</li>
+<li>给出具体的建议：必须使用参数化查询、禁止字符串拼接SQL、批量操作要有事务控制、超大批次要分页处理等</li>
+<li>还会解释为什么：因为批量操作一旦出问题，影响范围是单条操作的N倍</li>
+</ol>
+<p>再比如问：”用户上传文件怎么处理才安全？”</p>
+<p>LLM会：</p>
+<ol>
+<li>找到[[file-upload-security]]这个concept页面</li>
+<li>结合[[malicious-file-upload-incident]]这个故障案例</li>
+<li>给出具体建议：文件类型白名单校验、文件内容检测、重命名存储、限制文件大小、隔离存储等</li>
+</ol>
+<p>这比让LLM在十几份原始文档里”找”答案要靠谱得多。</p>
+<h3 id="持续更新"><a href="#持续更新" class="headerlink" title="持续更新"></a>持续更新</h3><p>最让我满意的是更新机制。当有新的规范文档或故障报告时，我只需要：</p>
+<ol>
+<li>把新文件放到raw/sources/目录下</li>
+<li>告诉LLM：”有新素材需要摄入”</li>
+<li>LLM会自动更新Wiki层和规范文档</li>
+</ol>
+<p>比如上周我们出了个新的安全故障：因为用户输入未过滤导致XSS漏洞。我把故障报告放到raw目录后，LLM自动：</p>
+<ol>
+<li>创建了[[xss-user-input-incident]]这个故障案例页面</li>
+<li>更新了[[input-validation-security]]这个concept页面，补充了XSS相关的注意事项</li>
+<li>在规范文档的”输入验证规范”章节增加了相关条目</li>
+</ol>
+<h2 id="遇到的问题和解决方案"><a href="#遇到的问题和解决方案" class="headerlink" title="遇到的问题和解决方案"></a>遇到的问题和解决方案</h2><h3 id="问题1：LLM生成的Wiki质量不稳定"><a href="#问题1：LLM生成的Wiki质量不稳定" class="headerlink" title="问题1：LLM生成的Wiki质量不稳定"></a>问题1：LLM生成的Wiki质量不稳定</h3><p>刚开始时，LLM生成的Wiki质量波动很大。有时能很好地提取关键信息，有时会漏掉重要内容。</p>
+<p><strong>解决方案</strong>：我细化了CLAUDE.md里的Wiki页面规范。比如要求每个页面必须有：</p>
+<ul>
+<li>Summary行：一句话描述核心内容</li>
+<li>Tags行：用#标签标记主题</li>
+<li>明确的页面类型（concept/entity/source/comparison）</li>
+</ul>
+<hr>
+<p>对于安全故障案例，还要求包含：漏洞类型、攻击向量、影响范围、修复方案、预防措施。这样LLM就有更清晰的指导，生成质量稳定了很多。</p>
+<h3 id="问题2：交叉引用经常断裂"><a href="#问题2：交叉引用经常断裂" class="headerlink" title="问题2：交叉引用经常断裂"></a>问题2：交叉引用经常断裂</h3><p>Wiki的核心价值在于交叉引用，但LLM经常创建单向链接，或者链接到不存在的页面。</p>
+<p><strong>解决方案</strong>：在CLAUDE.md里强化了交叉引用规则：</p>
+<ol>
+<li>必须双向链接：如果A页面引用了[[B]]，那么B页面也必须引用[[A]]</li>
+<li>frontmatter里的related字段必须和正文里的[[wiki-link]]一致</li>
+<li>只能引用已存在的页面，需要先创建再引用</li>
+</ol>
+<p>我还加了Lint检查，定期检查断裂链接和孤儿页面。</p>
+<h3 id="问题3：处理非结构化素材效率低"><a href="#问题3：处理非结构化素材效率低" class="headerlink" title="问题3：处理非结构化素材效率低"></a>问题3：处理非结构化素材效率低</h3><p>有些原始素材质量很差，比如截图、手写笔记、甚至是Slack聊天记录的导出。LLM处理这些素材时效率很低。</p>
+<p><strong>解决方案</strong>：对于这类素材，我会先手动整理成结构化的Markdown，再交给LLM处理。虽然增加了前期工作量，但保证了最终质量。</p>
+<h2 id="一些经验教训"><a href="#一些经验教训" class="headerlink" title="一些经验教训"></a>一些经验教训</h2><ol>
+<li><p><strong>不要追求一步到位</strong>。llm-wiki是个迭代过程。第一版Wiki肯定不完美，但可以通过持续迭代改进。</p>
+</li>
+<li><p><strong>CLAUDE.md要不断优化</strong>。随着使用，你会发现CLAUDE.md里缺失的规则。比如我后来加了”安全故障案例必须包含：漏洞类型、攻击向量、影响范围、修复方案、预防措施”这样的结构化要求。</p>
+</li>
+<li><p><strong>保持三层架构的纯净</strong>。raw/就是raw/，不要修改；wiki/由LLM维护；output/面向人类。混在一起会越来越乱。</p>
+</li>
+<li><p><strong>定期做健康检查</strong>。我会每周跑一次Lint，检查断裂链接、孤儿页面、单向链接等问题。发现问题及时修复。</p>
+</li>
+<li><p><strong>接受不完美</strong>。LLM生成的Wiki不会100%准确，会有遗漏和错误。但相比完全靠人工维护，已经好太多了。</p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>用llm-wiki管理安全开发规范，本质上是把”文档管理”变成了”知识工程”。原始文档是”原材料”，Wiki是”半成品”，规范文档是”成品”。LLM在这个过程中充当了”编译器”和”维护者”的角色。</p>
+<p>这个方法最大的价值是<strong>可持续性</strong>。传统的文档管理，时间一长就会荒废，因为维护成本太高。而llm-wiki把维护成本转移给了LLM，人类只需要：</p>
+<ol>
+<li>提供原始素材（这个避免不了）</li>
+<li>检查和修正LLM的工作（比从头写轻松多了）</li>
+<li>使用最终产出（享受成果）</li>
+</ol>
+<p>如果你也在为安全开发规范的管理头疼，不妨试试这个思路。不用完全照搬我的实现，关键是理解”Wiki中间层”这个核心理念。至于具体用什么工具、怎么组织目录，都可以根据实际情况调整。</p>
+<p>毕竟，工具是为人服务的，不是吗？</p>
+<p>原文地址: <a href="https://lichuanyang.top/posts/88001/">https://lichuanyang.top/posts/88001/</a></p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="Q-LLM-生成的代码或规范文档安全吗？会不会引入新的安全风险？"><a href="#Q-LLM-生成的代码或规范文档安全吗？会不会引入新的安全风险？" class="headerlink" title="Q: LLM 生成的代码或规范文档安全吗？会不会引入新的安全风险？"></a>Q: LLM 生成的代码或规范文档安全吗？会不会引入新的安全风险？</h3><p>llm-wiki 方案中，LLM 的角色是”编译器”而非”独立决策者”——它将原始的安全规范文档<strong>提取、结构化、交叉引用</strong>，最终生成的规范文档来源于团队已有的安全知识，并不是 LLM 凭空创造的。真正需要关注的风险点是：1) 原始素材本身是否正确（LLM 不会替你验证这一点）；2) LLM 可能会<strong>遗漏</strong>某些安全条款（因此需要人工审核）。LLM 本身不会主动引入安全漏洞，但<strong>过度信赖未经审核的 LLM 输出</strong>才是真正的风险。</p>
+<h3 id="Q-用-LLM-管理规范后，如何审核和保证质量？"><a href="#Q-用-LLM-管理规范后，如何审核和保证质量？" class="headerlink" title="Q: 用 LLM 管理规范后，如何审核和保证质量？"></a>Q: 用 LLM 管理规范后，如何审核和保证质量？</h3><p>文中总结了三层质量保障机制：1) <strong>CLAUDE.md 规范约束</strong>：通过结构化的模板要求（如安全故障案例必须包含漏洞类型、攻击向量、影响范围、修复方案、预防措施），让 LLM 有章可循；2) <strong>多轮迭代</strong>：初版 Wiki 不会完美，作者用了 5-6 轮迭代让 LLM 修正交叉引用、补充遗漏概念；3) <strong>定期 Lint 检查</strong>：每周检查断裂链接、孤儿页面、单向链接等结构问题。最可靠的是<strong>人工最终校验</strong>——LLM 降低维护成本，但不替代人工把关。</p>
+<h3 id="Q-llm-wiki-方案和传统-lint-工具（SonarQube、ESLint-等）有何不同？"><a href="#Q-llm-wiki-方案和传统-lint-工具（SonarQube、ESLint-等）有何不同？" class="headerlink" title="Q: llm-wiki 方案和传统 lint 工具（SonarQube、ESLint 等）有何不同？"></a>Q: llm-wiki 方案和传统 lint 工具（SonarQube、ESLint 等）有何不同？</h3><p>两者是<strong>互补关系</strong>，解决不同层次的问题。传统 lint 工具是<strong>规则引擎</strong>——检查代码是否违反预定义规则（如 SQL 注入、XSS），工作在代码层面，规则固定。llm-wiki 是<strong>知识管理工具</strong>——解决规范文档散落、新人学习成本高、故障经验无法沉淀复用的问题，工作在知识层面。理想状态下，llm-wiki 产出的规范可以作为 lint 规则的来源，而 lint 工具则自动化地检查代码是否遵守这些规范。</p>
+<h3 id="Q-三层架构（raw-wiki-output）为什么重要？混在一起会怎样？"><a href="#Q-三层架构（raw-wiki-output）为什么重要？混在一起会怎样？" class="headerlink" title="Q: 三层架构（raw/wiki/output）为什么重要？混在一起会怎样？"></a>Q: 三层架构（raw/wiki/output）为什么重要？混在一起会怎样？</h3><h2 id="三层架构的核心是保持知识流向的单向性：raw-是原始素材（不可修改，保持原貌），wiki-是-LLM-维护的结构化中间层（可迭代优化），output-是面向人类的最终产出（直接可读）。混在一起的后果：1-原始素材和加工产物无法区分，出问题时难以溯源；2-修改-output-后-wiki-层过时，LLM-下次查询会给出矛盾信息；3-维护成本回归传统模式——每次更新都要同时改多个地方。作者强调”保持三层架构的纯净”是方案可持续的关键。"><a href="#三层架构的核心是保持知识流向的单向性：raw-是原始素材（不可修改，保持原貌），wiki-是-LLM-维护的结构化中间层（可迭代优化），output-是面向人类的最终产出（直接可读）。混在一起的后果：1-原始素材和加工产物无法区分，出问题时难以溯源；2-修改-output-后-wiki-层过时，LLM-下次查询会给出矛盾信息；3-维护成本回归传统模式——每次更新都要同时改多个地方。作者强调”保持三层架构的纯净”是方案可持续的关键。" class="headerlink" title="三层架构的核心是保持知识流向的单向性：raw 是原始素材（不可修改，保持原貌），wiki 是 LLM 维护的结构化中间层（可迭代优化），output 是面向人类的最终产出（直接可读）。混在一起的后果：1) 原始素材和加工产物无法区分，出问题时难以溯源；2) 修改 output 后 wiki 层过时，LLM 下次查询会给出矛盾信息；3) 维护成本回归传统模式——每次更新都要同时改多个地方。作者强调”保持三层架构的纯净”是方案可持续的关键。"></a>三层架构的核心是<strong>保持知识流向的单向性</strong>：raw 是原始素材（不可修改，保持原貌），wiki 是 LLM 维护的结构化中间层（可迭代优化），output 是面向人类的最终产出（直接可读）。混在一起的后果：1) 原始素材和加工产物无法区分，出问题时难以溯源；2) 修改 output 后 wiki 层过时，LLM 下次查询会给出矛盾信息；3) 维护成本回归传统模式——每次更新都要同时改多个地方。作者强调”保持三层架构的纯净”是方案可持续的关键。</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/64/">https://lichuanyang.top/posts/64/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/64.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/39648/" title="Vercel封禁163邮箱后，我是怎么恢复博客的"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/39648.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Vercel封禁163邮箱后，我是怎么恢复博客的</div></div><div class="info-2"><div class="info-item-1">前几天写了篇新文章，照常往 Vercel 部署，结果 pipeline 直接报错了。一开始以为是构建问题，折腾了一会儿才发现不对——是 Vercel 账号出了状况。用 163 邮箱注册的账号怎么都登不上去了。后来才搞清楚，Vercel 把整个 163.com 邮箱根域给封禁了。   先说说 Vercel 是什么如果你是搞独立博客的，大概率听过或者正在用 Vercel。简单说，它是一个前端部署平台，支持自动从 GitHub 仓库拉代码、构建、部署，给你的网站分配一个域名，还自带 CDN 加速。很多人的博客就是 GitHub Pages + Vercel 的组合——代码放在 GitHub，用 Vercel 来部署和托管。 我自己的博客也是这么搞的。GitHub Pages 本来也能直接部署静态页面，但 Vercel 在自定义域名、HTTPS、CDN 这些方面用起来更方便，所以就选了它。 163 邮箱被封禁的来龙去脉大概在 2026 年 5 月 4 号左右，大量使用 163 邮箱注册 Vercel 的用户发现，自己的账号突然无法登录了。我在网上搜了一下，发现不只是我一个人遇到这个问题。...</div></div></div></a><a class="pagination-related" href="/posts/43947/" title="Vaadin框架教程：Java工程师的前端开发秘籍"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/43947.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Vaadin框架教程：Java工程师的前端开发秘籍</div></div><div class="info-2"><div class="info-item-1">后端工程师的前端困境后端工程师开发前端的痛点，通常来说莫过于太过繁琐，经常要为了一些很小的事查半天。Vaadin很好的解决了这个痛点，为后端工程师提供易上手、方便使用的前端代码编写解决方案，今天我们就来了解一下。   Vaadin 是什么大家好，今天跟大家介绍一个对后端工程师特别有价值的工具——Vaadin。 说起来，上手前端基本的html, css开发，确实并不难，但是如果只会这些基本的东西，开发起来会很繁琐。如果想要使用前端生态中的各种轮子，虽说便利度提升了，但学习成本也会同步上升。所以，如果不是职业的全栈工程师，只是作为一个后端，想临时写点前端代码，比如自己想做点小项目，通常来说都会有个很痛苦的过程。 Vaadin很好的解决了这个痛点。通过vaadin包装好的常用前端组件，我们几乎可以零学习成本的编写出功能完备、不太难看的页面。对于后端背景的程序员来说，无疑会大幅度降低自己做些小项目的成本。 核心概念Vaadin提供的功能，就是可以直接用java代码来写页面。Vaadin提供了多种输入框、表单等等封装好的前端样式，而且与springboot做了深度的融合，使用起来非常方便。...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-03</div><div class="info-item-2">教你薅token：构建agent无关的AI工作流</div></div><div class="info-2"><div class="info-item-1">目前大家使用AI的最大或者唯一痛点，是什么？可能就是账单了。 无论是Claude、CodeX、Cursor，还是qoder或是mimo、minimax，基础套餐基本都要奔着20刀以上去，这还得省着用，很多时候用以来会很不爽。要想量大管饱，那就会更贵。 而同时，很多平台会有试用装，或是常规的免费模型。比如OpenCode里的deepseek flash长期免费。 我们怎么才能好好的薅一下这些免费模型呢？ 我长期在各种不同的项目用Agent，有代码，有个人博客，有笔记知识库，有小说，还有我和AI完的小游戏。用着用着发现一个事：Agent的所有操作，本质上是：读你文档 → 拼prompt → 发给模型 → 按结果改文件。 文档在哪里，智能就在哪里。你自己拼prompt，跟平台帮你拼，其实没差那么多。 所以我后来干脆不再纠结用哪个Agent平台了。文档维护好，哪里有免费token就去哪薅。   Agent到底干了什么不管哪家Agent，流程都差不多： 1用户说需求 → Agent看项目文档 → 读相关文件 → 拼prompt → 问模型 → 处理返回 → 改文件 → 循环上述流程  比如...</div></div></div></a><a class="pagination-related" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-04</div><div class="info-item-2">教你薅token（二）：构建agent无关的skills管理工作流</div></div><div class="info-2"><div class="info-item-1">上篇文章最后说了句：Agent只是工具，文档才是核心。 这话说了之后，有人问我：道理都懂，但文档具体怎么管？总不能每个项目都复制粘贴一遍吧？ 确实不能。 我后来写了个工具来解决这事——pks（Personal Skills Manager），408行纯bash，零依赖。它干的事很简单：把你的AI工作流文档打包成skill，按需装到项目里，不绑定任何Agent平台。   什么是skill如果你用过OpenCode、Cursor或者其他Agent平台，大概率见过”skill”这个概念。不同平台叫法不一样——有的叫skill，有的叫rules，有的叫custom instructions——但说的都是同一件事：你给Agent的结构化指令，告诉它怎么处理特定类型的任务。 比如”调用我们的API网关时，参数必须平铺在body顶层，不要嵌套在params里”，这是一条skill。”commit消息必须用中文，格式是type(scope):描述”，这也是。”数据库表名用snake_case，字段必须有注释”，还是。 Agent的底层模型提供了通用推理能力——它知道怎么写代码、怎么调API。但你...</div></div></div></a><a class="pagination-related" href="/posts/48979/" title="用 AI Agent 完成 Hexo 主题迁移：从 Next 到 Butterfly 的全自动化实践"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/48979.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-28</div><div class="info-item-2">用 AI Agent 完成 Hexo 主题迁移：从 Next 到 Butterfly 的全自动化实践</div></div><div class="info-2"><div class="info-item-1">背景：一个繁琐到让人崩溃的任务最近想给自己的 Hexo 博客换个主题。用了好几年的 Next 主题，虽然经典，但想换个更现代的风格。 看起来很简单对吧？但实际操作过的朋友都知道，Hexo 主题迁移是一个极其繁琐的过程：  配置文件长达 1000+ 行，需要逐项对比新旧主题的配置格式 功能映射复杂：Next 的 leancloud_visitors 对应 Butterfly 的 busuanzi，Next 的 reading_progress 对应 Butterfly 的 preloader 两个站点要同步：中英文站都要改，而且配置略有不同 Font Awesome 版本兼容：Butterfly 默认配的 FA 7.1.0 根本不存在于 cdnjs YAML 格式敏感：缩进、换行符都可能导致配置失效  如果手动操作，估计要花一整天，而且很容易出错。 解决方案：让 AI Agent 来干这次我尝试了一个不同的方式：让 AI Agent（Hermes）全程接管这个任务。 AI Agent 的工作流程整个过程，AI Agent 自主完成了以下工作：  环境分析：检查当前 Hexo 版本（...</div></div></div></a><a class="pagination-related" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-26</div><div class="info-item-2">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</div></div><div class="info-2"><div class="info-item-1">前段时间，偶然看到karpathy大神提出的llm-wiki, 有种相见恨晚的感觉。我一直是很喜欢写些东西的，但是写完之后，问题就是大量内容散落在各个地方，一直没有精力对它们进行有效的管理。而看到了llm-wiki后，我就意识到，之前写的那些东西，要开始发挥作用了。   为什么需要知识中枢首先, llm-wiki是什么。 llm-wiki 是 Andrej Karpathy 在 最近提出的一个概念：把你过往积累的所有文字材料——笔记、博客、读书摘录、工作日志——作为”语料库”，让 LLM 自动从中提取概念、建立页面、编织交叉引用，最终形成一个结构化的、可持续迭代的个人 Wiki。 它的核心前提很简单：每个人在日常工作和学习中已经产生了大量有结构、有见解的文字，只是它们散落在各处，缺乏关联。llm-wiki 要做的就是用一个 LLM 驱动的流程，把这些散落的珍珠串起来。你负责持续产生和收集内容，LLM 负责组织和管理。 和传统的手动 Wiki 维护不同——建页面、写摘要、加链接，枯燥且难以坚持——llm-wiki 把组织成本降到了几乎为零。你只需要告诉 LLM 你的知识库结构和维护...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/26061/">教你薅token（二）：构建agent无关的skills管理工作流</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/26061/">Skills 管理和 Agent 管理有什么区别？</a></li><li><a href="https://lichuanyang.top/posts/26061/">跨平台兼容性怎么保证？</a></li><li><a href="https://lichuanyang.top/posts/26061/">pks 和直接在 Agent 里配置 skill 有什么不同？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/26060/">教你薅token：构建agent无关的AI工作流</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/26060/">Agent 和 Skill 是什么关系？</a></li><li><a href="https://lichuanyang.top/posts/26060/">Token 优化最有效的方法是什么？</a></li><li><a href="https://lichuanyang.top/posts/26060/">文档维护和 Agent 订阅哪个更值？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/18804/">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/18804/">Obsidian 适合程序员做知识管理吗？</a></li><li><a href="https://lichuanyang.top/posts/18804/">LLM Wiki 需要 GPU 吗？</a></li><li><a href="https://lichuanyang.top/posts/18804/">llm-wiki 和传统 Wiki 有什么区别？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/26060/">教你薅token：构建agent无关的AI工作流</a><ol class="relatedHowto-steps"><li>理解Agent与Skill关系：Agent是执行引擎，Skill是结构化指令文档，文档质量决定输出质量</li><li>定义工作流：编写AGENTS.md等文档，明确项目结构、编码规范和操作流程</li><li>配置文档源：将项目文档、工作流说明、规则文档放入项目根目录，让Agent自动读取</li><li>测试验证：在不同Agent平台间切换测试，验证文档驱动的一致性效果</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/65500/">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><ol class="relatedHowto-steps"><li>环境准备：注册Agnes AI账号，获取API Key</li><li>调用Agnes API：配置OpenAI兼容接口，base URL为https://apihub.agnes-ai.com/v1</li><li>改造ViMax配置：创建YAML创意文件，配置场景、风格和chaining_mode参数</li><li>生成视频：运行start.sh一键生成多场景视频</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/18804/">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><ol class="relatedHowto-steps"><li>安装Obsidian：下载Obsidian客户端，创建Vault知识库</li><li>配置LLM Wiki：编写AGENTS.md，定义摄入、审计等wiki维护规则，让AI自动组织知识</li><li>接入微信读书：调用微信读书Agent API，同步书籍划线和笔记到Obsidian</li><li>导入知乎：使用Playwright自动化脚本抓取知乎回答和文章</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Karpathy%E7%9A%84llm-wiki%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">Karpathy的llm-wiki是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E5%AE%9E%E7%8E%B0%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">我的实现过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E7%94%9F%E6%88%90CLAUDE-md"><span class="toc-number">2.1.</span> <span class="toc-text">第一步：生成CLAUDE.md</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E6%94%B6%E9%9B%86%E5%92%8C%E6%95%B4%E7%90%86%E5%8E%9F%E5%A7%8B%E7%B4%A0%E6%9D%90"><span class="toc-number">2.2.</span> <span class="toc-text">第二步：收集和整理原始素材</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E8%AE%A9LLM%E7%94%9F%E6%88%90Wiki%E5%B1%82"><span class="toc-number">2.3.</span> <span class="toc-text">第三步：让LLM生成Wiki层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A%E7%94%9F%E6%88%90%E6%9C%80%E7%BB%88%E8%A7%84%E8%8C%83%E6%96%87%E6%A1%A3"><span class="toc-number">2.4.</span> <span class="toc-text">第四步：生成最终规范文档</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E6%95%88%E6%9E%9C"><span class="toc-number">3.</span> <span class="toc-text">实际效果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%85%E8%AF%BB%E4%BD%93%E9%AA%8C"><span class="toc-number">3.1.</span> <span class="toc-text">阅读体验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LLM%E9%97%AE%E7%AD%94"><span class="toc-number">3.2.</span> <span class="toc-text">LLM问答</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0"><span class="toc-number">3.3.</span> <span class="toc-text">持续更新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">4.</span> <span class="toc-text">遇到的问题和解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%981%EF%BC%9ALLM%E7%94%9F%E6%88%90%E7%9A%84Wiki%E8%B4%A8%E9%87%8F%E4%B8%8D%E7%A8%B3%E5%AE%9A"><span class="toc-number">4.1.</span> <span class="toc-text">问题1：LLM生成的Wiki质量不稳定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%982%EF%BC%9A%E4%BA%A4%E5%8F%89%E5%BC%95%E7%94%A8%E7%BB%8F%E5%B8%B8%E6%96%AD%E8%A3%82"><span class="toc-number">4.2.</span> <span class="toc-text">问题2：交叉引用经常断裂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%983%EF%BC%9A%E5%A4%84%E7%90%86%E9%9D%9E%E7%BB%93%E6%9E%84%E5%8C%96%E7%B4%A0%E6%9D%90%E6%95%88%E7%8E%87%E4%BD%8E"><span class="toc-number">4.3.</span> <span class="toc-text">问题3：处理非结构化素材效率低</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E7%BB%8F%E9%AA%8C%E6%95%99%E8%AE%AD"><span class="toc-number">5.</span> <span class="toc-text">一些经验教训</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text">常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-LLM-%E7%94%9F%E6%88%90%E7%9A%84%E4%BB%A3%E7%A0%81%E6%88%96%E8%A7%84%E8%8C%83%E6%96%87%E6%A1%A3%E5%AE%89%E5%85%A8%E5%90%97%EF%BC%9F%E4%BC%9A%E4%B8%8D%E4%BC%9A%E5%BC%95%E5%85%A5%E6%96%B0%E7%9A%84%E5%AE%89%E5%85%A8%E9%A3%8E%E9%99%A9%EF%BC%9F"><span class="toc-number">7.1.</span> <span class="toc-text">Q: LLM 生成的代码或规范文档安全吗？会不会引入新的安全风险？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-%E7%94%A8-LLM-%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83%E5%90%8E%EF%BC%8C%E5%A6%82%E4%BD%95%E5%AE%A1%E6%A0%B8%E5%92%8C%E4%BF%9D%E8%AF%81%E8%B4%A8%E9%87%8F%EF%BC%9F"><span class="toc-number">7.2.</span> <span class="toc-text">Q: 用 LLM 管理规范后，如何审核和保证质量？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-llm-wiki-%E6%96%B9%E6%A1%88%E5%92%8C%E4%BC%A0%E7%BB%9F-lint-%E5%B7%A5%E5%85%B7%EF%BC%88SonarQube%E3%80%81ESLint-%E7%AD%89%EF%BC%89%E6%9C%89%E4%BD%95%E4%B8%8D%E5%90%8C%EF%BC%9F"><span class="toc-number">7.3.</span> <span class="toc-text">Q: llm-wiki 方案和传统 lint 工具（SonarQube、ESLint 等）有何不同？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84%EF%BC%88raw-wiki-output%EF%BC%89%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%8D%E8%A6%81%EF%BC%9F%E6%B7%B7%E5%9C%A8%E4%B8%80%E8%B5%B7%E4%BC%9A%E6%80%8E%E6%A0%B7%EF%BC%9F"><span class="toc-number">7.4.</span> <span class="toc-text">Q: 三层架构（raw/wiki/output）为什么重要？混在一起会怎样？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A0%B8%E5%BF%83%E6%98%AF%E4%BF%9D%E6%8C%81%E7%9F%A5%E8%AF%86%E6%B5%81%E5%90%91%E7%9A%84%E5%8D%95%E5%90%91%E6%80%A7%EF%BC%9Araw-%E6%98%AF%E5%8E%9F%E5%A7%8B%E7%B4%A0%E6%9D%90%EF%BC%88%E4%B8%8D%E5%8F%AF%E4%BF%AE%E6%94%B9%EF%BC%8C%E4%BF%9D%E6%8C%81%E5%8E%9F%E8%B2%8C%EF%BC%89%EF%BC%8Cwiki-%E6%98%AF-LLM-%E7%BB%B4%E6%8A%A4%E7%9A%84%E7%BB%93%E6%9E%84%E5%8C%96%E4%B8%AD%E9%97%B4%E5%B1%82%EF%BC%88%E5%8F%AF%E8%BF%AD%E4%BB%A3%E4%BC%98%E5%8C%96%EF%BC%89%EF%BC%8Coutput-%E6%98%AF%E9%9D%A2%E5%90%91%E4%BA%BA%E7%B1%BB%E7%9A%84%E6%9C%80%E7%BB%88%E4%BA%A7%E5%87%BA%EF%BC%88%E7%9B%B4%E6%8E%A5%E5%8F%AF%E8%AF%BB%EF%BC%89%E3%80%82%E6%B7%B7%E5%9C%A8%E4%B8%80%E8%B5%B7%E7%9A%84%E5%90%8E%E6%9E%9C%EF%BC%9A1-%E5%8E%9F%E5%A7%8B%E7%B4%A0%E6%9D%90%E5%92%8C%E5%8A%A0%E5%B7%A5%E4%BA%A7%E7%89%A9%E6%97%A0%E6%B3%95%E5%8C%BA%E5%88%86%EF%BC%8C%E5%87%BA%E9%97%AE%E9%A2%98%E6%97%B6%E9%9A%BE%E4%BB%A5%E6%BA%AF%E6%BA%90%EF%BC%9B2-%E4%BF%AE%E6%94%B9-output-%E5%90%8E-wiki-%E5%B1%82%E8%BF%87%E6%97%B6%EF%BC%8CLLM-%E4%B8%8B%E6%AC%A1%E6%9F%A5%E8%AF%A2%E4%BC%9A%E7%BB%99%E5%87%BA%E7%9F%9B%E7%9B%BE%E4%BF%A1%E6%81%AF%EF%BC%9B3-%E7%BB%B4%E6%8A%A4%E6%88%90%E6%9C%AC%E5%9B%9E%E5%BD%92%E4%BC%A0%E7%BB%9F%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E9%83%BD%E8%A6%81%E5%90%8C%E6%97%B6%E6%94%B9%E5%A4%9A%E4%B8%AA%E5%9C%B0%E6%96%B9%E3%80%82%E4%BD%9C%E8%80%85%E5%BC%BA%E8%B0%83%E2%80%9D%E4%BF%9D%E6%8C%81%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84%E7%9A%84%E7%BA%AF%E5%87%80%E2%80%9D%E6%98%AF%E6%96%B9%E6%A1%88%E5%8F%AF%E6%8C%81%E7%BB%AD%E7%9A%84%E5%85%B3%E9%94%AE%E3%80%82"><span class="toc-number">8.</span> <span class="toc-text">三层架构的核心是保持知识流向的单向性：raw 是原始素材（不可修改，保持原貌），wiki 是 LLM 维护的结构化中间层（可迭代优化），output 是面向人类的最终产出（直接可读）。混在一起的后果：1) 原始素材和加工产物无法区分，出问题时难以溯源；2) 修改 output 后 wiki 层过时，LLM 下次查询会给出矛盾信息；3) 维护成本回归传统模式——每次更新都要同时改多个地方。作者强调”保持三层架构的纯净”是方案可持续的关键。</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

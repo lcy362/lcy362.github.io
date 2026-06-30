@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="受够了AI视频工具按秒计费？我开源了一个100%免费的AI视频生成器，文字、图片、视频、配音全部免费，一键生成带旁白字幕的多场景AI视频。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">
+<meta property="og:url" content="https://lichuanyang.top/posts/22470/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="受够了AI视频工具按秒计费？我开源了一个100%免费的AI视频生成器，文字、图片、视频、配音全部免费，一键生成带旁白字幕的多场景AI视频。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/22470.jpg">
+<meta property="article:published_time" content="2026-06-16T05:20:05.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:22:02.934Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="AI视频">
+<meta property="article:tag" content="Agnes AI">
+<meta property="article:tag" content="text-to-video">
+<meta property="article:tag" content="免费工具">
+<meta property="article:tag" content="开源项目">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/22470.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频",
+  "url": "https://lichuanyang.top/posts/22470/",
+  "image": "https://lichuanyang.top/img/22470.jpg",
+  "abstract": "免费AI视频生成不是梦，改造开源工具也能零成本做出带旁白的视频",
+  "datePublished": "2026-06-16T05:20:05.000Z",
+  "dateModified": "2026-06-27T03:22:02.934Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/22470/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/22470/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/22470/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/22470/">
+<meta name="keywords" content="AI视频, 开源项目, 免费工具, text-to-video, Agnes AI">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"AI实践","item":"https://lichuanyang.top/categories/AI实践/"},{"@type":"ListItem","position":3,"name":"免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频","item":"https://lichuanyang.top/posts/22470/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/22470.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-27T03:22:02.934Z" title="更新于 2026-06-27 11:22:02">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI%E5%AE%9E%E8%B7%B5/">AI实践</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> 免费AI视频生成不是梦，改造开源工具也能零成本做出带旁白的视频</blockquote><blockquote>
+<p>“解决的办法不是压制 AI，而是让它变成一种更平权的能力，让每个人都知道如何借 AI 创造更多。这也是我们公司很重要的愿景，让世界级的 AI 属于每一个人。”</p>
+</blockquote>
+<p>这是 Agnes AI 创始人 Bruce Yang 接受采访时说的一段话。</p>
+<p>现在很多国内的AI厂商，无论deepseek还是智谱，都在把AI的价格往下压。坦率的讲，像文字、代码的处理价格，确实已经被压到了一个相当低的价格。但视频不一样，现在做AI视频，门槛确实高得离谱——国外的 Runway、Pika 按月订阅几十美元，国内的即梦、可灵免费额度用完就按秒计费，想本地跑开源模型？一张能跑视频的显卡轻松上万。</p>
+<p>客观来讲，视频的生成，现阶段确实成本较高，让工业级的视频生成能力属于每一个人，确实不现实。但普通人也应该有一些途径能更多的去尝试、去创作，感谢Agnes开放自己的视频模型，让大家有这个机会。而这个项目只是想为了这个做一些微不足道的贡献。 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/lcy362/agnes-video-generator">Agnes Video Generator</a>（<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">官网</a>）。说白了就是一个免费的AI视频生成器，不是那种”免费试用3次”的套路，是从写文案到出片、配音、上字幕，全程不花一分钱。只需要去 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://platform.agnes-ai.com/">Agnes AI</a> 注册个免费API Key就行。</p>
+<p>Agnes的视频模型，目前确实称不上完美，但我想用这么一个项目，和Agnes一起成长，为AI平权，贡献上一点微不足道的力量。</p>
+<span id="more"></span>
+
+<h2 id="多种玩法"><a href="#多种玩法" class="headerlink" title="多种玩法"></a>多种玩法</h2><p>给它一句话描述，它还你一条视频。分几种类型：</p>
+<p><strong>简单视频。</strong> 纯粹对API的封装，用来测试效果的，接口的各种参数，基本都做成了配置。</p>
+<p><strong>创意视频。</strong> 你写一个故事创意，比如”暗黑版青蛙王子”，AI全包：扩展故事→生成角色参考图→拆分场景→写分镜提示→逐段生成视频→配音→上字幕→拼接成片。全程10步自动跑完，你只需要等着看成片。通过预生成尾帧，可以最大限度的保障场景间视频的连贯性。</p>
+<p><strong>文稿视频、数字人口播。</strong> 贴一篇长文章进去，自动按语音时长分段，每段生成画面，或者放一个数字人在那里念稿。用一条完整的TTS旁白和字幕串起来。做知识区内容的可以试试。</p>
+<p>各模式的详细参数和玩法，可以到<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">官网</a>上看，这里就不展开了。</p>
+<h2 id="跑起来很简单"><a href="#跑起来很简单" class="headerlink" title="跑起来很简单"></a>跑起来很简单</h2><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/lcy362/agnes-video-generator.git</span><br><span class="line"><span class="built_in">cd</span> agnes-video-generator</span><br><span class="line">./start.sh</span><br></pre></td></tr></tbody></table></figure>
+
+<p>就这三步。<code>start.sh</code> 会自动帮你建虚拟环境、装依赖、启动服务。</p>
+<p>启动后打开 <code>http://localhost:8765</code>，在页面顶部填上你的 Agnes AI API Key，选个模式，写你的创意，点生成，然后耐心等结果就行。</p>
+<p>用 Cursor 或者 Claude 这些AI Agent的话更方便，我专门为Agent做了使用说明，直接让你的Agent读项目里的Agents.md文件，它自己就能把环境搞好、把服务跑起来。</p>
+<h2 id="看看效果"><a href="#看看效果" class="headerlink" title="看看效果"></a>看看效果</h2><p>做了几个demo,可以看看效果：</p>
+<ul>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://v.douyin.com/L4F6KdGnD6U/">暗黑版《青蛙王子》无旁白版</a> — 5个场景用关键帧衔接，全自动生成</li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://v.douyin.com/l2FlbF1Jdz0/">同一个故事加了旁白字幕</a> — AI配音 + 自动字幕，可以看看字幕的效果</li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://v.douyin.com/eSGE9KENWVU/">文稿视频</a> — 贴了篇长文进去自动分段，每段配不同画面</li>
+</ul>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>回到开头 Bruce Yang 说的那句话——「让世界级的 AI 属于每一个人」。</p>
+<p>这个项目不是什么宏大的事业，就是想让 AI 视频创作这道门开着。不用订阅、不用好显卡、不用花一分钱，你只需要一个免费的 API Key 和一台能跑 Python 的电脑。</p>
+<p>代码在 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/lcy362/agnes-video-generator">GitHub</a>，官网在 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">video.lichuanyang.top</a>。欢迎提bug。</p>
+<p>原文地址：<a href="https://lichuanyang.top/posts/22470/">https://lichuanyang.top/posts/22470/</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/22470/">https://lichuanyang.top/posts/22470/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/22470.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</div></div><div class="info-2"><div class="info-item-1">前段时间，偶然看到karpathy大神提出的llm-wiki, 有种相见恨晚的感觉。我一直是很喜欢写些东西的，但是写完之后，问题就是大量内容散落在各个地方，一直没有精力对它们进行有效的管理。而看到了llm-wiki后，我就意识到，之前写的那些东西，要开始发挥作用了。   为什么需要知识中枢首先, llm-wiki是什么。 llm-wiki 是 Andrej Karpathy 在 最近提出的一个概念：把你过往积累的所有文字材料——笔记、博客、读书摘录、工作日志——作为”语料库”，让 LLM 自动从中提取概念、建立页面、编织交叉引用，最终形成一个结构化的、可持续迭代的个人 Wiki。 它的核心前提很简单：每个人在日常工作和学习中已经产生了大量有结构、有见解的文字，只是它们散落在各处，缺乏关联。llm-wiki 要做的就是用一个 LLM 驱动的流程，把这些散落的珍珠串起来。你负责持续产生和收集内容，LLM 负责组织和管理。 和传统的手动 Wiki 维护不同——建页面、写摘要、加链接，枯燥且难以坚持——llm-wiki 把组织成本降到了几乎为零。你只需要告诉 LLM 你的知识库结构和维护...</div></div></div></a><a class="pagination-related" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</div></div><div class="info-2"><div class="info-item-1">前阵子我在薅各种免费AI token，写了一篇关于”哪里免费去哪里薅”的文章。当时提到过，各家平台会不定期放出免费模型。结果没等多久，Agnes AI 就给了我一个惊喜：视频模型也免费了。 不是文字，不是图片，是视频。agnes-video-v2.0、agnes-image-2.1-flash、agnes-2.0-flash，三个模型全免费，注册就送API Key，不要信用卡，不要GPU。其中 Agnes-Video-V2.0 是目前免费 agnes video 生成方案里能力最强的一个，支持多种生成模式，质量相当能打。 这谁忍得住？我直接把开源框架 ViMax 改造成了 Agnes 全家桶方案，顺便把原来一些反人类的用法都优化了一遍。   Agnes免费模型：到底给了什么先说 Agnes 这波免费到底给了啥。在 Agnes AI 平台 注册之后，拿到一个 API Key，就能用三个模型：  agnes-2.0-flash（对话模型）：写故事、编剧本、生成prompt，标准的chat接口 agnes-image-2.1-flash（图片模型）：text-to-image，生成角色...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-11</div><div class="info-item-2">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</div></div><div class="info-2"><div class="info-item-1">前阵子我在薅各种免费AI token，写了一篇关于”哪里免费去哪里薅”的文章。当时提到过，各家平台会不定期放出免费模型。结果没等多久，Agnes AI 就给了我一个惊喜：视频模型也免费了。 不是文字，不是图片，是视频。agnes-video-v2.0、agnes-image-2.1-flash、agnes-2.0-flash，三个模型全免费，注册就送API Key，不要信用卡，不要GPU。其中 Agnes-Video-V2.0 是目前免费 agnes video 生成方案里能力最强的一个，支持多种生成模式，质量相当能打。 这谁忍得住？我直接把开源框架 ViMax 改造成了 Agnes 全家桶方案，顺便把原来一些反人类的用法都优化了一遍。   Agnes免费模型：到底给了什么先说 Agnes 这波免费到底给了啥。在 Agnes AI 平台 注册之后，拿到一个 API Key，就能用三个模型：  agnes-2.0-flash（对话模型）：写故事、编剧本、生成prompt，标准的chat接口 agnes-image-2.1-flash（图片模型）：text-to-image，生成角色...</div></div></div></a><a class="pagination-related" href="/posts/36780/" title="实现一个简单的java版本高性能获取ip地址所属国家工具"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/36780.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-12</div><div class="info-item-2">实现一个简单的java版本高性能获取ip地址所属国家工具</div></div><div class="info-2"><div class="info-item-1">一个高性能的 Java IP 地址归属国家查询工具，核心思路是用二分查找在预加载的 IP 段数组中定位，单次查询延迟在微秒级。   设计思路IP 地址本质上是一个 32 位整数。所谓”IP 段”就是一段连续的整数范围。给定一个 IP，我们要找到它落在哪个 IP 段中——这是一个典型的区间查找问题。 最直接的做法是遍历所有 IP 段，O(n) 复杂度。但全球 IP 段有几十万个，遍历太慢。更好的做法是把 IP 段的起始地址排序后放入数组，用二分查找定位，O(log n) 复杂度，几十万个段只需要约 19 次比较。 数据源IP 地址库数据可以从 IP2Location Lite 免费获取。数据格式示例： 12316781312,JP16785408,CN16793600,JP  每行包含两个字段：IP 段的起始地址（转换后的整数）和国家代号。 原始数据其实还包含 IP 段的结束地址，但 IP2Location 的数据段是连续无间隙的——一个段的结束地址恰好是下一个段的起始地址减一。因此我们可以只存储起始地址，结束地址自然而然地由下一个段的起始地址确定。这个优化节省了一半的内存。 数据...</div></div></div></a><a class="pagination-related" href="/posts/13793/" title="设计一个开源的北京地铁路线规划小工具 java版本"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/13793.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-23</div><div class="info-item-2">设计一个开源的北京地铁路线规划小工具 java版本</div></div><div class="info-2"><div class="info-item-1">概述最近在找房子，因为想找一个去几个地方都相对方便的位置，自己去地图上看还挺麻烦的，所以想做个小工具，用来对北京地铁的路线做规划，本文就简单介绍一下实现过程。目前的功能还比较简单，主体方法就是根据一个输入的始发站，列出其他所有站点到这个地方的站数最少路线。   数据获取从网上找了高德地图的接口数据: http://map.amap.com/service/subway?_1469083453978&amp;srhdata=1100_drw_beijing.json . 对拿到的json串进行解析，其中包含每条地铁线路的信息，并依次列出线路上的每个站点。 通过解析数据，要得到的主要就是各个站点的信息，站点定义的数据结构如下: 123456private String id;private String name;private Set&lt;String&gt; lines = new HashSet&lt;String&gt;(); //所在线路private String position;private String pinyin;private Set&lt;String&amp;...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/26061/">教你薅token（二）：构建agent无关的skills管理工作流</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/26061/">Skills 管理和 Agent 管理有什么区别？</a></li><li><a href="https://lichuanyang.top/posts/26061/">跨平台兼容性怎么保证？</a></li><li><a href="https://lichuanyang.top/posts/26061/">pks 和直接在 Agent 里配置 skill 有什么不同？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/26060/">教你薅token：构建agent无关的AI工作流</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/26060/">Agent 和 Skill 是什么关系？</a></li><li><a href="https://lichuanyang.top/posts/26060/">Token 优化最有效的方法是什么？</a></li><li><a href="https://lichuanyang.top/posts/26060/">文档维护和 Agent 订阅哪个更值？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/64/">用LLM管理安全开发规范：一次llm-wiki实践</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/64/">LLM 生成的代码或规范文档安全吗？会不会引入新的安全风险？</a></li><li><a href="https://lichuanyang.top/posts/64/">用 LLM 管理规范后，如何审核和保证质量？</a></li><li><a href="https://lichuanyang.top/posts/64/">llm-wiki 方案和传统 lint 工具（SonarQube、ESLint 等）有何不同？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/65500/">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><ol class="relatedHowto-steps"><li>环境准备：注册Agnes AI账号，获取API Key</li><li>调用Agnes API：配置OpenAI兼容接口，base URL为https://apihub.agnes-ai.com/v1</li><li>改造ViMax配置：创建YAML创意文件，配置场景、风格和chaining_mode参数</li><li>生成视频：运行start.sh一键生成多场景视频</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/26060/">教你薅token：构建agent无关的AI工作流</a><ol class="relatedHowto-steps"><li>理解Agent与Skill关系：Agent是执行引擎，Skill是结构化指令文档，文档质量决定输出质量</li><li>定义工作流：编写AGENTS.md等文档，明确项目结构、编码规范和操作流程</li><li>配置文档源：将项目文档、工作流说明、规则文档放入项目根目录，让Agent自动读取</li><li>测试验证：在不同Agent平台间切换测试，验证文档驱动的一致性效果</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%A7%8D%E7%8E%A9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">多种玩法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%91%E8%B5%B7%E6%9D%A5%E5%BE%88%E7%AE%80%E5%8D%95"><span class="toc-number">2.</span> <span class="toc-text">跑起来很简单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9C%8B%E7%9C%8B%E6%95%88%E6%9E%9C"><span class="toc-number">3.</span> <span class="toc-text">看看效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">4.</span> <span class="toc-text">最后</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token（二）：构建agent无关的skills管理工作流"></a><div class="content"><a class="title" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流">教你薅token（二）：构建agent无关的skills管理工作流</a><time datetime="2026-06-04T14:00:00.000Z" title="发表于 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="教你薅token：构建agent无关的AI工作流"></a><div class="content"><a class="title" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流">教你薅token：构建agent无关的AI工作流</a><time datetime="2026-06-03T14:00:00.000Z" title="发表于 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/">数学练习</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script></body></html>

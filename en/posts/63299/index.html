@@ -1,0 +1,303 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>A Great Introduction to the LDA Model | Mobility</title><meta name="author" content="SandGrid"><meta name="copyright" content="SandGrid"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="LDA (Latent Dirichlet Allocation) topic model introductory learning notes, helping to understand the basic concepts and application scenarios of LDA.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A Great Introduction to the LDA Model">
+<meta property="og:url" content="https://lichuanyang.top/en/posts/63299/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="LDA (Latent Dirichlet Allocation) topic model introductory learning notes, helping to understand the basic concepts and application scenarios of LDA.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://lichuanyang.top/en/img/63299.jpg">
+<meta property="article:published_time" content="2012-12-02T07:20:00.000Z">
+<meta property="article:modified_time" content="2026-06-27T03:53:05.196Z">
+<meta property="article:author" content="SandGrid">
+<meta property="article:tag" content="big-data">
+<meta property="article:tag" content="lda">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/en/img/63299.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "A Great Introduction to the LDA Model",
+  "url": "https://lichuanyang.top/en/posts/63299/",
+  "image": "https://lichuanyang.top/en/img/63299.jpg",
+  "abstract": "The LDA topic model uses a three-layer probabilistic modeling of documents-topics-words and iterative learning to output topic distributions for documents and keyword distributions for topics, achieving unsupervised text clustering.",
+  "datePublished": "2012-12-02T07:20:00.000Z",
+  "dateModified": "2026-06-27T03:53:05.196Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "SandGrid",
+      "url": "https://lichuanyang.top/en/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/en/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/en/posts/63299/"><link rel="preconnect" href="//cdnjs.cloudflare.com"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"/><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"/><meta name="baidu-site-verification" content="code-T8LautTf5f"/><link rel="stylesheet" href="/en/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/en/',
+  algolia: undefined,
+  localSearch: {"path":"/en/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'A Great Introduction to the LDA Model',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/en/atom.xml" title="Mobility" type="application/atom+xml">
+<meta name="keywords" content="big-data, lda">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/en/"},{"@type":"ListItem","position":2,"name":"Tech Miscellany","item":"https://lichuanyang.top/en/categories/Tech-Miscellany/"},{"@type":"ListItem","position":3,"name":"A Great Introduction to the LDA Model","item":"https://lichuanyang.top/en/posts/63299/"}]}</script>
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/63299/"/>
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/63299/"/>
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/63299/"/>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">85</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">128</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/en/img/63299.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/en/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/en/"><span class="site-name">A Great Introduction to the LDA Model</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">A Great Introduction to the LDA Model</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2012-12-02T07:20:00.000Z" title="Created 2012-12-02 15:20:00">2012-12-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-06-27T03:53:05.196Z" title="Updated 2026-06-27 11:53:05">2026-06-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/en/categories/tech-miscellany/">Tech Miscellany</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>7mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> The LDA topic model uses a three-layer probabilistic modeling of documents-topics-words and iterative learning to output topic distributions for documents and keyword distributions for topics, achieving unsupervised text clustering.</blockquote><p>Reposted from <a target="_blank" rel="noopener external nofollow noreferrer" href="http://leyew.blog.51cto.com/5043877/860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0">http://leyew.blog.51cto.com/5043877/860255#559183-tsina-1-46862-ed0973a0c870156ed15f06a6573c8bf0</a></p>
+<p>A few days ago I started learning LDA, took many detours, and was still completely confused about LDA. After reading this document, I finally understood what LDA is for.</p>
+<p>&nbsp;</p>
+<h3 id="LDA-Latent-Dirichlet-Allocation-Learning-Notes"><a href="#LDA-Latent-Dirichlet-Allocation-Learning-Notes" class="headerlink" title="LDA (Latent Dirichlet Allocation) Learning Notes"></a>LDA (Latent Dirichlet Allocation) Learning Notes</h3><p>I’ve been studying the LDA algorithm recently, and after a few days of struggle, I’ve finally gained a rough understanding of the overall framework and process of this algorithm.</p>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p>What LDA does in simple terms is cluster a bunch of documents (so it’s unsupervised learning), where each topic represents a category, and the number of topics to cluster into is specified in advance. The clustering result is a probability, not a boolean 100% belonging to a certain category. A foreign blog [1] has a clear example, directly cited:</p>
+<blockquote>
+<p>Suppose you have the following set of sentences:</p>
+<ul>
+<li>I like to eat broccoli and bananas.</li>
+<li>I ate a banana and spinach smoothie for breakfast.</li>
+<li>Chinchillas and kittens are cute.</li>
+<li>My sister adopted a kitten yesterday.</li>
+<li>Look at this cute hamster munching on a piece of broccoli.</li>
+</ul>
+<p>What is latent Dirichlet allocation? It’s a way of automatically discovering topics that these sentences contain. For example, given these sentences and asked for 2 topics, LDA might produce something like</p>
+<ul>
+<li><strong>Sentences 1 and 2</strong>: 100% Topic A</li>
+<li><strong>Sentences 3 and 4</strong>: 100% Topic B</li>
+<li><strong>Sentence 5</strong>: 60% Topic A, 40% Topic B</li>
+<li><strong>Topic A</strong>: 30% broccoli, 15% bananas, 10% breakfast, 10% munching, … (at which point, you could interpret topic A to be about food)</li>
+<li><strong>Topic B</strong>: 20% chinchillas, 20% kittens, 20% cute, 15% hamster, … (at which point, you could interpret topic B to be about cute animals)</li>
+</ul>
+</blockquote>
+<p>Looking at the result for sentence 5, we can see it’s clearly a probabilistic clustering result (sentences 1 and 2 happen to be 100% deterministic results).</p>
+<p>Looking at the results in the example, besides obtaining a probabilistic clustering result for each sentence, each topic has representative words with proportions. Taking Topic A as an example, it means that among all words corresponding to Topic A, 30% of them are “broccoli”. In the LDA algorithm, every word in every document is mapped to a Topic, so this proportion can be calculated. These words serve as good guidance for describing this Topic, which I think is the advantage of LDA over traditional text clustering.</p>
+<h4 id="LDA-Overall-Process"><a href="#LDA-Overall-Process" class="headerlink" title="LDA Overall Process"></a>LDA Overall Process</h4><p>First, let’s define the meaning of some letters:</p>
+<ul>
+<li>Document collection <strong>D</strong>, topic collection <strong>T</strong></li>
+<li>Each document d in D is viewed as a word sequence <strong>&lt; w1, w2, …, wn &gt;</strong>, where wi represents the i-th word, and d has n words. (In LDA this is called a <em>word bag</em>, where the actual position of each word has no effect on the LDA algorithm)</li>
+<li>All different words involved in D form a large collection <strong>VOCABULARY</strong> (abbreviated as <strong>VOC</strong>)</li>
+</ul>
+<p>LDA takes document collection D as input (with common preprocessing steps like tokenization, stop word removal, and stemming omitted), and hopes to train two result vectors (<strong>assuming clustering into k Topics, with m words in VOC</strong>):</p>
+<ul>
+<li><strong>For each document d in D, the probability of mapping to different topics θ<sub>d</sub> &lt; p<sub>t1</sub>,…, p<sub>tk</sub> &gt;</strong>, where p<sub>ti</sub> represents the probability that d maps to the i-th topic in T. The calculation method is intuitive: p<sub>ti</sub> &#x3D; n<sub>ti</sub>&#x2F;n, where n<sub>ti</sub> represents the number of words in d that correspond to the i-th topic, and n is the total number of words in d.</li>
+<li><strong>For each topic t in T, the probability of generating different words φ<sub>t</sub> &lt; p<sub>w1</sub>,…, p<sub>wm</sub> &gt;</strong>, where p<sub>wi</sub> represents the probability of t generating the i-th word in VOC. The calculation method is equally intuitive: p<sub>wi</sub> &#x3D; N<sub>wi</sub>&#x2F;N, where N<sub>wi</sub> represents the number of times the i-th word in VOC corresponds to topic t, and N represents the total number of words that correspond to topic t.</li>
+</ul>
+<p>The core formula of LDA is as follows:</p>
+<p>*<em>p(w|d) &#x3D; p(w|t)<em>p(t|d)</em></em></p>
+<p>Intuitively, this formula uses Topic as an intermediate layer, and through the current θ<sub>d</sub> and φ<sub>t</sub>, gives the probability of word w appearing in document d. Here, p(t|d) is calculated using θ<sub>d</sub>, and p(w|t) is calculated using φ<sub>t</sub>.</p>
+<p>In practice, using the current θ<sub>d</sub> and φ<sub>t</sub>, we can calculate p(w|d) for a word in a document when it maps to any Topic, and then based on these results, update which topic this word should correspond to. Then, if this update changes the topic the word corresponds to, it will in turn affect θ<sub>d</sub> and φ<sub>t</sub>.</p>
+<p>When the LDA algorithm starts, it first randomly assigns values to θ<sub>d</sub> and φ<sub>t</sub> (for all d and t). Then the above process is repeated continuously, and the final converged result is the output of LDA.</p>
+<p>Let me elaborate more on this iterative learning process:</p>
+<p>For the i-th word w<sub>i</sub> in a specific document d<sub>s</sub>, if we let the topic corresponding to this word be t<sub>j</sub>, we can rewrite the above formula as:</p>
+<p><em>p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>) &#x3D; p(w<sub>i</sub>|t<sub>j</sub>)*p(t<sub>j</sub>|d<sub>s</sub>)</em></p>
+<p>Let’s ignore how this value is calculated for now (you can first understand it as directly taking the corresponding terms from θ<sub>ds</sub> and φ<sub>tj</sub>. Actually it’s not that simple, but it doesn’t affect understanding the overall LDA process, which will be discussed later.). Now we can enumerate all topics in T, obtaining all p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>), where j ranges from 1 to k. Then based on these probability values, we can select a topic for the i-th word w<sub>i</sub> in d<sub>s</sub>. The simplest approach is to choose the t<sub>j</sub> that maximizes p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>) (note that j is the only variable in this expression), i.e.,</p>
+<p><em>argmax[j] p<sub>j</sub>(w<sub>i</sub>|d<sub>s</sub>)</em></p>
+<p>Of course, this is just one method (and it doesn’t seem to be commonly used). In practice, there are many methods in academia for choosing t here, which I haven’t thoroughly researched yet.</p>
+<p>Then, if the i-th word w<sub>i</sub> in d<sub>s</sub> selects a different topic than before, it will affect θ<sub>d</sub> and φ<sub>t</sub> (as can be easily seen from the calculation formulas of these two vectors mentioned earlier). Their effects will in turn affect the calculation of p(w|d) mentioned above. Performing one calculation of p(w|d) for all w in all d in D and reselecting topics is considered one iteration. After n such iterations, the result required by LDA will converge. <em>[Here I suddenly thought of a question: whether the updates to θ<sub>d</sub> and φ<sub>t</sub> are done uniformly after updating all w in all d in one iteration (meaning within one iteration, θ<sub>d</sub> and φ<sub>t</sub> remain unchanged, and are updated uniformly at the end of the iteration), or whether θ<sub>d</sub> and φ<sub>t</sub> are updated immediately after each w in each d has its topic updated? This seems to require looking at the original LDA paper.]</em></p>
+<h4 id="How-to-Calculate-p-w-t-and-p-t-d"><a href="#How-to-Calculate-p-w-t-and-p-t-d" class="headerlink" title="How to Calculate p(w|t) and p(t|d)"></a>How to Calculate p(w|t) and p(t|d)</h4><p>To be continued…</p>
+<p>&nbsp;</p>
+<h4 id="References"><a href="#References" class="headerlink" title="References"></a>References</h4><h2 id="1-Introduction-to-Latent-Dirichlet-Allocation-A-foreign-blog-a-great-introductory-article"><a href="#1-Introduction-to-Latent-Dirichlet-Allocation-A-foreign-blog-a-great-introductory-article" class="headerlink" title="[1] Introduction to Latent Dirichlet Allocation: A foreign blog, a great introductory article"></a>[1] <a target="_blank" rel="noopener external nofollow noreferrer" href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/">Introduction to Latent Dirichlet Allocation</a>: A foreign blog, a great introductory article</h2><p>Source: <a href="https://lichuanyang.top/en/posts/63299/">https://lichuanyang.top/en/posts/63299/</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en">SandGrid</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en/posts/63299/">https://lichuanyang.top/en/posts/63299/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener external nofollow noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/en/img/63299.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>Subscribe to WeChat</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/upload/qrcode.bmp" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/en/posts/17762/" title="About Apache Camel's Message Forwarding Efficiency"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/17762.jpg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">About Apache Camel's Message Forwarding Efficiency</div></div><div class="info-2"><div class="info-item-1">Test ScenarioThe company uses ActiveMQ and Camel for message distribution. Previously, the data volume wasn’t very large, so we never really considered efficiency issues, and the research into Camel’s working principles wasn’t deep. However, recently, as the business volume increased, Camel’s efficiency has gradually become a bottleneck, so I got a general understanding of Camel’s working principles based on logs. Although Camel is embedded into ActiveMQ, during the working process, Camel and...</div></div></div></a><a class="pagination-related" href="/en/posts/25187/" title="WordCount Code"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/25187.jpg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">WordCount Code</div></div><div class="info-2"><div class="info-item-1">OverviewReference: http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html &nbsp; 12345678910111213141516171819202122232425262728package org.apache.hadoop.examples;import java.io.IOException;import java.util.StringTokenizer;import org.apache.hadoop.conf.Configuration;import org.apache.hadoop.fs.Path;import org.apache.hadoop.io.IntWritable;import org.apache.hadoop.io.Text;import org.apache.hadoop.mapreduce.Job;import org.apache.hadoop.mapreduce.Mapper;import org.apache.hadoop.mapreduce...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/en/posts/25187/" title="WordCount Code"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/25187.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2012-10-28</div><div class="info-item-2">WordCount Code</div></div><div class="info-2"><div class="info-item-1">OverviewReference: http://www.cnblogs.com/xia520pi/archive/2012/05/16/2504205.html &nbsp; 12345678910111213141516171819202122232425262728package org.apache.hadoop.examples;import java.io.IOException;import java.util.StringTokenizer;import org.apache.hadoop.conf.Configuration;import org.apache.hadoop.fs.Path;import org.apache.hadoop.io.IntWritable;import org.apache.hadoop.io.Text;import org.apache.hadoop.mapreduce.Job;import org.apache.hadoop.mapreduce.Mapper;import org.apache.hadoop.mapreduce...</div></div></div></a><a class="pagination-related" href="/en/posts/35575/" title="Hadoop Basic Learning Resources"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/hadoop.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2012-10-28</div><div class="info-item-2">Hadoop Basic Learning Resources</div></div><div class="info-2"><div class="info-item-1"> ⚠️ These are study notes from 2012. The Hadoop ecosystem has changed dramatically over the past decade. The links below are very outdated. I’ve preserved the original content as a historical record and added 2026-era learning recommendations.    Why Learn About Hadoop in 2026?You might wonder: with Spark, Flink, and data lakes everywhere, why bother with Hadoop? The answer is simple: HDFS and YARN remain the foundation of big data infrastructure. Spark runs on YARN by default, Hive table dat...</div></div></div></a><a class="pagination-related" href="/en/posts/48312/" title="A Powerful Tool for Data Analytics: Introduction to ClickHouse"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/48312.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2018-11-14</div><div class="info-item-2">A Powerful Tool for Data Analytics: Introduction to ClickHouse</div></div><div class="info-2"><div class="info-item-1">ClickHouse is an open-source database for real-time data analytics developed by Yandex, initially used in multiple data analytics projects internally at Yandex. To introduce ClickHouse, we first need to introduce Yandex. ClickHouse’s emergence is closely related to Yandex’s business needs. Yandex is Russia’s largest search engine, with many data analytics projects. The largest of these by data volume is Yandex.Metrica, a website analytics service similar to Baidu Analytics, with data volume s...</div></div></div></a></div></div><hr class="custom-hr"/><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/en/posts/3513/">Book Notes: Kazuo Inamori's 'Amoeba Management' — Reflecting on How We Should Work</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/en/posts/3513/">Should programmers read a book like this?</a></li><li><a href="https://lichuanyang.top/en/posts/3513/">What is work for?</a></li><li><a href="https://lichuanyang.top/en/posts/3513/">How do you learn to enjoy work you don't like?</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/en/posts/35575/">Hadoop Basic Learning Resources</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/en/posts/35575/">Do I still need to learn Hadoop in 2026?</a></li><li><a href="https://lichuanyang.top/en/posts/35575/">Where should I start with Hadoop?</a></li><li><a href="https://lichuanyang.top/en/posts/35575/">Is there value in learning outdated technologies?</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/en/posts/48312/">A Powerful Tool for Data Analytics: Introduction to ClickHouse</a><ol class="relatedHowto-steps"><li>Install ClickHouse</li><li>Create table</li><li>Import data</li><li>Write queries</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comments</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">SandGrid</div><div class="author-info-description">Mobility | Expanding life's choices</div><div class="site-data"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">85</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">128</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="Zhihu"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Backend Dev | Architecture | AI Practice<br>Expanding choices through code</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#LDA-Latent-Dirichlet-Allocation-Learning-Notes"><span class="toc-number">1.</span> <span class="toc-text">LDA (Latent Dirichlet Allocation) Learning Notes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Example"><span class="toc-number">1.1.</span> <span class="toc-text">Example</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LDA-Overall-Process"><span class="toc-number">1.2.</span> <span class="toc-text">LDA Overall Process</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#How-to-Calculate-p-w-t-and-p-t-d"><span class="toc-number">1.3.</span> <span class="toc-text">How to Calculate p(w|t) and p(t|d)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#References"><span class="toc-number">1.4.</span> <span class="toc-text">References</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Introduction-to-Latent-Dirichlet-Allocation-A-foreign-blog-a-great-introductory-article"><span class="toc-number">2.</span> <span class="toc-text">[1] Introduction to Latent Dirichlet Allocation: A foreign blog, a great introductory article</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/en/posts/18804/" title="Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub">Bringing Notes, WeChat Reading, and Zhihu into Obsidian: My LLM-Wiki Knowledge Hub</a><time datetime="2026-06-26T08:18:13.000Z" title="Created 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/22470/" title="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/22470.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos"/></a><div class="content"><a class="title" href="/en/posts/22470/" title="Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos">Free AI Video Generator: How I Built a Zero-Cost Tool for Narrated Multi-Scene Videos</a><time datetime="2026-06-16T05:21:16.000Z" title="Created 2026-06-16 13:21:16">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/65500/" title="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/65500.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0"/></a><div class="content"><a class="title" href="/en/posts/65500/" title="Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0">Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0</a><time datetime="2026-06-11T14:00:00.000Z" title="Created 2026-06-11 22:00:00">2026-06-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/26061.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"/></a><div class="content"><a class="title" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow">How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow</a><time datetime="2026-06-04T14:00:00.000Z" title="Created 2026-06-04 22:00:00">2026-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/en/img/ai-agent-workflow.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="How to Farm Free Tokens: Building Agent-Independent AI Workflows"/></a><div class="content"><a class="title" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows">How to Farm Free Tokens: Building Agent-Independent AI Workflows</a><time datetime="2026-06-03T14:00:00.000Z" title="Created 2026-06-03 22:00:00">2026-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By SandGrid</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">Sub-sites: <a target="_blank" rel="noopener external nofollow noreferrer" href='https://video.lichuanyang.top/'>AI Video Generator</a> &middot; <a target="_blank" rel="noopener external nofollow noreferrer" href='https://math.lichuanyang.top/'>Math Practice</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll to Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/en/js/utils.js?v=5.5.4"></script><script src="/en/js/main.js?v=5.5.4"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'aY7Gn9nnIgvBNtTQHVapeeUe-MdYXbMMI',
+      appKey: 'lW7mfN411Vpjo3x9S5zdOTlE',
+      avatar: 'mm',
+      serverURLs: 'https://ay7gn9nn.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.5.3/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script>if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://dummyjson.com/quotes/random").then(e=>e.json()).then(t=>{e.innerHTML="“"+t.quote+"” — "+t.author}).catch(()=>{})}</script><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/en/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
