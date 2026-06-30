@@ -255,7 +255,15 @@ noticeOutdate:
 # Footer Settings
 # --------------------------------------
 footer:
+  # Footer navigation - sub-site links
   nav:
+    - content:
+        - title: Sub-Sites
+          item:
+            - title: 🎬 AI Video Gen
+              url: https://video.lichuanyang.top/
+            - title: 🧮 Math Practice
+              url: https://math.lichuanyang.top/
   owner:
     enable: true
     since: 2025
@@ -263,7 +271,7 @@ footer:
   copyright:
     enable: true
     version: true
-  custom_text:
+  custom_text: "Sub-sites: <a href='https://video.lichuanyang.top/'>AI Video Generator</a> &middot; <a href='https://math.lichuanyang.top/'>Math Practice</a>"
 
 # --------------------------------------
 # Aside Settings

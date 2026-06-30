@@ -255,7 +255,15 @@ noticeOutdate:
 # Footer Settings
 # --------------------------------------
 footer:
+  # 页脚导航 - 子站点入口
   nav:
+    - content:
+        - title: 子站点
+          item:
+            - title: 🎬 AI 视频生成
+              url: https://video.lichuanyang.top/
+            - title: 🧮 数学练习
+              url: https://math.lichuanyang.top/
   owner:
     enable: true
     since: 2025
@@ -263,7 +271,7 @@ footer:
   copyright:
     enable: true
     version: true
-  custom_text:
+  custom_text: "子站导航：<a href='https://video.lichuanyang.top/'>AI 视频生成</a> &middot; <a href='https://math.lichuanyang.top/'>数学练习</a>"
 
 # --------------------------------------
 # Aside Settings
