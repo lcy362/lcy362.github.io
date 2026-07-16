@@ -2,11 +2,11 @@
 
 ## 项目概述
 
-这是一个基于 **Hexo** 的静态博客，采用中英文双语架构，部署在 **Vercel** 上，访问地址：`https://lichuanyang.top/`。英文站点位于 `/en/` 路径下。
+这是一个基于 **Hexo** 的静态博客，采用中英文双语架构，部署在 **Cloudflare Pages** 上，访问地址：`https://lichuanyang.top/`。英文站点位于 `/en/` 路径下。
 
 - **框架**：Hexo 8.1.2
 - **主题**：Butterfly 5.5.4（通过 npm 安装，非 git submodule）
-- **域名**：`lichuanyang.top`（Vercel 托管，CNAME 配置在 source 中）
+- **域名**：`lichuanyang.top`（Cloudflare Pages 托管，DNS 在 Cloudflare 管理）
 - **仓库**：`git@github.com:lcy362/lcy362.github.io.git`（master 分支）
 
 ## 项目结构
@@ -52,7 +52,7 @@
 
 ```bash
 ./deploy.sh              # 构建双站 + 本地预览（hexo server）
-./deploy.sh -d           # 构建 + 部署到 GitHub（触发 Vercel 自动部署）
+./deploy.sh -d           # 构建 + 部署到 GitHub（触发 Cloudflare Pages 自动部署）
 ./deploy.sh -c -d        # 清理后构建 + 部署
 ./deploy.sh -c           # 清理后构建 + 本地预览
 ```
@@ -136,6 +136,8 @@ tags: [hexo, blog]
 ### 跳过渲染
 
 `skip_render` 配置中匹配的文件不会被渲染：`['*.html', demo/**, test/*, ip/**]`
+
+Cloudflare Pages 使用 `_headers` 文件配置 HTTP 响应头（替代 Vercel 的 `vercel.json`）。该文件位于 `blog.source/source/_headers`，构建时会被复制到 `public/_headers`。
 
 ## 新增中英文文章流程
 
@@ -376,7 +378,7 @@ AI: 填充段落 → 规整格式 → 生成tags → 生成标题图 → 构建�
 
 ```bash
 cd ~/blogs
-./deploy.sh -d        # 构建 + git push → Vercel 自动部署
+./deploy.sh -d        # 构建 + git push → Cloudflare Pages 自动部署
 ```
 
 ## 编辑主题配置
@@ -555,7 +557,7 @@ grep 'sameAs' public/posts/64/index.html  # 应看到社交链接
 
 **新增文件**：
 - Hexo 配置 `filename_case: 0` 保留原始大小写，导致标签如 `AI Agent` 生成为 `ai-Agent`
-- 在大小写敏感的 Vercel/Linux 环境中，混合大小写 URL 返回 404
+- 在大小写敏感的 Cloudflare Pages/Linux 环境中，混合大小写 URL 返回 404
 
 **新增文件**：
 - `blog.source.en/scripts/category-slug-fix.js` — 自定义分类/标签生成器 + HTML 链接修复
@@ -781,5 +783,5 @@ for item in data:
 | `blog.source.en/scripts/category-slug-fix.js` | 英文站分类/标签 URL 小写化 |
 | `blog.source.en/scripts/geo-schema.js` | 英文站 GEO schema 生成 |
 | `blog.source.en/scripts/related-faq.js` | 英文站相关问答组件 |
-| `blog.source/sitemap_template.xml` | 中文站 sitemap 模板（含 changefreq/priority） |
+| `blog.source/source/_headers` | Cloudflare Pages HTTP 响应头配置 |
 | `blog.source.en/sitemap_template.xml` | 英文站 sitemap 模板（含 `| lower`） |
