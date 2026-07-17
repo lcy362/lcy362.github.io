@@ -1066,10 +1066,10 @@ inject:
     - '<script>if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})}</script>'
     # Adsterra Smartlink — fires when clicking a content link (article, read-more, etc.), 5min cooldown
     # Replace YOUR_ADSTERRA_SMARTLINK_URL with the URL from Adsterra Dashboard
-    - '<script>(function(){var u="YOUR_ADSTERRA_SMARTLINK_URL";var c=3e5;var k="_asl";var l=localStorage.getItem(k);if(l&&Date.now()-parseInt(l,10)<c)return;var f=false;function t(e){if(f)return;var a=e.target.closest("a");if(!a||!a.href||a.href.startsWith("#")||a.href.startsWith("javascript:"))return;if(a.closest("#nav,#menu,#header,#footer,.footer,#aside,#aside-content,.sidebar,#sidebar,.nav,#tool-bar,#rightside"))return;f=true;localStorage.setItem(k,Date.now());window.open(u,"_blank","noopener")}document.addEventListener("click",t)})();</script>'
+    - '<script>(function(){var u="https://talentpastryadvisedly.com/ig973asm?key=0cbb625edad93f4e075114d0ea6a7cd3";var c=3e5;var k="_asl";var l=localStorage.getItem(k);if(l&&Date.now()-parseInt(l,10)<c)return;var f=false;function t(e){if(f)return;var a=e.target.closest("a");if(!a||!a.href||a.href.startsWith("#")||a.href.startsWith("javascript:"))return;if(a.closest("#nav,#menu,#header,#footer,.footer,#aside,#aside-content,.sidebar,#sidebar,.nav,#tool-bar,#rightside"))return;f=true;localStorage.setItem(k,Date.now());window.open(u,"_blank","noopener")}document.addEventListener("click",t)})();</script>'
     # Adsterra Social Bar — place the script BEFORE </body>
     # Get your code from: Adsterra Dashboard → Websites → Your Site → Get Code → Social Bar
-    - '<!-- TODO: 替换为 Adsterra Social Bar 代码 -->'
+    - '<script src="https://talentpastryadvisedly.com/15/fa/1c/15fa1c95a7d86b67c763762d23ea7c95.js"></script>'
 
     # - <script src="xxxx"></script>
 
