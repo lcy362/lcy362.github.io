@@ -113,13 +113,13 @@ if [ "$ACTION" = "serve" ]; then
     hexo server
 elif [ "$ACTION" = "deploy" ]; then
     echo -e "${YELLOW}发布到生产环境 (master)...${NC}"
-    # 删除 .deploy_git 避免 macOS 大小写不敏感导致的问题
-    find .deploy_git -mindepth 1 -delete 2>/dev/null || true
+    # 完全删除 .deploy_git（包括 .git 目录），避免残留旧 remote 配置
+    mv .deploy_git .deploy_git_trash 2>/dev/null && rm -rf .deploy_git_trash || true
     hexo deploy
     echo -e "${GREEN}生产环境发布完成！${NC}"
 elif [ "$ACTION" = "preview" ]; then
     echo -e "${YELLOW}发布到预览环境 (dev)...${NC}"
-    find .deploy_git -mindepth 1 -delete 2>/dev/null || true
+    mv .deploy_git .deploy_git_trash 2>/dev/null && rm -rf .deploy_git_trash || true
     # 克隆部署仓库的 dev 分支（若不存在则从 master 创建）
     git clone -b dev "$DEPLOY_REPO" .deploy_git 2>/dev/null || {
         echo -e "${YELLOW}dev 分支不存在，从 master 创建...${NC}"
