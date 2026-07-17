@@ -1064,6 +1064,12 @@ inject:
     # hreflang 由 scripts/hreflang.js 动态生成
   bottom:
     - '<script>if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://dummyjson.com/quotes/random").then(e=>e.json()).then(t=>{e.innerHTML="“"+t.quote+"” — "+t.author}).catch(()=>{})}</script>'
+    # Adsterra Smartlink — fires when clicking a content link (article, read-more, etc.), 5min cooldown
+    # Replace YOUR_ADSTERRA_SMARTLINK_URL with the URL from Adsterra Dashboard
+    - '<script>(function(){var u="YOUR_ADSTERRA_SMARTLINK_URL";var c=3e5;var k="_asl";var l=localStorage.getItem(k);if(l&&Date.now()-parseInt(l,10)<c)return;var f=false;function t(e){if(f)return;var a=e.target.closest("a");if(!a||!a.href||a.href.startsWith("#")||a.href.startsWith("javascript:"))return;if(a.closest("#nav,#menu,#header,#footer,.footer,#aside,#aside-content,.sidebar,#sidebar,.nav,#tool-bar,#rightside"))return;f=true;localStorage.setItem(k,Date.now());window.open(u,"_blank","noopener")}document.addEventListener("click",t)})();</script>'
+    # Adsterra Social Bar — place the script BEFORE </body>
+    # Get your code from: Adsterra Dashboard → Websites → Your Site → Get Code → Social Bar
+    - '<!-- TODO: replace with Adsterra Social Bar code -->'
 
     # - <script src="xxxx"></script>
 
