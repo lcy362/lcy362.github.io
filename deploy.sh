@@ -116,6 +116,11 @@ elif [ "$ACTION" = "deploy" ]; then
     # 完全删除 .deploy_git（包括 .git 目录），避免残留旧 remote 配置
     mv .deploy_git .deploy_git_trash 2>/dev/null && rm -rf .deploy_git_trash || true
     hexo deploy
+    # 同步 dev 分支，保持和 master 一致
+    echo -e "${YELLOW}同步 dev 分支...${NC}"
+    cd .deploy_git
+    git push origin master:dev
+    cd ..
     echo -e "${GREEN}生产环境发布完成！${NC}"
 elif [ "$ACTION" = "preview" ]; then
     echo -e "${YELLOW}发布到预览环境 (dev)...${NC}"
