@@ -38,7 +38,7 @@
     "eslint": "8.55.0",
     "hexo": "7.0.0",
     "hexo-renderer-marked": "6.2.0",
-    "js-yaml": "4.1.0",
+    "js-yaml": "4.3.1",
     "mocha": "10.2.0",
     "stylelint": "15.11.0",
     "stylelint-stylus": "0.18.0"
