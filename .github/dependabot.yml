@@ -1,0 +1,19 @@
+# Dependabot 配置
+# 只跟踪实际使用的站点依赖（blog.source / blog.source.en）
+# 废弃主题目录（landscape/next/next_old/yilia）已删除，不再扫描
+
+version: 2
+updates:
+  # 中文站
+  - package-ecosystem: "npm"
+    directory: "/blog.source"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+
+  # 英文站
+  - package-ecosystem: "npm"
+    directory: "/blog.source.en"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
