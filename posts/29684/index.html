@@ -1,0 +1,363 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Flint：让 skill 成为个人资产 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="最近一段时间，每当 OpenAI 有新模型发布，都会有一种论调：skill 没用了，越来越多用户开始弃用 skill。 这话对吗？ 对也不对。首先，这个逻辑是有合理性的。随着模型能力的提升，确实有很多 skill 被用户抛弃了，这些 skill 集中于 Superpower 之类所谓的「通用」skill。这些 skill 的定位，就是对一些模型能力缺陷的补齐，尤其是在各个模型没有疯狂地对 codi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flint：让 skill 成为个人资产">
+<meta property="og:url" content="https://lichuanyang.top/posts/29684/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="最近一段时间，每当 OpenAI 有新模型发布，都会有一种论调：skill 没用了，越来越多用户开始弃用 skill。 这话对吗？ 对也不对。首先，这个逻辑是有合理性的。随着模型能力的提升，确实有很多 skill 被用户抛弃了，这些 skill 集中于 Superpower 之类所谓的「通用」skill。这些 skill 的定位，就是对一些模型能力缺陷的补齐，尤其是在各个模型没有疯狂地对 codi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/29684.jpg">
+<meta property="article:published_time" content="2026-09-14T09:04:05.000Z">
+<meta property="article:modified_time" content="2026-09-16T06:33:54.649Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="ai-agent">
+<meta property="article:tag" content="flint">
+<meta property="article:tag" content="skill">
+<meta property="article:tag" content="开源项目">
+<meta property="article:tag" content="技能管理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/29684.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Flint：让 skill 成为个人资产",
+  "url": "https://lichuanyang.top/posts/29684/",
+  "image": "https://lichuanyang.top/img/29684.jpg",
+  "datePublished": "2026-09-14T09:04:05.000Z",
+  "dateModified": "2026-09-16T06:33:54.649Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/29684/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Flint：让 skill 成为个人资产',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<meta name="keywords" content="ai-agent, 开源项目, flint, skill, 技能管理">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"技术杂谈","item":"https://lichuanyang.top/categories/技术杂谈/"},{"@type":"ListItem","position":3,"name":"Flint：让 skill 成为个人资产","item":"https://lichuanyang.top/posts/29684/"}]}</script>
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/29684/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/29684/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/29684/">
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">95</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/29684.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">Flint：让 skill 成为个人资产</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Flint：让 skill 成为个人资产</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-14T09:04:05.000Z" title="发表于 2026-09-14 17:04:05">2026-09-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-16T06:33:54.649Z" title="更新于 2026-09-16 14:33:54">2026-09-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/">技术杂谈</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>最近一段时间，每当 OpenAI 有新模型发布，都会有一种论调：skill 没用了，越来越多用户开始弃用 skill。</p>
+<p>这话对吗？</p>
+<p>对也不对。首先，这个逻辑是有合理性的。随着模型能力的提升，确实有很多 skill 被用户抛弃了，这些 skill 集中于 Superpower 之类所谓的「通用」skill。这些 skill 的定位，就是对一些模型能力缺陷的补齐，尤其是在各个模型没有疯狂地对 coding 进行针对性优化的时期，是有一些作用的。而随着模型本身能力的提升，这些东西其实慢慢都已经被模型吸收了，自然就没有了作用。</p>
+<p>那 skill 是真的就没用了吗？恐怕也并非如此。接下来，我们会论述一下随着模型智能水平的提升，skill 还有什么作用。然后，会论述一下本文的主角：Flint。我会讲一下为什么要开发这个项目，以及它有什么作用。</p>
+<span id="more"></span>
+
+<h2 id="什么是-skill（技能）"><a href="#什么是-skill（技能）" class="headerlink" title="什么是 skill（技能）"></a>什么是 skill（技能）</h2><p>最近一段时间 AI 技术的蓬勃发展，看着技术一轮一轮的迭代，但实质上只是软件工程理论的再一次落地。</p>
+<p>其中，skill 这一层，目标是实现「可复用性」，对应的是软件开发中的各种工具包。</p>
+<p>而模型对应的是软件开发语言这一层。</p>
+<p>复用程度的不同决定了一个功能是应该在语言层还是在工具包里。</p>
+<p>比如，数组或者 map，就应该在语言里封装好，而不是你得引个第三方包才能用。而比如一个解析发票的逻辑，那么落到语言层里，就不合适了。</p>
+<p>对应到 AI 当前的发展，skill 的定位就应该是这样的功能：有一定复用性，但复用性又不高、AI 没有足够的语料自主学会这个。</p>
+<p>比如，公司内封装的工具包的使用方式，尤其是一些可能已经被淘汰掉的古早技术栈，模型拿不到足够的语料获取相关知识，相关知识只存在于相关开发人员的脑子里，这时候，就适合封装一批 skill 出来，成为团队固化的知识；</p>
+<p>比如，你自己将自己的工作流固化出来的一些流程，比如我会用 Notion 管理工作任务，然后基于这个生成周报，那就可以封装成一个 skill 给 AI 使用；</p>
+<p>再比如，我包了一个访问我带着真实 cookie 浏览器的 skill，在访问一些反爬比较强的网站时，就可以用这个 skill。就像这种 skill，包一个很简单，但如果想从网上下一个，却没那么容易。现在有些 agent 自己也会封装这样的能力，但用起来或多或少总会有一些不合心意。</p>
+<p>所以，随着模型能力的提升，skill 并不会消失，但其起效果的范围会收敛到这些复用性不高不低的事上。不复用会很麻烦，但又不会有很普世的复用性。你下载下来别人的 skill，会发现不好用。</p>
+<p>这也是我开发 Flint 这个项目的初衷，就是：把 skill 像个人资产一样管理。</p>
+<h2 id="Flint-是什么"><a href="#Flint-是什么" class="headerlink" title="Flint 是什么"></a>Flint 是什么</h2><p>Flint 是我开发的一个本地优先的个人 AI Skills 资产管理器（官网：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://flint.lichuanyang.top/">flint.lichuanyang.top</a>）。一句话概括：把你散落在各个 Agent、各个项目里的 skill 集中管起来——统一打标签、搜索筛选、同名去重，再按需投放到每个 Agent 和项目自己的技能目录里。它由一个本地后端和一个 Web 前端组成，一条脚本就能启动；你的技能仓库对应磁盘上一个普通目录，各 Agent 的技能目录通过软链或复制从这个源头分发。从此技能只有一份本体，放在你自己的地盘上，用到哪投到哪。</p>
+<p>界面上 Flint 分成六个模块，各管一件事：</p>
+<ul>
+<li><strong>技能库</strong>：浏览、搜索、过滤你所有的 skill，预览 <code>SKILL.md</code> 原文、编辑标签、追溯每个技能的来源；也可以在这里登记自有仓库和第三方只读仓库，把散在各 Agent 里的技能归集回仓库，或从任意目录批量导入。</li>
+<li><strong>智能体</strong>：每个实际的技能目录一张卡片。在这里把某个 Agent 设为活跃、关联预设、逐个开关技能，甚至按单个技能切换软链还是复制。</li>
+<li><strong>预设</strong>：一组 skill 套餐——显式成员加上关联标签命中的技能。预设没有开关，成员或标签一变，立刻分发到关联了它的活跃 Agent。</li>
+<li><strong>项目</strong>：登记项目路径和标签，匹配的 skill 自动进入项目的 <code>.agents/skills</code> 目录（可以提交进 git，跨机器自包含）；项目里改出来的技能还能回写仓库。</li>
+<li><strong>诊断</strong>：六个维度的体检——同步、重复、失效软链、配置、仓库、项目，问题集中列出来，确认后一键修复。</li>
+<li><strong>设置</strong>：默认安装方式（软链 / 复制）、复制模式的增量同步 watcher、自定义 Agent、日志查看。</li>
+</ul>
+<p>前四个模块串起来就是「收拢 → 整理 → 投放」的主路径，诊断和设置是兜底：出了状况去诊断页看问题出在哪，投放的默认姿势在设置里定。</p>
+<p>下面两张界面截图可以建立点直观印象（均为演示数据）。技能库页：所有技能集中在一处，卡片上直接看描述和标签，顶栏按来源、标签筛选：</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/flint-library.jpg" alt="技能库：集中浏览、搜索、按来源和标签筛选"></p>
+<p>诊断页：六个维度的体检结果一屏列清。截图里「重复技能」的两条警告，正是同一个技能在自有仓库和第三方来源各存了一份，等着被收编成一份：</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/flint-health.jpg" alt="诊断页：六维体检，重复来源集中列出"></p>
+<h2 id="为什么需要它"><a href="#为什么需要它" class="headerlink" title="为什么需要它"></a>为什么需要它</h2><p>除了上文说过的部分，还有一个现实因素，让我更需要对 skill 进行精细化的管理。</p>
+<p>就是我需要经常性地切换不同的 agent。现在赛博菩萨很多，今天 WorkBuddy 放个免费模型，明天 TraeWork 发一批免费积分，千问、小米，这些也都不甘落后。这些免费的 token，不用白不用。但在经常切换 agent 的情况下，skill 的管理就成问题了。</p>
+<p>今天我可能在 WorkBuddy 里实现了写日报的 skill，明天打开 TraeWork，发现用不了。</p>
+<p>现在固然有 npx 等各种工具管理 skill，但我试了一下，都不太趁手。现在市面上的绝大多数 skill 管理工具，核心思路还是基于分享与分发，目标是建设一个大而全的 skill 仓库，然后安装到用户自己的各个 agent 里。</p>
+<p>这样会带来几个非常显著的问题。</p>
+<ol>
+<li><p>就是我们前边说的复用性问题。别人的 skill，下载下来通常运转得不会特别好，相信大家对于这一点或多或少都应该有些感受。而另一方面，让我们回到文章一开头，如果一个 skill 真的复用性非常好，开箱即用，那它大概率会被吸收进模型本身，反而没有必要作为一个 skill 存在。</p>
+</li>
+<li><p>切换 agent 的成本问题。npx 能一次性把 skill 安装到各个现存的 agent 里，但一旦使用新 agent，这个操作就很麻烦了。另一个重大问题是自己的 skill，无法纳入到 npx 等工具的管理中，会给切换 agent 带来巨大负担。</p>
+</li>
+<li><p>skill 使用的成本问题。比如一个公司内的 skill 集，可能有一两百个 skill，里边前端、后端、设计、运营各种 skill 都有，你可能只能用到其中一小部分，但如果没有精细化的管理手段，就只能把所有 skill 都安装进来了。这样，几乎所有主流 agent 都会把每个已安装技能的名称和描述注入系统提示词，供模型自行判断要不要调用。按每条描述 50～100 token 估算，200 个 skill 就是每次对话 1 万～2 万 token 的固定开销，再乘上 agent 一次任务的几十个来回，账单相当可观。而且开销还在其次，更麻烦的是检索效率：候选列表越长、无关条目越多，模型选错技能或干脆漏选的概率就越高，就像在塞满了别人工具的工具箱里找自己那把扳手。</p>
+</li>
+</ol>
+<p>基于上述原因，我开发了 Flint 这个项目。为什么用这个名字，灵感来自于 Obsidian。</p>
+<p>Obsidian 在官网上用三句话概括过自己的理念：<strong>Sharpen your thinking</strong>（磨砺你的思考）、<strong>Your thoughts are yours</strong>（你的想法属于你自己——笔记私密地存在你的设备上，别人读不到，连官方也读不到）、<strong>Your knowledge should last</strong>（你的知识应当长存——使用开放文件格式，你永远不被锁死，长期拥有自己的数据）。</p>
+<p>Flint 沿用了同一套「以石喻工具」的命名脉络：黑曜石（Obsidian）是天然锋利的火山玻璃，远古人类把它打制成刀刃；燧石（Flint）是与黑曜石并肩的另一块「工具之石」，只是把打磨的对象从「知识」换成了「技能」。燧石的两层特性，正好对应这个项目的两个动作——<strong>打制（knapping）</strong>：把散落的 skill 收拢、去重、打标签，敲成精确趁手的工具；<strong>取火（spark）</strong>：把技能投放、分发到各个 Agent 与项目目录，让它们真正被点燃、开始干活。</p>
+<p>你收藏的每一项技能，都是等待被击出火花的一块燧石。</p>
+<h2 id="核心理念：像-Obsidian-管理知识一样管理技能"><a href="#核心理念：像-Obsidian-管理知识一样管理技能" class="headerlink" title="核心理念：像 Obsidian 管理知识一样管理技能"></a>核心理念：像 Obsidian 管理知识一样管理技能</h2><p>正是沿着和 Obsidian 一脉相承的思路，Flint 把那三条理念逐条搬到了技能管理上：</p>
+<table>
+<thead>
+<tr>
+<th>Obsidian 的理念</th>
+<th>Flint 的对应</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>本地即私有</td>
+<td>技能只以普通文件存在你的本地磁盘，无云端、无账号、无上报</td>
+</tr>
+<tr>
+<td>开放格式、永不锁定</td>
+<td>skill 本体就是磁盘上的 <code>SKILL.md</code> 目录，随时可打开、编辑、diff、用 git 提交；换工具、换生态，这份资产照常带走、照常使用，不被 Flint 绑定</td>
+</tr>
+<tr>
+<td>磨砺你的思考</td>
+<td>收拢、去重、打标签，再一键投放到需要它的 Agent 与项目里，让个人技能库越攒越趁手</td>
+</tr>
+</tbody></table>
+<p>落到具体设计上，还有两个值得一提的取向。其一，元数据尽量贴合开源生态共识：标签优先写在每个 <code>SKILL.md</code> frontmatter 的顶层 <code>tags</code> 字段上——这个位置能被 Claude Code、agentskills.io 等 40+ 工具原生读取，并随技能目录一起被 git 版本化，而不是存进某个私有数据库。其二，尽量降低生态碎片化：同名技能多来源时自动去重、只保留一份，重复、分歧、失效引用都集中到诊断页看清并就地处理，避免同一份 skill 在你的环境里以多个副本反复膨胀。</p>
+<h2 id="最小通路：四条步骤跑通"><a href="#最小通路：四条步骤跑通" class="headerlink" title="最小通路：四条步骤跑通"></a>最小通路：四条步骤跑通</h2><p>Flint 是个跑在本机的小工具（Node.js ≥ 20），官网 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://flint.lichuanyang.top/">flint.lichuanyang.top</a> 上有介绍和截图，用法文档写得比较全，这里只把第一次使用的四条必要步骤捋一遍：</p>
+<ol>
+<li><strong>安装</strong>：仓库根目录执行 <code>./start.sh</code>，脚本会自动检查 Node 版本、依赖与端口占用，首次运行自动 <code>npm install</code>，装完打开浏览器即可（前端 <code>localhost:5173</code>，后端 API <code>localhost:8787</code>）。</li>
+<li><strong>登记仓库</strong>：仓库是 skill 的集合与事实源，对应磁盘上一个目录。自有仓库正常维护；第三方仓库作为只读来源登记，里面的技能随时可以被自有仓库「导入」收用。</li>
+<li><strong>新建预设</strong>：一个预设就是一份 skill 套餐——显式成员并上关联标签命中的技能。</li>
+<li><strong>把预设应用到 Agent</strong>：在某个 Agent 的详情页先把它「设为活跃」，再关联刚建的预设。此后预设的成员或关联标签一变，已关联它的活跃 Agent 会立刻拿到这套 skill。</li>
+</ol>
+<p>至此，「登记仓库 → 配预设 → 投给 Agent」的最小通路就打通了，你的技能已经可以跨 Agent 工作。再往后的归集、接管、项目专属技能、六维诊断，都是锦上添花。</p>
+<p>预设详情页长这样（演示数据）：上半部分是当前状态——这个预设最终会开启哪些技能、已经应用到了哪些 Agent；下半部分是两种调整方式，「按标签纳入」和「按技能纳入」取并集，改动立即生效：</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/flint-preset.jpg" alt="预设详情：显式成员与按标签纳入取并集，改动即刻分发"></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>以上就是我对于未来 skill 变化趋势的理解，和开发 Flint 的缘由。如果大家认可这个思路，欢迎来试用产品并提出建议。</p>
+<p>项目已经开源，官网在 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://flint.lichuanyang.top/">flint.lichuanyang.top</a>，代码仓库在 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/lcy362/flint">GitHub: lcy362/flint</a>，clone 下来执行 <code>./start.sh</code> 就能跑起来体验；<code>README.md</code> 里有完整的使用指引，欢迎试用后提 issue 交流。如有帮助，还请帮忙点个star。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/29684/">https://lichuanyang.top/posts/29684/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/29684.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/posts/34689/" title="从薅 token 到管 skill：我的 pks 工具落地实践"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/34689.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">从薅 token 到管 skill：我的 pks 工具落地实践</div></div><div class="info-2"><div class="info-item-1">之前写过一篇文章：https://lichuanyang.top/posts/26060/ . 教大家构建与Agent无关的工作流，随时能拉起不同的Agent工作，从而能顺畅用上各个Agent提供的免费、试用套餐。这么实践下来，一个明显会变得繁琐的事情就是对于skill的管理。因此，我又写了一个工具，实现在不同Agent、不同项目间管理skills.   鉴于目前Agent的生态还比较凌乱，大家各干各的，skill的存放目录也自己定自己的。 比如 Cursor 放在 ~/.cursor/skills，Claude Code 放在 ~/.claude/skills，Trae 放在 ~/.trae/skills，OpenCode 放在 ~/.config/opencode/skills，还有 Windsurf、Qoder、Hermes 等等，每家都有自己的路径约定。 社区也在试图定义通用的.agents/skill这样目录，有点作用，但不大。 当然，skill管理的问题，也不全是使用多Agent带来的。因为skill这种东西，天然就就有非常大的适用范围区别。有的skill是...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/34689/" title="从薅 token 到管 skill：我的 pks 工具落地实践"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/34689.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-01</div><div class="info-item-2">从薅 token 到管 skill：我的 pks 工具落地实践</div></div><div class="info-2"><div class="info-item-1">之前写过一篇文章：https://lichuanyang.top/posts/26060/ . 教大家构建与Agent无关的工作流，随时能拉起不同的Agent工作，从而能顺畅用上各个Agent提供的免费、试用套餐。这么实践下来，一个明显会变得繁琐的事情就是对于skill的管理。因此，我又写了一个工具，实现在不同Agent、不同项目间管理skills.   鉴于目前Agent的生态还比较凌乱，大家各干各的，skill的存放目录也自己定自己的。 比如 Cursor 放在 ~/.cursor/skills，Claude Code 放在 ~/.claude/skills，Trae 放在 ~/.trae/skills，OpenCode 放在 ~/.config/opencode/skills，还有 Windsurf、Qoder、Hermes 等等，每家都有自己的路径约定。 社区也在试图定义通用的.agents/skill这样目录，有点作用，但不大。 当然，skill管理的问题，也不全是使用多Agent带来的。因为skill这种东西，天然就就有非常大的适用范围区别。有的skill是...</div></div></div></a><a class="pagination-related" href="/posts/13793/" title="设计一个开源的北京地铁路线规划小工具 java版本"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/13793.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-23</div><div class="info-item-2">设计一个开源的北京地铁路线规划小工具 java版本</div></div><div class="info-2"><div class="info-item-1">概述最近在找房子，因为想找一个去几个地方都相对方便的位置，自己去地图上看还挺麻烦的，所以想做个小工具，用来对北京地铁的路线做规划，本文就简单介绍一下实现过程。目前的功能还比较简单，主体方法就是根据一个输入的始发站，列出其他所有站点到这个地方的站数最少路线。   数据获取从网上找了高德地图的接口数据: http://map.amap.com/service/subway?_1469083453978&amp;srhdata=1100_drw_beijing.json . 对拿到的json串进行解析，其中包含每条地铁线路的信息，并依次列出线路上的每个站点。 通过解析数据，要得到的主要就是各个站点的信息，站点定义的数据结构如下: 123456private String id;private String name;private Set&lt;String&gt; lines = new HashSet&lt;String&gt;(); //所在线路private String position;private String pinyin;private Set&lt;String&amp;...</div></div></div></a><a class="pagination-related" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-16</div><div class="info-item-2">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</div></div><div class="info-2"><div class="info-item-1"> “解决的办法不是压制 AI，而是让它变成一种更平权的能力，让每个人都知道如何借 AI 创造更多。这也是我们公司很重要的愿景，让世界级的 AI 属于每一个人。”  这是 Agnes AI 创始人 Bruce Yang 接受采访时说的一段话。 现在很多国内的AI厂商，无论deepseek还是智谱，都在把AI的价格往下压。坦率的讲，像文字、代码的处理价格，确实已经被压到了一个相当低的价格。但视频不一样，现在做AI视频，门槛确实高得离谱——国外的 Runway、Pika 按月订阅几十美元，国内的即梦、可灵免费额度用完就按秒计费，想本地跑开源模型？一张能跑视频的显卡轻松上万。 客观来讲，视频的生成，现阶段确实成本较高，让工业级的视频生成能力属于每一个人，确实不现实。但普通人也应该有一些途径能更多的去尝试、去创作，感谢Agnes开放自己的视频模型，让大家有这个机会。而这个项目只是想为了这个做一些微不足道的贡献。 Agnes Video Generator（官网）。说白了就是一个免费的AI视频生成器，不是那种”免费试用3次”的套路，是从写文案到出片、配音、上字幕，全程不花一分钱。只需要去 A...</div></div></div></a><a class="pagination-related" href="/posts/36780/" title="实现一个简单的java版本高性能获取ip地址所属国家工具"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/36780.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-12</div><div class="info-item-2">实现一个简单的java版本高性能获取ip地址所属国家工具</div></div><div class="info-2"><div class="info-item-1">一个高性能的 Java IP 地址归属国家查询工具，核心思路是用二分查找在预加载的 IP 段数组中定位，单次查询延迟在微秒级。   设计思路IP 地址本质上是一个 32 位整数。所谓”IP 段”就是一段连续的整数范围。给定一个 IP，我们要找到它落在哪个 IP 段中——这是一个典型的区间查找问题。 最直接的做法是遍历所有 IP 段，O(n) 复杂度。但全球 IP 段有几十万个，遍历太慢。更好的做法是把 IP 段的起始地址排序后放入数组，用二分查找定位，O(log n) 复杂度，几十万个段只需要约 19 次比较。 数据源IP 地址库数据可以从 IP2Location Lite 免费获取。数据格式示例： 12316781312,JP16785408,CN16793600,JP  每行包含两个字段：IP 段的起始地址（转换后的整数）和国家代号。 原始数据其实还包含 IP 段的结束地址，但 IP2Location 的数据段是连续无间隙的——一个段的结束地址恰好是下一个段的起始地址减一。因此我们可以只存储起始地址，结束地址自然而然地由下一个段的起始地址确定。这个优化节省了一半的内存。 数据...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/18804/">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/18804/">Obsidian 适合程序员做知识管理吗？</a></li><li><a href="https://lichuanyang.top/posts/18804/">LLM Wiki 需要 GPU 吗？</a></li><li><a href="https://lichuanyang.top/posts/18804/">llm-wiki 和传统 Wiki 有什么区别？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/2345/">剧变中的2021-一个中年工程师的年终总结</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/2345/">中年工程师的出路在哪？</a></li><li><a href="https://lichuanyang.top/posts/2345/">技术人如何应对行业变化？</a></li><li><a href="https://lichuanyang.top/posts/2345/">大公司还是小公司更适合资深工程师？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/3513/">读书笔记 稻盛和夫《干法》-思考应该怎样去工作</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/3513/">程序员需要读《干法》这种书吗？</a></li><li><a href="https://lichuanyang.top/posts/3513/">工作是为了什么？</a></li><li><a href="https://lichuanyang.top/posts/3513/">如何喜欢上自己不喜欢的工作？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/34931/">户口?大厂?高薪?生活?聊聊应届程序员的职业选择</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/34931/">一线城市户口还值不值得争取？2021 年的户口价值发生了什么变化？</a></li><li><a href="https://lichuanyang.top/posts/34931/">大厂还是小厂？应届生第一份工作选什么最重要？</a></li><li><a href="https://lichuanyang.top/posts/34931/">想鱼与熊掌兼得（高薪 + 不加班 + 氛围好）可能吗？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/18804/">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><ol class="relatedHowto-steps"><li>安装Obsidian：下载Obsidian客户端，创建Vault知识库</li><li>配置LLM Wiki：编写AGENTS.md，定义摄入、审计等wiki维护规则，让AI自动组织知识</li><li>接入微信读书：调用微信读书Agent API，同步书籍划线和笔记到Obsidian</li><li>导入知乎：使用Playwright自动化脚本抓取知乎回答和文章</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/39648/">Vercel封禁163邮箱后，我是怎么恢复博客的</a><ol class="relatedHowto-steps"><li>发现问题</li><li>排查原因</li><li>迁移邮箱验证</li><li>重新部署</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/20763/">iterm2配置ssh书签, 实现记住密码和自动登录</a><ol class="relatedHowto-steps"><li>生成SSH密钥</li><li>配置iTerm2 Profile</li><li>添加书签</li><li>验证自动登录</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">95</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界<br><br>子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/zh">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/zh">数学练习</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://game.lichuanyang.top/">极速桌游馆</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-skill%EF%BC%88%E6%8A%80%E8%83%BD%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">什么是 skill（技能）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flint-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">2.</span> <span class="toc-text">Flint 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%AE%83"><span class="toc-number">3.</span> <span class="toc-text">为什么需要它</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E7%90%86%E5%BF%B5%EF%BC%9A%E5%83%8F-Obsidian-%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B8%80%E6%A0%B7%E7%AE%A1%E7%90%86%E6%8A%80%E8%83%BD"><span class="toc-number">4.</span> <span class="toc-text">核心理念：像 Obsidian 管理知识一样管理技能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E9%80%9A%E8%B7%AF%EF%BC%9A%E5%9B%9B%E6%9D%A1%E6%AD%A5%E9%AA%A4%E8%B7%91%E9%80%9A"><span class="toc-number">5.</span> <span class="toc-text">最小通路：四条步骤跑通</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">小结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/29684/" title="Flint：让 skill 成为个人资产"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/29684.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flint：让 skill 成为个人资产"></a><div class="content"><a class="title" href="/posts/29684/" title="Flint：让 skill 成为个人资产">Flint：让 skill 成为个人资产</a><time datetime="2026-09-14T09:04:05.000Z" title="发表于 2026-09-14 17:04:05">2026-09-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/34689/" title="从薅 token 到管 skill：我的 pks 工具落地实践"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/34689.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从薅 token 到管 skill：我的 pks 工具落地实践"></a><div class="content"><a class="title" href="/posts/34689/" title="从薅 token 到管 skill：我的 pks 工具落地实践">从薅 token 到管 skill：我的 pks 工具落地实践</a><time datetime="2026-07-01T09:16:24.000Z" title="发表于 2026-07-01 17:16:24">2026-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"></a><div class="content"><a class="title" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><time datetime="2026-06-11T14:00:00.000Z" title="发表于 2026-06-11 22:00:00">2026-06-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/zh">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/zh">数学练习</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://game.lichuanyang.top/">极速桌游馆</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script src="https://talentpastryadvisedly.com/15/fa/1c/15fa1c95a7d86b67c763762d23ea7c95.js"></script><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = {"mapping":"pathname","lang":"zh-CN","reactions_enabled":true,"input_position":"bottom","emit_metadata":false}
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'lcy362/lcy362.github.io',
+      'data-repo-id': 'MDEwOlJlcG9zaXRvcnkxMTc2NzYwODU=',
+      'data-category-id': 'DIC_kwDOBwOYNc4DB2lj',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})};
+(function(){var u="https://talentpastryadvisedly.com/ig973asm?key=0cbb625edad93f4e075114d0ea6a7cd3";var c=3e5;var k="_asl";var l=localStorage.getItem(k);if(l&&Date.now()-parseInt(l,10)<c)return;var f=false;function t(e){if(f)return;var a=e.target.closest("a");if(!a||!a.href||a.href.startsWith("#")||a.href.startsWith("javascript:"))return;if(a.closest("#nav,#menu,#header,#footer,.footer,#aside,#aside-content,.sidebar,#sidebar,.nav,#tool-bar,#rightside"))return;f=true;localStorage.setItem(k,Date.now());window.open(u,"_blank","noopener")}document.addEventListener("click",t)})();</script></body></html>
