@@ -1,0 +1,367 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>从实现逻辑出发，搭一个能干活的 Agent | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="按实现一个 Agent 的顺序整理《深入理解 AI Agent》：最小循环、上下文工程、记忆与检索、工具安全、评估与后训练，每个模块讲清楚要解决什么问题、核心思路是什么。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从实现逻辑出发，搭一个能干活的 Agent">
+<meta property="og:url" content="https://lichuanyang.top/posts/65510/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="按实现一个 Agent 的顺序整理《深入理解 AI Agent》：最小循环、上下文工程、记忆与检索、工具安全、评估与后训练，每个模块讲清楚要解决什么问题、核心思路是什么。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/65510.jpg">
+<meta property="article:published_time" content="2026-09-24T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-24T09:08:07.318Z">
+<meta property="article:author" content="流沙">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/65510.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "从实现逻辑出发，搭一个能干活的 Agent",
+  "url": "https://lichuanyang.top/posts/65510/",
+  "image": "https://lichuanyang.top/img/65510.jpg",
+  "abstract": "Agent = LLM + 上下文 + 工具。最小实现是一个 ReAct 循环；真正的工程量在模型之外：上下文的缓存约束与状态栏、双层记忆、工具描述与沙盒安全、评估先行、SFT 立形 RL 泛化。本文按实现顺序把这些问题和核心思路串起来。",
+  "datePublished": "2026-09-24T04:00:00.000Z",
+  "dateModified": "2026-09-24T09:08:07.318Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/65510/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '从实现逻辑出发，搭一个能干活的 Agent',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/65510/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/65510/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/65510/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"AI实践","item":"https://lichuanyang.top/categories/AI实践/"},{"@type":"ListItem","position":3,"name":"从实现逻辑出发，搭一个能干活的 Agent","item":"https://lichuanyang.top/posts/65510/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">96</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/65510.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">从实现逻辑出发，搭一个能干活的 Agent</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">从实现逻辑出发，搭一个能干活的 Agent</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-24T04:00:00.000Z" title="发表于 2026-09-24 12:00:00">2026-09-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-24T09:08:07.318Z" title="更新于 2026-09-24 17:08:07">2026-09-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI%E5%AE%9E%E8%B7%B5/">AI实践</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">4.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> Agent = LLM + 上下文 + 工具。最小实现是一个 ReAct 循环；真正的工程量在模型之外：上下文的缓存约束与状态栏、双层记忆、工具描述与沙盒安全、评估先行、SFT 立形 RL 泛化。本文按实现顺序把这些问题和核心思路串起来。</blockquote><h1 id="从实现逻辑出发，搭一个能干活的-Agent"><a href="#从实现逻辑出发，搭一个能干活的-Agent" class="headerlink" title="从实现逻辑出发，搭一个能干活的 Agent"></a>从实现逻辑出发，搭一个能干活的 Agent</h1><blockquote>
+<p>背景：这篇是读《深入理解 AI Agent：设计原理与工程实践》（李博杰，Apache 2.0 开源，GitHub: bojieli/ai-agent-book）的整理笔记。全书十章，从原理讲到工程实战，配 88 个可跑的实验。下面不按章节复述，而是按”实现一个 Agent 要解决哪些问题”重排，每个模块只讲两件事：<strong>要解决什么问题</strong>，<strong>核心思路是什么</strong>。细节和数据留给原书。</p>
+</blockquote>
+<hr>
+<h2 id="一、Agent-的本质：一个公式和一个循环"><a href="#一、Agent-的本质：一个公式和一个循环" class="headerlink" title="一、Agent 的本质：一个公式和一个循环"></a>一、Agent 的本质：一个公式和一个循环</h2><p><strong>问题</strong>：Agent 到底由什么构成，最小可运行形态长什么样？</p>
+<p><strong>思路</strong>：<code>Agent = LLM + 上下文 + 工具</code>。直觉说法是”大脑 + 眼睛 + 手脚”，学术说法是策略 + 观察空间 + 动作空间。</p>
+<p>最小实现只有一个 while 循环：把消息列表发给模型，返回工具调用就执行并把结果追加进去，没有工具调用就输出退出。这个循环叫 ReAct（思考 → 行动 → 观察）。支撑它的三条性质必须理解到位：</p>
+<ul>
+<li><strong>每次调用无状态</strong>，模型要的一切必须完整出现在消息列表里；</li>
+<li><strong>模型只决策，执行在框架侧</strong>——模型说调什么、传什么参，真正跑代码的是你的代码；</li>
+<li><strong>上下文 = 静态前缀 + 轨迹</strong>，前缀是系统提示词加工具定义，轨迹是随交互增长的消息历史。后面所有的优化都建立在这个切分上。</li>
+</ul>
+<p>消融实验给出了各组件的必要性：缺工具定义彻底不能动，缺工具结果会反复调同一个工具直到卡死，缺思考过程前后决策矛盾，缺历史消息等于失忆。</p>
+<p>工具不必多。七个就够了：代码解释器、Bash、读/写/编辑文件、Glob、Grep。这不是简化，而是主流通用 Agent 的真实配置——<strong>开放任务型 Agent 的内核就是一个 Coding Agent 加一个文件系统</strong>，因为代码是唯一能”创造新能力”的元能力。</p>
+<hr>
+<h2 id="二、Harness：模型之外的竞争力"><a href="#二、Harness：模型之外的竞争力" class="headerlink" title="二、Harness：模型之外的竞争力"></a>二、Harness：模型之外的竞争力</h2><p><strong>问题</strong>：同样的模型，为什么有的 Agent 稳定可靠，有的一跑就崩？</p>
+<p><strong>思路</strong>：把公式扩展成 <code>Agent = Model + Harness</code>。Harness 是围绕模型搭的全部支撑代码，除上下文和工具外，还包括<strong>约束</strong>（能做什么、不能做什么）、<strong>验证</strong>（结果对不对）、<strong>纠正</strong>（错了怎么补救）。</p>
+<p>一句话区分：上下文和工具让 Agent <strong>能做事</strong>，约束、验证、纠正让 Agent <strong>不做错事</strong>。生产级系统里，绝大部分代码属于后者——权限分类、上下文压缩、熔断器、错误恢复。</p>
+<p>范式是层层包含的：软件工程 ⊂ 提示工程 ⊂ 上下文工程 ⊂ Harness 工程 ⊂ Loop 工程（跨轮次的持续自主运转）。当各家模型能力趋近，竞争优势就转移到这一层。</p>
+<p>关于模型和 Harness 的消长，务实的立场是：<strong>模型还做不稳的，Harness 先补上；模型每内化一层，Harness 就卸下一层，去兜底新的能力前沿。</strong></p>
+<hr>
+<h2 id="三、上下文工程：能力上限的真正决定因素"><a href="#三、上下文工程：能力上限的真正决定因素" class="headerlink" title="三、上下文工程：能力上限的真正决定因素"></a>三、上下文工程：能力上限的真正决定因素</h2><p><strong>问题</strong>：模型够聪明，为什么在具体业务上还是不好用？</p>
+<p><strong>思路</strong>：模型智力是基础，上下文质量才是上限。一个中等模型配上组织好的上下文，常常胜过顶级模型在信息匮乏下摸索。</p>
+<p><strong>KV Cache 是硬约束，不是优化项。</strong> 前缀里有一个字符变化，整条缓存作废。所以三条铁律：系统提示词和工具定义定稿后不改；所有动态信息（时间、状态、计数）追加到末尾；永远用标准 API 消息格式（自己拼文本会偏离训练格式，削弱多步思考能力）。有团队在系统提示词里塞了一行当前时间，首 token 延迟从 0.5 秒涨到 3–5 秒，账单几乎翻倍。</p>
+<p><strong>提示词写 SOP 而不是规则堆砌。</strong> 内容不变、只打乱组织结构，任务成功率能掉 30% 以上。业务规则要细到可执行，模糊规则会让同一个任务在不同时间得到不同分类。</p>
+<p><strong>提示词太长就按需加载，这就是 Skills。</strong> 三层渐进式披露：元数据常驻（几百 token）→ 核心流程按需加载 → 细则引用子文档。关键是 <code>description</code> 写成路由条件（Use when / Don’t use when 加反例），”何时该用我”比”我能做什么”重要得多。</p>
+<p><strong>把隐式状态显式化，这就是 Agent 状态栏。</strong> 上下文窗口是一台只有一半的检索引擎：检索极强，但没有”提炼层”。所以模型数不清自己打过几次电话——解法是在工具结果里直接写”本次是第 3 次”。状态栏用一条追加在末尾的消息承载任务进度、环境状态、工具计数。两条经验：用代码维护而不是让模型去总结（模型批量统计长历史反而不如 20 行正则）；光给读数不够，必须连”读数该怎么用”的策略一起给。</p>
+<p><strong>膨胀了就压缩，但更该隔离。</strong> 压缩不只是省长度，更是把需要思考才能得到的结论变成可直接检索的知识；生产上是分层的（大输出落盘、噪声直接删、归档式摘要、最后才是全量压缩），且必须显式定义保留优先级——最容易丢的是早期架构决策和失败路径。更釜底抽薪的是隔离：让子 Agent 去翻十几个文件，只回传一句结论，几万 token 根本不进主上下文。</p>
+<hr>
+<h2 id="四、记忆与知识库"><a href="#四、记忆与知识库" class="headerlink" title="四、记忆与知识库"></a>四、记忆与知识库</h2><p><strong>问题</strong>：会话结束后，怎么让 Agent 记住用户、接上外部知识？</p>
+<p><strong>思路</strong>：两个尺度——用户记忆（个体）和知识库（群体），共用底层技术（检索、压缩），面临同样的麻烦（冲突、过期、检索不准）。</p>
+<p><strong>记忆设计有三套正交分类</strong>：存在哪里（轨迹 / 长期记忆 / 业务状态）、怎么存（从极简的 Simple Notes 到带来源背景和关系的 Advanced JSON Cards）、存什么（情景 / 语义 / 程序记忆）。取舍在简单性与表达力之间，成熟系统混合使用。再往外一步是”用户即代码”：把记忆变成带类型的可执行对象，能做聚合统计、冲突发现、约束执行这三件文本记忆做不了的事。</p>
+<p><strong>检索是稠密 + 稀疏 + 重排序三件套。</strong> 稠密懂语义但会漏精确关键词，稀疏精确但读不懂同义表达，两路融合后再用跨编码器精排。索引前给每个文本块加”出自哪里”的前缀（上下文感知检索），检索失败率能降近一半。</p>
+<p><strong>扁平检索不够时要结构化</strong>：RAPTOR 建知识树适合由宏观到微观，GraphRAG 建实体关系图擅长多跳推理和消歧。代价不小，只在确实需要跨文档综合时才值得。</p>
+<p><strong>最终形态是双层</strong>：少量关键事实结构化后常驻上下文提供全局概览，海量原始对话按需检索取细节。只常驻会丢细节，只检索发现不了跨会话关联——<strong>主动服务</strong>这类能力只有两层叠加才落地得了。</p>
+<hr>
+<h2 id="五、工具：Agent-的手与眼"><a href="#五、工具：Agent-的手与眼" class="headerlink" title="五、工具：Agent 的手与眼"></a>五、工具：Agent 的手与眼</h2><p><strong>问题</strong>：怎么让模型准确、安全地使用外部能力？</p>
+<p><strong>思路</strong>：五类工具——感知、执行、协作、事件触发（Agent 注册、外部触发）、用户沟通。</p>
+<p><strong>描述比能力重要。</strong> 大多数调用失败的根因不是模型不知道工具能做什么，而是不知道它<strong>不能</strong>做什么。所以：写”何时用”而非”能做什么”，参数给具体例子而非规范名，说清返回值结构和执行代价，附 1–5 个真实示例。工具超过 100 个，再强的模型也容易选错。<strong>Agent 选错工具时先查描述，别急着换模型。</strong></p>
+<p><strong>参数传递必须透明。</strong> 不能在模型不知情的情况下改输入或输出，否则会制造一个模型永远诊断不了的系统性故障（比如静默把中文引号转成英文引号，导致匹配永远失败）。</p>
+<p><strong>MCP 解决互操作</strong>，代价是工具定义会吃掉大量上下文（几个服务器就可能有几万 token），所以要默认只给索引、按需查定义，工具多了还要做动态发现。</p>
+<p><strong>执行侧的安全是多层防线。</strong> 输入验证快速失败、绝不”智能修正”；权限控制不能只有黑名单（<code>rm -rf /</code> 能靠变量展开绕过），要做命令的语义解析；危险操作用两种独立视角把关——<strong>提议者-审核者</strong>审开放式思考（两个能力相近但不同家族的模型），<strong>Sidecar</strong> 只审结构化调用数据（轻量模型够用，且刻意不读主模型的自由文本，以免被话术操纵）。沙盒要认清 <strong>venv 不是沙盒</strong>，真正的隔离是 OS 级、容器到 microVM 三级，且默认断网——掐断外传通道比识别每一次注入确定得多。</p>
+<p><strong>异步是真实部署的常态，但模型训练假设同步。</strong> 折中办法是让模型在常态下看到完美同步的轨迹，只在被真打断时才插入占位符修补格式，并且只在紧急时才打断。事件按紧急度分三种处理：取消式、队列式、并行式。一句总结：<strong>真正的主动服务不仅需要 Agent 定时检查世界，更需要世界能主动通知 Agent。</strong></p>
+<hr>
+<h2 id="六、以-Coding-Agent-为骨架搭起来"><a href="#六、以-Coding-Agent-为骨架搭起来" class="headerlink" title="六、以 Coding Agent 为骨架搭起来"></a>六、以 Coding Agent 为骨架搭起来</h2><p><strong>问题</strong>：一个能处理开放任务的 Agent，整体流程怎么组织？</p>
+<p><strong>思路</strong>：六阶段——项目文档化 → 需求澄清 → 写设计文档 → 实现与测试 → 自我审查 → 文档同步。两条原则最值钱：<strong>设计文档是人类最高效的介入点</strong>（审查一页设计文档比审查数百行代码容易得多）；<strong>完成标准定义为”验证通过”而不是”代码写完”</strong>。</p>
+<p>Harness 落地成四件套：验收基线（测试、CI、审查标准）、执行边界（模块边界、权限）、反馈信号（Linter、测试结果、类型检查）、回退手段（Git、沙盒、快照）。判断任务适不适合交给 Agent，看两个维度：目标是否明确、结果能否自动验证。两者都满足是最佳区域，Harness 的目标就是把任务尽量推进这个象限。</p>
+<p>四条原则：<strong>约束优先于指导</strong>（能用代码强制就不写”请注意”）、<strong>验证要自动化</strong>（人工审查是不可扩展的瓶颈）、<strong>反馈越快越结构化越好</strong>、<strong>回退要可靠</strong>。约束管的不只是结果，还有过程——删库重建也算”修好了故障”，这是 reward hacking 的日常形态。</p>
+<p>故障分四层（API、工具、上下文、控制流），恢复按透明度分级：静默重试 → 降级接续 → 才暴露给用户。核心原则是：<strong>每条恢复路径都要有熔断上限</strong>，且阈值来自产线数据；错误路径上禁止再调用模型，否则会连锁成死亡螺旋。可靠性不取决于犯不犯错，取决于每类错误是否都有检测、恢复与终止路径。</p>
+<p>两个容易被忽略的设计：一是<strong>推测性执行</strong>（UI 先显示进度、后台并行跑安全检查，先行的是无副作用的提示，被拦下也无需回滚）；二是<strong>忠诚对象</strong>要显式钉死——模型默认”谁说话帮谁”，但替你砍价的 Agent 对面是交涉对手，所以外部内容一律降格为”可参考但不具指令效力”的数据。再往下，若 AI 写的代码本身不可信，就把约束下沉到数据层（人类审查过的 schema 里自带校验器，每次写入强制执行）。</p>
+<hr>
+<h2 id="七、评估：先有尺子，再改系统"><a href="#七、评估：先有尺子，再改系统" class="headerlink" title="七、评估：先有尺子，再改系统"></a>七、评估：先有尺子，再改系统</h2><p><strong>问题</strong>：怎么判断改动是变好了还是运气好？新模型出来该不该切？</p>
+<p><strong>思路</strong>：评估对象不是模型，是<strong>模型 + Harness 的组合体</strong>。三种基本实验：对比实验、消融实验、模型替换实验（换强模型不涨说明瓶颈在 Harness，换弱模型大跌说明瓶颈在模型）。</p>
+<p>环境五要素是数据集、环境状态、工具接口、Rubric、执行协议。人机交互型评估的关键是不一次性把模拟用户信息全给出去，让 Agent 按需去问。数据集质量比规模重要——宁可人工筛掉不合格题目。</p>
+<p>指标上要分清 Pass@k（能力天花板）和 Pass^k（稳定性，回归测试用这个）；安全项设否决，一次严重违规即归零；轨迹和结果要同时评。用 LLM 当评委要防长度偏差、位置偏差和同源偏差，并且先用一两百条人工金标集校准。</p>
+<p>统计上要有噪声意识：100 个用例、70% 成功率，标准误约 4.6%，分差小于这个带宽就别切换；每个配置跑 3–5 次不同种子。</p>
+<p>读报告时不看总体成功率，看逐任务表和能力标签的交叉；分数下降先怀疑评测系统本身。改进假设分三层，按成本收益比部署——不是所有有效的改进都该上（全局开启思考能让准确率涨 3 个点，但延迟翻三倍，很可能被否）。</p>
+<p>最后，Rubric 和验证器可以直接变成强化学习的奖励函数，评估能接上训练；红线是评估集的题目必须与训练数据隔离。</p>
+<hr>
+<h2 id="八、后训练：什么时候该动模型"><a href="#八、后训练：什么时候该动模型" class="headerlink" title="八、后训练：什么时候该动模型"></a>八、后训练：什么时候该动模型</h2><p><strong>问题</strong>：Harness 做到位了还是不够，什么时候该训练，选 SFT 还是 RL？</p>
+<p><strong>思路</strong>：三阶段代价差数量级——预训练学世界知识（最贵）、SFT 用示范对学格式与风格（最便宜）、RL 用任务加奖励学可迁移策略（常是 SFT 的几十倍）。</p>
+<p>一句话概括：<strong>SFT 记忆，RL 泛化</strong>。SFT 倾向记住训练里的答案，环境一变就失效；RL 学的是策略，面对没见过的情况更稳。对比实验里，分布外场景下 RL 通常涨几个到几十个点，SFT 反而下降。</p>
+<p>顺序是<strong>先形后神</strong>：SFT 先把格式立住（连 JSON 都产不稳时 RL 会完全失败），但不宜恋战，过拟合的损伤 RL 救不回来。转向 RL 的临界点是——再加示范数据也没用，因为瓶颈在 SFT 的优化目标本身。</p>
+<p>优先级是<strong>基础模型 &gt; 环境 &gt; 算法</strong>。仿真环境够不够真实、示范和奖励信号质量够不够高，比选 PPO 还是 GRPO 重要得多。两个高频坑：不要用后训练记事实（那是 RAG 的活）；工具调用训练必须做 loss masking，屏蔽环境返回的 token，否则模型会去学”预测沙盒会输出什么”。</p>
+<hr>
+<h2 id="九、自我进化：不改权重也能长大"><a href="#九、自我进化：不改权重也能长大" class="headerlink" title="九、自我进化：不改权重也能长大"></a>九、自我进化：不改权重也能长大</h2><p><strong>问题</strong>：部署之后怎么让 Agent 越用越好，而不是每次重来？</p>
+<p><strong>思路</strong>：自我进化即<strong>外部化学习</strong>——把知识和流程从参数和临时上下文里分离出来，变成可持久化、可检索、可复用的资产。前提是承认学习不会自动发生：注意力更像检索而非推理，所以学习必须被显式设计。</p>
+<p>产物形态按性质选：纯事实 → 知识库条目；常用且参数复杂 → 专用代码工具；常变且涉及策略判断 → Skill 文档。</p>
+<p>四条路径：从成功里学（把成功轨迹浓缩成策略摘要，入库判据是可迁移性）、从重复任务里学（工作流录制，但必须编译成带验证谓词的状态机，且入库前重置环境回放验证一遍，否则程序库会越攒越坏）、从失败里学（反思入库、建错误模式库和负面规则）、睡眠学习（离线整合记忆，检测矛盾、合并、剪枝）。</p>
+<p>工具侧的进化是：先能按需发现工具（不必全量塞进上下文），再能自己创造工具。安全边界要一并设计——供应链攻击、能力漂移、工具质量退化，以及比会话内注入更隐蔽的<strong>记忆投毒</strong>（跨会话持续生效）。</p>
+<hr>
+<h2 id="十、能力边界的扩展"><a href="#十、能力边界的扩展" class="headerlink" title="十、能力边界的扩展"></a>十、能力边界的扩展</h2><p><strong>多模态与实时交互</strong>：语音有三种范式——级联流水线（可控、延迟叠加，需全链路流式化）、端到端全模态模型（延迟最低、可控性弱）、全双工模型（能边说边听、随时打断，最难训练）。取舍集中在思考架构上：快思考接住交互、慢思考产出答案，两者之间除了文本还能传意图、情感和规划。Computer Use 的可用率取决于动作空间设计和视觉定位，实时性仍是未解难题；机器人则是上层长程规划、下层 VLA 控制，中间隔着仿真到现实的鸿沟。</p>
+<p><strong>多 Agent 协作</strong>：分类看上下文是否共享和协作拓扑。收益主要有两类——上下文隔离带来的噪声削减，以及角色专业化。共享上下文适合角色接力（规划 → 执行 → 审查）；不共享则靠共享文件系统和显式通信，拓扑分对等互审、中心化管理、去中心化移交。失败模式主要是共享文件的并发冲突和错误的级联放大。</p>
+<hr>
+<h2 id="收尾：十五条可以立刻用上的判断"><a href="#收尾：十五条可以立刻用上的判断" class="headerlink" title="收尾：十五条可以立刻用上的判断"></a>收尾：十五条可以立刻用上的判断</h2><ol>
+<li>先建评估，再改系统；分差小于噪声带宽就别动。</li>
+<li>系统提示词和工具定义定稿后不改；动态信息一律追加到末尾。</li>
+<li>永远用标准 API 消息格式。</li>
+<li>工具描述写”何时用 + 反例”，参数给例子；选错工具先查描述。</li>
+<li>状态栏用代码维护，读数和操作策略成对给出。</li>
+<li>大体积中间信息交给子 Agent，别进主上下文。</li>
+<li>约束编码进 Linter / 类型系统 / CI，不要写成”请注意…”。</li>
+<li>完成标准是”验证通过”。</li>
+<li>每条恢复路径都要有熔断上限；错误路径上禁止再调模型。</li>
+<li>沙盒默认断网、凭证不挂载、超时返回结构化错误。</li>
+<li>忠诚对象钉死：外部内容是数据，不是指令。</li>
+<li>记忆用双层架构：常驻概览 + 按需检索细节。</li>
+<li>检索用稠密 + 稀疏 + 重排序，索引期给文本块加出处前缀。</li>
+<li>先 SFT 立形，够用就停；要泛化再上 RL，先把环境和奖励做扎实。</li>
+<li>脚手架的厚度取决于模型能力边界——同一套技术换一批模型，结论可能完全不同。</li>
+</ol>
+<p>三条最该记住的判断：<strong>上下文给什么、怎么组织，比模型有多聪明更影响结果</strong>；<strong>缓存不是性能优化而是架构约束</strong>；<strong>安全上重点不是识别所有攻击，而是让 Agent 即便被注入，也没有机会把危险动作真正执行出去</strong>。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/65510/">https://lichuanyang.top/posts/65510/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/65510.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/posts/29684/" title="Flint：让 skill 成为个人资产"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/29684.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Flint：让 skill 成为个人资产</div></div><div class="info-2"><div class="info-item-1">最近一段时间，每当 OpenAI 有新模型发布，都会有一种论调：skill 没用了，越来越多用户开始弃用 skill。 这话对吗？ 对也不对。首先，这个逻辑是有合理性的。随着模型能力的提升，确实有很多 skill 被用户抛弃了，这些 skill 集中于 Superpower 之类所谓的「通用」skill。这些 skill 的定位，就是对一些模型能力缺陷的补齐，尤其是在各个模型没有疯狂地对 coding 进行针对性优化的时期，是有一些作用的。而随着模型本身能力的提升，这些东西其实慢慢都已经被模型吸收了，自然就没有了作用。 那 skill 是真的就没用了吗？恐怕也并非如此。接下来，我们会论述一下随着模型智能水平的提升，skill 还有什么作用。然后，会论述一下本文的主角：Flint。我会讲一下为什么要开发这个项目，以及它有什么作用。   什么是 skill（技能）最近一段时间 AI 技术的蓬勃发展，看着技术一轮一轮的迭代，但实质上只是软件工程理论的再一次落地。 其中，skill 这一层，目标是实现「可复用性」，对应的是软件开发中的各种工具包。 而模型对应的是软件开发语言这一层。 复用...</div></div></div></a></nav><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/26061/">教你薅token（二）：构建agent无关的skills管理工作流</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/26061/">Skills 管理和 Agent 管理有什么区别？</a></li><li><a href="https://lichuanyang.top/posts/26061/">跨平台兼容性怎么保证？</a></li><li><a href="https://lichuanyang.top/posts/26061/">pks 和直接在 Agent 里配置 skill 有什么不同？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/26060/">教你薅token：构建agent无关的AI工作流</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/26060/">Agent 和 Skill 是什么关系？</a></li><li><a href="https://lichuanyang.top/posts/26060/">Token 优化最有效的方法是什么？</a></li><li><a href="https://lichuanyang.top/posts/26060/">文档维护和 Agent 订阅哪个更值？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/64/">用LLM管理安全开发规范：一次llm-wiki实践</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/64/">LLM 生成的代码或规范文档安全吗？会不会引入新的安全风险？</a></li><li><a href="https://lichuanyang.top/posts/64/">用 LLM 管理规范后，如何审核和保证质量？</a></li><li><a href="https://lichuanyang.top/posts/64/">llm-wiki 方案和传统 lint 工具（SonarQube、ESLint 等）有何不同？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/65500/">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><ol class="relatedHowto-steps"><li>环境准备：注册Agnes AI账号，获取API Key</li><li>调用Agnes API：配置OpenAI兼容接口，base URL为https://apihub.agnes-ai.com/v1</li><li>改造ViMax配置：创建YAML创意文件，配置场景、风格和chaining_mode参数</li><li>生成视频：运行start.sh一键生成多场景视频</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/26060/">教你薅token：构建agent无关的AI工作流</a><ol class="relatedHowto-steps"><li>理解Agent与Skill关系：Agent是执行引擎，Skill是结构化指令文档，文档质量决定输出质量</li><li>定义工作流：编写AGENTS.md等文档，明确项目结构、编码规范和操作流程</li><li>配置文档源：将项目文档、工作流说明、规则文档放入项目根目录，让Agent自动读取</li><li>测试验证：在不同Agent平台间切换测试，验证文档驱动的一致性效果</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">96</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界<br><br>子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/zh">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/zh">数学练习</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://game.lichuanyang.top/">极速桌游馆</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%87%BA%E5%8F%91%EF%BC%8C%E6%90%AD%E4%B8%80%E4%B8%AA%E8%83%BD%E5%B9%B2%E6%B4%BB%E7%9A%84-Agent"><span class="toc-number">1.</span> <span class="toc-text">从实现逻辑出发，搭一个能干活的 Agent</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81Agent-%E7%9A%84%E6%9C%AC%E8%B4%A8%EF%BC%9A%E4%B8%80%E4%B8%AA%E5%85%AC%E5%BC%8F%E5%92%8C%E4%B8%80%E4%B8%AA%E5%BE%AA%E7%8E%AF"><span class="toc-number">1.1.</span> <span class="toc-text">一、Agent 的本质：一个公式和一个循环</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Harness%EF%BC%9A%E6%A8%A1%E5%9E%8B%E4%B9%8B%E5%A4%96%E7%9A%84%E7%AB%9E%E4%BA%89%E5%8A%9B"><span class="toc-number">1.2.</span> <span class="toc-text">二、Harness：模型之外的竞争力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E8%83%BD%E5%8A%9B%E4%B8%8A%E9%99%90%E7%9A%84%E7%9C%9F%E6%AD%A3%E5%86%B3%E5%AE%9A%E5%9B%A0%E7%B4%A0"><span class="toc-number">1.3.</span> <span class="toc-text">三、上下文工程：能力上限的真正决定因素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%AE%B0%E5%BF%86%E4%B8%8E%E7%9F%A5%E8%AF%86%E5%BA%93"><span class="toc-number">1.4.</span> <span class="toc-text">四、记忆与知识库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%B7%A5%E5%85%B7%EF%BC%9AAgent-%E7%9A%84%E6%89%8B%E4%B8%8E%E7%9C%BC"><span class="toc-number">1.5.</span> <span class="toc-text">五、工具：Agent 的手与眼</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E4%BB%A5-Coding-Agent-%E4%B8%BA%E9%AA%A8%E6%9E%B6%E6%90%AD%E8%B5%B7%E6%9D%A5"><span class="toc-number">1.6.</span> <span class="toc-text">六、以 Coding Agent 为骨架搭起来</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E8%AF%84%E4%BC%B0%EF%BC%9A%E5%85%88%E6%9C%89%E5%B0%BA%E5%AD%90%EF%BC%8C%E5%86%8D%E6%94%B9%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.7.</span> <span class="toc-text">七、评估：先有尺子，再改系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%90%8E%E8%AE%AD%E7%BB%83%EF%BC%9A%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E5%8A%A8%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.8.</span> <span class="toc-text">八、后训练：什么时候该动模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E8%87%AA%E6%88%91%E8%BF%9B%E5%8C%96%EF%BC%9A%E4%B8%8D%E6%94%B9%E6%9D%83%E9%87%8D%E4%B9%9F%E8%83%BD%E9%95%BF%E5%A4%A7"><span class="toc-number">1.9.</span> <span class="toc-text">九、自我进化：不改权重也能长大</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E8%83%BD%E5%8A%9B%E8%BE%B9%E7%95%8C%E7%9A%84%E6%89%A9%E5%B1%95"><span class="toc-number">1.10.</span> <span class="toc-text">十、能力边界的扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%B6%E5%B0%BE%EF%BC%9A%E5%8D%81%E4%BA%94%E6%9D%A1%E5%8F%AF%E4%BB%A5%E7%AB%8B%E5%88%BB%E7%94%A8%E4%B8%8A%E7%9A%84%E5%88%A4%E6%96%AD"><span class="toc-number">1.11.</span> <span class="toc-text">收尾：十五条可以立刻用上的判断</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/65510/" title="从实现逻辑出发，搭一个能干活的 Agent"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65510.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从实现逻辑出发，搭一个能干活的 Agent"></a><div class="content"><a class="title" href="/posts/65510/" title="从实现逻辑出发，搭一个能干活的 Agent">从实现逻辑出发，搭一个能干活的 Agent</a><time datetime="2026-09-24T04:00:00.000Z" title="发表于 2026-09-24 12:00:00">2026-09-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/29684/" title="Flint：让 skill 成为个人资产"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/29684.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flint：让 skill 成为个人资产"></a><div class="content"><a class="title" href="/posts/29684/" title="Flint：让 skill 成为个人资产">Flint：让 skill 成为个人资产</a><time datetime="2026-09-14T09:04:05.000Z" title="发表于 2026-09-14 17:04:05">2026-09-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/34689/" title="从薅 token 到管 skill：我的 pks 工具落地实践"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/34689.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从薅 token 到管 skill：我的 pks 工具落地实践"></a><div class="content"><a class="title" href="/posts/34689/" title="从薅 token 到管 skill：我的 pks 工具落地实践">从薅 token 到管 skill：我的 pks 工具落地实践</a><time datetime="2026-07-01T09:16:24.000Z" title="发表于 2026-07-01 17:16:24">2026-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/22470.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频"></a><div class="content"><a class="title" href="/posts/22470/" title="免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频">免费AI视频生成器：我如何用零成本做出带旁白字幕的多场景AI视频</a><time datetime="2026-06-16T05:20:05.000Z" title="发表于 2026-06-16 13:20:05">2026-06-16</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">子站导航：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://video.lichuanyang.top/zh">AI 视频生成</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://math.lichuanyang.top/zh">数学练习</a> · <a target="_blank" rel="noopener external nofollow noreferrer" href="https://game.lichuanyang.top/">极速桌游馆</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script src="https://talentpastryadvisedly.com/15/fa/1c/15fa1c95a7d86b67c763762d23ea7c95.js"></script><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = {"mapping":"pathname","lang":"zh-CN","reactions_enabled":true,"input_position":"bottom","emit_metadata":false}
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'lcy362/lcy362.github.io',
+      'data-repo-id': 'MDEwOlJlcG9zaXRvcnkxMTc2NzYwODU=',
+      'data-category-id': 'DIC_kwDOBwOYNc4DB2lj',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})};
+(function(){var u="https://talentpastryadvisedly.com/ig973asm?key=0cbb625edad93f4e075114d0ea6a7cd3";var c=3e5;var k="_asl";var l=localStorage.getItem(k);if(l&&Date.now()-parseInt(l,10)<c)return;var f=false;function t(e){if(f)return;var a=e.target.closest("a");if(!a||!a.href||a.href.startsWith("#")||a.href.startsWith("javascript:"))return;if(a.closest("#nav,#menu,#header,#footer,.footer,#aside,#aside-content,.sidebar,#sidebar,.nav,#tool-bar,#rightside"))return;f=true;localStorage.setItem(k,Date.now());window.open(u,"_blank","noopener")}document.addEventListener("click",t)})();</script></body></html>
