@@ -1,0 +1,37 @@
+# Mobility · SandGrid's Tech Blog
+
+> The personal tech blog of SandGrid (流沙): backend development and architecture design, covering Java, message queues, databases, cloud native, big data, and AI/LLM practices. Bilingual — the Chinese site lives at the root path, the English site at /en/.
+
+## Navigation
+- [Home](https://lichuanyang.top/en/)
+- [Archives](https://lichuanyang.top/en/archives/)
+- [Categories](https://lichuanyang.top/en/categories/)
+- [Tags](https://lichuanyang.top/en/tags/)
+- [About](https://lichuanyang.top/en/about/)
+- [RSS feed](https://lichuanyang.top/en/atom.xml)
+
+## Topics
+- Java backend development and distributed architecture
+- Message queues (ActiveMQ / Kafka and more)
+- Databases and middleware
+- Cloud native and big data
+- AI / LLM engineering practice
+- Book notes and personal reflections
+
+## Chinese site (root)
+- [首页](https://lichuanyang.top/)
+- [文章归档](https://lichuanyang.top/archives/)
+- [关于作者](https://lichuanyang.top/about/)
+
+## Author
+- [GitHub](https://github.com/lcy362)
+- [Zhihu (知乎)](https://www.zhihu.com/people/hobermallow)
+- [StackOverflow](https://stackoverflow.com/users/3448633)
+
+## More projects by the author
+- [AI Video Generator (Agnes)](https://video.lichuanyang.top/en)
+- [Free Short Video Studio (no install)](https://video.lichuanyang.top/en/studio)
+- [Flint Skills Manager](https://flint.lichuanyang.top/en)
+- [Predict (Meng Yi Ba)](https://predict.lichuanyang.top/)
+- [Boardgame Court (web board games)](https://game.lichuanyang.top/)
+- [Math Practice](https://math.lichuanyang.top/en)
