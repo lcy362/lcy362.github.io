@@ -1,0 +1,331 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="chrome-sidecar 让 AI Agent 直接接管你已在用的 Chrome，复用登录态在后台标签页干活，遇到登录、验证码、支付确认就停下来交给你处理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态">
+<meta property="og:url" content="https://lichuanyang.top/posts/12146/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="chrome-sidecar 让 AI Agent 直接接管你已在用的 Chrome，复用登录态在后台标签页干活，遇到登录、验证码、支付确认就停下来交给你处理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/12146.jpg">
+<meta property="article:published_time" content="2026-10-08T09:13:00.000Z">
+<meta property="article:modified_time" content="2026-10-12T06:44:38.378Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="AI Agent">
+<meta property="article:tag" content="chrome-sidecar">
+<meta property="article:tag" content="效率工具">
+<meta property="article:tag" content="浏览器自动化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/12146.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态",
+  "url": "https://lichuanyang.top/posts/12146/",
+  "image": "https://lichuanyang.top/img/12146.jpg",
+  "abstract": "chrome-sidecar 让 AI Agent 直接接管你正在用的 Chrome：复用登录态、在后台标签页干活，遇到登录、验证码、支付就停下来交给你。",
+  "datePublished": "2026-10-08T09:13:00.000Z",
+  "dateModified": "2026-10-12T06:44:38.378Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/12146/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"AI实践","item":"https://lichuanyang.top/categories/AI实践/"},{"@type":"ListItem","position":3,"name":"AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态","item":"https://lichuanyang.top/posts/12146/"}]}</script>
+<meta name="keywords" content="效率工具, AI, AI Agent, chrome-sidecar, 浏览器自动化">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/12146/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/12146/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/12146/">
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">97</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">132</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/12146.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-08T09:13:00.000Z" title="发表于 2026-10-08 17:13:00">2026-10-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-12T06:44:38.378Z" title="更新于 2026-10-12 14:44:38">2026-10-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI%E5%AE%9E%E8%B7%B5/">AI实践</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> chrome-sidecar 让 AI Agent 直接接管你正在用的 Chrome：复用登录态、在后台标签页干活，遇到登录、验证码、支付就停下来交给你。</blockquote><p>你可能遇到过这种情况。</p>
+<p>让 AI 帮忙去某个网站查点东西，它说”我准备好了，请先登录”。然后弹出一个浏览器窗口，你输账号、等短信验证码、过那个选图片的验证，折腾完了再回去告诉它”好了”。换个网站，重来一遍。</p>
+<p>我受不了这个流程，所以做了个东西。它的思路很简单：<strong>别给 AI 开一个新浏览器，让它直接用你正在用的那个。</strong></p>
+<span id="more"></span>
+
+<h2 id="为什么会变成”先登录”"><a href="#为什么会变成”先登录”" class="headerlink" title="为什么会变成”先登录”"></a>为什么会变成”先登录”</h2><p>现在多数让 AI 操作网页的方案，都是给 AI 单独开一个浏览器。</p>
+<p>单独开有单独开的好处，干净，不影响你正在用的东西。但代价是它什么都不知道。没有你的账号，没有任何你已经设置好的东西。所以第一步必然是让你登录。</p>
+<p>也有一些方案会把你的浏览器配置复制一份给 AI 用，登录状态算是有了。但你的登录状态只活在一份里，所以你要么从此一直用那个复制出来的浏览器，要么两份就慢慢对不上了。为了跑个自动化把自己的主浏览器换掉，我觉得不太划算。</p>
+<h2 id="换个思路：让-AI-坐到你旁边"><a href="#换个思路：让-AI-坐到你旁边" class="headerlink" title="换个思路：让 AI 坐到你旁边"></a>换个思路：让 AI 坐到你旁边</h2><p>我做的这个东西走的是另一条路。</p>
+<p>它不新开浏览器，也不复制配置，而是直接接管你正在用的那个 Chrome。你登录过的网站，它进去就是登录状态；你装过的插件、调过的偏好，它都在。</p>
+<p>有点像你让一个同事坐到你位置上，用你打开的页面帮你干点活，干完把结果给你。</p>
+<p>区别是它会守着几条规矩：</p>
+<ul>
+<li><strong>在后台干活，不占你的屏幕。</strong> 开新页面时新开在后台，你正在看的标签不会被切走，你正在打字也不会被打断。你可以一边让它干活，一边做自己的事。</li>
+<li><strong>遇到非得你本人的环节，它会停下来等你。</strong> 登录、验证码、扫码、支付确认，这些它一律不碰，只告诉你”这一步需要你来做”，然后等着，期间不点任何东西。你做完说一声，它接着干。</li>
+<li><strong>它也不会碰你的密码。</strong> 不代你输密码，不代你看验证码，也不会去读你页面上密码框里的内容。</li>
+</ul>
+<h2 id="能用它干什么"><a href="#能用它干什么" class="headerlink" title="能用它干什么"></a>能用它干什么</h2><p>我平时用的大概是这几件：</p>
+<ul>
+<li>打开我的后台，告诉我昨天的收入是多少</li>
+<li>把某个页面里的内容整理出来，放进我的笔记</li>
+<li>去一个系统里把表单填好、截图传上去、提交</li>
+<li>看看某个订单发货了没，发了就把单号贴到对应的帖子里</li>
+<li>把一条内容同步到几个平台</li>
+<li>改账号设置这种必须本人在场的活，它负责点开页面，剩下的交给我</li>
+</ul>
+<p>凡是你自己要在网页上点来点去、而且得先登录才能做的事，基本都可以试试让它来。</p>
+<h2 id="怎么装"><a href="#怎么装" class="headerlink" title="怎么装"></a>怎么装</h2><p>两步，配一次就行。</p>
+<p><strong>第一步</strong>，在你平时用的 Chrome 里打开一个开关。地址栏输入 <code>chrome://inspect/#remote-debugging</code>，把 “Allow remote debugging for this browser instance” 勾上。</p>
+<p>这是 Chrome 官方提供的一个开关，作用是允许外部程序连上这个浏览器。连接的时候 Chrome 会弹一次窗问你”要允许远程调试吗”，点允许就行。</p>
+<p>这个弹窗是安全门槛，我特意没有做自动点击它的功能。看到它弹出来，请你亲手点。</p>
+<p><strong>第二步</strong>，把这个技能装到你的 AI 工具里。</p>
+<p>它是一份给 AI 看的说明书加工具，装到你平时用的 AI 工具（Claude Code、Cursor、Codex、WorkBuddy 这些）里就能用。</p>
+<p>推荐用 flint 管理，它会帮你把技能分发到各个 AI 工具，改一处就都更新：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/lcy362/chrome-sidecar</span><br><span class="line">npx flint-skills-hub</span><br></pre></td></tr></tbody></table></figure>
+
+<p>不想用工具的话，把 <code>chrome-sidecar/skills/chrome-sidecar</code> 这个文件夹拷到你 AI 工具的 skills 目录里也一样。</p>
+<h2 id="装完怎么用"><a href="#装完怎么用" class="headerlink" title="装完怎么用"></a>装完怎么用</h2><p>不用启动任何东西，也不用记命令。直接跟你的 AI 说话：</p>
+<ul>
+<li>打开我的后台，告诉我昨天的收入是多少。</li>
+<li>把那个页面截个图，放到我的笔记里。</li>
+<li>帮我看看这个订单发货了没。</li>
+<li>帮我改一下账号设置，要登录的时候叫我。</li>
+</ul>
+<p>就这样。剩下是它的事。</p>
+<h2 id="几个前提"><a href="#几个前提" class="headerlink" title="几个前提"></a>几个前提</h2><p>它需要 Chrome 或同类的浏览器，而且得是你正常在用的那一个。专门为它开一个新浏览器是没用的。</p>
+<p>上面那个开关必须开，我没法帮你绕过，因为那是浏览器的安全设计。</p>
+<p>还有一句实话：如果你只是想让 AI 读一个公开的网页，别用这个，直接让它读就行。这个东西是为”需要你登录才能做的事”准备的。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>项目在这里：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/lcy362/chrome-sidecar">github.com/lcy362/chrome-sidecar</a></p>
+<p>开源，MIT 协议，代码和文档都在仓库里。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/12146/">https://lichuanyang.top/posts/12146/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/12146.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/upload/qrcode.bmp" alt="微信"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/posts/65510/" title="从实现逻辑出发，搭一个能干活的 Agent"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65510.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">从实现逻辑出发，搭一个能干活的 Agent</div></div><div class="info-2"><div class="info-item-1">从实现逻辑出发，搭一个能干活的 Agent 背景：这篇是读《深入理解 AI Agent：设计原理与工程实践》（李博杰，Apache 2.0 开源，GitHub: bojieli/ai-agent-book）的整理笔记。全书十章，从原理讲到工程实战，配 88 个可跑的实验。下面不按章节复述，而是按”实现一个 Agent 要解决哪些问题”重排，每个模块只讲两件事：要解决什么问题，核心思路是什么。细节和数据留给原书。   一、Agent 的本质：一个公式和一个循环问题：Agent 到底由什么构成，最小可运行形态长什么样？ 思路：Agent = LLM + 上下文 + 工具。直觉说法是”大脑 + 眼睛 + 手脚”，学术说法是策略 + 观察空间 + 动作空间。 最小实现只有一个 while 循环：把消息列表发给模型，返回工具调用就执行并把结果追加进去，没有工具调用就输出退出。这个循环叫 ReAct（思考 → 行动 → 观察）。支撑它的三条性质必须理解到位：  每次调用无状态，模型要的一切必须完整出现在消息列表里； 模型只决策，执行在框架侧——模型说调什么、传什么参，真正跑代码的是...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/48979/" title="用 AI Agent 完成 Hexo 主题迁移：从 Next 到 Butterfly 的全自动化实践"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/48979.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-28</div><div class="info-item-2">用 AI Agent 完成 Hexo 主题迁移：从 Next 到 Butterfly 的全自动化实践</div></div><div class="info-2"><div class="info-item-1">背景：一个繁琐到让人崩溃的任务最近想给自己的 Hexo 博客换个主题。用了好几年的 Next 主题，虽然经典，但想换个更现代的风格。 看起来很简单对吧？但实际操作过的朋友都知道，Hexo 主题迁移是一个极其繁琐的过程：  配置文件长达 1000+ 行，需要逐项对比新旧主题的配置格式 功能映射复杂：Next 的 leancloud_visitors 对应 Butterfly 的 busuanzi，Next 的 reading_progress 对应 Butterfly 的 preloader 两个站点要同步：中英文站都要改，而且配置略有不同 Font Awesome 版本兼容：Butterfly 默认配的 FA 7.1.0 根本不存在于 cdnjs YAML 格式敏感：缩进、换行符都可能导致配置失效  如果手动操作，估计要花一整天，而且很容易出错。 解决方案：让 AI Agent 来干这次我尝试了一个不同的方式：让 AI Agent（Hermes）全程接管这个任务。 AI Agent 的工作流程整个过程，AI Agent 自主完成了以下工作：  环境分析：检查当前 Hexo 版本（...</div></div></div></a><a class="pagination-related" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/26061.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-04</div><div class="info-item-2">教你薅token（二）：构建agent无关的skills管理工作流</div></div><div class="info-2"><div class="info-item-1">上篇文章最后说了句：Agent只是工具，文档才是核心。 这话说了之后，有人问我：道理都懂，但文档具体怎么管？总不能每个项目都复制粘贴一遍吧？ 确实不能。 我后来写了个工具来解决这事——pks（Personal Skills Manager），408行纯bash，零依赖。它干的事很简单：把你的AI工作流文档打包成skill，按需装到项目里，不绑定任何Agent平台。   什么是skill如果你用过OpenCode、Cursor或者其他Agent平台，大概率见过”skill”这个概念。不同平台叫法不一样——有的叫skill，有的叫rules，有的叫custom instructions——但说的都是同一件事：你给Agent的结构化指令，告诉它怎么处理特定类型的任务。 比如”调用我们的API网关时，参数必须平铺在body顶层，不要嵌套在params里”，这是一条skill。”commit消息必须用中文，格式是type(scope):描述”，这也是。”数据库表名用snake_case，字段必须有注释”，还是。 Agent的底层模型提供了通用推理能力——它知道怎么写代码、怎么调API。但你...</div></div></div></a><a class="pagination-related" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/ai-agent-workflow.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-03</div><div class="info-item-2">教你薅token：构建agent无关的AI工作流</div></div><div class="info-2"><div class="info-item-1">目前大家使用AI的最大或者唯一痛点，是什么？可能就是账单了。 无论是Claude、CodeX、Cursor，还是qoder或是mimo、minimax，基础套餐基本都要奔着20刀以上去，这还得省着用，很多时候用以来会很不爽。要想量大管饱，那就会更贵。 而同时，很多平台会有试用装，或是常规的免费模型。比如OpenCode里的deepseek flash长期免费。 我们怎么才能好好的薅一下这些免费模型呢？ 我长期在各种不同的项目用Agent，有代码，有个人博客，有笔记知识库，有小说，还有我和AI完的小游戏。用着用着发现一个事：Agent的所有操作，本质上是：读你文档 → 拼prompt → 发给模型 → 按结果改文件。 文档在哪里，智能就在哪里。你自己拼prompt，跟平台帮你拼，其实没差那么多。 所以我后来干脆不再纠结用哪个Agent平台了。文档维护好，哪里有免费token就去哪薅。   Agent到底干了什么不管哪家Agent，流程都差不多： 1用户说需求 → Agent看项目文档 → 读相关文件 → 拼prompt → 问模型 → 处理返回 → 改文件 → 循环上述流程  比如...</div></div></div></a><a class="pagination-related" href="/posts/65500/" title="Agnes免费模型真能白嫖视频？我改造了ViMax来试试"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65500.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-11</div><div class="info-item-2">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</div></div><div class="info-2"><div class="info-item-1">前阵子我在薅各种免费AI token，写了一篇关于”哪里免费去哪里薅”的文章。当时提到过，各家平台会不定期放出免费模型。结果没等多久，Agnes AI 就给了我一个惊喜：视频模型也免费了。 不是文字，不是图片，是视频。agnes-video-v2.0、agnes-image-2.1-flash、agnes-2.0-flash，三个模型全免费，注册就送API Key，不要信用卡，不要GPU。其中 Agnes-Video-V2.0 是目前免费 agnes video 生成方案里能力最强的一个，支持多种生成模式，质量相当能打。 这谁忍得住？我直接把开源框架 ViMax 改造成了 Agnes 全家桶方案，顺便把原来一些反人类的用法都优化了一遍。   Agnes免费模型：到底给了什么先说 Agnes 这波免费到底给了啥。在 Agnes AI 平台 注册之后，拿到一个 API Key，就能用三个模型：  agnes-2.0-flash（对话模型）：写故事、编剧本、生成prompt，标准的chat接口 agnes-image-2.1-flash（图片模型）：text-to-image，生成角色...</div></div></div></a><a class="pagination-related" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-26</div><div class="info-item-2">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</div></div><div class="info-2"><div class="info-item-1">前段时间，偶然看到karpathy大神提出的llm-wiki, 有种相见恨晚的感觉。我一直是很喜欢写些东西的，但是写完之后，问题就是大量内容散落在各个地方，一直没有精力对它们进行有效的管理。而看到了llm-wiki后，我就意识到，之前写的那些东西，要开始发挥作用了。   为什么需要知识中枢首先, llm-wiki是什么。 llm-wiki 是 Andrej Karpathy 在 最近提出的一个概念：把你过往积累的所有文字材料——笔记、博客、读书摘录、工作日志——作为”语料库”，让 LLM 自动从中提取概念、建立页面、编织交叉引用，最终形成一个结构化的、可持续迭代的个人 Wiki。 它的核心前提很简单：每个人在日常工作和学习中已经产生了大量有结构、有见解的文字，只是它们散落在各处，缺乏关联。llm-wiki 要做的就是用一个 LLM 驱动的流程，把这些散落的珍珠串起来。你负责持续产生和收集内容，LLM 负责组织和管理。 和传统的手动 Wiki 维护不同——建页面、写摘要、加链接，枯燥且难以坚持——llm-wiki 把组织成本降到了几乎为零。你只需要告诉 LLM 你的知识库结构和维护...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/26061/">教你薅token（二）：构建agent无关的skills管理工作流</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/26061/">Skills 管理和 Agent 管理有什么区别？</a></li><li><a href="https://lichuanyang.top/posts/26061/">跨平台兼容性怎么保证？</a></li><li><a href="https://lichuanyang.top/posts/26061/">pks 和直接在 Agent 里配置 skill 有什么不同？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/26060/">教你薅token：构建agent无关的AI工作流</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/26060/">Agent 和 Skill 是什么关系？</a></li><li><a href="https://lichuanyang.top/posts/26060/">Token 优化最有效的方法是什么？</a></li><li><a href="https://lichuanyang.top/posts/26060/">文档维护和 Agent 订阅哪个更值？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/64/">用LLM管理安全开发规范：一次llm-wiki实践</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/64/">LLM 生成的代码或规范文档安全吗？会不会引入新的安全风险？</a></li><li><a href="https://lichuanyang.top/posts/64/">用 LLM 管理规范后，如何审核和保证质量？</a></li><li><a href="https://lichuanyang.top/posts/64/">llm-wiki 方案和传统 lint 工具（SonarQube、ESLint 等）有何不同？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/18804/">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/18804/">Obsidian 适合程序员做知识管理吗？</a></li><li><a href="https://lichuanyang.top/posts/18804/">LLM Wiki 需要 GPU 吗？</a></li><li><a href="https://lichuanyang.top/posts/18804/">llm-wiki 和传统 Wiki 有什么区别？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/26060/">教你薅token：构建agent无关的AI工作流</a><ol class="relatedHowto-steps"><li>理解Agent与Skill关系：Agent是执行引擎，Skill是结构化指令文档，文档质量决定输出质量</li><li>定义工作流：编写AGENTS.md等文档，明确项目结构、编码规范和操作流程</li><li>配置文档源：将项目文档、工作流说明、规则文档放入项目根目录，让Agent自动读取</li><li>测试验证：在不同Agent平台间切换测试，验证文档驱动的一致性效果</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/65500/">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><ol class="relatedHowto-steps"><li>环境准备：注册Agnes AI账号，获取API Key</li><li>调用Agnes API：配置OpenAI兼容接口，base URL为https://apihub.agnes-ai.com/v1</li><li>改造ViMax配置：创建YAML创意文件，配置场景、风格和chaining_mode参数</li><li>生成视频：运行start.sh一键生成多场景视频</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/18804/">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><ol class="relatedHowto-steps"><li>安装Obsidian：下载Obsidian客户端，创建Vault知识库</li><li>配置LLM Wiki：编写AGENTS.md，定义摄入、审计等wiki维护规则，让AI自动组织知识</li><li>接入微信读书：调用微信读书Agent API，同步书籍划线和笔记到Obsidian</li><li>导入知乎：使用Playwright自动化脚本抓取知乎回答和文章</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">97</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">132</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界<div style="margin-top:10px;text-align:left"><div style="font-size:.85rem;font-weight:600;color:var(--font-color)">作者的其他项目<span style="margin-left:6px;font-size:.7rem;font-weight:400;color:var(--dark-grey)">共 6 个站点</span></div><div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:6px"><a href="https://video.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">AI 视频生成</a><a href="https://video.lichuanyang.top/zh/studio" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">免费短视频</a><a href="https://flint.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Flint 技能管理器</a><a href="https://predict.lichuanyang.top/" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">蒙一把</a><a href="https://game.lichuanyang.top/" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">方寸博弈</a><a href="https://math.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">数学练习</a></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%8F%98%E6%88%90%E2%80%9D%E5%85%88%E7%99%BB%E5%BD%95%E2%80%9D"><span class="toc-number">1.</span> <span class="toc-text">为什么会变成”先登录”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8D%A2%E4%B8%AA%E6%80%9D%E8%B7%AF%EF%BC%9A%E8%AE%A9-AI-%E5%9D%90%E5%88%B0%E4%BD%A0%E6%97%81%E8%BE%B9"><span class="toc-number">2.</span> <span class="toc-text">换个思路：让 AI 坐到你旁边</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%BD%E7%94%A8%E5%AE%83%E5%B9%B2%E4%BB%80%E4%B9%88"><span class="toc-number">3.</span> <span class="toc-text">能用它干什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%A3%85"><span class="toc-number">4.</span> <span class="toc-text">怎么装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A3%85%E5%AE%8C%E6%80%8E%E4%B9%88%E7%94%A8"><span class="toc-number">5.</span> <span class="toc-text">装完怎么用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E5%89%8D%E6%8F%90"><span class="toc-number">6.</span> <span class="toc-text">几个前提</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">7.</span> <span class="toc-text">最后</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/12146/" title="AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/12146.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态"></a><div class="content"><a class="title" href="/posts/12146/" title="AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态">AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态</a><time datetime="2026-10-08T09:13:00.000Z" title="发表于 2026-10-08 17:13:00">2026-10-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65510/" title="从实现逻辑出发，搭一个能干活的 Agent"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/65510.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从实现逻辑出发，搭一个能干活的 Agent"></a><div class="content"><a class="title" href="/posts/65510/" title="从实现逻辑出发，搭一个能干活的 Agent">从实现逻辑出发，搭一个能干活的 Agent</a><time datetime="2026-09-24T04:00:00.000Z" title="发表于 2026-09-24 12:00:00">2026-09-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/29684/" title="Flint：让 skill 成为个人资产"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/29684.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flint：让 skill 成为个人资产"></a><div class="content"><a class="title" href="/posts/29684/" title="Flint：让 skill 成为个人资产">Flint：让 skill 成为个人资产</a><time datetime="2026-09-14T09:04:05.000Z" title="发表于 2026-09-14 17:04:05">2026-09-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/34689/" title="从薅 token 到管 skill：我的 pks 工具落地实践"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/34689.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从薅 token 到管 skill：我的 pks 工具落地实践"></a><div class="content"><a class="title" href="/posts/34689/" title="从薅 token 到管 skill：我的 pks 工具落地实践">从薅 token 到管 skill：我的 pks 工具落地实践</a><time datetime="2026-07-01T09:16:24.000Z" title="发表于 2026-07-01 17:16:24">2026-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/18804/" title="把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录">把笔记、微信读书、知乎装进 Obsidian：我基于llm-wiki知识中枢搭建实录</a><time datetime="2026-06-26T08:18:13.000Z" title="发表于 2026-06-26 16:18:13">2026-06-26</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text"><div style="max-width:1000px;margin:0 auto;text-align:left"><div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px"><span style="font-size:.95rem;font-weight:700;color:var(--font-color)">作者的其他项目</span><span style="font-size:.72rem;color:var(--dark-grey);border:1px solid var(--light-grey);border-radius:999px;padding:1px 8px">共 6 个站点</span></div><div style="margin:4px 0 12px;font-size:.8rem;color:var(--dark-grey);line-height:1.6">同一作者开发与维护的免费开源工具与站点，均可直接打开使用。</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px"><a href="https://video.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">AI 视频生成</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">免费开源的 AI 短视频生成</span></a><a href="https://video.lichuanyang.top/zh/studio" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">免费短视频（零安装）</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">浏览器内运行，无需安装</span></a><a href="https://flint.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">Flint 技能管理器</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">本地优先的 AI Skills 管理器</span></a><a href="https://predict.lichuanyang.top/" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">蒙一把（时事预测）</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">蒙没蒙对，记录说了算</span></a><a href="https://game.lichuanyang.top/" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">方寸博弈（桌游）</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">T字棋、极速101 即点即玩</span></a><a href="https://math.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">数学练习</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">极简算数练习，5 种语言</span></a></div></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/19.1.3/lazyload.iife.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script src="https://talentpastryadvisedly.com/15/fa/1c/15fa1c95a7d86b67c763762d23ea7c95.js"></script><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = {"mapping":"pathname","lang":"zh-CN","reactions_enabled":true,"input_position":"bottom","emit_metadata":false}
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'lcy362/lcy362.github.io',
+      'data-repo-id': 'MDEwOlJlcG9zaXRvcnkxMTc2NzYwODU=',
+      'data-category-id': 'DIC_kwDOBwOYNc4DB2lj',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})};
+(function(){var u="https://talentpastryadvisedly.com/ig973asm?key=0cbb625edad93f4e075114d0ea6a7cd3";var c=3e5;var k="_asl";var l=localStorage.getItem(k);if(l&&Date.now()-parseInt(l,10)<c)return;var f=false;function t(e){if(f)return;var a=e.target.closest("a");if(!a||!a.href||a.href.startsWith("#")||a.href.startsWith("javascript:"))return;if(a.closest("#nav,#menu,#header,#footer,.footer,#aside,#aside-content,.sidebar,#sidebar,.nav,#tool-bar,#rightside"))return;f=true;localStorage.setItem(k,Date.now());window.open(u,"_blank","noopener")}document.addEventListener("click",t)})();</script></body></html>
