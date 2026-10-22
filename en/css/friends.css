@@ -1,0 +1,167 @@
+/* 友情链接：卡片网格与表单样式。全部使用 CSS 变量，跟随站点主题（Butterfly 深色模式也正常）。 */
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 16px 0 28px;
+}
+.friends-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-color, rgba(128, 128, 128, 0.3));
+  border-radius: 10px;
+  background: var(--card-bg, transparent);
+  text-decoration: none;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.friends-card:hover,
+.friends-card:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--link-color, #49b1f5);
+}
+.friends-card__name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.friends-card__desc {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  opacity: 0.75;
+}
+
+/* links 页顶部：随机接力卡片（2026-10-22 起置顶）。 */
+.friends-relay-box {
+  margin: 0 0 20px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-color, rgba(128, 128, 128, 0.3));
+  border-radius: 10px;
+  background: var(--card-bg, transparent);
+}
+.friends-relay-box__title {
+  margin: 0 0 6px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+.friends-relay-box__desc {
+  margin: 0 0 12px !important;
+  font-size: 0.85rem !important;
+  opacity: 0.8;
+}
+
+.friends-relay {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border: 1px solid var(--border-color, rgba(128, 128, 128, 0.3));
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+}
+.friends-relay:hover { border-color: var(--link-color, #49b1f5); }
+
+.friends-form { display: flex; flex-direction: column; gap: 12px; max-width: 560px; }
+.friends-form label { display: flex; flex-direction: column; gap: 4px; font-size: 0.9rem; }
+.friends-form input,
+.friends-form select {
+  padding: 8px 10px;
+  border: 1px solid var(--border-color, rgba(128, 128, 128, 0.35));
+  border-radius: 6px;
+  background: var(--card-bg, #fff);
+  color: inherit;
+  font: inherit;
+}
+.friends-form button {
+  align-self: flex-start;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 6px;
+  background: var(--btn-bg, #49b1f5);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+.friends-form button:disabled { opacity: 0.6; cursor: progress; }
+.friends-status { font-size: 0.85rem; min-height: 1.2em; }
+.friends-status--ok { color: #22a06b; }
+.friends-status--err { color: #d64545; }
+
+/* 分类分组（links 页）：每个分类一个 section，标题为分类名。 */
+.friends-group { margin: 0 0 8px; }
+.friends-group__title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 24px 0 0;
+  padding-left: 10px;
+  border-left: 3px solid var(--link-color, #49b1f5);
+  line-height: 1.4;
+}
+.friends-group .friends-grid { margin-top: 12px; }
+
+/* 申请页入口：链接页底部（2026-10-22 起收底）。 */
+.friends-apply-line {
+  margin: 28px 0 0;
+  padding-top: 18px;
+  border-top: 1px dashed var(--border-color, rgba(128, 128, 128, 0.3));
+  text-align: center;
+}
+.friends-apply-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 8px 16px;
+  border: 1px solid var(--border-color, rgba(128, 128, 128, 0.3));
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+}
+.friends-apply-cta:hover { border-color: var(--link-color, #49b1f5); }
+
+/* 申请页：加粗的「先加我」提示块。
+   用 #article-container 前缀提权，否则被主题的文章样式覆盖。 */
+#article-container .friends-req {
+  margin: 4px 0 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--border-color, rgba(128, 128, 128, 0.3));
+  border-left: 4px solid var(--link-color, #49b1f5);
+  border-radius: 8px;
+  background: var(--card-bg, transparent);
+}
+#article-container .friends-req__title {
+  margin: 0 0 6px !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  line-height: 1.5 !important;
+}
+#article-container .friends-req__body {
+  margin: 0 0 8px !important;
+  font-size: 0.88rem !important;
+  opacity: 0.85;
+}
+#article-container .friends-req__link {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  margin: 0 !important;
+  font-size: 0.9rem !important;
+}
+#article-container .friends-req__link img {
+  /* 主题给 #article-container img 设了 display:block + margin:auto，
+     会把图标撑成整行并居中，这里改回行内。 */
+  display: inline-block !important;
+  margin: 0 !important;
+  width: 16px !important;
+  height: 16px !important;
+  max-width: none !important;
+  border-radius: 4px;
+  flex: 0 0 auto;
+  vertical-align: middle;
+}
+#article-container .friends-req__link a { vertical-align: middle; }

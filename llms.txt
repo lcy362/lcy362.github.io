@@ -1,0 +1,38 @@
+# Mobility · 流沙的技术博客
+
+> 流沙（SandGrid）的个人技术博客：聚焦后端开发与架构设计，分享 Java、消息队列、数据库、云原生、大数据、AI/LLM 等技术实践与个人成长。中英双语——中文站位于根路径，英文站位于 /en/ 子路径。
+
+## 站点导航
+- [首页](https://lichuanyang.top/)
+- [文章归档](https://lichuanyang.top/archives/)
+- [分类索引](https://lichuanyang.top/categories/)
+- [标签索引](https://lichuanyang.top/tags/)
+- [关于作者](https://lichuanyang.top/about/)
+- [RSS 订阅](https://lichuanyang.top/atom.xml)
+
+## 内容方向
+- Java 后端开发与分布式架构
+- 消息队列（ActiveMQ / Kafka 等）
+- 数据库与中间件
+- 云原生与大数据
+- AI / LLM 技术实践
+- 读书笔记与个人感悟
+
+## 英文站（/en/）
+- [Home (EN)](https://lichuanyang.top/en/)
+- [Archives (EN)](https://lichuanyang.top/en/archives/)
+- [Categories (EN)](https://lichuanyang.top/en/categories/)
+- [About (EN)](https://lichuanyang.top/en/about/)
+
+## 作者
+- [GitHub](https://github.com/lcy362)
+- [知乎](https://www.zhihu.com/people/hobermallow)
+- [StackOverflow](https://stackoverflow.com/users/3448633)
+
+## 作者的其他站点
+- [AI 视频生成（Agnes）](https://video.lichuanyang.top/zh)
+- [免费短视频 Studio（零安装）](https://video.lichuanyang.top/zh/studio)
+- [Flint 技能管理器](https://flint.lichuanyang.top/zh)
+- [蒙一把（时事预测）](https://predict.lichuanyang.top/)
+- [方寸博弈（网页桌游）](https://game.lichuanyang.top/)
+- [数学练习](https://math.lichuanyang.top/zh)
