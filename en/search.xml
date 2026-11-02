@@ -4980,4 +4980,123 @@ protostuff deserilise cost &lt;span class=&quot;hljs_number&quot;&gt;127109&lt;/
         <tag>chrome-extension</tag>
       </tags>
   </entry>
+  <entry>
+    <title>FoloToy AI Passport: I Put My Kid&#39;s Wishlist on This Open Wearable</title>
+    <url>/en/posts/61402/</url>
+    <content><![CDATA[<p>A 240 × 320 color screen, an ESP32-C3, a 500mAh cell, 50 grams, clear plastic shell, on a lanyard around your neck.</p>
+<p>On paper, none of that is exciting in 2026.</p>
+<p>But it has something most devices don’t: it makes you want to build something.</p>
+<p>FoloToy calls the AI Passport “a passport to build the world with AI agents”. I’d rather describe it as a toy you can break into. Don’t want to write code? It quietly stays your electronic ID card. Want to mess around? The whole firmware is yours to rewrite, and if you brick it, scan the QR code on the back and flash it back. Both doors are open. Neither one gets sold to you.</p>
+<p>My own framing is simpler: it’s a toy. Strip every feature away and the thing that matters most is that it’s fun.</p>
+<span id="more"></span>
+
+<h2 id="What-It-Actually-Is"><a href="#What-It-Actually-Is" class="headerlink" title="What It Actually Is"></a>What It Actually Is</h2><p>It’s a card.</p>
+<p>Credit-card sized: 60 × 95 × 8.5 mm, 50 g, clear plastic shell, a 240 × 320 color screen on the front, three buttons underneath, a lanyard hole on top. On the back, a QR code, and a passive NFC tag hiding behind it.</p>
+<img src="/img/61402-1.jpg" alt="AI Passport front: transparent shell and lanyard loop" width="58%" />
+
+<p><em>Front, screen off. You can see the board and the battery straight through the shell, and a line of small print underneath: The Open Wearable AI Passport.</em></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Spec</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MCU</td>
+<td>ESP32-C3, 8 MB Flash</td>
+</tr>
+<tr>
+<td>Display</td>
+<td>240 × 320 color TFT</td>
+</tr>
+<tr>
+<td>Input</td>
+<td>Up &#x2F; Down &#x2F; OK + a separate power key</td>
+</tr>
+<tr>
+<td>Audio</td>
+<td>Built-in mic and speaker</td>
+</tr>
+<tr>
+<td>Wireless</td>
+<td>2.4 GHz Wi-Fi + Bluetooth 5 LE</td>
+</tr>
+<tr>
+<td>NFC</td>
+<td>Passive NTAG213</td>
+</tr>
+<tr>
+<td>Battery</td>
+<td>500 mAh, USB Type-C</td>
+</tr>
+<tr>
+<td>Weight</td>
+<td>50 g</td>
+</tr>
+</tbody></table>
+<p>240 × 320 is a joke by phone standards. Hang it on your chest, though, and distance makes it enough. The real limit is how much it can hold: three numbers per screen is about the ceiling, which forces you to decide, before you build anything, which number actually deserves to be seen.</p>
+<p>The transparent shell is the smartest decision in the whole product. Board, battery, speaker, antenna, all on display. That isn’t showing off the build quality, it’s telling you plainly: all of this is yours to touch. FoloToy wrote “hackable” into the industrial design. You don’t need the manual to know this isn’t a sealed black box.</p>
+<h2 id="Three-Ways-to-Use-It-One-Workflow"><a href="#Three-Ways-to-Use-It-One-Workflow" class="headerlink" title="Three Ways to Use It, One Workflow"></a>Three Ways to Use It, One Workflow</h2><p>WEAR, PLAY, CREATE. That’s their split.</p>
+<p><strong>Wear.</strong> Install nothing. Turn it on, search “FoloToy AI Passport” in WeChat Mini Programs, push over a name, an avatar, a short intro and a full-screen image through local Bluetooth, and it becomes your AI passport. There’s even a little game baked in, so it does something out of the box.</p>
+<p><strong>Play.</strong> A dozen or so official plays on the site: AI pixel pet, pocket pomodoro, Tetris, book of answers, a Bad Apple player. One click in the browser flashes it onto the device. A new play overwrites the current one, but your ID-card info survives.</p>
+<p><strong>Create.</strong> <code>FoloToy/ai-passport</code> on GitHub is the full open-source development baseline, MIT licensed. Pin assignments, screen parameters, button voltage thresholds, all written down, nothing hidden.</p>
+<p>Open hardware being open isn’t rare. What’s rare is that these three live in one workflow: you don’t have to wreck the first two to get to the third. Flash your own firmware and the ID card is still there; brick it and the QR code on the back saves you. The exit is well designed, and that matters more than the word “open”.</p>
+<h3 id="Bonus-it-sits-right-in-AI-coding’s-range"><a href="#Bonus-it-sits-right-in-AI-coding’s-range" class="headerlink" title="Bonus: it sits right in AI coding’s range"></a>Bonus: it sits right in AI coding’s range</h3><p>The third layer was meant for people who write embedded code. Someone too lazy to hand-type Hello World, meaning me, shouldn’t get anywhere near it.</p>
+<p>Except it landed right in the middle of this wave of AI coding. The <code>AGENTS.md</code> at the repo root isn’t a contributor guide for humans. It’s a spec written for an agent: how big the screen is, how buttons are read, which capabilities are confirmed working, which boundaries you can’t cross, what the acceptance checklist has to report. Line by line.</p>
+<p>So the workflow becomes: hand the repo to an agent, tell it to read <code>AGENTS.md</code> first, then say in one sentence what you want. Compiling, building, flashing, it can do all of it. That’s not the vendor being thoughtful. It’s a device that happened to grow in the right place.</p>
+<h2 id="What-I-Built-A-Wishlist-My-Kid-Can-Wear"><a href="#What-I-Built-A-Wishlist-My-Kid-Can-Wear" class="headerlink" title="What I Built: A Wishlist My Kid Can Wear"></a>What I Built: A Wishlist My Kid Can Wear</h2><h3 id="The-backstory-a-points-system"><a href="#The-backstory-a-points-system" class="headerlink" title="The backstory: a points system"></a>The backstory: a points system</h3><p>Before this, I built a points system for my kid. Called it WishBank. Good behavior adds points, bad behavior takes them away, and the points he saves can be traded for things he wants.</p>
+<p>Some things I turn into their own track. Jump rope, for one. He used to complain that it was too tiring and refuse to practice, so I added a rope-jumping check-in: hit the daily count and it counts, keep the streak going and you earn points. It worked better than I expected. Now when I get home from work, he’s the one dragging me downstairs to jump first.</p>
+<p>So when this toy showed up, my first thought was to cram all of that into it.</p>
+<p>The AI Passport fits the job. Card-sized, wearable. Wi-Fi, so it can pull data. 240 × 320 is plenty for numbers. Best of all, the firmware can be rewritten wholesale, because it isn’t a device with someone else’s idea of features baked in. You can tell it to do one thing and do that one thing forever.</p>
+<h3 id="What’s-on-the-screen"><a href="#What’s-on-the-screen" class="headerlink" title="What’s on the screen"></a>What’s on the screen</h3><p>Four screens, flipped with the up and down keys:</p>
+<ul>
+<li><strong>Screen one, balance.</strong> One big number, today’s jump count under it, which day of the current streak below that.</li>
+<li><strong>Screen two, the last points added and the last points taken away.</strong> Reason, value, timestamp, one on each side.</li>
+<li><strong>Screen three, today’s jump progress.</strong> Current versus target, a progress bar under it, then check-in status and streak progress.</li>
+<li><strong>Screen four, personal bests.</strong> Most jumps in free practice, most in a one-minute timed run.</li>
+</ul>
+<p>Top bar: his name on the left, battery on the right.</p>
+<p>That’s the whole thing. Don’t underestimate the “small” part. Precisely because it can’t hold more, I was forced to decide what he actually needs to see: the balance and today’s jumps.</p>
+<img src="/img/61402.jpg" alt="The jump-rope progress screen running on an AI Passport" width="58%" />
+
+<p><em>Screen three on the real device: 558 &#x2F; 500 today, checked in, day 6 of 7. It pulls fresh data on its own, which is what that updating line at the bottom is.</em></p>
+<h3 id="How-it-gets-online"><a href="#How-it-gets-online" class="headerlink" title="How it gets online"></a>How it gets online</h3><p>The data comes from my own system’s API. The device joins Wi-Fi and pulls a read-only snapshot over HTTPS, with certificate verification and a custom token; the server checks the token and the user agent. Whatever comes back is written into on-device storage, and the next boot shows the last good data first, because even a fast connection takes ten-odd seconds and the first screen can’t be blank.</p>
+<h3 id="Making-it-behave-like-something-that-just-hangs-there"><a href="#Making-it-behave-like-something-that-just-hangs-there" class="headerlink" title="Making it behave like something that just hangs there"></a>Making it behave like something that just hangs there</h3><p>A few rules I gave it. Short-press OK to refresh right now. Thirty seconds untouched and it flips to the next screen, cycling through all four. Two minutes and the screen goes dark; any key wakes it, and waking it also pulls fresh data.</p>
+<p>None of that is strictly necessary. But without it, it’s an electronic product that needs looking after. With it, it behaves like something that just hangs there: you don’t manage it, it’s simply there.</p>
+<p>The firmware is almost entirely agent-written. I wrote the requirements, revised the requirements, plugged in the Type-C cable and tested on real hardware. Final merged image: 3.94 MB, flashed from 0x0 and it runs.</p>
+<h2 id="Small-Things-You-Only-Notice-When-Using-It"><a href="#Small-Things-You-Only-Notice-When-Using-It" class="headerlink" title="Small Things You Only Notice When Using It"></a>Small Things You Only Notice When Using It</h2><p><strong>The screen.</strong> Covered above: the resolution is both its weakness and its filter. Three lines of information and it starts looking bad, which forces you to cut things.</p>
+<p><strong>Three buttons.</strong> Up, down, OK, plus a separate hardware power key (hold 0.5s to turn on, about 2s to turn off). I know exactly how far three buttons go: paging, selecting, confirming. Anything more needs long-press and double-tap to make up for it. It wasn’t designed for rich interaction, and accepting that makes everything easier.</p>
+<p><strong>The NFC tag and that QR code on the back</strong> are the two most underrated parts. The NFC is a passive tag: someone taps it with a phone and reads whatever you want them to read, which makes it a natural ID card or business card. The QR code is the emergency exit. If you really flash it into a brick, scanning that code gets you a dedicated link, and Chrome or Edge plus a Type-C cable restores the factory firmware. I bricked it more than once in the first week, and that code fished me out every time.</p>
+<img src="/img/61402-3.jpg" alt="AI Passport back: FoloToy logo, NFC mark and QR code" width="58%" />
+
+<p><em>The back. The whole board is exposed, and the lower half carries the FoloToy logo, the NFC mark, and that life-saving QR code.</em></p>
+<h2 id="Before-You-Buy-Read-This"><a href="#Before-You-Buy-Read-This" class="headerlink" title="Before You Buy, Read This"></a>Before You Buy, Read This</h2><p>Who it’s not for.</p>
+<p><strong>If you want an AI toy that chats, don’t buy it.</strong> Mic and speaker are both there, but out of the box it isn’t a voice assistant, and it isn’t “AI companionship” either. Buy it for that and you’ll be disappointed the day it arrives.</p>
+<p><strong>If you want ready-made fun, don’t treat it as a handheld.</strong> A dozen plays, and neither the polish nor the depth will hold you for long. A used handheld plays more games than this thing.</p>
+<p><strong>If you never plan to tinker, you’re overpaying.</strong> You’d only be buying the first layer, and most of the money went into the third.</p>
+<p>It’s for exactly one kind of person: someone who just wants a thing to tinker with. Vibe coding on a screen stopped being enough, and you want a little device you can customize however you like.</p>
+<h2 id="How-to-Start"><a href="#How-to-Start" class="headerlink" title="How to Start"></a>How to Start</h2><ol>
+<li>Go to <code>ai-passport.folotoy.cn</code> and look at the play library first, to see whether anything you want already exists.</li>
+<li>When it arrives, resist the firmware for a minute. Set up the ID card through the WeChat Mini Program, walk through layer one, get a feel for the three keys.</li>
+<li>To build your own, open <code>FoloToy/ai-passport</code> on GitHub, branch a <code>feature/*</code> off <code>main</code> as the README says, hand the whole repo to an agent, and make its first instruction “read <code>AGENTS.md</code>“. The second sentence is what you want.</li>
+<li>Before you flash anything, remember where that QR code is.</li>
+</ol>
+<h2 id="One-Last-Thing"><a href="#One-Last-Thing" class="headerlink" title="One Last Thing"></a>One Last Thing</h2><p>Most so-called AI hardware doesn’t suffer from being not-smart-enough. It suffers from having nowhere to land.</p>
+<p>The AI Passport’s answer is plain: lay the hardware open, write the interfaces into docs, and let you and an AI go break it together. What you put on that 240 × 320 screen is up to you.</p>
+<p>I put my kid’s wishlist on it. He used to have to wait for me to hand over my phone to see how many points he’d saved. Now the screen is hanging right there, and even that nudge is gone.</p>
+<p>What’s the number sitting in your phone that deserves to be hung up?</p>
+]]></content>
+      <categories>
+        <category>AI Practice</category>
+      </categories>
+      <tags>
+        <tag>ai-agent</tag>
+        <tag>ai-passport</tag>
+        <tag>folotoy</tag>
+        <tag>open-source-hardware</tag>
+        <tag>wearable-device</tag>
+        <tag>esp32-c3</tag>
+      </tags>
+  </entry>
 </search>
