@@ -10,7 +10,27 @@
   <rights>All rights reserved 2026, 流沙</rights>
   <subtitle>聚沙成塔，让每一步都有选择</subtitle>
   <title>Mobility</title>
-  <updated>2026-11-02T02:40:38.911Z</updated>
+  <updated>2026-11-04T08:02:08.084Z</updated>
+  <entry>
+    <author>
+      <name>流沙</name>
+    </author>
+    <category term="技术杂谈" scheme="https://lichuanyang.top/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/"/>
+    <category term="ai-agent" scheme="https://lichuanyang.top/tags/ai-agent/"/>
+    <category term="flint" scheme="https://lichuanyang.top/tags/flint/"/>
+    <category term="skill" scheme="https://lichuanyang.top/tags/skill/"/>
+    <category term="技能管理" scheme="https://lichuanyang.top/tags/%E6%8A%80%E8%83%BD%E7%AE%A1%E7%90%86/"/>
+    <category term="token" scheme="https://lichuanyang.top/tags/token/"/>
+    <content>
+      <![CDATA[<p>先说结论：skill 的消耗不在于你「用」了多少，而在于你「装」了多少。装进去的那一刻，账单就开始计时了。</p><p>这话不是我拍脑袋说的。前几天跑完一个长任务，顺手翻了下 agent 的 token 统计面板，几个数字摆在一起，看得我有点沉默。</p><span id="more"></span><h2 id="一次实测：只加载了-1-个-skill，账单长这样"><a href="#一次实测：只加载了-1-个-skill，账单长这样" class="headerlink" title="一次实测：只加载了 1 个 skill，账单长这样"></a>一次实测：只加载了 1 个 skill，账单长这样</h2><p>先看任务整体的账。这个任务跑下来，总用量 184.4M token，1.84 亿。其中工具结果 87.1M（47.3%）、助手消息 84.9M（46.0%），这两块是大头，符合直觉：长任务嘛，工具来回调、模型来回写，钱主要花在这儿。</p><p><img src="/img/skill-token-total.png" alt="Token 统计：总用量 184.4M，技能注入累计约 4.2M 占 2.3%"></p><p>然后看 skill 相关的那一行：<strong>技能注入（累计）约 4.2M，占 2.3%</strong>。</p><p>4.2M 是什么概念？放在 1.84 亿里是 2.3%，确实是「说少不少，说多也不多」。但先别下结论，看看这 4.2M 是由什么叠出来的。</p><p><img src="/img/skill-token-context.png" alt="当前上下文：467.6k &#x2F; 1.0M 已用 46.8%，技能注入约 7.5k 占 2%"></p><p>任务结束时，当前上下文 467.6k &#x2F; 1.0M，用了 46.8%。里面技能注入约 7.5k，占 2%。注意，这 7.5k 是单轮快照，每一轮都在。累计的 4.2M，就是这种东西乘以五六百轮叠出来的。</p><p>那这单轮 7.5k 里装的是什么？展开看：</p><p><img src="/img/skill-token-inject.png" alt="技能注入明细：4 项共约 7.9k，三次 skill-catalog 目录更新加一次 impeccable 技能加载"></p><p>4 项注入里，3 项是 skill-catalog 的目录更新（1.3k、1.7k、2.0k），只有 1 项是真正加载技能正文：<code>Skill: impeccable</code>，2.9k。</p><p>把前提摆清楚：<strong>这个环境里安装了不到 20 个 skill，整个任务全程只加载了 1 个。</strong> 就 1 个。剩下的消耗全花在「目录」上：agent 要把「我有哪些 skill 可用」这份清单带在上下文里，装得越多，清单越长，固定开销越大。说白了，你用一个 skill，付一份钱；你装二十个 skill 只用一个，付的是二十个的目录钱，再乘以轮数。</p><h2 id="外推一下：无限制安装会怎样"><a href="#外推一下：无限制安装会怎样" class="headerlink" title="外推一下：无限制安装会怎样"></a>外推一下：无限制安装会怎样</h2><p>把账算明白只需要小学乘法。</p><p>目录里每个 skill 占一行名字加描述，粗算 50–100 token。20 个 skill 的目录约 1–2k token，和我实测里一次目录更新的体积（1.3k–2.0k）对得上。那如果像很多人一样，随手就装几个skill，装到一两百个呢？目录本身一轮就是 10k–20k token，雷打不动；一个任务跑几十轮，几十万到上百万 token 纯交给目录。</p><p>token 账单还是小事。真正贵的是另一笔：候选清单越长，模型挑错 skill、或者干脆漏掉正确 skill 的概率越高。就像在一箱别人的工具里翻自己的扳手，工具越多，翻错的那次越致命。skill 本来是来省 token、省口水的，装多了反而变成每轮必缴的税。</p><p>所以别纠结「skill 有没有用」了，真正的问题是「安装」这个动作本身太粗糙。npx 一条命令全量推给所有 agent，爽是真爽，账也是真账。我想要一种极其简单的方式，对 skill 做精细化管理：平时收在库里，哪个 agent、哪个项目需要，再投哪几个过去。</p><h2 id="flint：把-skill-当资产管，而不是当插件装"><a href="#flint：把-skill-当资产管，而不是当插件装" class="headerlink" title="flint：把 skill 当资产管，而不是当插件装"></a>flint：把 skill 当资产管，而不是当插件装</h2><p>这个需求我自己解决了一下，就是 <a href="https://github.com/lcy362/flint">flint</a>（<code>local-skills-hub</code>）。之前写过一篇《<a href="/posts/29684/">Flint：让 skill 成为个人资产</a>》讲它的设计哲学：local-first、数据主权、skill 只是磁盘上的普通文件。这篇不重复那些，只讲它怎么解决「按需开启」这件事。</p><p>核心思路一句话：<strong>归集一次，投放按需。</strong></p><p>归集。所有 skill 的本体只存一份，放在你自己的仓库目录里，就是磁盘上一个普通文件夹，git 想怎么管怎么管。散落在各个 agent 目录里的、从第三方 npx 装来的、从别的目录导入的，flint 都能收进来：同名自动去重，来源分歧在 Health 页列出来一键修。收完之后，agent 目录里不再是各自为政的副本，而是指向仓库的软链。</p><p>投放。这是解决 token 问题的关键一步。flint 里有个「预设（Preset）」：一个 skill 包，成员可以是显式指定的几个 skill，也可以是「带某标签的全部」。然后到 agent 详情页，选一个预设，点「Apply preset」，<strong>只有这个预设里的 skill 会被部署进该 agent 的 skill 目录</strong>。没链接预设的 agent，一个 skill 都看不到，目录注入自然是零。</p><p>换句话说，agent 上下文里那份 catalog 清单的长度，从此由你决定：写博客的 agent 只挂写作相关的三五个 skill，目录就只收三五行的税；跑前端任务的 agent 挂 impeccable 那一批，互不干扰。想换组合？改预设成员或标签，再点一次 Apply，完事。</p><p>智能体管理。flint 的 Agents 页按「实际 skill 目录」出卡片：多个 agent 共用一个目录就合并成一张卡、共用一套策略，不会给你演出「改了 A 发现 B 没生效」的戏码。每张卡上能做的事：启用或停用、覆盖目录、从库里逐个加 skill、套预设一键部署、单个 skill 选软链还是拷贝。目录里物理上有什么，agent 就看到什么，没有后台偷偷同步的玄学。</p><p>这套组合拳打下来，「装了 200 个 skill」和「这个 agent 能用 5 个 skill」就彻底解耦了。库可以无限大，税只按投放的交。</p><h2 id="顺便提一嘴：flint-还能干什么"><a href="#顺便提一嘴：flint-还能干什么" class="headerlink" title="顺便提一嘴：flint 还能干什么"></a>顺便提一嘴：flint 还能干什么</h2><p>按需投放是主线，但归集和投放这两层搭好之后，剩下的功能基本是顺出来的：</p><ul><li>Projects：给项目登记路径加标签，标签就是部署策略。匹配的 skill 进项目的 <code>.agents/skills</code>（可以跟 git 提交），再软链共享给各 agent 的项目级目录。换机器，项目自带技能包。</li><li>Health：六维体检（同步状态、重复、断链、配置、仓库、项目），问题列出来，一键修之前先让你确认。</li><li>npx 安装托管：把 <code>npx xxx skills install</code> 这类命令贴进去，flint 在受管目录里跑（自带 git 快照可回滚），装完直接进正常注册流程；更新就是源卡片上一个按钮。</li><li>标签与元数据：标签优先写进 <code>SKILL.md</code> 的 frontmatter，就是 Claude Code 等 40+ 工具原生能读的那份；没回写的先在本地暂存，一键迁移。</li></ul><p>安装就一行：<code>npx flint-skills-hub</code>，然后开 <a href="http://localhost:8787。没有云、没有账号、没有遥测，skill">http://localhost:8787。没有云、没有账号、没有遥测，skill</a> 是你磁盘上的文件，flint 卸了它们也在。界面中英可切换，日志可下载，都是顺带的手尾。</p><h2 id="回到开头那组数字"><a href="#回到开头那组数字" class="headerlink" title="回到开头那组数字"></a>回到开头那组数字</h2><p>1.84 亿 token 的任务，skill 注入累计 4.2M，占 2.3%。单看比例确实不能算多。但别忘了前提：这是个只装了不到 20 个 skill、全程只用了 1 个的环境。</p><p>skill 这东西，价值在「复用」，成本在「常驻」。管理方式粗暴一点，成本就常驻给你看。</p><p>所以下次手痒想 <code>npx</code> 全量装一套技能包之前，先问自己一句：这二十个 skill，我这个 agent 真用得上几个？</p><p>想清楚再装。或者干脆别装：归集进库，按需投放，让目录永远只留真正干活的那几个。</p>]]>
+    </content>
+    <id>https://lichuanyang.top/posts/48213/</id>
+    <link href="https://lichuanyang.top/posts/48213/"/>
+    <published>2026-11-04T07:45:00.000Z</published>
+    <summary>实测数据：装了不到 20 个 skill、全程只加载 1 个，一个 1.84 亿 token 的任务里 skill 注入累计约 420 万。说少不少，说多也不多——但无限制装下去会怎样？ 顺便讲讲我怎么用 flint 把 skill 管起来，做到按需开启。</summary>
+    <title>你随手安装的那些 skill，会消耗你多少 token</title>
+    <updated>2026-11-04T08:02:08.084Z</updated>
+  </entry>
   <entry>
     <author>
       <name>流沙</name>
@@ -565,22 +585,5 @@
     <summary>通过 iTerm2 配置 SSH 书签，实现记住密码和自动登录，告别反复输入 IP 和密码的痛苦。</summary>
     <title>iterm2配置ssh书签, 实现记住密码和自动登录</title>
     <updated>2026-09-14T12:02:20.613Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>流沙</name>
-    </author>
-    <category term="技术杂谈" scheme="https://lichuanyang.top/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/"/>
-    <category term="技术分享" scheme="https://lichuanyang.top/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/"/>
-    <category term="技术分享选题" scheme="https://lichuanyang.top/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E9%80%89%E9%A2%98/"/>
-    <content>
-      <![CDATA[<p>技术分享基本在每个公司都会有。分享的效果因人，因团队而异。在有些团队中，分享会因为种种原因，逐渐沦为一个没什么用的时间杀手。</p><p>写这篇文章，是希望从选题等方面出发，通过一些比较基础的规则，提升技术分享的下限，争取让80%的人都能做出一次80分的技术分享。</p><span id="more"></span><h2 id="选题"><a href="#选题" class="headerlink" title="选题"></a>选题</h2><h3 id="基本原则"><a href="#基本原则" class="headerlink" title="基本原则"></a><strong>基本原则</strong></h3><p>首先要了解到的是，线下的技术分享不是分享知识的唯一形式。其他的，比如写博客写文章，拍视频，或者简单的分享一两句话，都是常见的分享形式。针对不同的知识，要考虑用什么样的方式进行分享更加合适。</p><p>比如，对于某项技术的入门介绍，推荐以文章的形式进行。读者可以进行快速的浏览或者对关键信息进行检索，要比坐下来听一遍效率高很多。</p><h3 id="推荐选题"><a href="#推荐选题" class="headerlink" title="推荐选题"></a><strong>推荐选题</strong></h3><p>通常来说，比较好的选题需要有较强的实用性，能够吸引到听众，且难度适中。能够让听众在听得懂和有新收获之间达到一个平衡。</p><p>举一些比较好的选题例子，以及一些注意事项：</p><ul><li>对于新技术的介绍，需要介绍清楚新技术的产生背景，解决了什么问题，相对之前的类似解决方案有什么优缺点，引入了什么新问题，等；</li><li>对晦涩难懂的技术的讲解，这类选题粒度可以小一些，需要在充分理解问题的基础上有较好的分享技巧，保证大家听的明白；</li><li>比较细节的技术深入讨论，与上一类类似，要注意背景介绍；</li><li>对于一类问题的高度总结，比如cache的一致性、分布式id、分布式事务等，这类话题可以从实际存在的问题切入，分析不同解决方案的优劣，以及技术方案的演进等；</li><li>业务分享，这一类最好是选择常见的业务领域，同时要注意对背景的介绍；</li></ul><h2 id="内容准备"><a href="#内容准备" class="headerlink" title="内容准备"></a>内容准备</h2><p>对于分享效果，虽然会受各方面的影响，但归根结底最重要的还是分享内容中是否有足够的干货。</p><p>为了能够有干货, 最好的方法还是平常的积累，建议平常多思考，对平常工作中用到的东西建立起更深的认知。推荐阅读《卡片笔记写作法》这本书，平时有持续输入，才能有输出产生。</p><p>此外，</p><p>准备过程中注意思考和总结，形成自己的观点。单纯对其他人的东西做搬运，实际上造成的是自己时间的浪费；</p><p>最好能将实际的应用场景融汇到分享内容中；</p><p>比较难的知识点，注意分享技巧，让听众能听明白，可以考虑先就分享的关键部分，先找一两个同事试讲；</p><p>通过看视频，除了可以了解分享内容本身，也可以了解到其他人是怎么讲的，对分享效果比较有帮助。</p><p>除了分享的真正内容外，建议增加以下内容的准备：</p><p>预习资料。可以提前准备一些有助于理解分享内容的资料，比如某本书的某几章，某篇文章等，要求大家提前阅读。分享者需要给出每个材料的预计阅读时间，单次分享整体需要的阅读时间不宜超过1个小时。</p><p>对背景的详细阐述，尤其是涉及到一些业务知识或者不常见的场景时。</p><h2 id="分享流程"><a href="#分享流程" class="headerlink" title="分享流程"></a>分享流程</h2><p>准备好分享内容后，需要找人进行review，reviewer可以是自己的mentor, leader, 或者其他在相关领域非常熟悉的人。</p><p>reviewer在充分理解分享内容的基础上，主要对选题和分享内容进行审核，确保满足本文列举的其他要求。同时尽量保证分享内容不要有技术性的错误。</p><p>分享材料一定要提前发出来，让听众有提前熟悉的机会。</p><p>分享时注意语速控制，不宜过快。</p><p>原文地址: <a href="https://lichuanyang.top/posts/54216/">https://lichuanyang.top/posts/54216/</a></p><hr>]]>
-    </content>
-    <id>https://lichuanyang.top/posts/54216/</id>
-    <link href="https://lichuanyang.top/posts/54216/"/>
-    <published>2021-08-31T06:27:43.000Z</published>
-    <summary>从选题、结构到演讲技巧，系统性地分享如何做出一次 80 分以上的技术分享。</summary>
-    <title>怎样做一个好的技术分享</title>
-    <updated>2026-09-14T12:02:20.619Z</updated>
   </entry>
 </feed>

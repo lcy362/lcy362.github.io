@@ -5099,4 +5099,56 @@ protostuff deserilise cost &lt;span class=&quot;hljs_number&quot;&gt;127109&lt;/
         <tag>esp32-c3</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Those Skills You Casually Install: How Many Tokens Do They Cost You?</title>
+    <url>/en/posts/48213/</url>
+    <content><![CDATA[<p>Conclusion first: what a skill costs you is not decided by how much you use it, but by how many you install. The moment it lands on your disk, the meter starts running.</p>
+<p>I’m not making this up. A long task of mine finished the other day, and I happened to flip open the agent’s token statistics panel. A few numbers sitting next to each other left me quiet for a while.</p>
+<span id="more"></span>
+
+<h2 id="One-Measurement-1-Skill-Loaded-and-Here’s-the-Bill"><a href="#One-Measurement-1-Skill-Loaded-and-Here’s-the-Bill" class="headerlink" title="One Measurement: 1 Skill Loaded, and Here’s the Bill"></a>One Measurement: 1 Skill Loaded, and Here’s the Bill</h2><p>Start with the whole task. It burned 184.4M tokens in total: 184 million. Tool results took 87.1M (47.3%) and assistant messages 84.9M (46.0%). Those two are the bulk, which matches intuition. In a long task the tools get called back and forth and the model writes back and forth, and that’s where the money goes.</p>
+<p><img src="/en/img/skill-token-total.png" alt="Token statistics: 184.4M total, skill injection cumulative ~4.2M at 2.3%"></p>
+<p>Then look at the one line about skills: <strong>skill injection, cumulative, ~4.2M, 2.3% of the total</strong>.</p>
+<p>What is 4.2M? Against 184 million it’s 2.3%, genuinely “not nothing, not much either”. But hold the verdict and look at what the 4.2M is stacked out of.</p>
+<p><img src="/en/img/skill-token-context.png" alt="Current context: 467.6k &#x2F; 1.0M, 46.8% used, skill injection ~7.5k at 2%"></p>
+<p>At the end of the task the current context sat at 467.6k &#x2F; 1.0M, 46.8% used. Skill injection inside it: ~7.5k, 2%. Note that 7.5k is a single-turn snapshot. It is there in every turn. The cumulative 4.2M is that thing multiplied by five or six hundred turns.</p>
+<p>So what’s inside that 7.5k per turn? Expand it:</p>
+<p><img src="/en/img/skill-token-inject.png" alt="Skill injection detail: 4 entries totalling ~7.9k, three skill-catalog updates plus one impeccable skill load"></p>
+<p>Of the 4 injection entries, 3 are skill-catalog updates (1.3k, 1.7k, 2.0k). Only 1 is an actual skill body being loaded: <code>Skill: impeccable</code>, 2.9k.</p>
+<p>Let me lay the premise on the table: <strong>this environment had fewer than 20 skills installed, and the whole task loaded exactly 1.</strong> One. Everything else was spent on the catalog. The agent carries the list of “which skills I have available” in its context; the more you install, the longer the list, the bigger the fixed cost. Put plainly: use one skill, pay for one; install twenty and use one, pay the catalog rent for twenty, times the number of turns.</p>
+<h2 id="Extrapolate-What-If-Installation-Has-No-Limit"><a href="#Extrapolate-What-If-Installation-Has-No-Limit" class="headerlink" title="Extrapolate: What If Installation Has No Limit"></a>Extrapolate: What If Installation Has No Limit</h2><p>The math only needs elementary-school multiplication.</p>
+<p>Each skill occupies one line of name plus description in the catalog, roughly 50–100 tokens. A 20-skill catalog is about 1–2k tokens, which lines up with the size of one catalog update I measured (1.3k–2.0k). Now what if, like plenty of people, you install a few skills on every whim until you’re at a hundred or two? The catalog alone is 10k–20k tokens per turn, no negotiation; a task of a few dozen turns hands a few hundred thousand to over a million tokens purely to the catalog.</p>
+<p>The token bill is still the small part. The expensive one is elsewhere: the longer the candidate list, the higher the chance the model picks the wrong skill or misses the right one entirely. Like digging for your own wrench in a crate full of other people’s tools, where the more tools in the crate, the more fatal the one wrong grab. Skills were supposed to save tokens and save breath; over-installed, they become a tax you pay every turn.</p>
+<p>So stop debating “are skills useful or not”. The real problem is that the act of installing is too crude. One npx command pushes everything into every agent. Satisfying, sure; the bill is just as real. What I wanted was an extremely simple way to manage skills with fine grain: keep them in a vault by default, and deploy only the few a given agent or project needs.</p>
+<h2 id="flint-Manage-Skills-as-Assets-Not-as-Plugins"><a href="#flint-Manage-Skills-as-Assets-Not-as-Plugins" class="headerlink" title="flint: Manage Skills as Assets, Not as Plugins"></a>flint: Manage Skills as Assets, Not as Plugins</h2><p>I solved this need myself: <a href="https://github.com/lcy362/flint">flint</a> (<code>local-skills-hub</code>). I wrote about its design philosophy (local-first, data sovereignty, skills as plain files on disk) in <a href="/posts/29684/">Flint: Turning Skills into Personal Assets</a>. This post won’t repeat that; it only covers how flint solves “enable on demand”.</p>
+<p>One sentence for the core idea: <strong>collect once, deploy on demand.</strong></p>
+<p>Collect. Every skill body lives in exactly one copy, in a repository directory of your own: an ordinary folder on disk, version it with git however you like. Strays scattered across agent directories, things installed from third-party npx installers, imports from other folders, flint takes them all in. Same names deduplicate automatically; divergent sources show up on the Health page with one-click fixes. After the sweep, agent directories no longer hold independent copies; they hold symlinks into the vault.</p>
+<p>Deploy. This is the step that solves the token problem. Flint has Presets: a bundle of skills whose members are either an explicit list or “everything carrying tag X”. Open an agent’s detail page, pick a preset, press “Apply preset”, and <strong>only the skills in that preset get deployed into that agent’s skill directory</strong>. An agent with no linked preset sees zero skills, and its catalog injection is, naturally, zero.</p>
+<p>Which means the length of that catalog list in your agent’s context is now your call. The blogging agent carries three or five writing-related skills and pays tax on three or five lines; the frontend agent carries the impeccable bunch; neither disturbs the other. Want a different mix? Edit the preset’s members or tags, press Apply again, done.</p>
+<p>Agent management. Flint’s Agents page renders one card per actual skill directory: agents sharing a directory merge into one card and share one strategy, so you never get the “I changed A and B didn’t pick it up” theatre. Per card you can enable or disable it, override its directory, add skills from the vault one by one, apply a preset in one shot, and choose symlink or copy per skill. What physically sits in the directory is what the agent sees. No backstage auto-sync mysticism.</p>
+<p>With that combination, “200 skills installed” and “this agent can use 5 skills” are fully decoupled. The vault can grow without limit; the tax is only on what you deploy.</p>
+<h2 id="While-I’m-at-It-What-Else-flint-Does"><a href="#While-I’m-at-It-What-Else-flint-Does" class="headerlink" title="While I’m at It: What Else flint Does"></a>While I’m at It: What Else flint Does</h2><p>On-demand deployment is the main line, but once collecting and deploying are in place, the rest follows almost for free:</p>
+<ul>
+<li>Projects: register a path plus tags for a project, and the tags become the deployment policy. Matching skills land in the project’s <code>.agents/skills</code> (committable to git) and are shared by symlink into each agent’s project-level directory. Move machines, and the project carries its own skill pack.</li>
+<li>Health: a six-dimension checkup (sync state, duplicates, broken links, config, repositories, projects). Issues are listed; one-click fixes ask you to confirm first.</li>
+<li>Managed npx installs: paste a command like <code>npx xxx skills install</code> and flint runs it inside a managed directory (git snapshots with rollback built in), then feeds the result into the normal registration flow; updating is one button on the source card.</li>
+<li>Tags and metadata: tags prefer the <code>SKILL.md</code> frontmatter, the same fields Claude Code and 40+ other tools read natively; anything not yet written back stays staged locally, migratable in one click.</li>
+</ul>
+<p>Install is one line: <code>npx flint-skills-hub</code>, then open <a href="http://localhost:8787/">http://localhost:8787</a>. No cloud, no account, no telemetry. Skills are files on your disk, and uninstalling flint leaves them there. The UI switches between English and Chinese and logs are downloadable; small tail-end conveniences.</p>
+<h2 id="Back-to-Those-Opening-Numbers"><a href="#Back-to-Those-Opening-Numbers" class="headerlink" title="Back to Those Opening Numbers"></a>Back to Those Opening Numbers</h2><p>A 184-million-token task, skill injection cumulative 4.2M, 2.3%. On the ratio alone it hardly counts as much. But don’t forget the premise: an environment with fewer than 20 skills installed and exactly 1 used throughout.</p>
+<p>Skills: the value is in reuse, the cost is in residency. Manage them crudely and the cost moves in permanently.</p>
+<p>So next time your fingers itch to <code>npx</code> a whole skill pack in, ask yourself one question first: of these twenty skills, how many will this agent actually use?</p>
+<p>Think it through, then install. Or don’t install at all: collect into the vault, deploy on demand, and keep the catalog down to the few that actually work.</p>
+]]></content>
+      <categories>
+        <category>Tech Miscellany</category>
+      </categories>
+      <tags>
+        <tag>ai-agent</tag>
+        <tag>skill-management</tag>
+        <tag>flint</tag>
+        <tag>skill</tag>
+        <tag>token</tag>
+      </tags>
+  </entry>
 </search>
