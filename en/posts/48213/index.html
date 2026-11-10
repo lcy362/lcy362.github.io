@@ -1,0 +1,356 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Those Skills You Casually Install: How Many Tokens Do They Cost You? | Mobility</title><meta name="author" content="SandGrid"><meta name="copyright" content="SandGrid"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Measured: with fewer than 20 skills installed and only 1 loaded the whole time, a 184-million-token task still spent ~4.2M on skill injection. Not nothing, not much either. But what if installs had no">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Those Skills You Casually Install: How Many Tokens Do They Cost You?">
+<meta property="og:url" content="https://lichuanyang.top/en/posts/48213/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="Measured: with fewer than 20 skills installed and only 1 loaded the whole time, a 184-million-token task still spent ~4.2M on skill injection. Not nothing, not much either. But what if installs had no">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://lichuanyang.top/en/img/skill-token-cover.jpg">
+<meta property="article:published_time" content="2026-11-04T07:45:00.000Z">
+<meta property="article:modified_time" content="2026-11-04T08:07:39.415Z">
+<meta property="article:author" content="SandGrid">
+<meta property="article:tag" content="ai-agent">
+<meta property="article:tag" content="flint">
+<meta property="article:tag" content="skill">
+<meta property="article:tag" content="skill-management">
+<meta property="article:tag" content="token">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/en/img/skill-token-cover.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Those Skills You Casually Install: How Many Tokens Do They Cost You?",
+  "url": "https://lichuanyang.top/en/posts/48213/",
+  "image": "https://lichuanyang.top/en/img/skill-token-cover.jpg",
+  "abstract": "Loading 1 skill still bills you 4.2M tokens; skills shouldn't be managed by installing, but by deploying.",
+  "datePublished": "2026-11-04T07:45:00.000Z",
+  "dateModified": "2026-11-04T08:07:39.415Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "SandGrid",
+      "url": "https://lichuanyang.top/en/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow","https://x.com/lcy362"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/en/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/en/posts/48213/"><link rel="preconnect" href="//cdnjs.cloudflare.com"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"/><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"/><meta name="baidu-site-verification" content="code-T8LautTf5f"/><link rel="stylesheet" href="/en/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/en/',
+  algolia: undefined,
+  localSearch: {"path":"/en/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Those Skills You Casually Install: How Many Tokens Do They Cost You?',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/en/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/48213/"/>
+<meta name="keywords" content="ai-agent, skill-management, flint, skill, token">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/en/"},{"@type":"ListItem","position":2,"name":"Tech Miscellany","item":"https://lichuanyang.top/en/categories/Tech-Miscellany/"},{"@type":"ListItem","position":3,"name":"Those Skills You Casually Install: How Many Tokens Do They Cost You?","item":"https://lichuanyang.top/en/posts/48213/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">95</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">146</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div><div class="menus_item"><a class="site-page" href="/en/links/"><i class="fa-fw fas fa-link"></i><span> Improbability Drive</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/en/img/skill-token-cover.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/en/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/en/"><span class="site-name">Those Skills You Casually Install: How Many Tokens Do They Cost You?</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div><div class="menus_item"><a class="site-page" href="/en/links/"><i class="fa-fw fas fa-link"></i><span> Improbability Drive</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Those Skills You Casually Install: How Many Tokens Do They Cost You?</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2026-11-04T07:45:00.000Z" title="Created 2026-11-04 15:45:00">2026-11-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-11-04T08:07:39.415Z" title="Updated 2026-11-04 16:07:39">2026-11-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/en/categories/tech-miscellany/">Tech Miscellany</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>8mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> Loading 1 skill still bills you 4.2M tokens; skills shouldn't be managed by installing, but by deploying.</blockquote><p>Conclusion first: what a skill costs you is not decided by how much you use it, but by how many you install. The moment it lands on your disk, the meter starts running.</p>
+<p>I’m not making this up. A long task of mine finished the other day, and I happened to flip open the agent’s token statistics panel. A few numbers sitting next to each other left me quiet for a while.</p>
+<span id="more"></span>
+
+<h2 id="One-Measurement-1-Skill-Loaded-and-Here’s-the-Bill"><a href="#One-Measurement-1-Skill-Loaded-and-Here’s-the-Bill" class="headerlink" title="One Measurement: 1 Skill Loaded, and Here’s the Bill"></a>One Measurement: 1 Skill Loaded, and Here’s the Bill</h2><p>Start with the whole task. It burned 184.4M tokens in total: 184 million. Tool results took 87.1M (47.3%) and assistant messages 84.9M (46.0%). Those two are the bulk, which matches intuition. In a long task the tools get called back and forth and the model writes back and forth, and that’s where the money goes.</p>
+<p><img src="/en/img/skill-token-total.png" alt="Token statistics: 184.4M total, skill injection cumulative ~4.2M at 2.3%" loading='lazy'></p>
+<p>Then look at the one line about skills: <strong>skill injection, cumulative, ~4.2M, 2.3% of the total</strong>.</p>
+<p>What is 4.2M? Against 184 million it’s 2.3%, genuinely “not nothing, not much either”. But hold the verdict and look at what the 4.2M is stacked out of.</p>
+<p><img src="/en/img/skill-token-context.png" alt="Current context: 467.6k &#x2F; 1.0M, 46.8% used, skill injection ~7.5k at 2%" loading='lazy'></p>
+<p>At the end of the task the current context sat at 467.6k &#x2F; 1.0M, 46.8% used. Skill injection inside it: ~7.5k, 2%. Note that 7.5k is a single-turn snapshot. It is there in every turn. The cumulative 4.2M is that thing multiplied by five or six hundred turns.</p>
+<p>So what’s inside that 7.5k per turn? Expand it:</p>
+<p><img src="/en/img/skill-token-inject.png" alt="Skill injection detail: 4 entries totalling ~7.9k, three skill-catalog updates plus one impeccable skill load" loading='lazy'></p>
+<p>Of the 4 injection entries, 3 are skill-catalog updates (1.3k, 1.7k, 2.0k). Only 1 is an actual skill body being loaded: <code>Skill: impeccable</code>, 2.9k.</p>
+<p>Let me lay the premise on the table: <strong>this environment had fewer than 20 skills installed, and the whole task loaded exactly 1.</strong> One. Everything else was spent on the catalog. The agent carries the list of “which skills I have available” in its context; the more you install, the longer the list, the bigger the fixed cost. Put plainly: use one skill, pay for one; install twenty and use one, pay the catalog rent for twenty, times the number of turns.</p>
+<h2 id="Extrapolate-What-If-Installation-Has-No-Limit"><a href="#Extrapolate-What-If-Installation-Has-No-Limit" class="headerlink" title="Extrapolate: What If Installation Has No Limit"></a>Extrapolate: What If Installation Has No Limit</h2><p>The math only needs elementary-school multiplication.</p>
+<p>Each skill occupies one line of name plus description in the catalog, roughly 50–100 tokens. A 20-skill catalog is about 1–2k tokens, which lines up with the size of one catalog update I measured (1.3k–2.0k). Now what if, like plenty of people, you install a few skills on every whim until you’re at a hundred or two? The catalog alone is 10k–20k tokens per turn, no negotiation; a task of a few dozen turns hands a few hundred thousand to over a million tokens purely to the catalog.</p>
+<p>The token bill is still the small part. The expensive one is elsewhere: the longer the candidate list, the higher the chance the model picks the wrong skill or misses the right one entirely. Like digging for your own wrench in a crate full of other people’s tools, where the more tools in the crate, the more fatal the one wrong grab. Skills were supposed to save tokens and save breath; over-installed, they become a tax you pay every turn.</p>
+<p>So stop debating “are skills useful or not”. The real problem is that the act of installing is too crude. One npx command pushes everything into every agent. Satisfying, sure; the bill is just as real. What I wanted was an extremely simple way to manage skills with fine grain: keep them in a vault by default, and deploy only the few a given agent or project needs.</p>
+<h2 id="flint-Manage-Skills-as-Assets-Not-as-Plugins"><a href="#flint-Manage-Skills-as-Assets-Not-as-Plugins" class="headerlink" title="flint: Manage Skills as Assets, Not as Plugins"></a>flint: Manage Skills as Assets, Not as Plugins</h2><p>I solved this need myself: <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/lcy362/flint">flint</a> (<code>local-skills-hub</code>). I wrote about its design philosophy (local-first, data sovereignty, skills as plain files on disk) in <a href="/posts/29684/">Flint: Turning Skills into Personal Assets</a>. This post won’t repeat that; it only covers how flint solves “enable on demand”.</p>
+<p>One sentence for the core idea: <strong>collect once, deploy on demand.</strong></p>
+<p>Collect. Every skill body lives in exactly one copy, in a repository directory of your own: an ordinary folder on disk, version it with git however you like. Strays scattered across agent directories, things installed from third-party npx installers, imports from other folders, flint takes them all in. Same names deduplicate automatically; divergent sources show up on the Health page with one-click fixes. After the sweep, agent directories no longer hold independent copies; they hold symlinks into the vault.</p>
+<p>Deploy. This is the step that solves the token problem. Flint has Presets: a bundle of skills whose members are either an explicit list or “everything carrying tag X”. Open an agent’s detail page, pick a preset, press “Apply preset”, and <strong>only the skills in that preset get deployed into that agent’s skill directory</strong>. An agent with no linked preset sees zero skills, and its catalog injection is, naturally, zero.</p>
+<p>Which means the length of that catalog list in your agent’s context is now your call. The blogging agent carries three or five writing-related skills and pays tax on three or five lines; the frontend agent carries the impeccable bunch; neither disturbs the other. Want a different mix? Edit the preset’s members or tags, press Apply again, done.</p>
+<p>Agent management. Flint’s Agents page renders one card per actual skill directory: agents sharing a directory merge into one card and share one strategy, so you never get the “I changed A and B didn’t pick it up” theatre. Per card you can enable or disable it, override its directory, add skills from the vault one by one, apply a preset in one shot, and choose symlink or copy per skill. What physically sits in the directory is what the agent sees. No backstage auto-sync mysticism.</p>
+<p>With that combination, “200 skills installed” and “this agent can use 5 skills” are fully decoupled. The vault can grow without limit; the tax is only on what you deploy.</p>
+<h2 id="While-I’m-at-It-What-Else-flint-Does"><a href="#While-I’m-at-It-What-Else-flint-Does" class="headerlink" title="While I’m at It: What Else flint Does"></a>While I’m at It: What Else flint Does</h2><p>On-demand deployment is the main line, but once collecting and deploying are in place, the rest follows almost for free:</p>
+<ul>
+<li>Projects: register a path plus tags for a project, and the tags become the deployment policy. Matching skills land in the project’s <code>.agents/skills</code> (committable to git) and are shared by symlink into each agent’s project-level directory. Move machines, and the project carries its own skill pack.</li>
+<li>Health: a six-dimension checkup (sync state, duplicates, broken links, config, repositories, projects). Issues are listed; one-click fixes ask you to confirm first.</li>
+<li>Managed npx installs: paste a command like <code>npx xxx skills install</code> and flint runs it inside a managed directory (git snapshots with rollback built in), then feeds the result into the normal registration flow; updating is one button on the source card.</li>
+<li>Tags and metadata: tags prefer the <code>SKILL.md</code> frontmatter, the same fields Claude Code and 40+ other tools read natively; anything not yet written back stays staged locally, migratable in one click.</li>
+</ul>
+<p>Install is one line: <code>npx flint-skills-hub</code>, then open <a target="_blank" rel="noopener external nofollow noreferrer" href="http://localhost:8787/">http://localhost:8787</a>. No cloud, no account, no telemetry. Skills are files on your disk, and uninstalling flint leaves them there. The UI switches between English and Chinese and logs are downloadable; small tail-end conveniences.</p>
+<h2 id="Back-to-Those-Opening-Numbers"><a href="#Back-to-Those-Opening-Numbers" class="headerlink" title="Back to Those Opening Numbers"></a>Back to Those Opening Numbers</h2><p>A 184-million-token task, skill injection cumulative 4.2M, 2.3%. On the ratio alone it hardly counts as much. But don’t forget the premise: an environment with fewer than 20 skills installed and exactly 1 used throughout.</p>
+<p>Skills: the value is in reuse, the cost is in residency. Manage them crudely and the cost moves in permanently.</p>
+<p>So next time your fingers itch to <code>npx</code> a whole skill pack in, ask yourself one question first: of these twenty skills, how many will this agent actually use?</p>
+<p>Think it through, then install. Or don’t install at all: collect into the vault, deploy on demand, and keep the catalog down to the few that actually work.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en">SandGrid</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en/posts/48213/">https://lichuanyang.top/en/posts/48213/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener external nofollow noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/en/img/skill-token-cover.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>Subscribe to WeChat</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="/en/upload/qrcode.bmp" alt="微信"/ loading='lazy'></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/en/posts/61402/" title="FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable"><img class="cover" src="/en/img/61402.jpg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable</div></div><div class="info-2"><div class="info-item-1">A 240 × 320 color screen, an ESP32-C3, a 500mAh cell, 50 grams, clear plastic shell, on a lanyard around your neck. On paper, none of that is exciting in 2026. But it has something most devices don’t: it makes you want to build something. FoloToy calls the AI Passport “a passport to build the world with AI agents”. I’d rather describe it as a toy you can break into. Don’t want to write code? It quietly stays your electronic ID card. Want to mess around? The whole firmware is yours to rewrite,...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/en/posts/29684/" title="Flint: Turning Skills into Personal Assets"><img class="cover" src="/en/img/29684.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-14</div><div class="info-item-2">Flint: Turning Skills into Personal Assets</div></div><div class="info-2"><div class="info-item-1">Lately, every time OpenAI ships a new model, a familiar argument makes the rounds: skills are useless, and more and more users are abandoning them. Is that true? Yes and no. To be fair, the logic has merit. As models get stronger, plenty of skills really have been abandoned — mainly the so-called “general-purpose” ones like Superpower. Those skills existed to patch over gaps in model capability, and they did help back when no model was aggressively optimized for coding. As the models themselv...</div></div></div></a><a class="pagination-related" href="/en/posts/34689/" title="From Token Farming to Skill Management: My pks Tool in Practice"><img class="cover" src="/en/img/34689.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-01</div><div class="info-item-2">From Token Farming to Skill Management: My pks Tool in Practice</div></div><div class="info-2"><div class="info-item-1">I wrote an article before: https://lichuanyang.top/en/posts/26060/ . It taught people how to build Agent-independent workflows, so you can spin up different Agents anytime and smoothly use the free&#x2F;trial plans from various providers. After practicing this way, one thing that obviously becomes tedious is skill management. So I wrote another tool to manage skills across different Agents and projects.   Given the current Agent ecosystem is still quite chaotic, everyone does their own thing,...</div></div></div></a><a class="pagination-related" href="/en/posts/61402/" title="FoloToy AI Passport: I Put My Kid&#39;s Wishlist on This Open Wearable"><img class="cover" src="/en/img/61402.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-01</div><div class="info-item-2">FoloToy AI Passport: I Put My Kid&#39;s Wishlist on This Open Wearable</div></div><div class="info-2"><div class="info-item-1">A 240 × 320 color screen, an ESP32-C3, a 500mAh cell, 50 grams, clear plastic shell, on a lanyard around your neck. On paper, none of that is exciting in 2026. But it has something most devices don’t: it makes you want to build something. FoloToy calls the AI Passport “a passport to build the world with AI agents”. I’d rather describe it as a toy you can break into. Don’t want to write code? It quietly stays your electronic ID card. Want to mess around? The whole firmware is yours to rewrite,...</div></div></div></a><a class="pagination-related" href="/en/posts/12146/" title="chrome-sidecar: Let AI Agents Use Your Logged-In Browser"><img class="cover" src="/en/img/12146.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-08</div><div class="info-item-2">chrome-sidecar: Let AI Agents Use Your Logged-In Browser</div></div><div class="info-2"><div class="info-item-1">You’ve probably run into this. You ask an AI to look something up on some website, and it says, “I’m ready — please log in first.” A browser window pops up. You type your username, wait for the SMS code, get past the picture-picking CAPTCHA, and when you’re finally done you go back and tell it “okay, done.” Switch to another site, and you do it all over again. I got tired of that flow, so I built something. The idea is simple: don’t give the AI a brand-new browser — let it use the one you’re ...</div></div></div></a><a class="pagination-related" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows"><img class="cover" src="/en/img/ai-agent-workflow.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-03</div><div class="info-item-2">How to Farm Free Tokens: Building Agent-Independent AI Workflows</div></div><div class="info-2"><div class="info-item-1">What’s the biggest—or perhaps only—pain point of using AI right now? Probably the bill. Claude, Codex, Cursor, Qoder, MiMo, MiniMax—their basic plans all start around $20&#x2F;month, and you still have to watch your usage. If you want unlimited access, it gets even more expensive. Meanwhile, lots of platforms offer free trials or permanently free models. For instance, OpenCode’s DeepSeek Flash has been free for a while. So how do we actually make the most of these free models? I’ve been using...</div></div></div></a><a class="pagination-related" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"><img class="cover" src="/en/img/26061.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-04</div><div class="info-item-2">How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow</div></div><div class="info-2"><div class="info-item-1">Last post ended with this: Agents are just tools. Documentation is the core. After that went up, someone asked: sure, but how do you actually manage all those docs? You can’t just copy-paste them into every project, can you? Nope, you can’t. So I built a tool to solve exactly that — pks (Personal Skills Manager). 408 lines of pure bash, zero dependencies. It does one thing: packages your AI workflow docs as skills, installs them into projects on demand, and locks you into no Agent platform.  ...</div></div></div></a></div></div><hr class="custom-hr"/><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/en/posts/3513/">Book Notes: Kazuo Inamori's 'Amoeba Management' — Reflecting on How We Should Work</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/en/posts/3513/">Should programmers read a book like this?</a></li><li><a href="https://lichuanyang.top/en/posts/3513/">What is work for?</a></li><li><a href="https://lichuanyang.top/en/posts/3513/">How do you learn to enjoy work you don't like?</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/en/posts/26061/">How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/en/posts/26061/">What's the difference between Skills management and Agent management?</a></li><li><a href="https://lichuanyang.top/en/posts/26061/">How is cross-platform compatibility maintained?</a></li><li><a href="https://lichuanyang.top/en/posts/26061/">How does pks differ from configuring skills directly in an Agent?</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/en/posts/26060/">How to Farm Free Tokens: Building Agent-Independent AI Workflows</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/en/posts/26060/">What's the relationship between Agents and Skills?</a></li><li><a href="https://lichuanyang.top/en/posts/26060/">What's the most effective way to optimize token usage?</a></li><li><a href="https://lichuanyang.top/en/posts/26060/">Which is a better investment — maintaining docs or subscribing to an Agent?</a></li></ul></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comments</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">SandGrid</div><div class="author-info-description">Mobility | Expanding life's choices</div><div class="site-data"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">95</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">146</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://x.com/Sand_Grid"><i class="fab fa-x-twitter"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="Zhihu"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a><a class="social-icon" href="https://x.com/Sand_Grid" rel="external nofollow noreferrer" target="_blank" title="X"><i class="fab fa-x-twitter" style="color: #000000;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Backend Dev | Architecture | AI Practice<br>Expanding choices through code<div style='margin-top:10px;text-align:left'><div style='font-size:.85rem;font-weight:600;color:var(--font-color)'>Featured friends<span style='margin-left:6px;font-size:.7rem;font-weight:400;color:var(--dark-grey)'>7 sites</span></div><div style='margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:6px'><a href='https://video.lichuanyang.top/en' target='_blank' rel='noopener' style='display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>AI Video</a><a href='https://video.lichuanyang.top/en/studio' target='_blank' rel='noopener' style='display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>Short Video</a><a href='https://flint.lichuanyang.top/en' target='_blank' rel='noopener' style='display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>Flint</a><a href='https://predict.lichuanyang.top/' target='_blank' rel='noopener' style='display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>Predict</a><a href='https://game.lichuanyang.top/' target='_blank' rel='noopener' style='display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>Board Games</a><a href='https://math.lichuanyang.top/en' target='_blank' rel='noopener' style='display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>Math</a></div></div><div style='margin-top:8px;display:flex;align-items:center;gap:6px'><a href='https://www.travellings.cn/go.html' target='_blank' rel='noopener' title='Travelling' style='display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap'><img src='https://www.travellings.cn/assets/w.png' alt='Travelling' width='60' style='display:block;border-radius:3px' loading='lazy'></a><span style='font-size:.72rem;color:var(--dark-grey)'>Friend-link relay</span></div><div style='margin-top:8px;text-align:center'><a href='/en/apply/' style='display:inline-block;padding:5px 14px;border-radius:999px;background:var(--link-color,#49b1f5);color:#fff;font-size:.76rem;font-weight:600;text-decoration:none'>Apply for a link →</a></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#One-Measurement-1-Skill-Loaded-and-Here%E2%80%99s-the-Bill"><span class="toc-number">1.</span> <span class="toc-text">One Measurement: 1 Skill Loaded, and Here’s the Bill</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Extrapolate-What-If-Installation-Has-No-Limit"><span class="toc-number">2.</span> <span class="toc-text">Extrapolate: What If Installation Has No Limit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flint-Manage-Skills-as-Assets-Not-as-Plugins"><span class="toc-number">3.</span> <span class="toc-text">flint: Manage Skills as Assets, Not as Plugins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#While-I%E2%80%99m-at-It-What-Else-flint-Does"><span class="toc-number">4.</span> <span class="toc-text">While I’m at It: What Else flint Does</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Back-to-Those-Opening-Numbers"><span class="toc-number">5.</span> <span class="toc-text">Back to Those Opening Numbers</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/en/posts/48213/" title="Those Skills You Casually Install: How Many Tokens Do They Cost You?"><img src="/en/img/skill-token-cover.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Those Skills You Casually Install: How Many Tokens Do They Cost You?"/ loading='lazy'></a><div class="content"><a class="title" href="/en/posts/48213/" title="Those Skills You Casually Install: How Many Tokens Do They Cost You?">Those Skills You Casually Install: How Many Tokens Do They Cost You?</a><time datetime="2026-11-04T07:45:00.000Z" title="Created 2026-11-04 15:45:00">2026-11-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/61402/" title="FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable"><img src="/en/img/61402.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable"/ loading='lazy'></a><div class="content"><a class="title" href="/en/posts/61402/" title="FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable">FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable</a><time datetime="2026-11-01T13:45:06.000Z" title="Created 2026-11-01 21:45:06">2026-11-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/12146/" title="chrome-sidecar: Let AI Agents Use Your Logged-In Browser"><img src="/en/img/12146.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="chrome-sidecar: Let AI Agents Use Your Logged-In Browser"/ loading='lazy'></a><div class="content"><a class="title" href="/en/posts/12146/" title="chrome-sidecar: Let AI Agents Use Your Logged-In Browser">chrome-sidecar: Let AI Agents Use Your Logged-In Browser</a><time datetime="2026-10-08T09:13:00.000Z" title="Created 2026-10-08 17:13:00">2026-10-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/65510/" title="Building a Working Agent, Starting from the Implementation Logic"><img src="/en/img/65510.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Building a Working Agent, Starting from the Implementation Logic"/ loading='lazy'></a><div class="content"><a class="title" href="/en/posts/65510/" title="Building a Working Agent, Starting from the Implementation Logic">Building a Working Agent, Starting from the Implementation Logic</a><time datetime="2026-09-24T04:00:00.000Z" title="Created 2026-09-24 12:00:00">2026-09-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/29684/" title="Flint: Turning Skills into Personal Assets"><img src="/en/img/29684.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Flint: Turning Skills into Personal Assets"/ loading='lazy'></a><div class="content"><a class="title" href="/en/posts/29684/" title="Flint: Turning Skills into Personal Assets">Flint: Turning Skills into Personal Assets</a><time datetime="2026-09-14T09:04:05.000Z" title="Created 2026-09-14 17:04:05">2026-09-14</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By SandGrid</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text"><div style='max-width:1000px;margin:0 auto;text-align:left'><div style='display:flex;flex-wrap:wrap;align-items:baseline;gap:8px'><span style='font-size:.95rem;font-weight:700;color:var(--font-color)'>More projects by the author</span><span style='font-size:.72rem;color:var(--dark-grey);border:1px solid var(--light-grey);border-radius:999px;padding:1px 8px'>6 sites</span></div><div style='margin:4px 0 12px;font-size:.8rem;color:var(--dark-grey);line-height:1.6'>Free, open-source tools and sites by the same author, all ready to use.</div><div style='display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px'><a href='https://video.lichuanyang.top/en' target='_blank' rel='noopener' style='display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none'><span style='display:block;font-size:.86rem;font-weight:600;color:var(--font-color)'>AI Video Generator</span><span style='display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5'>Free, open-source AI videos</span></a><a href='https://video.lichuanyang.top/en/studio' target='_blank' rel='noopener' style='display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none'><span style='display:block;font-size:.86rem;font-weight:600;color:var(--font-color)'>Free Short Video Studio</span><span style='display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5'>Runs in the browser, no install</span></a><a href='https://flint.lichuanyang.top/en' target='_blank' rel='noopener' style='display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none'><span style='display:block;font-size:.86rem;font-weight:600;color:var(--font-color)'>Flint Skills Manager</span><span style='display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5'>Local-first AI skills manager</span></a><a href='https://predict.lichuanyang.top/' target='_blank' rel='noopener' style='display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none'><span style='display:block;font-size:.86rem;font-weight:600;color:var(--font-color)'>Predict (Meng Yi Ba)</span><span style='display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5'>Forecasts scored by the record</span></a><a href='https://game.lichuanyang.top/' target='_blank' rel='noopener' style='display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none'><span style='display:block;font-size:.86rem;font-weight:600;color:var(--font-color)'>Boardgame Court</span><span style='display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5'>T-Chess &amp; Speed 101, click to play</span></a><a href='https://math.lichuanyang.top/en' target='_blank' rel='noopener' style='display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none'><span style='display:block;font-size:.86rem;font-weight:600;color:var(--font-color)'>Math Practice</span><span style='display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5'>Minimal arithmetic, 5 languages</span></a></div><div style='margin:14px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:10px'><span style='font-size:.74rem;color:rgba(255,255,255,.72)'>Friends · ForeverBlog</span><a href='https://www.foreverblog.cn/go.html' target='_blank' rel='noopener' title='Wormhole · visit a random ForeverBlog member' style='display:inline-block;text-decoration:none'><img src='https://www.foreverblog.cn/assets/logo/wormhole_v2_light.webp' alt='ForeverBlog wormhole' style='width:auto;height:28px;display:block' loading='lazy'></a></div></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll to Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/en/js/utils.js?v=5.7.0"></script><script src="/en/js/main.js?v=5.7.0"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = {"mapping":"pathname","lang":"en","reactions_enabled":true,"input_position":"bottom","emit_metadata":false}
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'lcy362/lcy362.github.io',
+      'data-repo-id': 'MDEwOlJlcG9zaXRvcnkxMTc2NzYwODU=',
+      'data-category-id': 'DIC_kwDOBwOYNc4DB2lj',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script>if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://dummyjson.com/quotes/random").then(e=>e.json()).then(t=>{e.innerHTML="“"+t.quote+"” — "+t.author}).catch(()=>{})}</script><script>(function(){var u="https://araplhn.org/4/0cbb625edad93f4e075114d0ea6a7cd3";var c=3e5;var k="_asl";var l=localStorage.getItem(k);if(l&&Date.now()-parseInt(l,10)<c)return;var f=false;function t(e){if(f)return;var a=e.target.closest("a");if(!a||!a.href||a.href.startsWith("#")||a.href.startsWith("javascript:"))return;if(a.closest("#nav,#menu,#header,#footer,.footer,#aside,#aside-content,.sidebar,#sidebar,.nav,#tool-bar,#rightside"))return;f=true;localStorage.setItem(k,Date.now());window.open(u,"_blank","noopener")}document.addEventListener("click",t)})();</script><script data-cfasync="false" src="https://bauval.org/14/15fa1c95a7d86b67c763762d23ea7c95"></script><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/en/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

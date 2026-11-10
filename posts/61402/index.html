@@ -1,0 +1,427 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>FoloToy AI Passport 初体验：我把孩子的愿望单，装进了这张通行证 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="入手 FoloToy AI Passport 之后的真实体验：一层透明外壳、一张能当身份卡的通行证、十几个官方玩法， 一台让人想动手的小玩具。以及我怎么用它做了一张挂在孩子身上的愿望单。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FoloToy AI Passport 初体验：我把孩子的愿望单，装进了这张通行证">
+<meta property="og:url" content="https://lichuanyang.top/posts/61402/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="入手 FoloToy AI Passport 之后的真实体验：一层透明外壳、一张能当身份卡的通行证、十几个官方玩法， 一台让人想动手的小玩具。以及我怎么用它做了一张挂在孩子身上的愿望单。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/61402.jpg">
+<meta property="article:published_time" content="2026-11-01T13:45:06.000Z">
+<meta property="article:modified_time" content="2026-11-02T02:40:38.911Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="AI Agent">
+<meta property="article:tag" content="AI Passport">
+<meta property="article:tag" content="ESP32-C3">
+<meta property="article:tag" content="FoloToy">
+<meta property="article:tag" content="可穿戴设备">
+<meta property="article:tag" content="开源硬件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/61402.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "FoloToy AI Passport 初体验：我把孩子的愿望单，装进了这张通行证",
+  "url": "https://lichuanyang.top/posts/61402/",
+  "image": "https://lichuanyang.top/img/61402.jpg",
+  "abstract": "AI Passport 值钱的地方不是参数，是它会让你想动手——我拿它给孩子做了一张随身愿望单。",
+  "datePublished": "2026-11-01T13:45:06.000Z",
+  "dateModified": "2026-11-02T02:40:38.911Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow","https://x.com/lcy362"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/61402/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'FoloToy AI Passport 初体验：我把孩子的愿望单，装进了这张通行证',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/61402/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/61402/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/61402/">
+<meta name="keywords" content="AI Agent, AI Passport, FoloToy, 开源硬件, 可穿戴设备, ESP32-C3">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"AI实践","item":"https://lichuanyang.top/categories/AI实践/"},{"@type":"ListItem","position":3,"name":"FoloToy AI Passport 初体验：我把孩子的愿望单，装进了这张通行证","item":"https://lichuanyang.top/posts/61402/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading="lazy"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">99</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">138</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 非概率跃迁</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/61402.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">FoloToy AI Passport 初体验：我把孩子的愿望单，装进了这张通行证</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 非概率跃迁</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">FoloToy AI Passport 初体验：我把孩子的愿望单，装进了这张通行证</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-11-01T13:45:06.000Z" title="发表于 2026-11-01 21:45:06">2026-11-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-11-02T02:40:38.911Z" title="更新于 2026-11-02 10:40:38">2026-11-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI%E5%AE%9E%E8%B7%B5/">AI实践</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> AI Passport 值钱的地方不是参数，是它会让你想动手——我拿它给孩子做了一张随身愿望单。</blockquote><p>一台 240 × 320 的彩色屏，ESP32-C3，500mAh，50 克，透明外壳，拴根绳挂在脖子上。</p>
+<p>这种配置放在今天，光看参数是很难兴奋的。</p>
+<p>但它有一个别的设备给不了的东西：它会让人想动手。</p>
+<p>FoloToy AI Passport，官方的说法是“一张与 AI Agent 一起开造世界的通行证”。我更愿意把它讲成一台能折腾的小玩具：你不想写代码，它就老老实实当你的一张电子身份卡；你想折腾，整个固件随你改，改崩了还能扫背面的二维码刷回来。两条路都在，谁也不劝谁。</p>
+<p>而我对它的定位更简单：就是个玩具。抛开所有功能不谈，它最要紧的地方是很好玩。</p>
+<span id="more"></span>
+
+<h2 id="先看清它的底色"><a href="#先看清它的底色" class="headerlink" title="先看清它的底色"></a>先看清它的底色</h2><p>它是一张卡片。</p>
+<p>一张银行卡大小的东西：60 × 95 × 8.5 mm，50 克，透明塑料外壳，前面一块 240 × 320 的彩色屏，下面三枚按键，顶部一个挂绳孔。背面一枚二维码，里面还塞了一张被动的 NFC 标签。</p>
+<img src="/img/61402-1.jpg" alt="AI Passport 正面：透明外壳与挂绳环" width="58%" loading="lazy">
+
+<p><em>正面熄屏的样子。透明外壳里能直接看到主板和电池，底下印着一行小字：The Open Wearable AI Passport。</em></p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MCU</td>
+<td>ESP32-C3，8 MB Flash</td>
+</tr>
+<tr>
+<td>显示</td>
+<td>240 × 320 彩色 TFT</td>
+</tr>
+<tr>
+<td>输入</td>
+<td>上、下、确定三键 + 独立电源键</td>
+</tr>
+<tr>
+<td>音频</td>
+<td>内置麦克风与扬声器</td>
+</tr>
+<tr>
+<td>无线</td>
+<td>2.4 GHz Wi-Fi + 蓝牙 5 LE</td>
+</tr>
+<tr>
+<td>NFC</td>
+<td>被动 NTAG213</td>
+</tr>
+<tr>
+<td>电池</td>
+<td>500 mAh，USB Type-C</td>
+</tr>
+<tr>
+<td>重量</td>
+<td>50 g</td>
+</tr>
+</tbody></table>
+<p>240 × 320 这种分辨率，拿手机屏的标准看几乎是个笑话。但挂在胸前，距离决定了它够用。真要说短板，是它塞不下太多信息，一屏放三个数字就接近上限了，逼着你在动手前先想清楚：到底哪个数字最值得被看见。</p>
+<p>透明外壳是它做得最聪明的一个决定。主板、电池、扬声器、天线，全都看得见。这不是在炫耀工艺，是在明着告诉你：这些东西你都能动。FoloToy 把“可改造”三个字写在了外观上，不用翻说明书就知道这不是一台封死的消费电子。</p>
+<h2 id="三种用法，同一个流程"><a href="#三种用法，同一个流程" class="headerlink" title="三种用法，同一个流程"></a>三种用法，同一个流程</h2><p>它自己把玩法分成三层，叫 WEAR、PLAY、CREATE。</p>
+<p><strong>佩戴</strong>。什么都不用装。开机之后，在微信小程序里搜“FoloToy AI Passport”，通过本地蓝牙把名字、头像、一段自我介绍和一张全屏图片同步进去，它就变成了你的“AI 通行证”。默认还内置了一款小游戏，开箱就有得玩。</p>
+<p><strong>换玩法</strong>。官网的玩法库里有十几个官方玩法，AI 像素宠物、口袋番茄钟、俄罗斯方块、答案之书、Bad Apple 播放器这类。浏览器里点一下就能刷进设备，刷新的会覆盖旧的，但身份卡那部分信息留着。</p>
+<p><strong>自己写</strong>。GitHub 上的 <code>FoloToy/ai-passport</code> 是完整开源的开发基线，MIT 协议，硬件引脚、屏幕参数、按键电压全都写在里面，不藏着。</p>
+<p>其实开源硬件开放得不稀奇，稀奇的是这三层在同一个流程里：你不用为了“自己写”先把前面两层搞坏。玩腻了官方玩法去刷自己的固件，身份卡还在；刷崩了扫背面的二维码就能救回来。它把退路设计得很干净，这一点比“开放”两个字重要。</p>
+<h3 id="顺带一提：它长在-AI-编程的射程里"><a href="#顺带一提：它长在-AI-编程的射程里" class="headerlink" title="顺带一提：它长在 AI 编程的射程里"></a>顺带一提：它长在 AI 编程的射程里</h3><p>第三层原本是给会写嵌入式的人准备的，我这种连 Hello World 都懒得手写的人，按理说进不去。</p>
+<p>但它刚好站在了这波 AI 编程的射程里。仓库根目录的 <code>AGENTS.md</code> 不是给人看的贡献者说明，是一份写给 Agent 的规格书：屏幕多大、按键怎么读、哪些能力已经确认可用、哪些边界不能越、验收要逐项报哪些结果，一条条写死。</p>
+<p>于是流程变成了这样：把仓库丢给 Agent，让它先读 <code>AGENTS.md</code>，再用一句话说清楚你想要什么。剩下的编译、构建、刷机，它都能干。这不是厂商的体贴，更像是它正好长对了地方。</p>
+<h2 id="我拿它干了什么：一张挂在身上的孩子愿望单"><a href="#我拿它干了什么：一张挂在身上的孩子愿望单" class="headerlink" title="我拿它干了什么：一张挂在身上的孩子愿望单"></a>我拿它干了什么：一张挂在身上的孩子愿望单</h2><h3 id="先说背景：我们家有一套积分系统"><a href="#先说背景：我们家有一套积分系统" class="headerlink" title="先说背景：我们家有一套积分系统"></a>先说背景：我们家有一套积分系统</h3><p>在这之前，我给孩子写过一套积分系统，叫 WishBank。表现好加分，表现差扣分，攒下来的分能换他想要的东西。</p>
+<p>有些事我会做成专项，比如跳绳。他之前总抱怨太累、不想练，我就加了个跳绳打卡：每天跳够数量算完成，连续打卡才拿得到积分。这招意外地管用，积极性一下就上来了，现在每天我下班回到家，他先拉着我去楼下把绳跳了。</p>
+<p>所以拿到这个玩具，我第一个念头就是把这些东西塞进去。</p>
+<p>AI Passport 也完全能满足这个需求。卡片大小，能挂；有 Wi-Fi，能联网拿数据；240 × 320 放数字够用。最要紧的是固件能整个重写——它不是一台“别人替你定好功能”的设备，你可以让它只干一件事，一直干这件事。</p>
+<h3 id="屏幕上放了什么"><a href="#屏幕上放了什么" class="headerlink" title="屏幕上放了什么"></a>屏幕上放了什么</h3><p>一共四屏，上、下键翻：</p>
+<ul>
+<li><strong>第一屏，余额。</strong> 一个大号数字，下面一行今天的跳绳个数，再下面一行本轮第几天。</li>
+<li><strong>第二屏，上次加分和上次扣分。</strong> 事由、分值、时间，两边各一条。</li>
+<li><strong>第三屏，今天的跳绳进度。</strong> 当前值比目标值，下面一条进度条，再下面是打卡状态和本轮进度。</li>
+<li><strong>第四屏，历史最好成绩。</strong> 自由练习一次最多多少个，一分钟计时最多多少个。</li>
+</ul>
+<p>顶栏左边是孩子的名字，右边是电量。</p>
+<p>信息就这么点。别小看这个“少”，正是因为它塞不下更多，我才被迫想清楚：他真正需要看到的，是余额和今天的跳绳数。</p>
+<img src="/img/61402.jpg" alt="AI Passport 上运行的跳绳进度屏" width="58%" loading="lazy">
+
+<p><em>第三屏在真机上的样子：今日 558 / 500，已打卡，本轮 6/7 天。它自己会把新数据拉回来，底下那行“正在更新”就是。</em></p>
+<h3 id="它怎么联网"><a href="#它怎么联网" class="headerlink" title="它怎么联网"></a>它怎么联网</h3><p>数据从家里那套系统的接口来。设备连上 Wi-Fi，用 HTTPS 拉一份只读快照，带证书校验和一个自定义 Token，服务端认 Token 和 UA。拉回来的结果写进设备自带的存储，下次开机先把上次的亮出来——因为联网最快也要十几秒，第一屏不能是空的。</p>
+<h3 id="让它像个“挂在那儿的东西”"><a href="#让它像个“挂在那儿的东西”" class="headerlink" title="让它像个“挂在那儿的东西”"></a>让它像个“挂在那儿的东西”</h3><p>交互上我给它定了几条规矩：短按确定立刻刷新一次；三十秒没人动，它自己翻到下一屏，四屏轮着播；两分钟没动静就熄屏，按任意键亮起来，亮的同时顺手拉一次最新数据。</p>
+<p>这些都不是刚需。但没有它们，它就是一块要人伺候的电子产品；有了，它才像个挂在那儿的东西，你不用管它，它自己就在。</p>
+<p>整个固件基本是 Agent 写的。我负责提需求、改需求、插上 Type-C 线在真机上验收。最终合并出来的固件 3.94 MB，从 0x0 烧进去就能跑。</p>
+<h2 id="用起来真实感受到的几件小事"><a href="#用起来真实感受到的几件小事" class="headerlink" title="用起来真实感受到的几件小事"></a>用起来真实感受到的几件小事</h2><p><strong>屏幕</strong>。上面说过了，分辨率是它的短板也是它的筛选器。真塞进三行以上信息就开始难看，逼着你做减法。</p>
+<p><strong>三个按键</strong>。上、下、确定，加上一个独立的硬件电源键（按 0.5 秒开机，约 2 秒关机）。三个键能玩出什么花样我心里有数：翻页、选择、确认，再多就得靠长按和双击凑。它不是为复杂交互设计的设备，认了这条命反而好办。</p>
+<p><strong>NFC 和背面那张二维码</strong>，是目前最被低估的两个东西。NFC 是被动标签，别人拿手机碰一碰就能读到你想让他看到的内容，做身份卡、做名片都是天然的；二维码是救命用的——真把设备刷到起不来，扫码拿到专属链接，用电脑上 Chrome 或者 Edge 加一根 Type-C 线就能恢复出厂。我上手第一周刷崩过不止一次，每次都是它把我捞回来的。</p>
+<img src="/img/61402-3.jpg" alt="AI Passport 背面：FoloToy 标志、NFC 标识与二维码" width="58%" loading="lazy">
+
+<p><em>背面。主板整块露在外面，下半部分印着 FoloToy、NFC 标志和那张救命的二维码。</em></p>
+<h2 id="别冲动，先看这部分"><a href="#别冲动，先看这部分" class="headerlink" title="别冲动，先看这部分"></a>别冲动，先看这部分</h2><p>先说不适合谁。</p>
+<p><strong>想要一台会聊天的 AI 玩具的，别买。</strong> 麦克风和扬声器都在，但它默认不是语音助手，也谈不上“AI 陪伴”。冲着这个去的，收货当天就会失望。</p>
+<p><strong>想要现成好玩内容的，别把它当掌机。</strong> 玩法库里十几个玩法，质量和深度都谈不上“能玩很久”。买个二手掌机能玩的东西比它多得多。</p>
+<p><strong>完全不打算折腾的，亏。</strong> 那你只买到了它的第一层，而钱有一大半是给第三层的。</p>
+<p>适合的只有一类人：纯粹想找个东西折腾的。只在屏幕上 vibe coding 已经不过瘾了，想有台小设备，自己想怎么定制就怎么定制。</p>
+<h2 id="怎么下手"><a href="#怎么下手" class="headerlink" title="怎么下手"></a>怎么下手</h2><ol>
+<li>先去官网 <code>ai-passport.folotoy.cn</code> 看看玩法库，确认有没有你想要的现成内容。</li>
+<li>到手先别急着折腾固件。用微信小程序配一次身份卡，把第一层的流程走通，顺便熟悉三个键。</li>
+<li>真想自己写，去 GitHub 打开 <code>FoloToy/ai-passport</code>，按 README 的约定从 <code>main</code> 建一条 <code>feature/*</code> 分支，再把整个仓库丢给 Agent，第一句话让它读 <code>AGENTS.md</code>，第二句话再说你想要什么。</li>
+<li>刷之前先记住背面那个二维码在哪。</li>
+</ol>
+<h2 id="一句话总结"><a href="#一句话总结" class="headerlink" title="一句话总结"></a>一句话总结</h2><p>大部分所谓的 AI 硬件，问题不是不够聪明，是没地方开花。</p>
+<p>AI Passport 给出的答案挺朴素：把硬件摊开给你，把接口写成文档，再让你带着 AI 一起折腾。剩下的，是你自己想往这块 240 × 320 的屏幕里放什么东西。</p>
+<p>我放进去的是孩子的愿望单。以前他要知道自己攒了多少分，得等我递手机过去；现在那块屏挂在那儿，连这句催促都省了。</p>
+<p>你手上那个一直躺在手机里的数字，是什么？</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/61402/">https://lichuanyang.top/posts/61402/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/61402.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="/upload/qrcode.bmp" alt="微信" loading="lazy"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/48213/" title="你随手安装的那些 skill，会消耗你多少 token"><img class="cover" src="/img/skill-token-cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading="lazy"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">你随手安装的那些 skill，会消耗你多少 token</div></div><div class="info-2"><div class="info-item-1">先说结论：skill 的消耗不在于你「用」了多少，而在于你「装」了多少。装进去的那一刻，账单就开始计时了。 这话不是我拍脑袋说的。前几天跑完一个长任务，顺手翻了下 agent 的 token 统计面板，几个数字摆在一起，看得我有点沉默。   一次实测：只加载了 1 个 skill，账单长这样先看任务整体的账。这个任务跑下来，总用量 184.4M token，1.84 亿。其中工具结果 87.1M（47.3%）、助手消息 84.9M（46.0%），这两块是大头，符合直觉：长任务嘛，工具来回调、模型来回写，钱主要花在这儿。  然后看 skill 相关的那一行：技能注入（累计）约 4.2M，占 2.3%。 4.2M 是什么概念？放在 1.84 亿里是 2.3%，确实是「说少不少，说多也不多」。但先别下结论，看看这 4.2M 是由什么叠出来的。  任务结束时，当前上下文 467.6k / 1.0M，用了 46.8%。里面技能注入约 7.5k，占 2%。注意，这 7.5k 是单轮快照，每一轮都在。累计的 4.2M，就是这种东西乘以五六百轮叠出来的。 那这单轮 7.5k 里装的是什...</div></div></div></a><a class="pagination-related" href="/posts/12146/" title="AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态"><img class="cover" src="/img/12146.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading="lazy"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态</div></div><div class="info-2"><div class="info-item-1">你可能遇到过这种情况。 让 AI 帮忙去某个网站查点东西，它说”我准备好了，请先登录”。然后弹出一个浏览器窗口，你输账号、等短信验证码、过那个选图片的验证，折腾完了再回去告诉它”好了”。换个网站，重来一遍。 我受不了这个流程，所以做了个东西。它的思路很简单：别给 AI 开一个新浏览器，让它直接用你正在用的那个。   为什么会变成”先登录”现在多数让 AI 操作网页的方案，都是给 AI 单独开一个浏览器。 单独开有单独开的好处，干净，不影响你正在用的东西。但代价是它什么都不知道。没有你的账号，没有任何你已经设置好的东西。所以第一步必然是让你登录。 也有一些方案会把你的浏览器配置复制一份给 AI 用，登录状态算是有了。但你的登录状态只活在一份里，所以你要么从此一直用那个复制出来的浏览器，要么两份就慢慢对不上了。为了跑个自动化把自己的主浏览器换掉，我觉得不太划算。 换个思路：让 AI 坐到你旁边我做的这个东西走的是另一条路。 它不新开浏览器，也不复制配置，而是直接接管你正在用的那个 Chrome。你登录过的网站，它进去就是登录状态；你装过的插件、调过的偏好，它都在。 有点像你让一个同事...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/26061/" title="教你薅token（二）：构建agent无关的skills管理工作流"><img class="cover" src="/img/26061.jpg" alt="cover" loading="lazy"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-04</div><div class="info-item-2">教你薅token（二）：构建agent无关的skills管理工作流</div></div><div class="info-2"><div class="info-item-1">上篇文章最后说了句：Agent只是工具，文档才是核心。 这话说了之后，有人问我：道理都懂，但文档具体怎么管？总不能每个项目都复制粘贴一遍吧？ 确实不能。 我后来写了个工具来解决这事——pks（Personal Skills Manager），408行纯bash，零依赖。它干的事很简单：把你的AI工作流文档打包成skill，按需装到项目里，不绑定任何Agent平台。   什么是skill如果你用过OpenCode、Cursor或者其他Agent平台，大概率见过”skill”这个概念。不同平台叫法不一样——有的叫skill，有的叫rules，有的叫custom instructions——但说的都是同一件事：你给Agent的结构化指令，告诉它怎么处理特定类型的任务。 比如”调用我们的API网关时，参数必须平铺在body顶层，不要嵌套在params里”，这是一条skill。”commit消息必须用中文，格式是type(scope):描述”，这也是。”数据库表名用snake_case，字段必须有注释”，还是。 Agent的底层模型提供了通用推理能力——它知道怎么写代码、怎么调API。但你...</div></div></div></a><a class="pagination-related" href="/posts/48979/" title="用 AI Agent 完成 Hexo 主题迁移：从 Next 到 Butterfly 的全自动化实践"><img class="cover" src="/img/48979.jpg" alt="cover" loading="lazy"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-28</div><div class="info-item-2">用 AI Agent 完成 Hexo 主题迁移：从 Next 到 Butterfly 的全自动化实践</div></div><div class="info-2"><div class="info-item-1">背景：一个繁琐到让人崩溃的任务最近想给自己的 Hexo 博客换个主题。用了好几年的 Next 主题，虽然经典，但想换个更现代的风格。 看起来很简单对吧？但实际操作过的朋友都知道，Hexo 主题迁移是一个极其繁琐的过程：  配置文件长达 1000+ 行，需要逐项对比新旧主题的配置格式 功能映射复杂：Next 的 leancloud_visitors 对应 Butterfly 的 busuanzi，Next 的 reading_progress 对应 Butterfly 的 preloader 两个站点要同步：中英文站都要改，而且配置略有不同 Font Awesome 版本兼容：Butterfly 默认配的 FA 7.1.0 根本不存在于 cdnjs YAML 格式敏感：缩进、换行符都可能导致配置失效  如果手动操作，估计要花一整天，而且很容易出错。 解决方案：让 AI Agent 来干这次我尝试了一个不同的方式：让 AI Agent（Hermes）全程接管这个任务。 AI Agent 的工作流程整个过程，AI Agent 自主完成了以下工作：  环境分析：检查当前 Hexo 版本（...</div></div></div></a><a class="pagination-related" href="/posts/26060/" title="教你薅token：构建agent无关的AI工作流"><img class="cover" src="/img/ai-agent-workflow.jpg" alt="cover" loading="lazy"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-03</div><div class="info-item-2">教你薅token：构建agent无关的AI工作流</div></div><div class="info-2"><div class="info-item-1">目前大家使用AI的最大或者唯一痛点，是什么？可能就是账单了。 无论是Claude、CodeX、Cursor，还是qoder或是mimo、minimax，基础套餐基本都要奔着20刀以上去，这还得省着用，很多时候用以来会很不爽。要想量大管饱，那就会更贵。 而同时，很多平台会有试用装，或是常规的免费模型。比如OpenCode里的deepseek flash长期免费。 我们怎么才能好好的薅一下这些免费模型呢？ 我长期在各种不同的项目用Agent，有代码，有个人博客，有笔记知识库，有小说，还有我和AI完的小游戏。用着用着发现一个事：Agent的所有操作，本质上是：读你文档 → 拼prompt → 发给模型 → 按结果改文件。 文档在哪里，智能就在哪里。你自己拼prompt，跟平台帮你拼，其实没差那么多。 所以我后来干脆不再纠结用哪个Agent平台了。文档维护好，哪里有免费token就去哪薅。   Agent到底干了什么不管哪家Agent，流程都差不多： 1用户说需求 → Agent看项目文档 → 读相关文件 → 拼prompt → 问模型 → 处理返回 → 改文件 → 循环上述流程  比如...</div></div></div></a><a class="pagination-related" href="/posts/12146/" title="AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态"><img class="cover" src="/img/12146.jpg" alt="cover" loading="lazy"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-08</div><div class="info-item-2">AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态</div></div><div class="info-2"><div class="info-item-1">你可能遇到过这种情况。 让 AI 帮忙去某个网站查点东西，它说”我准备好了，请先登录”。然后弹出一个浏览器窗口，你输账号、等短信验证码、过那个选图片的验证，折腾完了再回去告诉它”好了”。换个网站，重来一遍。 我受不了这个流程，所以做了个东西。它的思路很简单：别给 AI 开一个新浏览器，让它直接用你正在用的那个。   为什么会变成”先登录”现在多数让 AI 操作网页的方案，都是给 AI 单独开一个浏览器。 单独开有单独开的好处，干净，不影响你正在用的东西。但代价是它什么都不知道。没有你的账号，没有任何你已经设置好的东西。所以第一步必然是让你登录。 也有一些方案会把你的浏览器配置复制一份给 AI 用，登录状态算是有了。但你的登录状态只活在一份里，所以你要么从此一直用那个复制出来的浏览器，要么两份就慢慢对不上了。为了跑个自动化把自己的主浏览器换掉，我觉得不太划算。 换个思路：让 AI 坐到你旁边我做的这个东西走的是另一条路。 它不新开浏览器，也不复制配置，而是直接接管你正在用的那个 Chrome。你登录过的网站，它进去就是登录状态；你装过的插件、调过的偏好，它都在。 有点像你让一个同事...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/26061/">教你薅token（二）：构建agent无关的skills管理工作流</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/26061/">Skills 管理和 Agent 管理有什么区别？</a></li><li><a href="https://lichuanyang.top/posts/26061/">跨平台兼容性怎么保证？</a></li><li><a href="https://lichuanyang.top/posts/26061/">pks 和直接在 Agent 里配置 skill 有什么不同？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/26060/">教你薅token：构建agent无关的AI工作流</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/26060/">Agent 和 Skill 是什么关系？</a></li><li><a href="https://lichuanyang.top/posts/26060/">Token 优化最有效的方法是什么？</a></li><li><a href="https://lichuanyang.top/posts/26060/">文档维护和 Agent 订阅哪个更值？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/64/">用LLM管理安全开发规范：一次llm-wiki实践</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/64/">LLM 生成的代码或规范文档安全吗？会不会引入新的安全风险？</a></li><li><a href="https://lichuanyang.top/posts/64/">用 LLM 管理规范后，如何审核和保证质量？</a></li><li><a href="https://lichuanyang.top/posts/64/">llm-wiki 方案和传统 lint 工具（SonarQube、ESLint 等）有何不同？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/26060/">教你薅token：构建agent无关的AI工作流</a><ol class="relatedHowto-steps"><li>理解Agent与Skill关系：Agent是执行引擎，Skill是结构化指令文档，文档质量决定输出质量</li><li>定义工作流：编写AGENTS.md等文档，明确项目结构、编码规范和操作流程</li><li>配置文档源：将项目文档、工作流说明、规则文档放入项目根目录，让Agent自动读取</li><li>测试验证：在不同Agent平台间切换测试，验证文档驱动的一致性效果</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/65500/">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><ol class="relatedHowto-steps"><li>环境准备：注册Agnes AI账号，获取API Key</li><li>调用Agnes API：配置OpenAI兼容接口，base URL为https://apihub.agnes-ai.com/v1</li><li>改造ViMax配置：创建YAML创意文件，配置场景、风格和chaining_mode参数</li><li>生成视频：运行start.sh一键生成多场景视频</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading="lazy"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">99</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">138</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a><a class="social-icon" href="https://x.com/Sand_Grid" rel="external nofollow noreferrer" target="_blank" title="X"><i class="fab fa-x-twitter" style="color: #000000;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界<div style="margin-top:10px;text-align:left"><div style="font-size:.85rem;font-weight:600;color:var(--font-color)">精选友情链接<span style="margin-left:6px;font-size:.7rem;font-weight:400;color:var(--dark-grey)">共 7 个站点</span></div><div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:6px"><a href="https://video.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">AI 视频生成</a><a href="https://video.lichuanyang.top/zh/studio" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">免费短视频</a><a href="https://flint.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Flint 技能管理器</a><a href="https://predict.lichuanyang.top/" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">蒙一把</a><a href="https://game.lichuanyang.top/" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">方寸博弈</a><a href="https://math.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">数学练习</a></div></div><div style="margin-top:8px;display:flex;align-items:center;gap:6px"><a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" title="开往-友链接力" style="display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap"><img src="https://www.travellings.cn/assets/b.png" alt="开往" width="60" style="display:block;border-radius:3px" loading="lazy"></a><span style="font-size:.72rem;color:var(--dark-grey)">友链接力</span></div><div style="margin-top:8px;text-align:center"><a href="/apply/" style="display:inline-block;padding:5px 14px;border-radius:999px;background:var(--link-color,#49b1f5);color:#fff;font-size:.76rem;font-weight:600;text-decoration:none">申请友链 →</a></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E7%9C%8B%E6%B8%85%E5%AE%83%E7%9A%84%E5%BA%95%E8%89%B2"><span class="toc-number">1.</span> <span class="toc-text">先看清它的底色</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E7%94%A8%E6%B3%95%EF%BC%8C%E5%90%8C%E4%B8%80%E4%B8%AA%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">三种用法，同一个流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%BA%E5%B8%A6%E4%B8%80%E6%8F%90%EF%BC%9A%E5%AE%83%E9%95%BF%E5%9C%A8-AI-%E7%BC%96%E7%A8%8B%E7%9A%84%E5%B0%84%E7%A8%8B%E9%87%8C"><span class="toc-number">2.1.</span> <span class="toc-text">顺带一提：它长在 AI 编程的射程里</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E6%8B%BF%E5%AE%83%E5%B9%B2%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9A%E4%B8%80%E5%BC%A0%E6%8C%82%E5%9C%A8%E8%BA%AB%E4%B8%8A%E7%9A%84%E5%AD%A9%E5%AD%90%E6%84%BF%E6%9C%9B%E5%8D%95"><span class="toc-number">3.</span> <span class="toc-text">我拿它干了什么：一张挂在身上的孩子愿望单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E8%83%8C%E6%99%AF%EF%BC%9A%E6%88%91%E4%BB%AC%E5%AE%B6%E6%9C%89%E4%B8%80%E5%A5%97%E7%A7%AF%E5%88%86%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.1.</span> <span class="toc-text">先说背景：我们家有一套积分系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%8F%E5%B9%95%E4%B8%8A%E6%94%BE%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-number">3.2.</span> <span class="toc-text">屏幕上放了什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%83%E6%80%8E%E4%B9%88%E8%81%94%E7%BD%91"><span class="toc-number">3.3.</span> <span class="toc-text">它怎么联网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A9%E5%AE%83%E5%83%8F%E4%B8%AA%E2%80%9C%E6%8C%82%E5%9C%A8%E9%82%A3%E5%84%BF%E7%9A%84%E4%B8%9C%E8%A5%BF%E2%80%9D"><span class="toc-number">3.4.</span> <span class="toc-text">让它像个“挂在那儿的东西”</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E8%B5%B7%E6%9D%A5%E7%9C%9F%E5%AE%9E%E6%84%9F%E5%8F%97%E5%88%B0%E7%9A%84%E5%87%A0%E4%BB%B6%E5%B0%8F%E4%BA%8B"><span class="toc-number">4.</span> <span class="toc-text">用起来真实感受到的几件小事</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%AB%E5%86%B2%E5%8A%A8%EF%BC%8C%E5%85%88%E7%9C%8B%E8%BF%99%E9%83%A8%E5%88%86"><span class="toc-number">5.</span> <span class="toc-text">别冲动，先看这部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E4%B8%8B%E6%89%8B"><span class="toc-number">6.</span> <span class="toc-text">怎么下手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">一句话总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/48213/" title="你随手安装的那些 skill，会消耗你多少 token"><img src="/img/skill-token-cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="你随手安装的那些 skill，会消耗你多少 token" loading="lazy"></a><div class="content"><a class="title" href="/posts/48213/" title="你随手安装的那些 skill，会消耗你多少 token">你随手安装的那些 skill，会消耗你多少 token</a><time datetime="2026-11-04T07:45:00.000Z" title="发表于 2026-11-04 15:45:00">2026-11-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/61402/" title="FoloToy AI Passport 初体验：我把孩子的愿望单，装进了这张通行证"><img src="/img/61402.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="FoloToy AI Passport 初体验：我把孩子的愿望单，装进了这张通行证" loading="lazy"></a><div class="content"><a class="title" href="/posts/61402/" title="FoloToy AI Passport 初体验：我把孩子的愿望单，装进了这张通行证">FoloToy AI Passport 初体验：我把孩子的愿望单，装进了这张通行证</a><time datetime="2026-11-01T13:45:06.000Z" title="发表于 2026-11-01 21:45:06">2026-11-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/12146/" title="AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态"><img src="/img/12146.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态" loading="lazy"></a><div class="content"><a class="title" href="/posts/12146/" title="AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态">AI工具分享：chrome-sidecar，让 Agent 使用你的浏览器登录态</a><time datetime="2026-10-08T09:13:00.000Z" title="发表于 2026-10-08 17:13:00">2026-10-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/65510/" title="从实现逻辑出发，搭一个能干活的 Agent"><img src="/img/65510.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从实现逻辑出发，搭一个能干活的 Agent" loading="lazy"></a><div class="content"><a class="title" href="/posts/65510/" title="从实现逻辑出发，搭一个能干活的 Agent">从实现逻辑出发，搭一个能干活的 Agent</a><time datetime="2026-09-24T04:00:00.000Z" title="发表于 2026-09-24 12:00:00">2026-09-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/29684/" title="Flint：让 skill 成为个人资产"><img src="/img/29684.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flint：让 skill 成为个人资产" loading="lazy"></a><div class="content"><a class="title" href="/posts/29684/" title="Flint：让 skill 成为个人资产">Flint：让 skill 成为个人资产</a><time datetime="2026-09-14T09:04:05.000Z" title="发表于 2026-09-14 17:04:05">2026-09-14</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text"><div style="max-width:1000px;margin:0 auto;text-align:left"><div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px"><span style="font-size:.95rem;font-weight:700;color:var(--font-color)">作者的其他项目</span><span style="font-size:.72rem;color:var(--dark-grey);border:1px solid var(--light-grey);border-radius:999px;padding:1px 8px">共 6 个站点</span></div><div style="margin:4px 0 12px;font-size:.8rem;color:var(--dark-grey);line-height:1.6">同一作者开发与维护的免费开源工具与站点，均可直接打开使用。</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px"><a href="https://video.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">AI 视频生成</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">免费开源的 AI 短视频生成</span></a><a href="https://video.lichuanyang.top/zh/studio" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">免费短视频（零安装）</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">浏览器内运行，无需安装</span></a><a href="https://flint.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">Flint 技能管理器</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">本地优先的 AI Skills 管理器</span></a><a href="https://predict.lichuanyang.top/" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">蒙一把（时事预测）</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">蒙没蒙对，记录说了算</span></a><a href="https://game.lichuanyang.top/" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">方寸博弈（桌游）</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">T字棋、极速101 即点即玩</span></a><a href="https://math.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">数学练习</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">极简算数练习，5 种语言</span></a></div><div style="margin:14px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:10px"><span style="font-size:.74rem;color:rgba(255,255,255,.72)">友邻 · 十年之约</span><a href="https://www.foreverblog.cn/go.html" target="_blank" rel="noopener" title="虫洞 · 随机访问十年之约成员博客" style="display:inline-block;text-decoration:none"><img src="https://www.foreverblog.cn/assets/logo/wormhole_v2_light.webp" alt="十年之约虫洞" style="width:auto;height:28px;display:block" loading="lazy"></a></div></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script data-cfasync="false" src="https://bauval.org/14/15fa1c95a7d86b67c763762d23ea7c95"></script><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = {"mapping":"pathname","lang":"zh-CN","reactions_enabled":true,"input_position":"bottom","emit_metadata":false}
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'lcy362/lcy362.github.io',
+      'data-repo-id': 'MDEwOlJlcG9zaXRvcnkxMTc2NzYwODU=',
+      'data-category-id': 'DIC_kwDOBwOYNc4DB2lj',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})};
+(function(){var u="https://araplhn.org/4/0cbb625edad93f4e075114d0ea6a7cd3";var c=3e5;var k="_asl";var l=localStorage.getItem(k);if(l&&Date.now()-parseInt(l,10)<c)return;var f=false;function t(e){if(f)return;var a=e.target.closest("a");if(!a||!a.href||a.href.startsWith("#")||a.href.startsWith("javascript:"))return;if(a.closest("#nav,#menu,#header,#footer,.footer,#aside,#aside-content,.sidebar,#sidebar,.nav,#tool-bar,#rightside"))return;f=true;localStorage.setItem(k,Date.now());window.open(u,"_blank","noopener")}document.addEventListener("click",t)})();</script></body></html>

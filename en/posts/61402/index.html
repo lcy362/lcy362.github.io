@@ -1,0 +1,425 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable | Mobility</title><meta name="author" content="SandGrid"><meta name="copyright" content="SandGrid"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="A hands-on look at the FoloToy AI Passport: a transparent shell, an ID-card mode, a dozen official plays, and a little toy that makes you want to build something. Plus how I turned mine into a wishlis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FoloToy AI Passport: I Put My Kid&#39;s Wishlist on This Open Wearable">
+<meta property="og:url" content="https://lichuanyang.top/en/posts/61402/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="A hands-on look at the FoloToy AI Passport: a transparent shell, an ID-card mode, a dozen official plays, and a little toy that makes you want to build something. Plus how I turned mine into a wishlis">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://lichuanyang.top/en/img/61402.jpg">
+<meta property="article:published_time" content="2026-11-01T13:45:06.000Z">
+<meta property="article:modified_time" content="2026-11-02T02:46:20.175Z">
+<meta property="article:author" content="SandGrid">
+<meta property="article:tag" content="ai-agent">
+<meta property="article:tag" content="ai-passport">
+<meta property="article:tag" content="esp32-c3">
+<meta property="article:tag" content="folotoy">
+<meta property="article:tag" content="open-source-hardware">
+<meta property="article:tag" content="wearable-device">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/en/img/61402.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable",
+  "url": "https://lichuanyang.top/en/posts/61402/",
+  "image": "https://lichuanyang.top/en/img/61402.jpg",
+  "abstract": "What the AI Passport sells isn't specs, it's the urge to build something — I turned mine into a wishlist my kid wears.",
+  "datePublished": "2026-11-01T13:45:06.000Z",
+  "dateModified": "2026-11-02T02:46:20.175Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "SandGrid",
+      "url": "https://lichuanyang.top/en/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow","https://x.com/lcy362"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/en/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/en/posts/61402/"><link rel="preconnect" href="//cdnjs.cloudflare.com"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"/><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"/><meta name="baidu-site-verification" content="code-T8LautTf5f"/><link rel="stylesheet" href="/en/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/en/',
+  algolia: undefined,
+  localSearch: {"path":"/en/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'FoloToy AI Passport: I Put My Kid\'s Wishlist on This Open Wearable',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/en/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/61402/"/>
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/61402/"/>
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/61402/"/>
+<meta name="keywords" content="ai-agent, ai-passport, folotoy, open-source-hardware, wearable-device, esp32-c3">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/en/"},{"@type":"ListItem","position":2,"name":"AI Practice","item":"https://lichuanyang.top/en/categories/AI-Practice/"},{"@type":"ListItem","position":3,"name":"FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable","item":"https://lichuanyang.top/en/posts/61402/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">95</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">146</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div><div class="menus_item"><a class="site-page" href="/en/links/"><i class="fa-fw fas fa-link"></i><span> Improbability Drive</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/en/img/61402.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/en/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/en/"><span class="site-name">FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/en/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/en/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="https://lichuanyang.top/"><i class="fa-fw fas fa-language"></i><span> 中文</span></a></div><div class="menus_item"><a class="site-page" href="/en/links/"><i class="fa-fw fas fa-link"></i><span> Improbability Drive</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2026-11-01T13:45:06.000Z" title="Created 2026-11-01 21:45:06">2026-11-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-11-02T02:46:20.175Z" title="Updated 2026-11-02 10:46:20">2026-11-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/en/categories/ai-practice/">AI Practice</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>11mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> What the AI Passport sells isn't specs, it's the urge to build something — I turned mine into a wishlist my kid wears.</blockquote><p>A 240 × 320 color screen, an ESP32-C3, a 500mAh cell, 50 grams, clear plastic shell, on a lanyard around your neck.</p>
+<p>On paper, none of that is exciting in 2026.</p>
+<p>But it has something most devices don’t: it makes you want to build something.</p>
+<p>FoloToy calls the AI Passport “a passport to build the world with AI agents”. I’d rather describe it as a toy you can break into. Don’t want to write code? It quietly stays your electronic ID card. Want to mess around? The whole firmware is yours to rewrite, and if you brick it, scan the QR code on the back and flash it back. Both doors are open. Neither one gets sold to you.</p>
+<p>My own framing is simpler: it’s a toy. Strip every feature away and the thing that matters most is that it’s fun.</p>
+<span id="more"></span>
+
+<h2 id="What-It-Actually-Is"><a href="#What-It-Actually-Is" class="headerlink" title="What It Actually Is"></a>What It Actually Is</h2><p>It’s a card.</p>
+<p>Credit-card sized: 60 × 95 × 8.5 mm, 50 g, clear plastic shell, a 240 × 320 color screen on the front, three buttons underneath, a lanyard hole on top. On the back, a QR code, and a passive NFC tag hiding behind it.</p>
+<img src="/img/61402-1.jpg" alt="AI Passport front: transparent shell and lanyard loop" width="58%" / loading='lazy'>
+
+<p><em>Front, screen off. You can see the board and the battery straight through the shell, and a line of small print underneath: The Open Wearable AI Passport.</em></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Spec</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MCU</td>
+<td>ESP32-C3, 8 MB Flash</td>
+</tr>
+<tr>
+<td>Display</td>
+<td>240 × 320 color TFT</td>
+</tr>
+<tr>
+<td>Input</td>
+<td>Up &#x2F; Down &#x2F; OK + a separate power key</td>
+</tr>
+<tr>
+<td>Audio</td>
+<td>Built-in mic and speaker</td>
+</tr>
+<tr>
+<td>Wireless</td>
+<td>2.4 GHz Wi-Fi + Bluetooth 5 LE</td>
+</tr>
+<tr>
+<td>NFC</td>
+<td>Passive NTAG213</td>
+</tr>
+<tr>
+<td>Battery</td>
+<td>500 mAh, USB Type-C</td>
+</tr>
+<tr>
+<td>Weight</td>
+<td>50 g</td>
+</tr>
+</tbody></table>
+<p>240 × 320 is a joke by phone standards. Hang it on your chest, though, and distance makes it enough. The real limit is how much it can hold: three numbers per screen is about the ceiling, which forces you to decide, before you build anything, which number actually deserves to be seen.</p>
+<p>The transparent shell is the smartest decision in the whole product. Board, battery, speaker, antenna, all on display. That isn’t showing off the build quality, it’s telling you plainly: all of this is yours to touch. FoloToy wrote “hackable” into the industrial design. You don’t need the manual to know this isn’t a sealed black box.</p>
+<h2 id="Three-Ways-to-Use-It-One-Workflow"><a href="#Three-Ways-to-Use-It-One-Workflow" class="headerlink" title="Three Ways to Use It, One Workflow"></a>Three Ways to Use It, One Workflow</h2><p>WEAR, PLAY, CREATE. That’s their split.</p>
+<p><strong>Wear.</strong> Install nothing. Turn it on, search “FoloToy AI Passport” in WeChat Mini Programs, push over a name, an avatar, a short intro and a full-screen image through local Bluetooth, and it becomes your AI passport. There’s even a little game baked in, so it does something out of the box.</p>
+<p><strong>Play.</strong> A dozen or so official plays on the site: AI pixel pet, pocket pomodoro, Tetris, book of answers, a Bad Apple player. One click in the browser flashes it onto the device. A new play overwrites the current one, but your ID-card info survives.</p>
+<p><strong>Create.</strong> <code>FoloToy/ai-passport</code> on GitHub is the full open-source development baseline, MIT licensed. Pin assignments, screen parameters, button voltage thresholds, all written down, nothing hidden.</p>
+<p>Open hardware being open isn’t rare. What’s rare is that these three live in one workflow: you don’t have to wreck the first two to get to the third. Flash your own firmware and the ID card is still there; brick it and the QR code on the back saves you. The exit is well designed, and that matters more than the word “open”.</p>
+<h3 id="Bonus-it-sits-right-in-AI-coding’s-range"><a href="#Bonus-it-sits-right-in-AI-coding’s-range" class="headerlink" title="Bonus: it sits right in AI coding’s range"></a>Bonus: it sits right in AI coding’s range</h3><p>The third layer was meant for people who write embedded code. Someone too lazy to hand-type Hello World, meaning me, shouldn’t get anywhere near it.</p>
+<p>Except it landed right in the middle of this wave of AI coding. The <code>AGENTS.md</code> at the repo root isn’t a contributor guide for humans. It’s a spec written for an agent: how big the screen is, how buttons are read, which capabilities are confirmed working, which boundaries you can’t cross, what the acceptance checklist has to report. Line by line.</p>
+<p>So the workflow becomes: hand the repo to an agent, tell it to read <code>AGENTS.md</code> first, then say in one sentence what you want. Compiling, building, flashing, it can do all of it. That’s not the vendor being thoughtful. It’s a device that happened to grow in the right place.</p>
+<h2 id="What-I-Built-A-Wishlist-My-Kid-Can-Wear"><a href="#What-I-Built-A-Wishlist-My-Kid-Can-Wear" class="headerlink" title="What I Built: A Wishlist My Kid Can Wear"></a>What I Built: A Wishlist My Kid Can Wear</h2><h3 id="The-backstory-a-points-system"><a href="#The-backstory-a-points-system" class="headerlink" title="The backstory: a points system"></a>The backstory: a points system</h3><p>Before this, I built a points system for my kid. Called it WishBank. Good behavior adds points, bad behavior takes them away, and the points he saves can be traded for things he wants.</p>
+<p>Some things I turn into their own track. Jump rope, for one. He used to complain that it was too tiring and refuse to practice, so I added a rope-jumping check-in: hit the daily count and it counts, keep the streak going and you earn points. It worked better than I expected. Now when I get home from work, he’s the one dragging me downstairs to jump first.</p>
+<p>So when this toy showed up, my first thought was to cram all of that into it.</p>
+<p>The AI Passport fits the job. Card-sized, wearable. Wi-Fi, so it can pull data. 240 × 320 is plenty for numbers. Best of all, the firmware can be rewritten wholesale, because it isn’t a device with someone else’s idea of features baked in. You can tell it to do one thing and do that one thing forever.</p>
+<h3 id="What’s-on-the-screen"><a href="#What’s-on-the-screen" class="headerlink" title="What’s on the screen"></a>What’s on the screen</h3><p>Four screens, flipped with the up and down keys:</p>
+<ul>
+<li><strong>Screen one, balance.</strong> One big number, today’s jump count under it, which day of the current streak below that.</li>
+<li><strong>Screen two, the last points added and the last points taken away.</strong> Reason, value, timestamp, one on each side.</li>
+<li><strong>Screen three, today’s jump progress.</strong> Current versus target, a progress bar under it, then check-in status and streak progress.</li>
+<li><strong>Screen four, personal bests.</strong> Most jumps in free practice, most in a one-minute timed run.</li>
+</ul>
+<p>Top bar: his name on the left, battery on the right.</p>
+<p>That’s the whole thing. Don’t underestimate the “small” part. Precisely because it can’t hold more, I was forced to decide what he actually needs to see: the balance and today’s jumps.</p>
+<img src="/img/61402.jpg" alt="The jump-rope progress screen running on an AI Passport" width="58%" / loading='lazy'>
+
+<p><em>Screen three on the real device: 558 &#x2F; 500 today, checked in, day 6 of 7. It pulls fresh data on its own, which is what that updating line at the bottom is.</em></p>
+<h3 id="How-it-gets-online"><a href="#How-it-gets-online" class="headerlink" title="How it gets online"></a>How it gets online</h3><p>The data comes from my own system’s API. The device joins Wi-Fi and pulls a read-only snapshot over HTTPS, with certificate verification and a custom token; the server checks the token and the user agent. Whatever comes back is written into on-device storage, and the next boot shows the last good data first, because even a fast connection takes ten-odd seconds and the first screen can’t be blank.</p>
+<h3 id="Making-it-behave-like-something-that-just-hangs-there"><a href="#Making-it-behave-like-something-that-just-hangs-there" class="headerlink" title="Making it behave like something that just hangs there"></a>Making it behave like something that just hangs there</h3><p>A few rules I gave it. Short-press OK to refresh right now. Thirty seconds untouched and it flips to the next screen, cycling through all four. Two minutes and the screen goes dark; any key wakes it, and waking it also pulls fresh data.</p>
+<p>None of that is strictly necessary. But without it, it’s an electronic product that needs looking after. With it, it behaves like something that just hangs there: you don’t manage it, it’s simply there.</p>
+<p>The firmware is almost entirely agent-written. I wrote the requirements, revised the requirements, plugged in the Type-C cable and tested on real hardware. Final merged image: 3.94 MB, flashed from 0x0 and it runs.</p>
+<h2 id="Small-Things-You-Only-Notice-When-Using-It"><a href="#Small-Things-You-Only-Notice-When-Using-It" class="headerlink" title="Small Things You Only Notice When Using It"></a>Small Things You Only Notice When Using It</h2><p><strong>The screen.</strong> Covered above: the resolution is both its weakness and its filter. Three lines of information and it starts looking bad, which forces you to cut things.</p>
+<p><strong>Three buttons.</strong> Up, down, OK, plus a separate hardware power key (hold 0.5s to turn on, about 2s to turn off). I know exactly how far three buttons go: paging, selecting, confirming. Anything more needs long-press and double-tap to make up for it. It wasn’t designed for rich interaction, and accepting that makes everything easier.</p>
+<p><strong>The NFC tag and that QR code on the back</strong> are the two most underrated parts. The NFC is a passive tag: someone taps it with a phone and reads whatever you want them to read, which makes it a natural ID card or business card. The QR code is the emergency exit. If you really flash it into a brick, scanning that code gets you a dedicated link, and Chrome or Edge plus a Type-C cable restores the factory firmware. I bricked it more than once in the first week, and that code fished me out every time.</p>
+<img src="/img/61402-3.jpg" alt="AI Passport back: FoloToy logo, NFC mark and QR code" width="58%" / loading='lazy'>
+
+<p><em>The back. The whole board is exposed, and the lower half carries the FoloToy logo, the NFC mark, and that life-saving QR code.</em></p>
+<h2 id="Before-You-Buy-Read-This"><a href="#Before-You-Buy-Read-This" class="headerlink" title="Before You Buy, Read This"></a>Before You Buy, Read This</h2><p>Who it’s not for.</p>
+<p><strong>If you want an AI toy that chats, don’t buy it.</strong> Mic and speaker are both there, but out of the box it isn’t a voice assistant, and it isn’t “AI companionship” either. Buy it for that and you’ll be disappointed the day it arrives.</p>
+<p><strong>If you want ready-made fun, don’t treat it as a handheld.</strong> A dozen plays, and neither the polish nor the depth will hold you for long. A used handheld plays more games than this thing.</p>
+<p><strong>If you never plan to tinker, you’re overpaying.</strong> You’d only be buying the first layer, and most of the money went into the third.</p>
+<p>It’s for exactly one kind of person: someone who just wants a thing to tinker with. Vibe coding on a screen stopped being enough, and you want a little device you can customize however you like.</p>
+<h2 id="How-to-Start"><a href="#How-to-Start" class="headerlink" title="How to Start"></a>How to Start</h2><ol>
+<li>Go to <code>ai-passport.folotoy.cn</code> and look at the play library first, to see whether anything you want already exists.</li>
+<li>When it arrives, resist the firmware for a minute. Set up the ID card through the WeChat Mini Program, walk through layer one, get a feel for the three keys.</li>
+<li>To build your own, open <code>FoloToy/ai-passport</code> on GitHub, branch a <code>feature/*</code> off <code>main</code> as the README says, hand the whole repo to an agent, and make its first instruction “read <code>AGENTS.md</code>“. The second sentence is what you want.</li>
+<li>Before you flash anything, remember where that QR code is.</li>
+</ol>
+<h2 id="One-Last-Thing"><a href="#One-Last-Thing" class="headerlink" title="One Last Thing"></a>One Last Thing</h2><p>Most so-called AI hardware doesn’t suffer from being not-smart-enough. It suffers from having nowhere to land.</p>
+<p>The AI Passport’s answer is plain: lay the hardware open, write the interfaces into docs, and let you and an AI go break it together. What you put on that 240 × 320 screen is up to you.</p>
+<p>I put my kid’s wishlist on it. He used to have to wait for me to hand over my phone to see how many points he’d saved. Now the screen is hanging right there, and even that nudge is gone.</p>
+<p>What’s the number sitting in your phone that deserves to be hung up?</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en">SandGrid</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/en/posts/61402/">https://lichuanyang.top/en/posts/61402/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener external nofollow noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/en/img/61402.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>Subscribe to WeChat</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="/en/upload/qrcode.bmp" alt="微信"/ loading='lazy'></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/en/posts/48213/" title="Those Skills You Casually Install: How Many Tokens Do They Cost You?"><img class="cover" src="/en/img/skill-token-cover.jpg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">Those Skills You Casually Install: How Many Tokens Do They Cost You?</div></div><div class="info-2"><div class="info-item-1">Conclusion first: what a skill costs you is not decided by how much you use it, but by how many you install. The moment it lands on your disk, the meter starts running. I’m not making this up. A long task of mine finished the other day, and I happened to flip open the agent’s token statistics panel. A few numbers sitting next to each other left me quiet for a while.   One Measurement: 1 Skill Loaded, and Here’s the BillStart with the whole task. It burned 184.4M tokens in total: 184 million. ...</div></div></div></a><a class="pagination-related" href="/en/posts/12146/" title="chrome-sidecar: Let AI Agents Use Your Logged-In Browser"><img class="cover" src="/en/img/12146.jpg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">chrome-sidecar: Let AI Agents Use Your Logged-In Browser</div></div><div class="info-2"><div class="info-item-1">You’ve probably run into this. You ask an AI to look something up on some website, and it says, “I’m ready — please log in first.” A browser window pops up. You type your username, wait for the SMS code, get past the picture-picking CAPTCHA, and when you’re finally done you go back and tell it “okay, done.” Switch to another site, and you do it all over again. I got tired of that flow, so I built something. The idea is simple: don’t give the AI a brand-new browser — let it use the one you’re ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/en/posts/12146/" title="chrome-sidecar: Let AI Agents Use Your Logged-In Browser"><img class="cover" src="/en/img/12146.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-08</div><div class="info-item-2">chrome-sidecar: Let AI Agents Use Your Logged-In Browser</div></div><div class="info-2"><div class="info-item-1">You’ve probably run into this. You ask an AI to look something up on some website, and it says, “I’m ready — please log in first.” A browser window pops up. You type your username, wait for the SMS code, get past the picture-picking CAPTCHA, and when you’re finally done you go back and tell it “okay, done.” Switch to another site, and you do it all over again. I got tired of that flow, so I built something. The idea is simple: don’t give the AI a brand-new browser — let it use the one you’re ...</div></div></div></a><a class="pagination-related" href="/en/posts/26061/" title="How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow"><img class="cover" src="/en/img/26061.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-04</div><div class="info-item-2">How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow</div></div><div class="info-2"><div class="info-item-1">Last post ended with this: Agents are just tools. Documentation is the core. After that went up, someone asked: sure, but how do you actually manage all those docs? You can’t just copy-paste them into every project, can you? Nope, you can’t. So I built a tool to solve exactly that — pks (Personal Skills Manager). 408 lines of pure bash, zero dependencies. It does one thing: packages your AI workflow docs as skills, installs them into projects on demand, and locks you into no Agent platform.  ...</div></div></div></a><a class="pagination-related" href="/en/posts/29684/" title="Flint: Turning Skills into Personal Assets"><img class="cover" src="/en/img/29684.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-14</div><div class="info-item-2">Flint: Turning Skills into Personal Assets</div></div><div class="info-2"><div class="info-item-1">Lately, every time OpenAI ships a new model, a familiar argument makes the rounds: skills are useless, and more and more users are abandoning them. Is that true? Yes and no. To be fair, the logic has merit. As models get stronger, plenty of skills really have been abandoned — mainly the so-called “general-purpose” ones like Superpower. Those skills existed to patch over gaps in model capability, and they did help back when no model was aggressively optimized for coding. As the models themselv...</div></div></div></a><a class="pagination-related" href="/en/posts/34689/" title="From Token Farming to Skill Management: My pks Tool in Practice"><img class="cover" src="/en/img/34689.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-01</div><div class="info-item-2">From Token Farming to Skill Management: My pks Tool in Practice</div></div><div class="info-2"><div class="info-item-1">I wrote an article before: https://lichuanyang.top/en/posts/26060/ . It taught people how to build Agent-independent workflows, so you can spin up different Agents anytime and smoothly use the free&#x2F;trial plans from various providers. After practicing this way, one thing that obviously becomes tedious is skill management. So I wrote another tool to manage skills across different Agents and projects.   Given the current Agent ecosystem is still quite chaotic, everyone does their own thing,...</div></div></div></a><a class="pagination-related" href="/en/posts/26060/" title="How to Farm Free Tokens: Building Agent-Independent AI Workflows"><img class="cover" src="/en/img/ai-agent-workflow.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-03</div><div class="info-item-2">How to Farm Free Tokens: Building Agent-Independent AI Workflows</div></div><div class="info-2"><div class="info-item-1">What’s the biggest—or perhaps only—pain point of using AI right now? Probably the bill. Claude, Codex, Cursor, Qoder, MiMo, MiniMax—their basic plans all start around $20&#x2F;month, and you still have to watch your usage. If you want unlimited access, it gets even more expensive. Meanwhile, lots of platforms offer free trials or permanently free models. For instance, OpenCode’s DeepSeek Flash has been free for a while. So how do we actually make the most of these free models? I’ve been using...</div></div></div></a><a class="pagination-related" href="/en/posts/48213/" title="Those Skills You Casually Install: How Many Tokens Do They Cost You?"><img class="cover" src="/en/img/skill-token-cover.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-04</div><div class="info-item-2">Those Skills You Casually Install: How Many Tokens Do They Cost You?</div></div><div class="info-2"><div class="info-item-1">Conclusion first: what a skill costs you is not decided by how much you use it, but by how many you install. The moment it lands on your disk, the meter starts running. I’m not making this up. A long task of mine finished the other day, and I happened to flip open the agent’s token statistics panel. A few numbers sitting next to each other left me quiet for a while.   One Measurement: 1 Skill Loaded, and Here’s the BillStart with the whole task. It burned 184.4M tokens in total: 184 million. ...</div></div></div></a></div></div><hr class="custom-hr"/><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/en/posts/26061/">How to Farm Free Tokens (Part 2): Building an Agent-Independent Skills Management Workflow</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/en/posts/26061/">What's the difference between Skills management and Agent management?</a></li><li><a href="https://lichuanyang.top/en/posts/26061/">How is cross-platform compatibility maintained?</a></li><li><a href="https://lichuanyang.top/en/posts/26061/">How does pks differ from configuring skills directly in an Agent?</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/en/posts/26060/">How to Farm Free Tokens: Building Agent-Independent AI Workflows</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/en/posts/26060/">What's the relationship between Agents and Skills?</a></li><li><a href="https://lichuanyang.top/en/posts/26060/">What's the most effective way to optimize token usage?</a></li><li><a href="https://lichuanyang.top/en/posts/26060/">Which is a better investment — maintaining docs or subscribing to an Agent?</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/en/posts/65500/">Agnes Free Models: I Rewrote ViMax to Generate AI Videos for $0</a><ol class="relatedHowto-steps"><li>Setup</li><li>Call Agnes API</li><li>Customize ViMax config</li><li>Generate video</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comments</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/en/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">SandGrid</div><div class="author-info-description">Mobility | Expanding life's choices</div><div class="site-data"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">95</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">146</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://x.com/Sand_Grid"><i class="fab fa-x-twitter"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="Zhihu"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a><a class="social-icon" href="https://x.com/Sand_Grid" rel="external nofollow noreferrer" target="_blank" title="X"><i class="fab fa-x-twitter" style="color: #000000;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Backend Dev | Architecture | AI Practice<br>Expanding choices through code<div style='margin-top:10px;text-align:left'><div style='font-size:.85rem;font-weight:600;color:var(--font-color)'>Featured friends<span style='margin-left:6px;font-size:.7rem;font-weight:400;color:var(--dark-grey)'>7 sites</span></div><div style='margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:6px'><a href='https://video.lichuanyang.top/en' target='_blank' rel='noopener' style='display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>AI Video</a><a href='https://video.lichuanyang.top/en/studio' target='_blank' rel='noopener' style='display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>Short Video</a><a href='https://flint.lichuanyang.top/en' target='_blank' rel='noopener' style='display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>Flint</a><a href='https://predict.lichuanyang.top/' target='_blank' rel='noopener' style='display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>Predict</a><a href='https://game.lichuanyang.top/' target='_blank' rel='noopener' style='display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>Board Games</a><a href='https://math.lichuanyang.top/en' target='_blank' rel='noopener' style='display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>Math</a></div></div><div style='margin-top:8px;display:flex;align-items:center;gap:6px'><a href='https://www.travellings.cn/go.html' target='_blank' rel='noopener' title='Travelling' style='display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap'><img src='https://www.travellings.cn/assets/w.png' alt='Travelling' width='60' style='display:block;border-radius:3px' loading='lazy'></a><span style='font-size:.72rem;color:var(--dark-grey)'>Friend-link relay</span></div><div style='margin-top:8px;text-align:center'><a href='/en/apply/' style='display:inline-block;padding:5px 14px;border-radius:999px;background:var(--link-color,#49b1f5);color:#fff;font-size:.76rem;font-weight:600;text-decoration:none'>Apply for a link →</a></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-It-Actually-Is"><span class="toc-number">1.</span> <span class="toc-text">What It Actually Is</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Three-Ways-to-Use-It-One-Workflow"><span class="toc-number">2.</span> <span class="toc-text">Three Ways to Use It, One Workflow</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Bonus-it-sits-right-in-AI-coding%E2%80%99s-range"><span class="toc-number">2.1.</span> <span class="toc-text">Bonus: it sits right in AI coding’s range</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#What-I-Built-A-Wishlist-My-Kid-Can-Wear"><span class="toc-number">3.</span> <span class="toc-text">What I Built: A Wishlist My Kid Can Wear</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-backstory-a-points-system"><span class="toc-number">3.1.</span> <span class="toc-text">The backstory: a points system</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What%E2%80%99s-on-the-screen"><span class="toc-number">3.2.</span> <span class="toc-text">What’s on the screen</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-it-gets-online"><span class="toc-number">3.3.</span> <span class="toc-text">How it gets online</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Making-it-behave-like-something-that-just-hangs-there"><span class="toc-number">3.4.</span> <span class="toc-text">Making it behave like something that just hangs there</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Small-Things-You-Only-Notice-When-Using-It"><span class="toc-number">4.</span> <span class="toc-text">Small Things You Only Notice When Using It</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Before-You-Buy-Read-This"><span class="toc-number">5.</span> <span class="toc-text">Before You Buy, Read This</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-Start"><span class="toc-number">6.</span> <span class="toc-text">How to Start</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#One-Last-Thing"><span class="toc-number">7.</span> <span class="toc-text">One Last Thing</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/en/posts/48213/" title="Those Skills You Casually Install: How Many Tokens Do They Cost You?"><img src="/en/img/skill-token-cover.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Those Skills You Casually Install: How Many Tokens Do They Cost You?"/ loading='lazy'></a><div class="content"><a class="title" href="/en/posts/48213/" title="Those Skills You Casually Install: How Many Tokens Do They Cost You?">Those Skills You Casually Install: How Many Tokens Do They Cost You?</a><time datetime="2026-11-04T07:45:00.000Z" title="Created 2026-11-04 15:45:00">2026-11-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/61402/" title="FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable"><img src="/en/img/61402.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable"/ loading='lazy'></a><div class="content"><a class="title" href="/en/posts/61402/" title="FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable">FoloToy AI Passport: I Put My Kid's Wishlist on This Open Wearable</a><time datetime="2026-11-01T13:45:06.000Z" title="Created 2026-11-01 21:45:06">2026-11-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/12146/" title="chrome-sidecar: Let AI Agents Use Your Logged-In Browser"><img src="/en/img/12146.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="chrome-sidecar: Let AI Agents Use Your Logged-In Browser"/ loading='lazy'></a><div class="content"><a class="title" href="/en/posts/12146/" title="chrome-sidecar: Let AI Agents Use Your Logged-In Browser">chrome-sidecar: Let AI Agents Use Your Logged-In Browser</a><time datetime="2026-10-08T09:13:00.000Z" title="Created 2026-10-08 17:13:00">2026-10-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/65510/" title="Building a Working Agent, Starting from the Implementation Logic"><img src="/en/img/65510.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Building a Working Agent, Starting from the Implementation Logic"/ loading='lazy'></a><div class="content"><a class="title" href="/en/posts/65510/" title="Building a Working Agent, Starting from the Implementation Logic">Building a Working Agent, Starting from the Implementation Logic</a><time datetime="2026-09-24T04:00:00.000Z" title="Created 2026-09-24 12:00:00">2026-09-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/29684/" title="Flint: Turning Skills into Personal Assets"><img src="/en/img/29684.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Flint: Turning Skills into Personal Assets"/ loading='lazy'></a><div class="content"><a class="title" href="/en/posts/29684/" title="Flint: Turning Skills into Personal Assets">Flint: Turning Skills into Personal Assets</a><time datetime="2026-09-14T09:04:05.000Z" title="Created 2026-09-14 17:04:05">2026-09-14</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By SandGrid</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text"><div style='max-width:1000px;margin:0 auto;text-align:left'><div style='display:flex;flex-wrap:wrap;align-items:baseline;gap:8px'><span style='font-size:.95rem;font-weight:700;color:var(--font-color)'>More projects by the author</span><span style='font-size:.72rem;color:var(--dark-grey);border:1px solid var(--light-grey);border-radius:999px;padding:1px 8px'>6 sites</span></div><div style='margin:4px 0 12px;font-size:.8rem;color:var(--dark-grey);line-height:1.6'>Free, open-source tools and sites by the same author, all ready to use.</div><div style='display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px'><a href='https://video.lichuanyang.top/en' target='_blank' rel='noopener' style='display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none'><span style='display:block;font-size:.86rem;font-weight:600;color:var(--font-color)'>AI Video Generator</span><span style='display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5'>Free, open-source AI videos</span></a><a href='https://video.lichuanyang.top/en/studio' target='_blank' rel='noopener' style='display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none'><span style='display:block;font-size:.86rem;font-weight:600;color:var(--font-color)'>Free Short Video Studio</span><span style='display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5'>Runs in the browser, no install</span></a><a href='https://flint.lichuanyang.top/en' target='_blank' rel='noopener' style='display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none'><span style='display:block;font-size:.86rem;font-weight:600;color:var(--font-color)'>Flint Skills Manager</span><span style='display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5'>Local-first AI skills manager</span></a><a href='https://predict.lichuanyang.top/' target='_blank' rel='noopener' style='display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none'><span style='display:block;font-size:.86rem;font-weight:600;color:var(--font-color)'>Predict (Meng Yi Ba)</span><span style='display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5'>Forecasts scored by the record</span></a><a href='https://game.lichuanyang.top/' target='_blank' rel='noopener' style='display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none'><span style='display:block;font-size:.86rem;font-weight:600;color:var(--font-color)'>Boardgame Court</span><span style='display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5'>T-Chess &amp; Speed 101, click to play</span></a><a href='https://math.lichuanyang.top/en' target='_blank' rel='noopener' style='display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none'><span style='display:block;font-size:.86rem;font-weight:600;color:var(--font-color)'>Math Practice</span><span style='display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5'>Minimal arithmetic, 5 languages</span></a></div><div style='margin:14px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:10px'><span style='font-size:.74rem;color:rgba(255,255,255,.72)'>Friends · ForeverBlog</span><a href='https://www.foreverblog.cn/go.html' target='_blank' rel='noopener' title='Wormhole · visit a random ForeverBlog member' style='display:inline-block;text-decoration:none'><img src='https://www.foreverblog.cn/assets/logo/wormhole_v2_light.webp' alt='ForeverBlog wormhole' style='width:auto;height:28px;display:block' loading='lazy'></a></div></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll to Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/en/js/utils.js?v=5.7.0"></script><script src="/en/js/main.js?v=5.7.0"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = {"mapping":"pathname","lang":"en","reactions_enabled":true,"input_position":"bottom","emit_metadata":false}
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'lcy362/lcy362.github.io',
+      'data-repo-id': 'MDEwOlJlcG9zaXRvcnkxMTc2NzYwODU=',
+      'data-category-id': 'DIC_kwDOBwOYNc4DB2lj',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script>if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://dummyjson.com/quotes/random").then(e=>e.json()).then(t=>{e.innerHTML="“"+t.quote+"” — "+t.author}).catch(()=>{})}</script><script>(function(){var u="https://araplhn.org/4/0cbb625edad93f4e075114d0ea6a7cd3";var c=3e5;var k="_asl";var l=localStorage.getItem(k);if(l&&Date.now()-parseInt(l,10)<c)return;var f=false;function t(e){if(f)return;var a=e.target.closest("a");if(!a||!a.href||a.href.startsWith("#")||a.href.startsWith("javascript:"))return;if(a.closest("#nav,#menu,#header,#footer,.footer,#aside,#aside-content,.sidebar,#sidebar,.nav,#tool-bar,#rightside"))return;f=true;localStorage.setItem(k,Date.now());window.open(u,"_blank","noopener")}document.addEventListener("click",t)})();</script><script data-cfasync="false" src="https://bauval.org/14/15fa1c95a7d86b67c763762d23ea7c95"></script><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/en/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
