@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="dark">
+<title>跃迁中 · JUMP IN PROGRESS · Mobility</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --bg: #04060b;
+    --ink: #e6eeff;
+    --dim: #8595b8;
+    --accent: #5ee1ff;
+    --accent-2: #a06bff;
+    --warn: #ff7a7a;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background:
+      radial-gradient(ellipse 80% 55% at 50% 36%, rgba(56, 110, 255, .22), transparent 70%),
+      radial-gradient(ellipse 60% 42% at 50% 102%, rgba(160, 107, 255, .16), transparent 70%),
+      var(--bg);
+  }
+  /* 星场 */
+  .stars {
+    position: fixed; inset: 0; pointer-events: none; opacity: .5;
+    background-image:
+      radial-gradient(1px 1px at 12% 22%, #fff, transparent),
+      radial-gradient(1px 1px at 78% 14%, #cfe6ff, transparent),
+      radial-gradient(1.5px 1.5px at 44% 68%, #fff, transparent),
+      radial-gradient(1px 1px at 88% 82%, #b7d4ff, transparent),
+      radial-gradient(1px 1px at 32% 88%, #fff, transparent),
+      radial-gradient(1px 1px at 66% 40%, #d9e8ff, transparent),
+      radial-gradient(1px 1px at 6% 60%, #fff, transparent),
+      radial-gradient(1px 1px at 54% 12%, #cfe6ff, transparent);
+    animation: twinkle 7s ease-in-out infinite alternate;
+  }
+  /* CRT 扫描线 */
+  body::after {
+    content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .05;
+    background: repeating-linear-gradient(0deg, #fff 0 1px, transparent 1px 3px);
+  }
+  .panel { position: relative; width: min(430px, 92vw); padding: 30px 24px; text-align: center; }
+
+  .kicker {
+    margin: 0 0 26px; font-family: var(--mono); font-size: .64rem;
+    letter-spacing: .3em; color: var(--accent); opacity: .82;
+  }
+
+  /* 驱动核心 */
+  .orb { position: relative; width: 112px; height: 112px; margin: 0 auto 22px; }
+  .ring {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0 55%, var(--accent) 78%, transparent 92%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+    animation: spin 2.4s linear infinite;
+  }
+  .ring.r2 {
+    inset: 15px; animation-duration: 3.6s; animation-direction: reverse;
+    background: conic-gradient(from 180deg, transparent 0 60%, var(--accent-2) 80%, transparent 94%);
+  }
+  .core-dot {
+    position: absolute; left: 50%; top: 50%; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent); transform: translate(-50%, -50%);
+    box-shadow: 0 0 18px 6px rgba(94, 225, 255, .5);
+    animation: pulse 1.3s ease-in-out infinite;
+  }
+
+  h1 {
+    margin: 0; font-size: clamp(1.1rem, 4.2vw, 1.4rem);
+    font-weight: 600; letter-spacing: .3em; text-indent: .3em;
+  }
+  h1 em {
+    display: block; margin-top: 10px; font-style: normal;
+    font-family: var(--mono); font-size: .6em; letter-spacing: .4em;
+    color: var(--dim); text-indent: .4em;
+  }
+  h1.is-error { color: var(--warn); }
+  h1.is-error em { color: rgba(255, 122, 122, .7); }
+
+  .hex {
+    margin: 16px 0 0; font-family: var(--mono); font-size: .7rem;
+    letter-spacing: .22em; color: var(--accent); opacity: .85;
+  }
+
+  /* 状态日志：中英双语同列 */
+  .log {
+    list-style: none; margin: 22px auto 0; padding: 0;
+    width: min(360px, 88vw); text-align: left;
+    font-family: var(--mono); font-size: .74rem; line-height: 2;
+  }
+  .log li {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 14px;
+    opacity: 0; transform: translateY(4px); animation: fadeUp .34s ease forwards;
+  }
+  .log li::before { content: "›"; color: var(--accent); margin-right: -6px; }
+  .log .zh { flex: 1; color: var(--ink); }
+  .log .en { color: var(--dim); font-size: .84em; letter-spacing: .1em; white-space: nowrap; }
+
+  .meter {
+    width: min(360px, 88vw); height: 2px; margin: 24px auto 0; border-radius: 99px;
+    background: rgba(255, 255, 255, .1); overflow: hidden;
+  }
+  .meter i {
+    display: block; height: 100%; width: 4%; border-radius: inherit;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 12px rgba(94, 225, 255, .7);
+    transition: width .45s cubic-bezier(.2, .8, .2, 1);
+  }
+
+  .route {
+    margin: 18px 0 0; font-family: var(--mono); font-size: .68rem;
+    letter-spacing: .06em; color: var(--dim); word-break: break-all;
+  }
+  .route .arrow { color: var(--accent); margin: 0 9px; }
+  .route #dest { color: var(--ink); }
+
+  .fallback {
+    margin: 24px 0 0; display: flex; gap: 18px; justify-content: center;
+    font-family: var(--mono); font-size: .72rem;
+  }
+  .fallback a {
+    color: var(--accent); text-decoration: none;
+    border-bottom: 1px solid rgba(94, 225, 255, .35); padding-bottom: 2px;
+  }
+  .fallback a:hover { color: #fff; }
+  [hidden] { display: none !important; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse { 50% { transform: translate(-50%, -50%) scale(1.9); opacity: .45; } }
+  @keyframes fadeUp { to { opacity: 1; transform: none; } }
+  @keyframes twinkle { from { opacity: .32; } to { opacity: .62; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ring, .core-dot, .stars { animation: none; }
+    .log li { animation: none; opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="stars" aria-hidden="true"></div>
+
+<main class="panel">
+  <p class="kicker">IMPROBABILITY DRIVE · 非概率跃迁</p>
+
+  <div class="orb" aria-hidden="true">
+    <span class="ring"></span>
+    <span class="ring r2"></span>
+    <span class="core-dot"></span>
+  </div>
+
+  <h1 id="headline">跃迁进行中<em>JUMP IN PROGRESS</em></h1>
+  <p class="hex" id="hex">Δ 0x0000·0000</p>
+
+  <ol class="log" id="log" aria-live="polite"></ol>
+  <div class="meter" aria-hidden="true"><i id="bar"></i></div>
+
+  <p class="route">
+    <span id="origin">THIS SITE</span><span class="arrow">⟶</span><span id="dest">SCANNING…</span>
+  </p>
+
+  <p class="fallback" id="fallback" hidden>
+    <a id="retry" href="#">重试 · RETRY</a>
+    <a id="back" href="../">返回 · BACK</a>
+  </p>
+</main>
+
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var from = (q.get('from') || '').trim();
+  // lang 只决定「落到目标站的中文页还是英文页」；本页状态始终中英双语展示。
+  var lang = (q.get('lang') || 'zh').toLowerCase().indexOf('en') === 0 ? 'en' : 'zh';
+  var API = 'https://api.lichuanyang.top/api/friends/relay';
+  var MIN_MS = 1750;   // 状态动画最短展示时长，避免一闪而过
+  var GUARD_MS = 9000; // 后端无响应的死线
+
+  var t0 = Date.now();
+  var dest = '';
+  var finished = false;
+
+  var logEl = document.getElementById('log');
+  var hexEl = document.getElementById('hex');
+  var bar = document.getElementById('bar');
+  var destEl = document.getElementById('dest');
+  var originEl = document.getElementById('origin');
+  var headEl = document.getElementById('headline');
+  var fallback = document.getElementById('fallback');
+  var retryEl = document.getElementById('retry');
+
+  originEl.textContent = (from || location.hostname || 'SITE').toUpperCase();
+
+  function line(zh, en) {
+    var li = document.createElement('li');
+    var a = document.createElement('span');
+    a.className = 'zh';
+    a.lang = 'zh-CN';
+    a.textContent = zh;
+    var b = document.createElement('span');
+    b.className = 'en';
+    b.lang = 'en';
+    b.textContent = en;
+    li.appendChild(a);
+    li.appendChild(b);
+    logEl.appendChild(li);
+  }
+
+  function rnd(n) {
+    var s = '';
+    for (var i = 0; i < n; i++) s += '0123456789ABCDEF'.charAt(Math.floor(Math.random() * 16));
+    return s;
+  }
+
+  function hostOf(u) {
+    try { return new URL(u).host.replace(/^www\./, ''); } catch (e) { return u; }
+  }
+
+  // 跃迁前坐标读数一直跳；锁定后停下
+  var hexTimer = setInterval(function () {
+    hexEl.textContent = 'Δ 0x' + rnd(4) + '·' + rnd(4);
+  }, 70);
+
+  [
+    [0,    '驱动预热',       'DRIVE SPIN-UP',                  8],
+    [380,  '读取跃迁池',     'READING JUMP POOL',              28],
+    [760,  '计算非概率坐标', 'COMPUTING IMPROBABLE COORDINATE', 58],
+    [1140, '锁定目标坐标',   'TARGET COORDINATE LOCKED',       84]
+  ].forEach(function (s) {
+    setTimeout(function () {
+      if (finished) return;
+      line(s[1], s[2]);
+      bar.style.width = s[3] + '%';
+    }, s[0]);
+  });
+
+  var guard = setTimeout(function () { fail(new Error('timeout')); }, GUARD_MS);
+
+  fetch(API + '?lang=' + lang + (from ? '&from=' + encodeURIComponent(from) : ''),
+        { credentials: 'omit', cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function (d) {
+      clearTimeout(guard);
+      if (finished) return; // 已经超时失败，迟到的响应不再覆盖失败态
+      dest = (d && d.to) || '';
+      if (!dest) throw new Error('empty target');
+      clearInterval(hexTimer);
+      hexEl.textContent = 'Δ 0x' + rnd(4) + '·' + rnd(4);
+      destEl.textContent = hostOf(dest);
+      // 动画走完才跳，保证用户看得到状态
+      setTimeout(jump, Math.max(0, MIN_MS - (Date.now() - t0)));
+    })
+    .catch(fail);
+
+  function jump() {
+    if (finished || !dest) return;
+    finished = true;
+    clearInterval(hexTimer);
+    bar.style.width = '100%';
+    line('跃迁', 'JUMPING');
+    setTimeout(function () { location.replace(dest); }, 300);
+  }
+
+  function fail(e) {
+    if (finished) return;
+    finished = true;
+    clearTimeout(guard);
+    clearInterval(hexTimer);
+    if (window.console) console.warn('[relay] failed:', e);
+    headEl.classList.add('is-error');
+    headEl.innerHTML = '跃迁失败<em>JUMP FAILED</em>';
+    hexEl.textContent = 'Δ ——';
+    destEl.textContent = 'NO SIGNAL';
+    line('坐标获取失败', 'COORDINATE ACQUISITION FAILED');
+    fallback.hidden = false;
+  }
+
+  retryEl.addEventListener('click', function (ev) {
+    ev.preventDefault();
+    location.reload();
+  });
+})();
+</script>
+</body>
+</html>

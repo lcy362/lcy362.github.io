@@ -1,0 +1,353 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>别找App了，自己做一个：个人App开发心得 | Mobility</title><meta name="author" content="流沙"><meta name="copyright" content="流沙"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="崔添翼说，下一个超级 App 可以只属于你一个人。从架构选型（app 壳 + H5 热更新）到部署 （Cloudflare Pages / EdgeOne）、后端（Oracle 免费 VPS / Cloudflare D1），再到把开发流程固化成 skill——这是我的个人 App 开发心得，现在开发一个自己的 app 基本一小时以内搞定。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="别找App了，自己做一个：个人App开发心得">
+<meta property="og:url" content="https://lichuanyang.top/posts/62962/">
+<meta property="og:site_name" content="Mobility">
+<meta property="og:description" content="崔添翼说，下一个超级 App 可以只属于你一个人。从架构选型（app 壳 + H5 热更新）到部署 （Cloudflare Pages / EdgeOne）、后端（Oracle 免费 VPS / Cloudflare D1），再到把开发流程固化成 skill——这是我的个人 App 开发心得，现在开发一个自己的 app 基本一小时以内搞定。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lichuanyang.top/img/62962.jpg">
+<meta property="article:published_time" content="2026-11-16T08:09:51.000Z">
+<meta property="article:modified_time" content="2026-11-16T08:11:17.130Z">
+<meta property="article:author" content="流沙">
+<meta property="article:tag" content="ai-agent">
+<meta property="article:tag" content="app开发">
+<meta property="article:tag" content="cloudflare">
+<meta property="article:tag" content="skill">
+<meta property="article:tag" content="热更新">
+<meta property="article:tag" content="独立开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lichuanyang.top/img/62962.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "别找App了，自己做一个：个人App开发心得",
+  "url": "https://lichuanyang.top/posts/62962/",
+  "image": "https://lichuanyang.top/img/62962.jpg",
+  "abstract": "后AI时代，自己做 app 的成本比找 app 更低。app 壳 + H5 架构，把流程固化成 skill，一小时就能做一个个人 app。",
+  "datePublished": "2026-11-16T08:09:51.000Z",
+  "dateModified": "2026-11-16T08:11:17.130Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "流沙",
+      "url": "https://lichuanyang.top/",
+      "sameAs": ["https://github.com/lcy362","https://stackoverflow.com/users/3448633","https://www.zhihu.com/people/hobermallow","https://x.com/lcy362"]
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://lichuanyang.top/posts/62962/"><link rel="preconnect" href="//cdnjs.cloudflare.com"><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="google-site-verification" content="AUXjM9SH3SycuX49Qv1r0UQfa5AwvIE-4q27LUEf5aU"><meta name="bing-site-verification" content="FEC1AF1D401268A4208AF51DC0275AAA"><meta name="baidu-site-verification" content="code-T8LautTf5f"><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0f172a')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'ca-pub-7310841175510611',
+  enable_page_level_ads: 'true'
+});</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?[object Object]";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZDNT54GK4Y"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-ZDNT54GK4Y')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-ZDNT54GK4Y', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#0d9488","bgDark":"#134e4a","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '别找App了，自己做一个：个人App开发心得',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#card-info-btn{background-color:#0d9488!important;}#card-info-btn:hover{background-color:#0f766e!important;}.tldr-block{background:rgba(13,148,136,.08)!important;border-left:3px solid #0d9488!important;padding:1rem 1.2rem!important;margin-bottom:1.5rem!important;border-radius:0 6px 6px 0!important;font-size:.95rem}.tldr-block strong{color:#0d9488}.relatedFaq,.relatedHowto{margin-top:1rem}.relatedFaq-list,.relatedHowto-list{display:flex;flex-wrap:wrap;gap:1rem}.relatedFaq-item,.relatedHowto-item{flex:1 1 280px;padding:.8rem 1rem;border-radius:8px;background:var(--card-bg,#f6f8fa);border:1px solid var(--border-color,#e1e4e8)}.relatedFaq-title,.relatedHowto-title{font-weight:600;font-size:.95rem;color:var(--font-color,#24292f);display:block;margin-bottom:.4rem}.relatedFaq-questions,.relatedHowto-steps{list-style:none;padding:0;margin:0}.relatedFaq-questions li{margin:.2rem 0;font-size:.85rem}.relatedFaq-questions a,.relatedHowto-steps a{color:var(--theme-color,#0d9488)}.relatedFaq-questions a:hover,.relatedHowto-steps a:hover{text-decoration:underline}.relatedHowto-steps{list-style:decimal;padding-left:1.2rem}.relatedHowto-steps li{margin:.2rem 0;font-size:.85rem;color:var(--font-color,#57606a)}table.compare-table{width:100%;border-collapse:collapse;margin:1rem 0}.compare-table th{background:var(--theme-color,#0d9488);color:#fff;padding:.6rem .8rem;text-align:left}.compare-table td{padding:.5rem .8rem;border:1px solid var(--border-color,#e1e4e8)}.compare-table tr:nth-child(even){background:var(--card-bg,#f6f8fa)}</style><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Mobility" type="application/atom+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://lichuanyang.top/posts/62962/">
+<link rel="alternate" hreflang="en" href="https://lichuanyang.top/en/posts/62962/">
+<link rel="alternate" hreflang="x-default" href="https://lichuanyang.top/posts/62962/">
+<meta name="keywords" content="ai-agent, skill, 独立开发, app开发, 热更新, cloudflare">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mobility","item":"https://lichuanyang.top/"},{"@type":"ListItem","position":2,"name":"AI实践","item":"https://lichuanyang.top/categories/AI实践/"},{"@type":"ListItem","position":3,"name":"别找App了，自己做一个：个人App开发心得","item":"https://lichuanyang.top/posts/62962/"}]}</script>
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading="lazy"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">156</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 非概率跃迁</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/62962.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Mobility</span></a><a class="nav-page-title" href="/"><span class="site-name">别找App了，自己做一个：个人App开发心得</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/sitemap.xml"><i class="fa-fw fas fa-sitemap"></i><span> Sitemap</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 非概率跃迁</span></a></div><div class="menus_item"><a class="site-page" href="/en"><i class="fa-fw fas fa-language"></i><span> English</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">别找App了，自己做一个：个人App开发心得</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-11-16T08:09:51.000Z" title="发表于 2026-11-16 16:09:51">2026-11-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-11-16T08:11:17.130Z" title="更新于 2026-11-16 16:11:17">2026-11-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI%E5%AE%9E%E8%B7%B5/">AI实践</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote class="tldr-block" style="background:var(--theme-color,#0d9488)10;border-left:3px solid var(--theme-color,#0d9488);padding:1rem 1.2rem;margin-bottom:1.5rem;border-radius:0 6px 6px 0"><strong style="color:var(--theme-color,#0d9488)">TL;DR</strong> 后AI时代，自己做 app 的成本比找 app 更低。app 壳 + H5 架构，把流程固化成 skill，一小时就能做一个个人 app。</blockquote><p>前几天看到崔添翼在 X 上发的一条推文：</p>
+<blockquote>
+<p>下一个超级 App 不必是面向所有人的一个超级 App。</p>
+<p>现在，每个人都有能力创造一个超级 App。</p>
+<p>下一个超级 App 也可以是只属于你一个人的超级 App。</p>
+</blockquote>
+<p>只属于你一个人的超级 App。这个说法我特别认同。</p>
+<span id="more"></span>
+
+<p>后AI时代，只要你能自己做的东西，自己做都会是最合适。现存的所有app，特别是你需要重度使用的app，无论做成什么样，总是不太可能完全契合你自己的需求的，所以无论怎么去找app，成本上都不如自己直接做一个更合适。</p>
+<p>还需要用别人app的场景，在我看来，目前还有两个，</p>
+<p>一是对方有大量的资源你无法获取，比如微信，比如高德地图，比如支付宝，这些玩意好用吗？真的不好用。这几个哥们在已经如此臃肿的情况下，依然有很多我想要的功能它没有，比如一个好用的记账功能、行程记录功能，要是可以的话，我真的想给他们爆改一通。但耐不住人家掌握着个人开发者无法获取的资源，所以也只能捏着鼻子用了。</p>
+<p>另一类就是现在确实有非常符合你自身需求的应用存在。比如对于我来说，obsidian就能满足我关于笔记的所有需求，所以我没必要自己再去做一个。</p>
+<p>目前说开发自己的“超级app”，可能还为时尚早，毕竟商业上有太多的东西没有打通，比如上面提到的微信的数据、导航数据。</p>
+<p>但是，如果说只是开发自己的“非超级”app，那现在就是最合适的时候了。特别是像什么记账、todo这种，每个人都觉得别人做的不好，是个人都想做一版出来给别人用的。究其根源，就在于每个人的习惯、审美都不一样，别人做出来的东西，自己用着就是不顺手。那不如自己做个好了，也别想着发出去给别人用，你觉得别人做的都是垃圾，其实别人看你的东西也是一样的。</p>
+<p>我最近就把好多之前用文档或者纸笔维护的东西搓成了app，</p>
+<p>比如我的网格化投资策略，搬到了app里，接近或者到了买入、卖出点，会给我标记出来，比之前记在文档里，自己去对方便多了。</p>
+<p>接下来，分享一些开发app给自己用的心得吧。个人app由于访问量低，不会涉及很多奇奇怪怪的边界逻辑，开发起来其实会比商业app难度低很多的。</p>
+<h2 id="App-壳-H5"><a href="#App-壳-H5" class="headerlink" title="App 壳 + H5"></a>App 壳 + H5</h2><p>最好采用app壳内嵌H5的架构，app层只放必要的外壳，所有业务逻辑放到H5层。这样，app只需要安装一次，后边所有的功能更新都可以通过发布H5页面的形式做热更新。</p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>H5可以部署在cloudflare pages或者腾讯云EdgeOne上，免费额度都非常足。EdgeOne需要有已备案的域名，cloudflare在国内的网络环境中访问有一些延时，看各自取舍吧。</p>
+<h2 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h2><p>如果需要后端服务，可以去oracle注册一个免费VPS，需要外币信用卡，风控比较严，申请下来有一定难度。当然了，到阿里云或者腾讯云买一个轻量服务器，一年99的那个，也足够用了。或者使用cloudflare D1、workers，或者neon的data api，都可以一定程度上承担后端功能。</p>
+<p>如果完全不要后端服务的话，其实也是可行的。数据可以落到手机里的固定目录，这个目录用git、或者网盘管理，或者定期拉回电脑上管理，都是可以的。</p>
+<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><p>注意，如果需要后端的话，务必让AI帮你审一遍服务器的安全相关策略，不要留下明显的漏洞让人爆破。</p>
+<h2 id="自动化"><a href="#自动化" class="headerlink" title="自动化"></a>自动化</h2><p>app的安装和测试，连上数据线之后，都可以让agent自动进行。</p>
+<h2 id="把流程固化成-skill"><a href="#把流程固化成-skill" class="headerlink" title="把流程固化成 skill"></a>把流程固化成 skill</h2><p>还有最重要的一点，上述所有的通用流程，一定要有意识的固化成流程文档或者skill吧。像上边提到的对vps的操作、cloudflare的各个产品的操作，agent都是完全可以做到全自动操作、不用开发者介入的。我们要做的就是让agent跑通一次流程之后，把这个流程固化成可复用的流程。</p>
+<p>当各个部分的可复用流程都积累好了之后，我现在开发一个app基本也就一个小时以内就可以搞定。</p>
+<h2 id="管理好你的-skill"><a href="#管理好你的-skill" class="headerlink" title="管理好你的 skill"></a>管理好你的 skill</h2><p>最后，还有一个问题，就是这个过程中，你除了自己用的app，还会留下很多你自己的skill，这里边有你自己的电脑环境信息、有你的vps信息，所以不适合分享给别人。但你自己如何管理好这些skill，也是一个问题。所以借此我也推荐一下我开发的本地skill管理工具Flint：</p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/lcy362/flint">https://github.com/lcy362/flint</a></p>
+<p>让这些skill真正成为你自己可以长期留存的资产。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lichuanyang.top">流沙</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lichuanyang.top/posts/62962/">https://lichuanyang.top/posts/62962/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lichuanyang.top" target="_blank">Mobility</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/62962.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>订阅公众号</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzU5MjQ5NjE1OQ==&amp;scene=124#wechat_redirect" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" src="/upload/qrcode.bmp" alt="微信" loading="lazy"></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/47899/" title="AdSense 国内收款全攻略"><img class="cover" src="/img/47899.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading="lazy"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">AdSense 国内收款全攻略</div></div><div class="info-2"><div class="info-item-1">怎么把网站的流量转化成收入，一直都是很多个人开发者面临的问题。很多开发者做出了很热门的产品，却一直苦于没有营收手段。前几天在某书上看到一个兄弟，做出了几千 star 的项目，却连域名费用都赚不回来。  所以，我就想分享一下广告变现的一些心得。今天就从 AdSense 开始，后边还会陆续介绍一些其他内容，欢迎大家关注我。 说真的，国内个人开发者创收真的挺难的。做 ICP 备案的话，个人备案按规定是不能进行商业活动的，包括接广告。虽然有些时候你接了也没人管，但万一被查到，就有可能被注销备案。所以，对于个人开发者来说，风险最小的方案还是把你的整套服务、营收都放到国外。 在国外接广告的话，首选还是 Google AdSense，广告质量相对还可以，提款也比较容易。 今天我们要讲的，主要就是怎么在 AdSense 上收钱并提现到国内。   全流程总览整体上，国内收款流程可以分为以下几个步骤：  付款资料国家/地址选对（否则收不到 PIN 信） 税务信息提交 身份验证 KYC + 地址 PIN 验证通过 绑定电汇收款账号（国内银行卡） Google 按月出账，外汇入账 手机银行结汇...</div></div></div></a><a class="pagination-related" href="/posts/48213/" title="你随手安装的那些 skill，会消耗你多少 token"><img class="cover" src="/img/skill-token-cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading="lazy"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">你随手安装的那些 skill，会消耗你多少 token</div></div><div class="info-2"><div class="info-item-1">先说结论：skill 的消耗不在于你「用」了多少，而在于你「装」了多少。装进去的那一刻，账单就开始计时了。 这话不是我拍脑袋说的。前几天跑完一个长任务，顺手翻了下 agent 的 token 统计面板，几个数字摆在一起，看得我有点沉默。   一次实测：只加载了 1 个 skill，账单长这样先看任务整体的账。这个任务跑下来，总用量 184.4M token，1.84 亿。其中工具结果 87.1M（47.3%）、助手消息 84.9M（46.0%），这两块是大头，符合直觉：长任务嘛，工具来回调、模型来回写，钱主要花在这儿。  然后看 skill 相关的那一行：技能注入（累计）约 4.2M，占 2.3%。 4.2M 是什么概念？放在 1.84 亿里是 2.3%，确实是「说少不少，说多也不多」。但先别下结论，看看这 4.2M 是由什么叠出来的。  任务结束时，当前上下文 467.6k / 1.0M，用了 46.8%。里面技能注入约 7.5k，占 2%。注意，这 7.5k 是单轮快照，每一轮都在。累计的 4.2M，就是这种东西乘以五六百轮叠出来的。 那这单轮 7.5k 里装的是什...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/29684/" title="Flint：让 skill 成为个人资产"><img class="cover" src="/img/29684.jpg" alt="cover" loading="lazy"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-14</div><div class="info-item-2">Flint：让 skill 成为个人资产</div></div><div class="info-2"><div class="info-item-1">最近一段时间，每当 OpenAI 有新模型发布，都会有一种论调：skill 没用了，越来越多用户开始弃用 skill。 这话对吗？ 对也不对。首先，这个逻辑是有合理性的。随着模型能力的提升，确实有很多 skill 被用户抛弃了，这些 skill 集中于 Superpower 之类所谓的「通用」skill。这些 skill 的定位，就是对一些模型能力缺陷的补齐，尤其是在各个模型没有疯狂地对 coding 进行针对性优化的时期，是有一些作用的。而随着模型本身能力的提升，这些东西其实慢慢都已经被模型吸收了，自然就没有了作用。 那 skill 是真的就没用了吗？恐怕也并非如此。接下来，我们会论述一下随着模型智能水平的提升，skill 还有什么作用。然后，会论述一下本文的主角：Flint。我会讲一下为什么要开发这个项目，以及它有什么作用。   什么是 skill（技能）最近一段时间 AI 技术的蓬勃发展，看着技术一轮一轮的迭代，但实质上只是软件工程理论的再一次落地。 其中，skill 这一层，目标是实现「可复用性」，对应的是软件开发中的各种工具包。 而模型对应的是软件开发语言这一层。 复用...</div></div></div></a><a class="pagination-related" href="/posts/48213/" title="你随手安装的那些 skill，会消耗你多少 token"><img class="cover" src="/img/skill-token-cover.jpg" alt="cover" loading="lazy"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-04</div><div class="info-item-2">你随手安装的那些 skill，会消耗你多少 token</div></div><div class="info-2"><div class="info-item-1">先说结论：skill 的消耗不在于你「用」了多少，而在于你「装」了多少。装进去的那一刻，账单就开始计时了。 这话不是我拍脑袋说的。前几天跑完一个长任务，顺手翻了下 agent 的 token 统计面板，几个数字摆在一起，看得我有点沉默。   一次实测：只加载了 1 个 skill，账单长这样先看任务整体的账。这个任务跑下来，总用量 184.4M token，1.84 亿。其中工具结果 87.1M（47.3%）、助手消息 84.9M（46.0%），这两块是大头，符合直觉：长任务嘛，工具来回调、模型来回写，钱主要花在这儿。  然后看 skill 相关的那一行：技能注入（累计）约 4.2M，占 2.3%。 4.2M 是什么概念？放在 1.84 亿里是 2.3%，确实是「说少不少，说多也不多」。但先别下结论，看看这 4.2M 是由什么叠出来的。  任务结束时，当前上下文 467.6k / 1.0M，用了 46.8%。里面技能注入约 7.5k，占 2%。注意，这 7.5k 是单轮快照，每一轮都在。累计的 4.2M，就是这种东西乘以五六百轮叠出来的。 那这单轮 7.5k 里装的是什...</div></div></div></a><a class="pagination-related" href="/posts/34689/" title="从薅 token 到管 skill：我的 pks 工具落地实践"><img class="cover" src="/img/34689.jpg" alt="cover" loading="lazy"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-01</div><div class="info-item-2">从薅 token 到管 skill：我的 pks 工具落地实践</div></div><div class="info-2"><div class="info-item-1">之前写过一篇文章：https://lichuanyang.top/posts/26060/ . 教大家构建与Agent无关的工作流，随时能拉起不同的Agent工作，从而能顺畅用上各个Agent提供的免费、试用套餐。这么实践下来，一个明显会变得繁琐的事情就是对于skill的管理。因此，我又写了一个工具，实现在不同Agent、不同项目间管理skills.   鉴于目前Agent的生态还比较凌乱，大家各干各的，skill的存放目录也自己定自己的。 比如 Cursor 放在 ~/.cursor/skills，Claude Code 放在 ~/.claude/skills，Trae 放在 ~/.trae/skills，OpenCode 放在 ~/.config/opencode/skills，还有 Windsurf、Qoder、Hermes 等等，每家都有自己的路径约定。 社区也在试图定义通用的.agents/skill这样目录，有点作用，但不大。 当然，skill管理的问题，也不全是使用多Agent带来的。因为skill这种东西，天然就就有非常大的适用范围区别。有的skill是...</div></div></div></a></div></div><hr class="custom-hr"><div class="relatedPosts relatedFaq"><div class="headline"><i class="fas fa-question-circle fa-fw"></i><span>相关问答</span></div><div class="relatedFaq-list"><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/26061/">教你薅token（二）：构建agent无关的skills管理工作流</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/26061/">Skills 管理和 Agent 管理有什么区别？</a></li><li><a href="https://lichuanyang.top/posts/26061/">跨平台兼容性怎么保证？</a></li><li><a href="https://lichuanyang.top/posts/26061/">pks 和直接在 Agent 里配置 skill 有什么不同？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/26060/">教你薅token：构建agent无关的AI工作流</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/26060/">Agent 和 Skill 是什么关系？</a></li><li><a href="https://lichuanyang.top/posts/26060/">Token 优化最有效的方法是什么？</a></li><li><a href="https://lichuanyang.top/posts/26060/">文档维护和 Agent 订阅哪个更值？</a></li></ul></div><div class="relatedFaq-item"><a class="relatedFaq-title" href="https://lichuanyang.top/posts/64/">用LLM管理安全开发规范：一次llm-wiki实践</a><ul class="relatedFaq-questions"><li><a href="https://lichuanyang.top/posts/64/">LLM 生成的代码或规范文档安全吗？会不会引入新的安全风险？</a></li><li><a href="https://lichuanyang.top/posts/64/">用 LLM 管理规范后，如何审核和保证质量？</a></li><li><a href="https://lichuanyang.top/posts/64/">llm-wiki 方案和传统 lint 工具（SonarQube、ESLint 等）有何不同？</a></li></ul></div></div></div><div class="relatedPosts relatedHowto"><div class="headline"><i class="fas fa-list-ol fa-fw"></i><span>相关教程</span></div><div class="relatedHowto-list"><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/65500/">Agnes免费模型真能白嫖视频？我改造了ViMax来试试</a><ol class="relatedHowto-steps"><li>环境准备：注册Agnes AI账号，获取API Key</li><li>调用Agnes API：配置OpenAI兼容接口，base URL为https://apihub.agnes-ai.com/v1</li><li>改造ViMax配置：创建YAML创意文件，配置场景、风格和chaining_mode参数</li><li>生成视频：运行start.sh一键生成多场景视频</li></ol></div><div class="relatedHowto-item"><a class="relatedHowto-title" href="https://lichuanyang.top/posts/26060/">教你薅token：构建agent无关的AI工作流</a><ol class="relatedHowto-steps"><li>理解Agent与Skill关系：Agent是执行引擎，Skill是结构化指令文档，文档质量决定输出质量</li><li>定义工作流：编写AGENTS.md等文档，明确项目结构、编码规范和操作流程</li><li>配置文档源：将项目文档、工作流说明、规则文档放入项目根目录，让Agent自动读取</li><li>测试验证：在不同Agent平台间切换测试，验证文档驱动的一致性效果</li></ol></div></div></div>
+<hr class="custom-hr">
+<div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading="lazy"></div><div class="author-info-name">流沙</div><div class="author-info-description">Mobility | 增加人生的可选择性</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">156</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://www.zhihu.com/people/hobermallow"><i class="fab fa-zhihu"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lcy362" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://stackoverflow.com/users/3448633" rel="external nofollow noreferrer" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow" style="color: #f48024;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/hobermallow" rel="external nofollow noreferrer" target="_blank" title="知乎"><i class="fab fa-zhihu" style="color: #0084ff;"></i></a><a class="social-icon" href="https://x.com/Sand_Grid" rel="external nofollow noreferrer" target="_blank" title="X"><i class="fab fa-x-twitter" style="color: #000000;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">后端开发 | 架构设计 | AI实践<br>用代码拓展选择的边界<div style="margin-top:10px;text-align:left"><div style="font-size:.85rem;font-weight:600;color:var(--font-color)">精选友情链接<span style="margin-left:6px;font-size:.7rem;font-weight:400;color:var(--dark-grey)">共 7 个站点</span></div><div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:6px"><a href="https://video.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">AI 视频生成</a><a href="https://video.lichuanyang.top/zh/studio" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">免费短视频</a><a href="https://flint.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Flint 技能管理器</a><a href="https://predict.lichuanyang.top/" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">蒙一把</a><a href="https://game.lichuanyang.top/" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">方寸博弈</a><a href="https://math.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">数学练习</a></div></div><div style="margin-top:8px;display:flex;align-items:center;gap:6px"><a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" title="开往-友链接力" style="display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border:1px solid var(--light-grey);border-radius:999px;background:var(--card-bg);text-decoration:none;font-size:.78rem;color:var(--font-color);white-space:nowrap"><img src="https://www.travellings.cn/assets/b.png" alt="开往" width="60" style="display:block;border-radius:3px" loading="lazy"></a><span style="font-size:.72rem;color:var(--dark-grey)">友链接力</span></div><div style="margin-top:8px;text-align:center"><a href="/apply/" style="display:inline-block;padding:5px 14px;border-radius:999px;background:var(--link-color,#49b1f5);color:#fff;font-size:.76rem;font-weight:600;text-decoration:none">申请友链 →</a></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#App-%E5%A3%B3-H5"><span class="toc-number">1.</span> <span class="toc-text">App 壳 + H5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2"><span class="toc-number">2.</span> <span class="toc-text">部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF"><span class="toc-number">3.</span> <span class="toc-text">后端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8"><span class="toc-number">4.</span> <span class="toc-text">安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">自动化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%8A%E6%B5%81%E7%A8%8B%E5%9B%BA%E5%8C%96%E6%88%90-skill"><span class="toc-number">6.</span> <span class="toc-text">把流程固化成 skill</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%A1%E7%90%86%E5%A5%BD%E4%BD%A0%E7%9A%84-skill"><span class="toc-number">7.</span> <span class="toc-text">管理好你的 skill</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/1654/" title="个人开发者穷鬼套餐之用不可靠的免费VPS做出高可用系统"><img src="/img/1654.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="个人开发者穷鬼套餐之用不可靠的免费VPS做出高可用系统" loading="lazy"></a><div class="content"><a class="title" href="/posts/1654/" title="个人开发者穷鬼套餐之用不可靠的免费VPS做出高可用系统">个人开发者穷鬼套餐之用不可靠的免费VPS做出高可用系统</a><time datetime="2026-11-26T08:35:02.943Z" title="发表于 2026-11-26 16:35:02">2026-11-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/16103/" title="分享几个新出现的免费服务器"><img src="/img/16103.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="分享几个新出现的免费服务器" loading="lazy"></a><div class="content"><a class="title" href="/posts/16103/" title="分享几个新出现的免费服务器">分享几个新出现的免费服务器</a><time datetime="2026-11-24T06:40:04.000Z" title="发表于 2026-11-24 14:40:04">2026-11-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/47899/" title="AdSense 国内收款全攻略"><img src="/img/47899.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AdSense 国内收款全攻略" loading="lazy"></a><div class="content"><a class="title" href="/posts/47899/" title="AdSense 国内收款全攻略">AdSense 国内收款全攻略</a><time datetime="2026-11-20T07:33:17.000Z" title="发表于 2026-11-20 15:33:17">2026-11-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/62962/" title="别找App了，自己做一个：个人App开发心得"><img src="/img/62962.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="别找App了，自己做一个：个人App开发心得" loading="lazy"></a><div class="content"><a class="title" href="/posts/62962/" title="别找App了，自己做一个：个人App开发心得">别找App了，自己做一个：个人App开发心得</a><time datetime="2026-11-16T08:09:51.000Z" title="发表于 2026-11-16 16:09:51">2026-11-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/48213/" title="你随手安装的那些 skill，会消耗你多少 token"><img src="/img/skill-token-cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="你随手安装的那些 skill，会消耗你多少 token" loading="lazy"></a><div class="content"><a class="title" href="/posts/48213/" title="你随手安装的那些 skill，会消耗你多少 token">你随手安装的那些 skill，会消耗你多少 token</a><time datetime="2026-11-04T07:45:00.000Z" title="发表于 2026-11-04 15:45:00">2026-11-04</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">©&nbsp;2025 - 2026 By 流沙</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text"><div style="max-width:1000px;margin:0 auto;text-align:left"><div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px"><span style="font-size:.95rem;font-weight:700;color:var(--font-color)">作者的其他项目</span><span style="font-size:.72rem;color:var(--dark-grey);border:1px solid var(--light-grey);border-radius:999px;padding:1px 8px">共 6 个站点</span></div><div style="margin:4px 0 12px;font-size:.8rem;color:var(--dark-grey);line-height:1.6">同一作者开发与维护的免费开源工具与站点，均可直接打开使用。</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px"><a href="https://video.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">AI 视频生成</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">免费开源的 AI 短视频生成</span></a><a href="https://video.lichuanyang.top/zh/studio" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">免费短视频（零安装）</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">浏览器内运行，无需安装</span></a><a href="https://flint.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">Flint 技能管理器</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">本地优先的 AI Skills 管理器</span></a><a href="https://predict.lichuanyang.top/" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">蒙一把（时事预测）</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">蒙没蒙对，记录说了算</span></a><a href="https://game.lichuanyang.top/" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">方寸博弈（桌游）</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">T字棋、极速101 即点即玩</span></a><a href="https://math.lichuanyang.top/zh" target="_blank" rel="noopener" style="display:block;padding:10px 12px;border:1px solid var(--light-grey);border-radius:10px;background:var(--card-bg);text-decoration:none"><span style="display:block;font-size:.86rem;font-weight:600;color:var(--font-color)">数学练习</span><span style="display:block;margin-top:2px;font-size:.74rem;color:var(--dark-grey);line-height:1.5">极简算数练习，5 种语言</span></a></div><div style="margin:14px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:10px"><span style="font-size:.74rem;color:rgba(255,255,255,.72)">友邻 · 十年之约</span><a href="https://www.foreverblog.cn/go.html" target="_blank" rel="noopener" title="虫洞 · 随机访问十年之约成员博客" style="display:inline-block;text-decoration:none"><img src="https://www.foreverblog.cn/assets/logo/wormhole_v2_light.webp" alt="十年之约虫洞" style="width:auto;height:28px;display:block" loading="lazy"></a></div></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdnjs.cloudflare.com/ajax/libs/node-snackbar/0.1.16/snackbar.min.js"></script><div class="js-pjax"></div><script data-cfasync="false" src="https://bauval.org/14/15fa1c95a7d86b67c763762d23ea7c95"></script><script id="canvas_nest" defer="defer" color="13,148,136" opacity="0.7" zindex="-1" count="99" mobile="false" src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.6/canvas-nest.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"></div><hr><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div></div></div><script src="/bundle.js"></script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = {"mapping":"pathname","lang":"zh-CN","reactions_enabled":true,"input_position":"bottom","emit_metadata":false}
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'lcy362/lcy362.github.io',
+      'data-repo-id': 'MDEwOlJlcG9zaXRvcnkxMTc2NzYwODU=',
+      'data-category-id': 'DIC_kwDOBwOYNc4DB2lj',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})();
+if(document.getElementById("post-info")){const e=document.createElement("div");e.id="post-hitokoto",e.style.cssText="text-align:center;font-size:0.9rem;color:#e5e5e5;margin-top:-0.5rem;margin-bottom:0.5rem;min-height:1.2rem";const t=document.querySelector(".post-title");t&&t.parentNode.insertBefore(e,t.nextSibling),fetch("https://v1.hitokoto.cn/").then(e=>e.json()).then(t=>{e.innerHTML=t.hitokoto+" —— "+t.from}).catch(()=>{})};
+(function(){var u="https://araplhn.org/4/0cbb625edad93f4e075114d0ea6a7cd3";var c=3e5;var k="_asl";var l=localStorage.getItem(k);if(l&&Date.now()-parseInt(l,10)<c)return;var f=false;function t(e){if(f)return;var a=e.target.closest("a");if(!a||!a.href||a.href.startsWith("#")||a.href.startsWith("javascript:"))return;if(a.closest("#nav,#menu,#header,#footer,.footer,#aside,#aside-content,.sidebar,#sidebar,.nav,#tool-bar,#rightside"))return;f=true;localStorage.setItem(k,Date.now());window.open(u,"_blank","noopener")}document.addEventListener("click",t)})();</script></body></html>
